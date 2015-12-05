@@ -2,7 +2,7 @@
 
 namespace Katniss\Http\Controllers\Auth;
 
-use Katniss\User;
+use Katniss\Models\User;
 use Validator;
 use Katniss\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;

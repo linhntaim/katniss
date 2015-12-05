@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'model' => Katniss\User::class,
+    'model' => Katniss\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

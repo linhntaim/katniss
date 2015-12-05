@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(Katniss\User::class, function (Faker\Generator $faker) {
+$factory->define(Katniss\Models\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
