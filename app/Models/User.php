@@ -1,6 +1,6 @@
 <?php
 
-namespace Katniss;
+namespace Katniss\Models;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
