@@ -1,0 +1,1 @@
+@extends('admin_themes.admin_lte.master.index')

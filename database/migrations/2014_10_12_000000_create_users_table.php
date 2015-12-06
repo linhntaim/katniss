@@ -13,12 +13,31 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
+            $table->bigIncrements('id');
+            $table->string('display_name');
+            $table->string('name')->unique();
             $table->string('email')->unique();
             $table->string('password', 60);
+            $table->string('url_avatar');
+            $table->string('url_avatar_thumb');
             $table->rememberToken();
             $table->timestamps();
+        });
+
+        Schema::create('user_socials', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
+            $table->bigInteger('user_id')->unsigned();
+            $table->string('provider');
+            $table->string('provider_id');
+            $table->unique(['provider', 'provider_id']);
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -29,6 +48,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::drop('user_socials');
         Schema::drop('users');
     }
 }

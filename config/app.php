@@ -144,7 +144,9 @@ return [
         Katniss\Providers\AuthServiceProvider::class,
         Katniss\Providers\EventServiceProvider::class,
         Katniss\Providers\RouteServiceProvider::class,
-
+        Katniss\Providers\KatnissServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+        Zizaco\Entrust\EntrustServiceProvider::class,
     ],
 
     /*
@@ -194,6 +196,12 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
+        'LmsTheme' => Katniss\Models\Themes\HomeThemes\HomeThemeFacade::class,
+        'AdminTheme' => Katniss\Models\Themes\AdminThemes\AdminThemeFacade::class,
+        'Widgets' => Katniss\Models\Themes\WidgetsFacade::class,
+        'Extensions' => Katniss\Models\Themes\ExtensionsFacade::class,
+
+        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     ],
 
 ];

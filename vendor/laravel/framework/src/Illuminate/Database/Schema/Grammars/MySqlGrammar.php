@@ -67,6 +67,10 @@ class MySqlGrammar extends Grammar
             $sql .= ' engine = '.$blueprint->engine;
         }
 
+        if (isset($blueprint->rowFormat)) {
+            $sql .= ' row_format = '.$blueprint->rowFormat;
+        }
+
         return $sql;
     }
 

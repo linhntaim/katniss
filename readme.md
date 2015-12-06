@@ -6,22 +6,40 @@
 [![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
 [![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+## Road Map 1
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
-
-## Official Documentation
-
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+- Theme & Plugin Definition
+    - Theme:
+        - Admin Theme
+            - Sample Theme: Admin LTE
+        - Home Theme
+            - Sample Theme: ?, ?
+    - Plugin:
+        - Extension
+            - Sample Extensions: ?
+        - Widget
+            - Sample Widgets: ?
+    - Administrators can:
+        - switch between themes
+        - preview theme
+        - activate/deactivate/edit Extensions
+        - activate/deactivate/edit/add-to-placeholder Widgets
+- File Manager module: to easily upload & manage files.
+- Simple User module
+    - Authentication Flow
+        - Registration (full name, email, username, phone, password)
+        - Activation (user id, email, activation token)
+        - Login (email or username or phone, password)
+        - Logout
+        - Forgot Password (email)
+        - Social Authentication supported (Register/Login from social accounts)
+        - Email supported (send announcement emails after actions)
+    - Roles, Permission
+        - Administrators role
+        - Access admin permission
+    - Administrators can:
+        - add/edit/list/activate/deactivate/ban Authenticated User or Anonymous User
+        - edit email templates used for Authentication Flow
+    - Authenticated User can: view/edit info
+    - Anonymous User can view activated Authenticated Users' info
+- App Options module: to store runtime variables/options in database (key => value)

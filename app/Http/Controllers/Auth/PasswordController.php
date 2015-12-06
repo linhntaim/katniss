@@ -2,10 +2,11 @@
 
 namespace Katniss\Http\Controllers\Auth;
 
-use Katniss\Http\Controllers\Controller;
+use Katniss\Http\Controllers\ViewController;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
-class PasswordController extends Controller
+class PasswordController extends ViewController
 {
     /*
     |--------------------------------------------------------------------------
@@ -25,8 +26,10 @@ class PasswordController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
+        parent::__construct($request);
+
         $this->middleware('guest');
     }
 }
