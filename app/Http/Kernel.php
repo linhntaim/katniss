@@ -30,11 +30,9 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Katniss\Http\Middleware\RedirectIfAuthenticated::class,
         // custom
+        'entrust' => \Katniss\Http\Middleware\AuthorizationWithEntrust::class,
         'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
         'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
-        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
-        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
-        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
     ];
 }

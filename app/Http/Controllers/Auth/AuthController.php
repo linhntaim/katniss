@@ -52,10 +52,71 @@ class AuthController extends ViewController
 
     public function getLogin()
     {
-        $this->theme->title(trans('pages.admin_login_title'));
-        $this->theme->description(trans('pages.admin_login_desc'));
+        $this->theme->title(trans('pages.login_title'));
+        $this->theme->description(trans('pages.login_desc'));
 
         return view($this->themePage('auth.login'));
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function postLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'account' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect($this->loginPath())
+                ->withInput($request->only('account', 'remember'))
+                ->withErrors($validator);
+        }
+
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $request->only('account', 'password');
+
+        // try email
+        $try_credentials = [
+            'email' => $credentials['account'],
+            'password' => $credentials['password'],
+        ];
+        if (Auth::attempt($try_credentials, $request->has('remember'))) {
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+        // try user name
+        $try_credentials = [
+            'name' => $credentials['account'],
+            'password' => $credentials['password'],
+        ];
+        if (Auth::attempt($try_credentials, $request->has('remember'))) {
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return redirect($this->loginPath())
+            ->withInput($request->only('account', 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
     }
 
     protected function authenticated(Request $request, User $user)
@@ -102,7 +163,8 @@ class AuthController extends ViewController
      */
     public function getRegister(Request $request)
     {
-        $this->theme->title(trans('pages.page_register_title'));
+        $this->theme->title(trans('pages.register_title'));
+        $this->theme->description(trans('pages.register_desc'));
 
         return view($this->themePage('auth.register'));
     }

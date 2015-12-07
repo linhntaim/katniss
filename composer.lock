@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f6d4859b7de3517bb490a7abd6757094",
-    "content-hash": "ae888258968c0c7367782a607b645995",
+    "hash": "162b018697bde9e9362423d414999c8e",
+    "content-hash": "50f909ec9b7c70656eed3f3f2b200fc1",
     "packages": [
         {
             "name": "barryvdh/elfinder-builds",
@@ -2686,23 +2686,22 @@
         },
         {
             "name": "zizaco/entrust",
-            "version": "1.5.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Zizaco/entrust.git",
-                "reference": "3b41a8ec0cdba8400eab344f919291bcc59c0115"
+                "reference": "3aa6e7923c5beea3fb0a5e57e902ae1d6beed173"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3b41a8ec0cdba8400eab344f919291bcc59c0115",
-                "reference": "3b41a8ec0cdba8400eab344f919291bcc59c0115",
+                "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3aa6e7923c5beea3fb0a5e57e902ae1d6beed173",
+                "reference": "3aa6e7923c5beea3fb0a5e57e902ae1d6beed173",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "~5.0",
                 "illuminate/console": "~5.0",
                 "illuminate/support": "~5.0",
-                "php": ">=5.5.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "illuminate/database": "~5.0",
@@ -2750,7 +2749,7 @@
                 "permission",
                 "roles"
             ],
-            "time": "2015-11-20 19:05:07"
+            "time": "2015-08-07 18:05:40"
         }
     ],
     "packages-dev": [

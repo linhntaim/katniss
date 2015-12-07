@@ -26,13 +26,6 @@ class KatnissServiceProvider extends ServiceProvider
             return new DatabaseSessionHandler();
         });
 
-        Cache::extend('memcache', function ($app) {
-            $config = config('cache.stores.memcache');
-            $prefix = Arr::get($config, 'prefix') ?: config('cache.prefix');
-            $memcache = app('memcache.connector')->connect($config['servers']);
-            return Cache::repository(new MemcacheStore($memcache, $prefix));
-        });
-
         config([
             'services.facebook.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'facebook']),
             'services.google.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'google']),
@@ -59,10 +52,6 @@ class KatnissServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('memcache.connector', function () {
-            return new MemcacheConnector();
-        });
-
         $this->app['home_theme'] = $this->app->share(
             function () {
                 $homeTheme = config('katniss.home_theme');

@@ -7,7 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "zizaco/entrust": "^1.5",
+        "zizaco/entrust": "1.4.1",
         "barryvdh/laravel-debugbar": "^2.0",
         "barryvdh/laravel-elfinder": "^0.3.4",
         "jenssegers/agent": "^2.3",

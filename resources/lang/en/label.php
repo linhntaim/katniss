@@ -19,4 +19,8 @@ return [
     'back_to_homepage' => 'Back to homepage',
     'message_from_' => 'Message from ',
     'welcome_to_' => 'Welcome to ',
+    'remember_me' => 'Remember me',
+    'or_lc' => 'or',
+    'forgot_password' => 'Forgot your password?',
+    'register_membership' => 'Register a new membership?'
 ];

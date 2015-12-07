@@ -26,7 +26,7 @@ class Widgets
 
     public function display($placeholder, $before = '', $after = '')
     {
-        $widgets = $this->widgets->where('placeholder', $placeholder);
+        $widgets = $this->widgets->where('placeholder', $placeholder)->sortBy('order')->get();
         $count_widgets = $widgets->count();
         $output = $count_widgets > 0 ? $before : '';
         foreach ($widgets as $widget) {

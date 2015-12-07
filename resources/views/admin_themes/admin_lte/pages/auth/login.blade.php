@@ -1,6 +1,6 @@
 @extends('admin_themes.admin_lte.master.auth')
 @section('auth_type','login')
-@section('box_message', trans('pages.admin_login_desc'))
+@section('box_message', trans('pages.login_desc'))
 @section('auth_form')
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -12,8 +12,8 @@
     <form method="post">
         {!! csrf_field() !!}
         <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="{{ trans('label.email') }}" required name="email" value="{{ old('email') }}">
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <input type="text" class="form-control" placeholder="{{ trans('label.email') }} {{ trans('label.or_lc') }} {{ trans('label.user_name') }}" required name="account" value="{{ old('account') }}">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
             <input type="password" class="form-control" placeholder="{{ trans('label.password') }}" required name="password">
@@ -23,8 +23,8 @@
             <div class="col-xs-8">
                 <div class="checkbox icheck">
                     <label for="inputRemember">
-                        <input id="inputRemember" type="checkbox" name="remember">
-                        &nbsp; {{ trans('label.remember') }}
+                        <input id="inputRemember" type="checkbox" name="remember"{{ old('remember') ? ' checked' : '' }}>
+                        &nbsp; {{ trans('label.remember_me') }}
                     </label>
                 </div>
             </div><!-- /.col -->
@@ -35,7 +35,7 @@
     </form>
 
     <div class="social-auth-links text-center">
-        <p>- {{ trans('label.or') }} -</p>
+        <p class="text-uppercase">- {{ trans('label.or') }} -</p>
         <a href="{{ homeUrl('auth/social/{provider}', array('provider' => 'facebook')) }}" class="btn btn-block btn-social btn-facebook btn-flat">
             <i class="fa fa-facebook"></i> {{ trans('label.sign_in_with_facebook') }}
         </a>
@@ -44,7 +44,7 @@
         </a>
     </div><!-- /.social-auth-links -->
 
-    <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot') }}</a><br>
-    <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.reg') }}</a><br>
-    <a href="{{ homeURL() }}" class="text-center">{{ trans('label.home') }}</a>
+    <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot_password') }}</a><br>
+    <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    <a href="{{ homeURL() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection

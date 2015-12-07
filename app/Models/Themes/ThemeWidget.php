@@ -50,7 +50,7 @@ class ThemeWidget extends Model
         if (!empty($placeholder)) {
             $query->where('placeholder', $placeholder);
         }
-        $query->where('active', true)->orderBy('order', 'asc')->orderBy('created_at', 'asc');
+        $query->where('active', true);
 
         return $query;
     }

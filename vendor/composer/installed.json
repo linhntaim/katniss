@@ -3083,76 +3083,6 @@
         ]
     },
     {
-        "name": "zizaco/entrust",
-        "version": "1.5.0",
-        "version_normalized": "1.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Zizaco/entrust.git",
-            "reference": "3b41a8ec0cdba8400eab344f919291bcc59c0115"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3b41a8ec0cdba8400eab344f919291bcc59c0115",
-            "reference": "3b41a8ec0cdba8400eab344f919291bcc59c0115",
-            "shasum": ""
-        },
-        "require": {
-            "illuminate/cache": "~5.0",
-            "illuminate/console": "~5.0",
-            "illuminate/support": "~5.0",
-            "php": ">=5.5.0"
-        },
-        "require-dev": {
-            "illuminate/database": "~5.0",
-            "mockery/mockery": "dev-master",
-            "phpunit/phpunit": "~4.1",
-            "sami/sami": "dev-master"
-        },
-        "time": "2015-11-20 19:05:07",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/commands"
-            ],
-            "psr-4": {
-                "Zizaco\\Entrust\\": "src/Entrust/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Andrew Elkins",
-                "homepage": "http://andrewelkins.com"
-            },
-            {
-                "name": "Zizaco Zizuini",
-                "email": "zizaco@gmail.com"
-            },
-            {
-                "name": "Ben Batschelet",
-                "homepage": "http://github.com/bbatsche"
-            },
-            {
-                "name": "Michele Angioni",
-                "email": "michele.angioni@gmail.com"
-            }
-        ],
-        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
-        "keywords": [
-            "acl",
-            "auth",
-            "illuminate",
-            "laravel",
-            "permission",
-            "roles"
-        ]
-    },
-    {
         "name": "psr/http-message",
         "version": "1.0",
         "version_normalized": "1.0.0.0",
@@ -4107,6 +4037,75 @@
             "laravel",
             "localization",
             "php"
+        ]
+    },
+    {
+        "name": "zizaco/entrust",
+        "version": "1.4.1",
+        "version_normalized": "1.4.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Zizaco/entrust.git",
+            "reference": "3aa6e7923c5beea3fb0a5e57e902ae1d6beed173"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Zizaco/entrust/zipball/3aa6e7923c5beea3fb0a5e57e902ae1d6beed173",
+            "reference": "3aa6e7923c5beea3fb0a5e57e902ae1d6beed173",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/console": "~5.0",
+            "illuminate/support": "~5.0",
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "illuminate/database": "~5.0",
+            "mockery/mockery": "dev-master",
+            "phpunit/phpunit": "~4.1",
+            "sami/sami": "dev-master"
+        },
+        "time": "2015-08-07 18:05:40",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/commands"
+            ],
+            "psr-4": {
+                "Zizaco\\Entrust\\": "src/Entrust/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Andrew Elkins",
+                "homepage": "http://andrewelkins.com"
+            },
+            {
+                "name": "Zizaco Zizuini",
+                "email": "zizaco@gmail.com"
+            },
+            {
+                "name": "Ben Batschelet",
+                "homepage": "http://github.com/bbatsche"
+            },
+            {
+                "name": "Michele Angioni",
+                "email": "michele.angioni@gmail.com"
+            }
+        ],
+        "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+        "keywords": [
+            "acl",
+            "auth",
+            "illuminate",
+            "laravel",
+            "permission",
+            "roles"
         ]
     }
 ]
