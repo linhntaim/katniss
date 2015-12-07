@@ -147,6 +147,7 @@ return [
         Katniss\Providers\KatnissServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
     ],
 
     /*
@@ -202,6 +203,7 @@ return [
         'Extensions' => Katniss\Models\Themes\ExtensionsFacade::class,
 
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+        'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
     ],
 
 ];

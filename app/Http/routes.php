@@ -11,22 +11,39 @@
 |
 */
 
-Route::get('/', 'Home\HomepageController@index');
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect']
+    ],
+    function () {
+        Route::get('/', 'Home\HomepageController@index');
 
-#region Authentication Routes
-Route::get(homePath('auth/login'), 'Auth\AuthController@getLogin');
-Route::post(homePath('auth/login'), 'Auth\AuthController@postLogin');
-Route::get(homePath('auth/logout'), 'Auth\AuthController@getLogout');
-Route::get(homePath('auth/register'), 'Auth\AuthController@getRegister');
-Route::post(homePath('auth/register'), 'Auth\AuthController@postRegister');
-Route::get(homePath('auth/register/social'), 'Auth\AuthController@getSocialRegister');
-Route::post(homePath('auth/register/social'), 'Auth\AuthController@postSocialRegister');
-Route::get(homePath('auth/activate/{id}/{activation_code}'), 'Auth\AuthController@getActivation')
-    ->where('id', '[0-9]+');
-Route::get(homePath('auth/social/{provider}'), 'Auth\AuthController@redirectToProvider');
-Route::get(homePath('auth/social/callback/{provider}'), 'Auth\AuthController@handleProviderCallback');
-Route::get(homePath('password/email'), 'Auth\PasswordController@getEmail');
-Route::post(homePath('password/email'), 'Auth\PasswordController@postEmail');
-Route::get(homePath('password/reset/{token}'), 'Auth\PasswordController@getReset');
-Route::post(homePath('password/reset'), 'Auth\PasswordController@postReset');
-#endregion
+        #region Authentication Routes
+        Route::get(homeRoute('auth/login'), 'Auth\AuthController@getLogin');
+        Route::post(homeRoute('auth/login'), 'Auth\AuthController@postLogin');
+        Route::get(homeRoute('auth/logout'), 'Auth\AuthController@getLogout');
+        Route::get(homeRoute('auth/register'), 'Auth\AuthController@getRegister');
+        Route::post(homeRoute('auth/register'), 'Auth\AuthController@postRegister');
+        Route::get(homeRoute('auth/register/social'), 'Auth\AuthController@getSocialRegister');
+        Route::post(homeRoute('auth/register/social'), 'Auth\AuthController@postSocialRegister');
+        Route::get(homeRoute('auth/activate/{id}/{activation_code}'), 'Auth\AuthController@getActivation')
+            ->where('id', '[0-9]+');
+        Route::get(homeRoute('auth/social/{provider}'), 'Auth\AuthController@redirectToProvider');
+        Route::get(homeRoute('auth/social/callback/{provider}'), 'Auth\AuthController@handleProviderCallback');
+        Route::get(homeRoute('password/email'), 'Auth\PasswordController@getEmail');
+        Route::post(homeRoute('password/email'), 'Auth\PasswordController@postEmail');
+        Route::get(homeRoute('password/reset/{token}'), 'Auth\PasswordController@getReset');
+        Route::post(homeRoute('password/reset'), 'Auth\PasswordController@postReset');
+        #endregion
+
+        Route::group(
+            [
+                'middleware' => 'auth'
+            ],
+            function () {
+                // activation
+                Route::get(homeRoute('auth/inactive'), 'Auth\AuthController@getInactive');
+                Route::post(homeRoute('auth/inactive'), 'Auth\AuthController@postInactive');
+            });
+    });

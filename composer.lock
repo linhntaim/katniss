@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f6e1685f0211d4021ed7ff18514f3ab8",
-    "content-hash": "872704bdb537e826540bcdc881b6304f",
+    "hash": "f6d4859b7de3517bb490a7abd6757094",
+    "content-hash": "ae888258968c0c7367782a607b645995",
     "packages": [
         {
             "name": "barryvdh/elfinder-builds",
@@ -1348,6 +1348,54 @@
                 "debug"
             ],
             "time": "2015-10-19 20:35:12"
+        },
+        {
+            "name": "mcamara/laravel-localization",
+            "version": "1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mcamara/laravel-localization.git",
+                "reference": "ebd734314f2f36ad9d9444728c19532a4cef5494"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/ebd734314f2f36ad9d9444728c19532a4cef5494",
+                "reference": "ebd734314f2f36ad9d9444728c19532a4cef5494",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [],
+                "psr-0": {
+                    "Mcamara\\LaravelLocalization": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marc Cámara",
+                    "email": "mcamara88@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Easy localization for Laravel",
+            "homepage": "https://github.com/mcamara/laravel-localization",
+            "keywords": [
+                "laravel",
+                "localization",
+                "php"
+            ],
+            "time": "2015-11-28 12:32:19"
         },
         {
             "name": "mobiledetect/mobiledetectlib",

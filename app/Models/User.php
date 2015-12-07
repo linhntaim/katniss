@@ -12,10 +12,14 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+    AuthorizableContract,
+    CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, EntrustUserTrait;
+    use Authenticatable, Authorizable, CanResetPassword;
+    use EntrustUserTrait {
+        Authorizable::can insteadof EntrustUserTrait;
+        EntrustUserTrait::can as hasPermission;
+    }
 
     /**
      * The database table used by the model.
@@ -29,7 +33,10 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['display_name', 'name', 'email', 'password', 'url_avatar', 'url_avatar_thumb'];
+    protected $fillable = [
+        'display_name', 'name', 'email', 'password', 'url_avatar', 'url_avatar_thumb',
+        'activation_code', 'active'
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.

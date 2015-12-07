@@ -21,6 +21,7 @@ use Katniss\Models\Themes\Theme;
 use Katniss\Models\Themes\WidgetsFacade;
 use Katniss\Models\Themes\ExtensionsFacade;
 use Katniss\Models\User;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 #region User
 function clientIp()
@@ -76,39 +77,134 @@ function rdrQueryParam($url)
 #endregion
 
 #region Locale
-function currentLocale()
+function setCurrentLocale($locale)
 {
-    return app()->getLocale();
+    LaravelLocalization::setLocale($locale);
+}
+
+function fullLocale($locale, $separator = '_')
+{
+    return $locale . $separator . allLocale($locale, 'country_code');
+}
+
+/**
+ * @return array
+ */
+function allLocales()
+{
+    return config('katniss.locales');
+}
+
+/**
+ * @return array
+ */
+function allLocaleCodes()
+{
+    return array_keys(allLocales());
+}
+
+/**
+ * @param string $locale
+ * @param string $property
+ * @return array|string|null
+ */
+function allLocale($locale, $property = '')
+{
+    $locales = allLocales();
+    if (empty($locales[$locale])) return null;
+    return empty($property) || $property == 'all' ? $locales[$locale] : $locales[$locale][$property];
+}
+
+/**
+ * @return array
+ */
+function allSupportedLocales()
+{
+    return config('laravellocalization.supportedLocales');
+}
+
+/**
+ * @return array
+ */
+function allSupportedLocaleCodes()
+{
+    static $supportedLocaleCodes;
+    if (!isset($supportedLocaleCodes)) {
+        $supportedLocaleCodes = array_keys(allSupportedLocales());
+    }
+    return $supportedLocaleCodes;
+}
+
+/**
+ * @param string $locale
+ * @param string $property
+ * @return array|string|null
+ */
+function allSupportedLocale($locale, $property = '')
+{
+    $locales = allSupportedLocales();
+    if (empty($locales[$locale])) return null;
+    return empty($property) || $property == 'all' ? $locales[$locale] : $locales[$locale][$property];
+}
+
+function currentLocale($property = '')
+{
+    if (empty($property)) {
+        return app()->getLocale();
+    };
+    return allSupportedLocale(app()->getLocale(), $property);
+}
+
+function fullCurrentLocale($separator = '_')
+{
+    return fullLocale(currentLocale(), $separator);
 }
 
 #endregion
 
 #region Generate URL
+function transRoute($route)
+{
+    return LaravelLocalization::transRoute('routes.' . $route);
+}
+
+function homeRoute($route)
+{
+    return transRoute($route);
+}
+
+function adminRoute($route)
+{
+    return transRoute('admin/' . $route);
+}
+
 function currentPath()
 {
     $path = parse_url(currentUrl())['path'];
     return empty($path) ? '/' : $path;
 }
 
-function transPath($route = '', array $params = [])
+function transPath($route = '', array $params = [], $locale = null)
 {
+    $locale = currentLocale();
     if (empty($route)) {
-        return '/';
+        return $locale;
     }
+    $route = trans('routes.' . $route);
     foreach ($params as $key => $value) {
         $route = str_replace(['{' . $key . '}', '{' . $key . '?}'], $value, $route);
     }
-    return $route;
+    return $locale . '/' . $route;
 }
 
-function homePath($route = '', array $params = [])
+function homePath($route = '', array $params = [], $locale = null)
 {
-    return transPath($route, $params);
+    return transPath($route, $params, $locale);
 }
 
-function adminPath($route = '', array $params = [])
+function adminPath($route = '', array $params = [], $locale = null)
 {
-    return empty($route) ? homePath('admin', $params) : homePath('admin/' . $route, $params);
+    return empty($route) ? homePath('admin', $params, $locale) : homePath('admin/' . $route, $params, $locale);
 }
 
 function currentUrl()
@@ -121,25 +217,20 @@ function currentFullUrl()
     return request()->fullUrl();
 }
 
-function transUrl($route = '', array $params = [])
+function transUrl($route = '', array $params = [], $locale = null)
 {
-    if (empty($route)) {
-        return url('/');
-    }
-    foreach ($params as $key => $value) {
-        $route = str_replace(['{' . $key . '}', '{' . $key . '?}'], $value, $route);
-    }
-    return url($route);
+    $path = transPath($route, $params, $locale = null);
+    return url($path);
 }
 
-function homeUrl($route = '', array $params = [])
+function homeUrl($route = '', array $params = [], $locale = null)
 {
-    return transUrl($route, $params);
+    return transUrl($route, $params, $locale);
 }
 
-function adminUrl($route = '', array $params = [])
+function adminUrl($route = '', array $params = [], $locale = null)
 {
-    return empty($route) ? homeUrl('admin', $params) : homeUrl('admin/' . $route, $params);
+    return empty($route) ? homeUrl('admin', $params, $locale) : homeUrl('admin/' . $route, $params, $locale);
 }
 
 function redirectUrlAfterLogin(User $user)

@@ -47,11 +47,20 @@ return [
             'path'   => storage_path('framework/cache'),
         ],
 
+        'memcache' => [
+            'driver'  => 'memcache',
+            'servers' => [
+                [
+                    'host' => 'localhost', 'port' => 11211, 'weight' => 100,
+                ],
+            ],
+        ],
+
         'memcached' => [
             'driver'  => 'memcached',
             'servers' => [
                 [
-                    'host' => '127.0.0.1', 'port' => 11211, 'weight' => 100,
+                    'host' => 'localhost', 'port' => 11211, 'weight' => 100,
                 ],
             ],
         ],

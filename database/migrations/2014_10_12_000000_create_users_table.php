@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->string('url_avatar');
             $table->string('url_avatar_thumb');
+            $table->string('activation_code')->default('');
+            $table->boolean('active')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,9 +2,13 @@
 
 namespace Katniss\Providers;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Katniss\Models\Helpers\AppOptionHelper;
+use Katniss\Models\Helpers\Cache\MemcacheConnector;
+use Katniss\Models\Helpers\Cache\MemcacheStore;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
 use Katniss\Models\Themes\Extensions;
 use Katniss\Models\Themes\Widgets;
@@ -21,6 +25,18 @@ class KatnissServiceProvider extends ServiceProvider
         session()->extend('katniss', function ($app) {
             return new DatabaseSessionHandler();
         });
+
+        Cache::extend('memcache', function ($app) {
+            $config = config('cache.stores.memcache');
+            $prefix = Arr::get($config, 'prefix') ?: config('cache.prefix');
+            $memcache = app('memcache.connector')->connect($config['servers']);
+            return Cache::repository(new MemcacheStore($memcache, $prefix));
+        });
+
+        config([
+            'services.facebook.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'facebook']),
+            'services.google.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'google']),
+        ]);
 
         Validator::extend('password', function ($attribute, $value, $parameters) {
             return isMatchedUserPassword($value);
@@ -43,6 +59,10 @@ class KatnissServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton('memcache.connector', function () {
+            return new MemcacheConnector();
+        });
+
         $this->app['home_theme'] = $this->app->share(
             function () {
                 $homeTheme = config('katniss.home_theme');

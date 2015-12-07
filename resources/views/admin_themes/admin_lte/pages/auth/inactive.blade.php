@@ -2,7 +2,7 @@
 @section('auth_type','register')
 @section('box_message', trans('auth.act_mess'))
 @section('auth_form')
-    <form action="{{ localizedURL('auth/inactive') }}" method="post">
+    <form method="post">
         {!! csrf_field() !!}
         <div class="row">
             <div class="col-xs-2">

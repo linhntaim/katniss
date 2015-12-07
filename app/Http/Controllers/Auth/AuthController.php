@@ -4,12 +4,13 @@ namespace Katniss\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Events\UserAfterRegistered;
+use Katniss\Models\Helpers\MailHelper;
 use Katniss\Models\User;
 use Katniss\Http\Controllers\ViewController;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
-use Katniss\Models\UserRole;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends ViewController
@@ -71,8 +72,9 @@ class AuthController extends ViewController
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'display_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'name' => 'required|max:255|unique:users,name',
             'password' => 'required|confirmed|min:6',
         ]);
     }
@@ -86,9 +88,11 @@ class AuthController extends ViewController
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'display_name' => $data['display_name'],
             'email' => $data['email'],
+            'name' => $data['name'],
             'password' => bcrypt($data['password']),
+            'activation_code' => str_random(32),
         ]);
     }
 
@@ -113,19 +117,25 @@ class AuthController extends ViewController
     {
         $validator = $this->validator($request->all());
 
+        $error_rdr = redirect(homeUrl('auth/register'))
+            ->withInput();
         if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
+            return $error_rdr->withErrors($validator);
         }
 
         $stored_user = $this->create($request->all());
         if ($stored_user) {
+            event(new UserAfterRegistered($stored_user, array_merge($this->globalViewParams, [
+                MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                MailHelper::EMAIL_TO => $stored_user->email,
+                MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
+
+                'password' => $request->input('password'),
+            ])));
+
             Auth::login($stored_user);
         } else {
-            return redirect(homeUrl('auth/register'))
-                ->withInput()
-                ->withErrors([trans('auth.register_failed_system_error')]);
+            return $error_rdr->withErrors([trans('auth.register_failed_system_error')]);
         }
 
         return redirect($this->redirectPath);
@@ -174,14 +184,9 @@ class AuthController extends ViewController
      */
     public function getSocialRegister(Request $request)
     {
-        $selected_roles = $request->has('selected_roles') ? explode(',', $request->input('selected_roles')) : ['teacher'];
-
         $this->theme->title(trans('pages.page_register_title'));
 
-        return view($this->themePage('auth.register_social'), [
-            'selected_roles' => $selected_roles,
-            'public_roles' => Role::where('public', true)->get()
-        ]);
+        return view($this->themePage('auth.register_social'));
     }
 
     /**
@@ -195,7 +200,7 @@ class AuthController extends ViewController
         $error_rdr = redirect(homeUrl('auth/register/social'))->withInput();
 
         if ($validator->fails()) {
-            $error_rdr->withErrors($validator);
+            return $error_rdr->withErrors($validator);
         }
 
         $stored_user = $this->create($request->all(), true);
@@ -218,12 +223,19 @@ class AuthController extends ViewController
 
     public function postInactive()
     {
-        $data = array();
-        $data['id'] = $this->auth_user->id;
-        $data['name'] = $this->auth_user->name;
-        $data['email'] = $this->auth_user->email;
-        $data['password'] = '******';
-        $data['activation_code'] = $this->auth_user->activation_code;
+        MailHelper::sendTemplate('welcome', array_merge([
+            MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+            MailHelper::EMAIL_TO => $this->auth_user->email,
+            MailHelper::EMAIL_TO_NAME => $this->auth_user->display_name,
+
+            'id' => $this->auth_user->id,
+            'display_name' => $this->auth_user->display_name,
+            'name' => $this->auth_user->name,
+            'email' => $this->auth_user->email,
+            'password' => '******',
+            'activation_code' => $this->auth_user->activation_code,
+            'url_activate' => homeUrl('auth/activate/{id}/{activation_code}', ['id' => $this->auth_user->id, 'activation_code' => $this->auth_user->activation_code]),
+        ], $this->globalViewParams));
 
         return view($this->themePage('auth.inactive'), ['resend' => true]);
     }
@@ -239,8 +251,7 @@ class AuthController extends ViewController
 
         return view($this->themePage('auth.activate'), [
             'active' => $active,
-            'url' => homeUrl('auth/login'),
-            'name' => trans('pages.page_login_title')
+            'url' => redirectUrlAfterLogin($this->auth_user),
         ]);
     }
 }
