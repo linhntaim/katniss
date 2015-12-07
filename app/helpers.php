@@ -186,7 +186,9 @@ function currentPath()
 
 function transPath($route = '', array $params = [], $locale = null)
 {
-    $locale = currentLocale();
+    if (empty($locale)) {
+        $locale = currentLocale();
+    }
     if (empty($route)) {
         return $locale;
     }
@@ -364,6 +366,24 @@ function extractImageUrls($fromString)
         return $urls[0];
     }
     return [];
+}
+
+/**
+ * @param string $input
+ * @param string $append
+ * @param string $prepend
+ * @return string
+ */
+function toSlug($input, $append = '', $prepend = '')
+{
+    $slug = Str::slug($input);
+    if (!empty($append)) {
+        $slug .= '-' . Str::slug($append);
+    }
+    if (!empty($prepend)) {
+        $slug = Str::slug($prepend) . '-' . $slug;
+    }
+    return $slug;
 }
 
 #endregion

@@ -11,6 +11,7 @@ use Katniss\Http\Controllers\ViewController;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use Katniss\Models\UserSocial;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends ViewController
@@ -146,15 +147,25 @@ class AuthController extends ViewController
      * @param  array $data
      * @return User
      */
-    protected function create(array $data)
+    protected function create(array $data, $social = false)
     {
-        return User::create([
+        $user = User::create([
             'display_name' => $data['display_name'],
             'email' => $data['email'],
             'name' => $data['name'],
             'password' => bcrypt($data['password']),
+            'url_avatar' => $data['url_avatar'],
             'activation_code' => str_random(32),
         ]);
+
+        if ($social) {
+            $user->socialProviders()->save(new UserSocial([
+                'provider' => $data['provider'],
+                'provider_id' => $data['provider_id'],
+            ]));
+        }
+
+        return $user;
     }
 
     /**
@@ -222,12 +233,18 @@ class AuthController extends ViewController
             $socialUser = Socialite::driver($provider)->user();
         } catch (\Exception $ex) {
             return redirect($this->loginPath)
-                ->withErrors([trans('auth.social_failed_get')]);
+                ->withErrors([trans('error.fail_social_get_info') . ' (' . $ex->getMessage() . ')']);
         }
 
-        if ($authUser = User::fromSocial($socialUser->email, $provider, $socialUser->id)->first()) {
+        if ($authUser = User::fromSocial($provider, $socialUser->id, $socialUser->email)->first()) {
             Auth::login($authUser);
             return redirect($this->redirectPath);
+        }
+
+        $userName = strtok($socialUser->email, '@');
+        $users = User::where('name', 'like', $userName . '%')->get();
+        if ($users->where('name', $userName)->count() > 0) {
+            $userName = $userName . '.' . $users->count();
         }
 
         return redirect(homeUrl('auth/register/social'))
@@ -235,8 +252,9 @@ class AuthController extends ViewController
                 'provider' => $provider,
                 'provider_id' => $socialUser->id,
                 'url_avatar' => $socialUser->avatar,
-                'name' => $socialUser->name,
+                'display_name' => $socialUser->name,
                 'email' => $socialUser->email,
+                'name' => $userName,
             ]);
     }
 
@@ -268,6 +286,16 @@ class AuthController extends ViewController
 
         $stored_user = $this->create($request->all(), true);
         if ($stored_user) {
+            event(new UserAfterRegistered($stored_user, array_merge($this->globalViewParams, [
+                MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                MailHelper::EMAIL_TO => $stored_user->email,
+                MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
+
+                'password' => $request->input('password'),
+                'provider' => ucfirst($request->input('provider')),
+                'provider_id' => $request->input('provider_id'),
+            ]), true));
+
             Auth::login($stored_user);
         } else {
             return $error_rdr->withErrors([trans('auth.register_failed_system_error')]);

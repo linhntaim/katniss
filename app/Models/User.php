@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\DB;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract,
@@ -44,4 +45,22 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function socialProviders()
+    {
+        return $this->hasMany(UserSocial::class, 'user_id', 'id');
+    }
+
+    public function scopeFromSocial($query, $provider, $provider_id, $email = null)
+    {
+        $query->whereExists(function ($query) use ($provider, $provider_id) {
+            $query->select(DB::raw(1))
+                ->from('user_socials')
+                ->where('provider', $provider)->where('provider_id', $provider_id);
+        });
+        if (!empty($email)) {
+            $query->orWhere('email', $email);
+        }
+        return $query;
+    }
 }

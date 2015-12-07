@@ -25,7 +25,7 @@ class UserSocial extends Model
      *
      * @var array
      */
-    protected $fillable = ['provider', 'provider_id'];
+    protected $fillable = ['user_id', 'provider', 'provider_id'];
 
     /**
      * Returns the user that belongs to this entry.

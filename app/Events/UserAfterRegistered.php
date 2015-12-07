@@ -17,6 +17,7 @@ class UserAfterRegistered extends Event
     use SerializesModels;
 
     public $user;
+    public $fromSocial;
 
     /**
      * Create a new event instance.
@@ -24,10 +25,11 @@ class UserAfterRegistered extends Event
      * @param  User $user
      * @return void
      */
-    public function __construct(User $user, array $params = [], $locale = null)
+    public function __construct(User $user, array $params = [], $fromSocial = false, $locale = null)
     {
         parent::__construct($params, $locale);
         $this->user = $user;
+        $this->fromSocial = $fromSocial;
     }
 
     public function getParamsForMailing()

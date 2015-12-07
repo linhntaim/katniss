@@ -31,7 +31,8 @@ class EmailAccountActivation
      */
     public function handle(UserAfterRegistered $event)
     {
-        MailHelper::queueSendTemplate('welcome', $event->getParamsForMailing(), $event->locale);
+        $viewPath = $event->fromSocial ? 'welcome_social' : 'welcome';
+        MailHelper::queueSendTemplate($viewPath, $event->getParamsForMailing(), $event->locale);
     }
 
 }

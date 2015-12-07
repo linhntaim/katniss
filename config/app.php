@@ -145,6 +145,7 @@ return [
         Katniss\Providers\EventServiceProvider::class,
         Katniss\Providers\RouteServiceProvider::class,
         Katniss\Providers\KatnissServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
@@ -196,6 +197,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         'LmsTheme' => Katniss\Models\Themes\HomeThemes\HomeThemeFacade::class,
         'AdminTheme' => Katniss\Models\Themes\AdminThemes\AdminThemeFacade::class,

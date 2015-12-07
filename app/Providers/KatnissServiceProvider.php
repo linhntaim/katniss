@@ -22,8 +22,8 @@ class KatnissServiceProvider extends ServiceProvider
         });
 
         config([
-            'services.facebook.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'facebook']),
-            'services.google.redirect' => homeUrl('auth/social/callback/{provider}', ['provider' => 'google']),
+            'services.facebook.redirect' => url('auth/social/callback/facebook'),
+            'services.google.redirect' => url('auth/social/callback/google'),
         ]);
 
         Validator::extend('password', function ($attribute, $value, $parameters) {

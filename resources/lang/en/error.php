@@ -14,4 +14,5 @@ return [
     'not_author' => 'You are not the author',
     'fail_account_activate' => 'Your account activation gets failed.',
     'success_account_activate' => 'Thank you. Your account is now activated. Go to <a href=":url">your starting page</a>.',
+    'fail_social_get_info' => 'Fails to get information from social network.',
 ];
