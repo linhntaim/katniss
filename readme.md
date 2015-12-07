@@ -8,38 +8,63 @@
 
 ## Road Map 1
 
-- Theme & Plugin Definition
-    - Theme:
-        - Admin Theme
-            - Sample Theme: Admin LTE
-        - Home Theme
-            - Sample Theme: ?, ?
-    - Plugin:
-        - Extension
-            - Sample Extensions: ?
-        - Widget
-            - Sample Widgets: ?
-    - Administrators can:
-        - switch between themes
-        - preview theme
-        - activate/deactivate/edit Extensions
-        - activate/deactivate/edit/add-to-placeholder Widgets
-- File Manager module: to easily upload & manage files.
-- Simple User module
-    - Authentication Flow
-        - Registration (full name, email, username, phone, password)
-        - Activation (user id, email, activation token)
-        - Login (email or username or phone, password)
-        - Logout
-        - Forgot Password (email)
-        - Social Authentication supported (Register/Login from social accounts)
-        - Email supported (send announcement emails after actions)
-    - Roles, Permission
-        - Administrators role
-        - Access admin permission
-    - Administrators can:
-        - add/edit/list/activate/deactivate/ban Authenticated User or Anonymous User
-        - edit email templates used for Authentication Flow
-    - Authenticated User can: view/edit info
-    - Anonymous User can view activated Authenticated Users' info
-- App Options module: to store runtime variables/options in database (key => value)
+### Vendors
+
+#### zizaco/entrust:1.4.1
+
+- Resolve conflict between EntrustUserTrait and Authorizable
+- Create a middleware based on this to authorize routes
+
+### App Options:
+
+To store/retrieve runtime application's options in database
+
+### Theme & Plugin Definition
+
+#### Theme
+
+##### Admin Theme
+
+Sample Themes: 
+- Admin LTE
+
+##### Home Theme
+    
+Sample Themes:
+- Egret
+
+#### Plugin
+    
+##### Extension
+
+Sample Extensions:
+
+##### Widget
+
+Sample Widgets:
+
+### User Roles, User Permissions
+
+Based on zizaco/entrust 1.4.1.
+
+Default seeder:
+
+- Administrators role
+- Access admin permission
+- 1 Administrator User
+
+### Authentication:
+
+Contains:
+
+- Registration
+- Activation
+- Login
+- Logout
+- Forgot/Reset Password
+- Register/Login using Accounts on Social Networks (Facebook, Google)
+- Email supported (for registering, activating & password resetting)
+
+### File Manager:
+
+To easily upload & manage files.
