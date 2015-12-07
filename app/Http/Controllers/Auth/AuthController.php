@@ -52,8 +52,8 @@ class AuthController extends ViewController
 
     public function getLogin()
     {
-        $this->theme->title(trans('pages.login_title'));
-        $this->theme->description(trans('pages.login_desc'));
+        $this->theme->title(trans('pages.account_login_title'));
+        $this->theme->description(trans('pages.account_login_desc'));
 
         return view($this->themePage('auth.login'));
     }
@@ -163,8 +163,8 @@ class AuthController extends ViewController
      */
     public function getRegister(Request $request)
     {
-        $this->theme->title(trans('pages.register_title'));
-        $this->theme->description(trans('pages.register_desc'));
+        $this->theme->title(trans('pages.account_register_title'));
+        $this->theme->description(trans('pages.account_register_desc'));
 
         return view($this->themePage('auth.register'));
     }
@@ -246,7 +246,8 @@ class AuthController extends ViewController
      */
     public function getSocialRegister(Request $request)
     {
-        $this->theme->title(trans('pages.page_register_title'));
+        $this->theme->title(trans('pages.account_register_title'));
+        $this->theme->description(trans('pages.account_register_desc'));
 
         return view($this->themePage('auth.register_social'));
     }
@@ -280,6 +281,10 @@ class AuthController extends ViewController
         if ($this->auth_user->active) {
             return redirect(redirectUrlAfterLogin($this->auth_user));
         }
+
+        $this->theme->title(trans('pages.account_inactive_title'));
+        $this->theme->description(trans('pages.account_inactive_desc'));
+
         return view($this->themePage('auth.inactive'), ['resend' => false]);
     }
 
@@ -299,6 +304,9 @@ class AuthController extends ViewController
             'url_activate' => homeUrl('auth/activate/{id}/{activation_code}', ['id' => $this->auth_user->id, 'activation_code' => $this->auth_user->activation_code]),
         ], $this->globalViewParams));
 
+        $this->theme->title(trans('pages.account_inactive_title'));
+        $this->theme->description(trans('pages.account_inactive_title'));
+
         return view($this->themePage('auth.inactive'), ['resend' => true]);
     }
 
@@ -311,9 +319,12 @@ class AuthController extends ViewController
             $user->save();
         }
 
+        $this->theme->title(trans('pages.account_activate_title'));
+        $this->theme->description(trans('pages.account_activate_title'));
+
         return view($this->themePage('auth.activate'), [
             'active' => $active,
-            'url' => redirectUrlAfterLogin($this->auth_user),
+            'url' => $this->is_auth ? redirectUrlAfterLogin($this->auth_user) : homeUrl('auth/login'),
         ]);
     }
 }

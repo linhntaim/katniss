@@ -1,6 +1,6 @@
 @extends('admin_themes.admin_lte.master.auth')
 @section('auth_type','register')
-@section('box_message', trans('auth.act_mess'))
+@section('box_message', trans('label.account_activate_not'))
 @section('auth_form')
     <form method="post">
         {!! csrf_field() !!}
@@ -10,11 +10,11 @@
             <div class="col-xs-8">
                 @if($resend)
                     <div class="text-center alert alert-success">
-                        {{ trans('auth.act_mess_resent') }}
+                        {{ trans('label.account_activate_mail_resent') }}
                     </div>
                 @else
                     <button id="btn-resend" type="submit" class="btn btn-primary btn-block btn-flat">
-                        {{ trans('auth.act_resent') }}
+                        {{ trans('label.account_activate_mail_resend') }}
                     </button>
                 @endif
             </div><!-- /.col -->

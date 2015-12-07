@@ -22,5 +22,12 @@ return [
     'remember_me' => 'Remember me',
     'or_lc' => 'or',
     'forgot_password' => 'Forgot your password?',
-    'register_membership' => 'Register a new membership?'
+    'register_membership' => 'Register a new membership?',
+    'account_activate_not' => 'Your account has not been activated yet. We sent you a welcome email which contains activation information
+to your email address. Please check your mailbox (inbox, trash or junk folder).<br><br>If the email doesnot exist,
+click the button below to get another welcome email from us.',
+    'account_activate_mail_resent' => 'The email has been re-sent',
+    'account_activate_mail_resend' => 'Re-send the welcome email',
+    'remember_account' => 'Remember your credentials?',
+    'account_password_reset_send_mail' => 'Send information for resetting',
 ];

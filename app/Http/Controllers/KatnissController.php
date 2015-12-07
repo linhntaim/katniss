@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
 use Katniss\Http\Controllers\Controller;
+use Katniss\Models\Helpers\AppOptionHelper;
 
 class KatnissController extends Controller
 {
@@ -26,6 +27,8 @@ class KatnissController extends Controller
 
     public function __construct(Request $request)
     {
+        AppOptionHelper::load();
+
         $this->locale = currentLocale();
         $this->is_auth = isAuth();
         $this->auth_user = authUser();

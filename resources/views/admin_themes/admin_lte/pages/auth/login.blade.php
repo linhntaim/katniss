@@ -1,6 +1,6 @@
 @extends('admin_themes.admin_lte.master.auth')
 @section('auth_type','login')
-@section('box_message', trans('pages.login_desc'))
+@section('box_message', trans('pages.account_login_desc'))
 @section('auth_form')
     @if (count($errors) > 0)
         <div class="alert alert-danger">

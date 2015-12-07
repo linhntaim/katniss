@@ -16,6 +16,7 @@ return [
     'action_cancel' => 'Cancel',
     'action_select' => 'Select',
     'action_reset' => 'Reset',
+    'action_reset_password' => 'Reset password',
     'action_update' => 'Update',
     'action_input' => 'Input',
     'action_enter' => 'Enter',

@@ -2,13 +2,8 @@
 
 namespace Katniss\Providers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
-use Katniss\Models\Helpers\AppOptionHelper;
-use Katniss\Models\Helpers\Cache\MemcacheConnector;
-use Katniss\Models\Helpers\Cache\MemcacheStore;
+use Illuminate\Support\ServiceProvider;;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
 use Katniss\Models\Themes\Extensions;
 use Katniss\Models\Themes\Widgets;
@@ -41,8 +36,6 @@ class KatnissServiceProvider extends ServiceProvider
         if (!defined('ELFINDER_IMG_PARENT_URL')) {
             define('ELFINDER_IMG_PARENT_URL', libraryAsset('elfinder'));
         }
-
-        AppOptionHelper::load();
     }
 
     /**
