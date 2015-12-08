@@ -22,12 +22,20 @@ class DefaultSeeder extends Seeder
         ));
         $admin_role->attachPermission($admin_access_permission);
 
+        $user_role = UserRole::create(array(
+            'name' => 'user',
+            'display_name' => 'User',
+            'description' => 'Normal user'
+        ));
+
         // TODO: Add 1 administrator
         $admin = User::create(array(
             'display_name' => 'Administrator',
             'name' => 'admin',
-            'email' => 'admin@antoree.com',
+            'email' => 'admin@katniss.linhntaim.com',
             'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
             'active' => true
         ));

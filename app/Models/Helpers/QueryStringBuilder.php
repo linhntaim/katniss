@@ -36,21 +36,16 @@ class QueryStringBuilder
         return $this;
     }
 
-    public function toString()
-    {
-        return $this->__toString();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function toString($refresh = true)
     {
         $query = '';
         foreach ($this->tmpParams as $key => $value) {
             if (!empty($value) || $value == 0) {
                 $query .= '&' . $key . '=' . $value;
             }
+        }
+        if ($refresh) {
+            $this->tmpParams = $this->params;
         }
         return $this->url . '?' . substr($query, 1);
     }

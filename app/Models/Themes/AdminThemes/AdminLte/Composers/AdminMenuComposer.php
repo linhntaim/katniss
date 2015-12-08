@@ -58,12 +58,8 @@ class AdminMenuComposer
                     mb_strtoupper(trans('pages.admin_system_settings_title')), 'li', 'header'
                 ));
                 $menu->addItem(new MenuItem( // add a menu item
-                    adminUrl('app-options'),
-                    trans('pages.admin_app_options_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
-                    adminUrl('roles'),
-                    trans('pages.admin_roles_title'), 'li', '', '', '<i class="fa fa-unlock-alt"></i> <span>', '</span>'
+                    adminUrl('user-roles'),
+                    trans('pages.admin_roles_title'), 'li', '', '', '<i class="fa fa-unlock"></i> <span>', '</span>'
                 ));
                 $menu->addItem(new MenuItem( // add a menu item
                     adminUrl('users'),
@@ -75,25 +71,29 @@ class AdminMenuComposer
                     mb_strtoupper(trans('pages.admin_theme_settings_title')), 'li', 'header'
                 ));
                 $menu->addItem(new MenuItem( // add a menu item
+                    adminUrl('app-options'),
+                    trans('pages.admin_app_options_title'), 'li', '', '', '<i class="fa fa-cogs"></i> <span>', '</span>'
+                ));
+                $menu->addItem(new MenuItem( // add a menu item
                     adminUrl('extensions'),
-                    trans('pages.admin_extensions_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                    trans('pages.admin_extensions_title'), 'li', '', '', '<i class="fa fa-cubes"></i> <span>', '</span>'
                 ));
                 $menu->addItem(new MenuItem( // add a menu item
                     adminUrl('widgets'),
-                    trans('pages.admin_widgets_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                    trans('pages.admin_widgets_title'), 'li', '', '', '<i class="fa fa-square-o"></i> <span>', '</span>'
                 ));
                 $menu->addItem(new MenuItem(  // add an example menu item which have sub menu
                     '#',
-                    trans('pages.admin_ui_lang_title'), 'li', 'treeview', '', '<i class="fa fa-table"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>'
+                    trans('pages.admin_ui_lang_title'), 'li', 'treeview', '', '<i class="fa fa-newspaper-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>'
                 ));
                 $sub_menu = new Menu('ul', 'treeview-menu', $currentUrl);
                 $sub_menu->addItem(new MenuItem( // add a menu item
                     adminUrl('ui-lang/php'),
-                    trans('pages.admin_ui_lang_php_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                    trans('pages.admin_ui_lang_php_title'), 'li', '', '', '<i class="fa fa-file-code-o"></i> <span>', '</span>'
                 ));
                 $sub_menu->addItem(new MenuItem( // add a menu item
                     adminUrl('ui-lang/email'),
-                    trans('pages.admin_ui_lang_email_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                    trans('pages.admin_ui_lang_email_title'), 'li', '', '', '<i class="fa fa-file-text-o"></i> <span>', '</span>'
                 ));
                 $menu->last()->setChildMenu($sub_menu);
             }

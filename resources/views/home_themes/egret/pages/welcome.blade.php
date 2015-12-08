@@ -34,6 +34,8 @@
                 font-size: 96px;
             }
         </style>
+
+        {!! theme_header() !!}
     </head>
     <body>
         <div class="container">

@@ -9,6 +9,8 @@
 namespace Katniss\Models\Helpers;
 
 
+use Guzzle\Http\QueryString;
+
 class PaginationHelper
 {
     public $last;
@@ -39,5 +41,18 @@ class PaginationHelper
         $this->current = $current;
         $this->atFirst = $this->current == $this->first;
         $this->atLast = $this->current == $this->last;
+    }
+
+    public function render(QueryString $queryString, $htmlWrapTag = 'ul|pagination', $htmlItemTag = 'li|item', $activeCssClass = 'active')
+    {
+        $wrapTagParts = explode('|', $htmlWrapTag);
+        $wrapTag = $wrapTagParts[0];
+        $wrapCssClass = empty($wrapTagParts[1]) ? '' : ' class="' . $wrapTagParts[1] . '"';
+        $itemTagParts = explode('|', $htmlItemTag);
+        $itemTag = $itemTagParts[0];
+        $itemCssClass = empty($itemTagParts[1]) ? '' : ' class="' . $itemTagParts[1] . '"';
+
+        $output = '<' . $wrapTag . $wrapCssClass . '>';
+        $output .= '</' . $wrapTag . '>';
     }
 }

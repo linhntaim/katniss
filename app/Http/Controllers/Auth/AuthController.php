@@ -3,6 +3,7 @@
 namespace Katniss\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Events\UserAfterRegistered;
 use Katniss\Models\Helpers\MailHelper;
@@ -11,6 +12,7 @@ use Katniss\Http\Controllers\ViewController;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use Katniss\Models\UserRole;
 use Katniss\Models\UserSocial;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -149,20 +151,29 @@ class AuthController extends ViewController
      */
     protected function create(array $data, $social = false)
     {
-        $user = User::create([
-            'display_name' => $data['display_name'],
-            'email' => $data['email'],
-            'name' => $data['name'],
-            'password' => bcrypt($data['password']),
-            'url_avatar' => $data['url_avatar'],
-            'activation_code' => str_random(32),
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'display_name' => $data['display_name'],
+                'email' => $data['email'],
+                'name' => $data['name'],
+                'password' => bcrypt($data['password']),
+                'url_avatar' => $data['url_avatar'],
+                'activation_code' => str_random(32),
+            ]);
+            $defaultRole = UserRole::where('name', 'user')->firstOrFail();
+            $user->attachRole($defaultRole->id);
 
-        if ($social) {
-            $user->socialProviders()->save(new UserSocial([
-                'provider' => $data['provider'],
-                'provider_id' => $data['provider_id'],
-            ]));
+            if ($social) {
+                $user->socialProviders()->save(new UserSocial([
+                    'provider' => $data['provider'],
+                    'provider_id' => $data['provider_id'],
+                ]));
+            }
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return false;
         }
 
         return $user;

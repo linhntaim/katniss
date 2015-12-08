@@ -209,14 +209,23 @@ function adminPath($route = '', array $params = [], $locale = null)
     return empty($route) ? homePath('admin', $params, $locale) : homePath('admin/' . $route, $params, $locale);
 }
 
-function currentUrl()
+function currentUrl($locale = null)
 {
-    return request()->url();
+    if (empty($locale)) {
+        return request()->url();
+    }
+
+    return LaravelLocalization::getLocalizedUrl($locale, null);
 }
 
-function currentFullUrl()
+function currentFullUrl($locale = null)
 {
-    return request()->fullUrl();
+    if (empty($locale)) {
+        return request()->fullUrl();
+    }
+    $url_parts = parse_url(request()->fullUrl());
+    $localizedUrl = LaravelLocalization::getLocalizedUrl($locale, null);
+    return $localizedUrl . '?' . $url_parts['query'] . '#' . $url_parts['hash'];
 }
 
 function transUrl($route = '', array $params = [], $locale = null)
@@ -235,13 +244,18 @@ function adminUrl($route = '', array $params = [], $locale = null)
     return empty($route) ? homeUrl('admin', $params, $locale) : homeUrl('admin/' . $route, $params, $locale);
 }
 
+function notRootUrl($url)
+{
+    return $url != homeUrl() && $url != adminUrl();
+}
+
 function redirectUrlAfterLogin(User $user)
 {
     $redirect_url = homeURL();
     $overwrite_url = session()->pull(AppConfig::KEY_REDIRECT_URL);
     if (!empty($overwrite_url)) {
         $redirect_url = $overwrite_url;
-    } elseif ($user->can('access-admin')) {
+    } elseif ($user->hasPermission('access-admin')) {
         $redirect_url = adminUrl();
     }
     return $redirect_url;
@@ -384,6 +398,16 @@ function toSlug($input, $append = '', $prepend = '')
         $slug = Str::slug($prepend) . '-' . $slug;
     }
     return $slug;
+}
+
+/**
+ * @param string $haystack
+ * @param array|string $needle
+ * @return bool
+ */
+function startWith($haystack, $needle)
+{
+    return Str::startsWith($haystack, $needle);
 }
 
 #endregion
@@ -615,7 +639,7 @@ function appEmail()
 
 function appLogo()
 {
-    return homeUrl() . '/' . env('APP_LOGO');
+    return asset(env('APP_LOGO'));
 }
 
 function appDomain()
@@ -626,6 +650,6 @@ function appDomain()
 
 function appDefaultUserProfilePicture()
 {
-    return homeUrl() . '/' . env('APP_DEFAULT_USER_PICTURE');
+    return asset(env('APP_DEFAULT_USER_PICTURE'));
 }
 #endregion

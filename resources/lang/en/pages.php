@@ -32,6 +32,8 @@ return [
     'account_password_reset_desc' => 'Reset your password',
 
     'admin_title' => 'Admin',
+    'admin_dashboard_title' => 'Dashboard',
+    'admin_dashboard_desc' => 'Display statistical information',
     'admin_app_options_title' => 'App Options',
     'admin_app_options_desc' => 'Manage App Options',
     'admin_theme_settings_title' => 'Theme Settings',

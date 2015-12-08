@@ -18,8 +18,10 @@ class User extends Model implements AuthenticatableContract,
 {
     use Authenticatable, Authorizable, CanResetPassword;
     use EntrustUserTrait {
-        Authorizable::can insteadof EntrustUserTrait;
-        EntrustUserTrait::can as hasPermission;
+        EntrustUserTrait::can insteadof Authorizable;
+        Authorizable::can as may;
+        Authorizable::cant as mayNt;
+        Authorizable::cannot as mayNot;
     }
 
     /**
@@ -45,6 +47,11 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function getOwnDirectoryAttribute()
+    {
+        return 'user_' . $this->id;
+    }
 
     public function socialProviders()
     {

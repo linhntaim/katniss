@@ -2,7 +2,7 @@
 
 namespace Katniss\Http\Controllers;
 
-//use Katniss\Models\Helpers\DateTimeHelper;
+use Katniss\Models\Helpers\DateTimeHelper;
 use Barryvdh\Elfinder\Connector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -57,8 +57,8 @@ class DocumentController extends ViewController
         $onlyMimes = $this->onlyMimes($customType);
 
         return view('file_manager.for_ckeditor', [
-//            'dateFormat' => DateTimeHelper::shortDateFormat(),
-//            'timeFormat' => DateTimeHelper::shortTimeFormat(),
+            'dateFormat' => DateTimeHelper::shortDateFormat(),
+            'timeFormat' => DateTimeHelper::shortTimeFormat(),
             'custom_type' => $customType,
             'onlyMimes' => implode(',', $onlyMimes),
         ]);
@@ -76,8 +76,8 @@ class DocumentController extends ViewController
 
         return view('file_manager.for_popup', [
             'input_id' => $input_id,
-//            'dateFormat' => DateTimeHelper::shortDateFormat(),
-//            'timeFormat' => DateTimeHelper::shortTimeFormat(),
+            'dateFormat' => DateTimeHelper::shortDateFormat(),
+            'timeFormat' => DateTimeHelper::shortTimeFormat(),
             'custom_type' => $customType,
             'onlyMimes' => implode(',', $onlyMimes),
         ]);
@@ -148,12 +148,12 @@ class DocumentController extends ViewController
             'roots' => [
                 [
                     'driver' => 'LocalFileSystem',
-                    'path' => storage_path('app/file_manager/' . $own_directory . '/'),
+                    'path' => storage_path('../public/files/' . $own_directory . '/'),
                     'alias' => 'Online drive: \Home',
-                    'URL' => asset('storage/app/file_manager/' . $own_directory . '/'),
+                    'URL' => asset('files/' . $own_directory . '/'),
                     'accessControl' => config('elfinder.access'),
-//                    'dateFormat' => DateTimeHelper::shortDateFormat(),
-//                    'timeFormat' => DateTimeHelper::shortTimeFormat(),
+                    'dateFormat' => DateTimeHelper::shortDateFormat(),
+                    'timeFormat' => DateTimeHelper::shortTimeFormat(),
                     'uploadAllow' => $uploadAllow,
                     'uploadDeny' => ['all'],
                     'uploadOrder' => ['deny', 'allow']

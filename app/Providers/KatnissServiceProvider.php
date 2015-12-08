@@ -3,7 +3,9 @@
 namespace Katniss\Providers;
 
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;;
+use Illuminate\Support\ServiceProvider;
+
+;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
 use Katniss\Models\Themes\Extensions;
 use Katniss\Models\Themes\Widgets;
@@ -35,6 +37,19 @@ class KatnissServiceProvider extends ServiceProvider
 
         if (!defined('ELFINDER_IMG_PARENT_URL')) {
             define('ELFINDER_IMG_PARENT_URL', libraryAsset('elfinder'));
+        }
+
+        if (!session()->has('settings')) {
+            session([
+                'settings.locale' => 'en',
+                'settings.country' => 'US',
+                'settings.timezone' => 'UTC',
+                'settings.first_day_of_week' => 0,
+                'settings.long_date_format' => 0,
+                'settings.short_date_format' => 0,
+                'settings.long_time_format' => 0,
+                'settings.short_time_format' => 0,
+            ]);
         }
     }
 

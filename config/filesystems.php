@@ -53,6 +53,21 @@ return [
             'root'   => storage_path('../public/upload'),
         ],
 
+        'file_manager' => [
+            'driver' => 'local',
+            'root'   => storage_path('../public/files'),
+        ],
+
+        'lang' => [
+            'driver' => 'local',
+            'root'   => storage_path('../resources/lang'),
+        ],
+
+        'email' => [
+            'driver' => 'local',
+            'root'   => storage_path('../resources/views/emails'),
+        ],
+
         'ftp' => [
             'driver'   => 'ftp',
             'host'     => 'ftp.example.com',
