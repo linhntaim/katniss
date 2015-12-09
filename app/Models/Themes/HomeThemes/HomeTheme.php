@@ -20,30 +20,27 @@ abstract class HomeTheme extends Theme
         parent::__construct(Theme::TYPE_HOME);
     }
 
+    public function plugin($name, $render)
+    {
+        return $this->viewPath . 'plugins.' . $name . '.' . $render;
+    }
+
+    public function adminWidget($name)
+    {
+        return $this->plugin($name, 'admin');
+    }
+
     public function widget($name, $render = 'render')
     {
         if (empty($render)) {
             $render = 'render';
         }
-        return $this->viewPath . 'widgets.' . $name . '.' . $render;
+        return $this->plugin($name, $render);
     }
 
-    public function commonWidget($name, $render = 'render')
+    public function adminExtension($name)
     {
-        if (empty($render)) {
-            $render = 'render';
-        }
-        return 'widgets.' . $name . '.' . $render;
-    }
-
-    public function adminWidget($name)
-    {
-        return $this->widget($name, 'admin');
-    }
-
-    public function commonAdminWidget($name)
-    {
-        return $this->commonWidget($name, 'admin');
+        return $this->plugin($name, 'admin');
     }
 
     public function extension($name, $render = 'render')
@@ -51,7 +48,30 @@ abstract class HomeTheme extends Theme
         if (empty($render)) {
             $render = 'render';
         }
-        return $this->viewPath . 'extensions.' . $name . '.' . $render;
+        return $this->plugin($name, $render);
+    }
+
+    public function commonPlugin($name, $render)
+    {
+        return 'plugins.' . $name . '.' . $render;
+    }
+
+    public function commonAdminWidget($name)
+    {
+        return $this->commonPlugin($name, 'admin');
+    }
+
+    public function commonWidget($name, $render = 'render')
+    {
+        if (empty($render)) {
+            $render = 'render';
+        }
+        return $this->commonPlugin($name, $render);
+    }
+
+    public function commonAdminExtension($name)
+    {
+        return $this->commonPlugin($name, 'admin');
     }
 
     public function commonExtension($name, $render = 'render')
@@ -59,25 +79,15 @@ abstract class HomeTheme extends Theme
         if (empty($render)) {
             $render = 'render';
         }
-        return 'extensions.' . $name . '.' . $render;
-    }
-
-    public function adminExtension($name)
-    {
-        return $this->extension($name, 'admin');
-    }
-
-    public function commonAdminExtension($name)
-    {
-        return $this->commonExtension($name, 'admin');
+        return $this->commonPlugin($name, $render);
     }
 
     public function register($is_auth = false)
     {
-        parent::register($is_auth);
-
         $this->registerExtensions($is_auth);
         $this->registerWidgets($is_auth);
+
+        parent::register($is_auth);
     }
 
     protected function registerExtensions($is_auth = false)

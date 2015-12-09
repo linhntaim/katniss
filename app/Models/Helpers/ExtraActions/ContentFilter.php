@@ -34,7 +34,7 @@ class ContentFilter
 
     /**
      * @param string $id
-     * @param string $content
+     * @param string|mixed $content
      * @return mixed
      */
     public static function flush($id, $content)

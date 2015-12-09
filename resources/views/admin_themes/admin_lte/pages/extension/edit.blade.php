@@ -27,8 +27,10 @@
 
                 <div class="margin-bottom">
                     <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
-                    <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                    <a role="button" class="btn btn-warning pull-right" href="{{ adminUrl('extensions') }}">{{ trans('form.action_cancel') }}</a>
+                    <div class="pull-right">
+                        <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
+                        <a role="button" class="btn btn-warning" href="{{ adminUrl('extensions') }}">{{ trans('form.action_cancel') }}</a>
+                    </div>
                 </div>
             </div>
         </form>

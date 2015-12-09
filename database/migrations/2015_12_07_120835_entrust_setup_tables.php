@@ -20,6 +20,7 @@ class EntrustSetupTables extends Migration
             $table->string('name')->unique();
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
+            $table->tinyInteger('status')->unsigned()->default(\Katniss\Models\Role::STATUS_NORMAL);
             $table->timestamps();
         });
 

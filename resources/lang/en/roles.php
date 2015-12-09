@@ -6,5 +6,7 @@
  * Time: 15:53
  */
 return [
+    'owner' => 'Owner',
     'admin' => 'Administrator',
+    'user' => 'User',
 ];

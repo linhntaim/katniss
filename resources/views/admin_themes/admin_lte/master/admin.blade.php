@@ -9,6 +9,7 @@
     <meta name="author" content="{{ theme_author() }}">
     <meta name="description" content="{{ theme_description() }}">
     <meta name="keywords" content="{{ theme_keywords() }}">
+    <meta name="application-name" content="{{ theme_application_name() }}">
     @include('fav_icons')
     <link rel='stylesheet' href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">

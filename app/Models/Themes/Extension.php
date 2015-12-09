@@ -121,7 +121,7 @@ class Extension
         return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::EXTENSION_NAME) : HomeThemeFacade::adminExtension($this::EXTENSION_NAME);
     }
 
-    public function viewParams()
+    public function viewAdminParams()
     {
         return [];
     }

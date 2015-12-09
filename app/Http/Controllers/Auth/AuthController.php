@@ -12,7 +12,7 @@ use Katniss\Http\Controllers\ViewController;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
-use Katniss\Models\UserRole;
+use Katniss\Models\Role;
 use Katniss\Models\UserSocial;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -51,6 +51,7 @@ class AuthController extends ViewController
         $this->socialRegisterPath = homePath('auth/register/social');
 
         $this->middleware('guest', ['except' => 'getLogout']);
+        $this->middleware('auth', ['only' => ['getInactive', 'postInactive']]);
     }
 
     public function getLogin()
@@ -133,14 +134,20 @@ class AuthController extends ViewController
      * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data, $fromSocial = false)
     {
-        return Validator::make($data, [
+        $rules = [
             'display_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'name' => 'required|max:255|unique:users,name',
             'password' => 'required|confirmed|min:6',
-        ]);
+        ];
+        if ($fromSocial) {
+            $rules['provider'] = 'required';
+            $rules['provider_id'] = 'required';
+            $rules['url_avatar'] = 'required|url';
+        }
+        return Validator::make($data, $rules);
     }
 
     /**
@@ -149,7 +156,7 @@ class AuthController extends ViewController
      * @param  array $data
      * @return User
      */
-    protected function create(array $data, $social = false)
+    protected function create(array $data, $fromSocial = false)
     {
         DB::beginTransaction();
         try {
@@ -161,10 +168,10 @@ class AuthController extends ViewController
                 'url_avatar' => $data['url_avatar'],
                 'activation_code' => str_random(32),
             ]);
-            $defaultRole = UserRole::where('name', 'user')->firstOrFail();
+            $defaultRole = Role::where('name', 'user')->firstOrFail();
             $user->attachRole($defaultRole->id);
 
-            if ($social) {
+            if ($fromSocial) {
                 $user->socialProviders()->save(new UserSocial([
                     'provider' => $data['provider'],
                     'provider_id' => $data['provider_id'],
@@ -209,13 +216,13 @@ class AuthController extends ViewController
 
         $stored_user = $this->create($request->all());
         if ($stored_user) {
-            event(new UserAfterRegistered($stored_user, array_merge($this->globalViewParams, [
-                MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                MailHelper::EMAIL_TO => $stored_user->email,
-                MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
-
-                'password' => $request->input('password'),
-            ])));
+            event(new UserAfterRegistered($stored_user, $request->input('password'), false,
+                array_merge($this->globalViewParams, [
+                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    MailHelper::EMAIL_TO => $stored_user->email,
+                    MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
+                ])
+            ));
 
             Auth::login($stored_user);
         } else {
@@ -287,7 +294,7 @@ class AuthController extends ViewController
      */
     public function postSocialRegister(Request $request)
     {
-        $validator = $this->validator($request->all());
+        $validator = $this->validator($request->all(), true);
 
         $error_rdr = redirect(homeUrl('auth/register/social'))->withInput();
 
@@ -297,15 +304,16 @@ class AuthController extends ViewController
 
         $stored_user = $this->create($request->all(), true);
         if ($stored_user) {
-            event(new UserAfterRegistered($stored_user, array_merge($this->globalViewParams, [
-                MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                MailHelper::EMAIL_TO => $stored_user->email,
-                MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
+            event(new UserAfterRegistered($stored_user, $request->input('password'), true,
+                array_merge($this->globalViewParams, [
+                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    MailHelper::EMAIL_TO => $stored_user->email,
+                    MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
 
-                'password' => $request->input('password'),
-                'provider' => ucfirst($request->input('provider')),
-                'provider_id' => $request->input('provider_id'),
-            ]), true));
+                    'provider' => ucfirst($request->input('provider')),
+                    'provider_id' => $request->input('provider_id'),
+                ])
+            ));
 
             Auth::login($stored_user);
         } else {
@@ -351,6 +359,9 @@ class AuthController extends ViewController
 
     public function getActivation($id, $activation_code)
     {
+        // if user has logged in but has the id not equals $id, the activation will not process
+        // due to the middleware 'guest' applied to this controller in the constructor
+
         $user = User::findOrFail($id);
         $active = $user->activation_code == $activation_code;
         if ($active) {

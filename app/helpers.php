@@ -136,6 +136,19 @@ function allSupportedLocaleCodes()
 }
 
 /**
+ * @return array
+ */
+function allSupportedFullLocaleCodes()
+{
+    $localeCodes = allSupportedLocaleCodes();
+    $fullLocaleCodes = [];
+    foreach ($localeCodes as $localeCode) {
+        $fullLocaleCodes[] = fullLocale($localeCode);
+    }
+    return $fullLocaleCodes;
+}
+
+/**
  * @param string $locale
  * @param string $property
  * @return array|string|null
@@ -155,7 +168,7 @@ function currentLocale($property = '')
     return allSupportedLocale(app()->getLocale(), $property);
 }
 
-function fullCurrentLocale($separator = '_')
+function currentFullLocale($separator = '_')
 {
     return fullLocale(currentLocale(), $separator);
 }
@@ -255,7 +268,7 @@ function redirectUrlAfterLogin(User $user)
     $overwrite_url = session()->pull(AppConfig::KEY_REDIRECT_URL);
     if (!empty($overwrite_url)) {
         $redirect_url = $overwrite_url;
-    } elseif ($user->hasPermission('access-admin')) {
+    } elseif ($user->can('access-admin')) {
         $redirect_url = adminUrl();
     }
     return $redirect_url;
@@ -453,7 +466,7 @@ function add_filter($id, CallableObject $callableObject)
 
 /**
  * @param string $id
- * @param string $content
+ * @param string|mixed $content
  * @return mixed
  */
 function content_filter($id, $content)

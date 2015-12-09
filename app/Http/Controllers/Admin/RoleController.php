@@ -5,13 +5,13 @@ namespace Katniss\Http\Controllers\Admin;
 use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\QueryStringBuilder;
-use Katniss\Models\UserRole;
+use Katniss\Models\Role;
 use Katniss\Models\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
 
-class UserRoleController extends ViewController
+class RoleController extends ViewController
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class UserRoleController extends ViewController
      */
     public function index()
     {
-        $roles = UserRole::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE); // 2 items per page
+        $roles = Role::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE); // 2 items per page
         $query = new QueryStringBuilder([
             'page' => $roles->currentPage()
         ], adminUrl('user-roles'));

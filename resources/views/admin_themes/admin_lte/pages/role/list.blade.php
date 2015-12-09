@@ -24,6 +24,7 @@
                             <th>{{ trans('label.display_name') }}</th>
                             <th>{{ trans_choice('label.permission', 2) }}</th>
                             <th>{{ trans('label.description') }}</th>
+                            <th>{{ trans('label.status') }}</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -33,6 +34,7 @@
                             <th>{{ trans('label.display_name') }}</th>
                             <th>{{ trans_choice('label.permission', 2) }}</th>
                             <th>{{ trans('label.description') }}</th>
+                            <th>{{ trans('label.status') }}</th>
                         </tr>
                     </tfoot>
                     <tbody>
@@ -43,6 +45,13 @@
                             <td>{{ $role->display_name }}</td>
                             <td>{{ $role->perms->implode('display_name', ', ') }}</td>
                             <td>{{ $role->description }}</td>
+                            <td>
+                                @if($role->status == \Katniss\Models\Role::STATUS_HIDDEN)
+                                    <span class="label label-default">{{ trans('label.status_hidden') }}</span>
+                                @elseif($role->status == \Katniss\Models\Role::STATUS_NORMAL)
+                                    <span class="label label-info">{{ trans('label.status_normal') }}</span>
+                                @endif
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

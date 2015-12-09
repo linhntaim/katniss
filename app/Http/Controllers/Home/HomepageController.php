@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
 use Katniss\Http\Controllers\ViewController;
+use Katniss\Models\Helpers\ExtraActions\CallableObject;
+use Katniss\Models\Helpers\Menu;
+use Katniss\Models\Helpers\MenuItem;
 
 class HomepageController extends ViewController
 {
@@ -16,7 +19,18 @@ class HomepageController extends ViewController
      */
     public function index()
     {
-        return view($this->themePage('welcome'));
+        add_filter('main_menu', new CallableObject(function (Menu $menu) {
+            $menu->addItem(new MenuItem(
+                '#social-sharing',
+                'Social Sharing', 'li', null, 'page-scroll'
+            ));
+            $menu->addItem(new MenuItem(
+                '#facebook-comment',
+                'Facebook Comment', 'li', null, 'page-scroll'
+            ));
+            return $menu;
+        }));
+        return view($this->themePage('home'));
     }
 
     /**

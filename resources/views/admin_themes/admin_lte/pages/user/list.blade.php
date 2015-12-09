@@ -56,6 +56,7 @@
                             <th>{{ trans('label.user_name') }}</th>
                             <th>{{ trans('label.email') }}</th>
                             <th>{{ trans_choice('label.role', 2) }}</th>
+                            <th>{{ trans('label.status') }}</th>
                             <th>{{ trans('form.action') }}</th>
                         </tr>
                     </thead>
@@ -66,18 +67,26 @@
                             <th>{{ trans('label.user_name') }}</th>
                             <th>{{ trans('label.email') }}</th>
                             <th>{{ trans_choice('label.role', 2) }}</th>
+                            <th>{{ trans('label.status') }}</th>
                             <th>{{ trans('form.action') }}</th>
                         </tr>
                     </tfoot>
                     <tbody>
                         @foreach($users as $user)
-                        <tr>
+                        <tr id="user-{{ $user->id }}">
                             <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
                             <td>{{ $user->display_name }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
                                 {{ $user->roles->implode('display_name', ', ') }}
+                            </td>
+                            <td>
+                                @if($user->active)
+                                    <span class="label label-success">{{ trans('label.status_activated') }}</span>
+                                @else
+                                    <span class="label label-danger">{{ trans('label.status_not_activated') }}</span>
+                                @endif
                             </td>
                             <td>
                                 <a href="{{ adminUrl('users/{id}/edit', ['id'=> $user->id]) }}">{{ trans('form.action_edit') }}</a>

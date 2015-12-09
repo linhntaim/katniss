@@ -3,13 +3,14 @@
 namespace Katniss\Http\Controllers\Admin;
 
 use Katniss\Events\UserAfterRegistered;
+use Katniss\Events\UserPasswordChanged;
 use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Helpers\DateTimeHelper;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\MailHelper;
 use Katniss\Models\Helpers\PaginationHelper;
 use Katniss\Models\Helpers\QueryStringBuilder;
-use Katniss\Models\UserRole;
+use Katniss\Models\Role;
 use Katniss\Models\User;
 use Illuminate\Http\Request;
 
@@ -47,7 +48,7 @@ class UserController extends ViewController
     public function create()
     {
         return view($this->themePage('user.add'), [
-            'roles' => UserRole::all(),
+            'roles' => Role::haveStatuses([Role::STATUS_NORMAL])->get(),
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
@@ -59,7 +60,7 @@ class UserController extends ViewController
             'email' => 'required|email|max:255|unique:users',
             'name' => 'required|max:255',
             'password' => 'required|min:6',
-            'roles' => 'required|array|exists:user_roles,id',
+            'roles' => 'required|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
         ], $extra_rules));
     }
 
@@ -73,10 +74,10 @@ class UserController extends ViewController
     {
         $validator = $this->validator($request->all());
 
-        $rdr = redirect(adminUrl('users/add'));
+        $error_rdr = redirect(adminUrl('users/add'))->withInput();
 
         if ($validator->fails()) {
-            return $rdr->withInput()->withErrors($validator);
+            return $error_rdr->withErrors($validator);
         }
 
         DB::beginTransaction();
@@ -92,21 +93,23 @@ class UserController extends ViewController
             $user->save();
             $user->attachRoles($request->input('roles'));
 
-            event(new UserAfterRegistered($user, array_merge($this->globalViewParams, [
-                MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                MailHelper::EMAIL_TO => $user->email,
-                MailHelper::EMAIL_TO_NAME => $user->display_name,
+            if ($request->has('send_welcomed_mail')) {
+                event(new UserAfterRegistered($user, array_merge($this->globalViewParams, [
+                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    MailHelper::EMAIL_TO => $user->email,
+                    MailHelper::EMAIL_TO_NAME => $user->display_name,
 
-                'password' => $request->input('password'),
-            ])));
+                    'password' => $request->input('password'),
+                ])));
+            }
 
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollBack();
-            return $rdr->withInput()->withErrors([trans('error.database_insert') . ' (' . $ex->getMessage() . ')']);
+            return $error_rdr->withErrors([trans('error.database_insert') . ' (' . $ex->getMessage() . ')']);
         }
 
-        return $rdr;
+        return redirect(adminUrl('users'));
     }
 
     /**
@@ -133,7 +136,7 @@ class UserController extends ViewController
         return view($this->themePage('user.edit'), [
             'user' => $user,
             'user_roles' => $user->roles,
-            'roles' => UserRole::where('public', false)->get(),
+            'roles' => Role::haveStatuses([Role::STATUS_NORMAL])->get(),
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
@@ -152,51 +155,44 @@ class UserController extends ViewController
             'password' => 'sometimes|min:6',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
         ]);
+
+        $rdr = redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
+
         if ($validator->fails()) {
-            return redirect(adminUrl('users/{id}/edit', ['id' => $user->id]))
-                ->withErrors($validator);
+            return $rdr->withErrors($validator);
         }
 
         DB::beginTransaction();
         try {
-            $user->name = $request->input('name');
-            $slug = toSlug($request->input('name'));
-            if (User::where('slug', $slug)->where('id', '<>', $user->id)->count() > 0) {
-                $user->slug = $slug . '-' . $user->id;
-            } else {
-                $user->slug = $slug;
-            }
+            $passwordChanged = false;
+            $user->display_name = $request->input('display_name');
             $user->email = $request->input('email');
             if (!empty($request->input('password', ''))) {
                 $user->password = bcrypt($request->input('password'));
+                $passwordChanged = true;
             }
-            $user->phone_code = $request->input('phone_code');
-            $user->phone = $request->input('phone');
-            $user->skype = $request->input('skype');
-            $user->date_of_birth = toDatabaseTime(DateTimeHelper::shortDateFormat(), $request->input('date_of_birth'), true);
-            $user->gender = $request->input('gender');
-            $user->address = $request->input('address', '');
-            $user->city = $request->input('city', '');
-            $user->country = $request->input('country');
-            $user->language = $request->input('language');
+            $user->name = $request->input('name');
             $user->save();
 
-            $selected_roles = $request->input('roles', []);
-            if (count($selected_roles) > 0) {
-                $user->roles()->sync($selected_roles);
-            } else {
-                $user->roles()->detach();
+            $user->roles()->sync($request->input('roles'));
+
+            if ($passwordChanged) {
+                event(new UserPasswordChanged($user, $request->input('password'),
+                    array_merge($this->globalViewParams, [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $user->email,
+                        MailHelper::EMAIL_TO_NAME => $user->display_name,
+                    ])
+                ));
             }
 
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect(adminUrl('users/{id}/edit', ['id' => $user->id]))
-                ->withInput()
-                ->withErrors([trans('error.database_update') . ' (' . $e->getMessage() . ')']);
+            return $rdr->withErrors([trans('error.database_update') . ' (' . $e->getMessage() . ')']);
         }
 
-        return redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
+        return $rdr;
     }
 
     /**
@@ -215,34 +211,10 @@ class UserController extends ViewController
             $redirect_url = $rdr;
         }
 
-        return $user->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
-    }
-
-    public function listVerifyingCertificates(Request $request)
-    {
-        $certificates = UserRecord::ofCertificate()->requested()->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-        $query = new QueryStringBuilder([
-            'page' => $certificates->currentPage()
-        ], adminUrl('users/verifying-certificates'));
-        return view($this->themePage('user.verifying_certificates'), [
-            'certificates' => $certificates,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($certificates->lastPage(), $certificates->currentPage(), $certificates->perPage()),
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
-        ]);
-    }
-
-    public function verifyCertificate(Request $request, $id)
-    {
-        $record = UserRecord::ofCertificate()->where('id', $id)->firstOrFail();
-        $record->status = UserRecord::STATUS_VERIFIED;
-
-        $redirect_url = adminUrl('users/verifying-certificates');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        if ($user->hasRole('owner')) {
+            return redirect($redirect_url)->withErrors([trans('error._cannot_delete', ['reason' => trans('error.is_role_owner')])]);
         }
 
-        return $record->save() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_update')]);
+        return $user->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
     }
 }

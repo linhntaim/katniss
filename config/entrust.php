@@ -19,7 +19,7 @@ return [
     | the role if it is in a different namespace.
     |
     */
-    'role' => \Katniss\Models\UserRole::class,
+    'role' => \Katniss\Models\Role::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | Update the permission if it is in a different namespace.
     |
     */
-    'permission' => \Katniss\Models\UserPermission::class,
+    'permission' => \Katniss\Models\Permission::class,
 
     /*
     |--------------------------------------------------------------------------

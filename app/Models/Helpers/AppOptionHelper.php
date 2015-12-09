@@ -39,11 +39,16 @@ class AppOptionHelper
     public static function set($key, $value)
     {
         if (!empty($key)) {
-            $appOption = new AppOption();
-            $appOption->key = $key;
-            $appOption->value = $value;
-            $appOption->save();
-
+            $appOption = self::$app_options->where('key', $key)->first();
+            if ($appOption) {
+                $appOption->value = $value;
+                $appOption->save();
+            } else {
+                $appOption = new AppOption();
+                $appOption->key = $key;
+                $appOption->value = $value;
+                $appOption->save();
+            }
             return $appOption;
         }
 

@@ -17,6 +17,7 @@ class UserAfterRegistered extends Event
     use SerializesModels;
 
     public $user;
+    public $password;
     public $fromSocial;
 
     /**
@@ -25,10 +26,11 @@ class UserAfterRegistered extends Event
      * @param  User $user
      * @return void
      */
-    public function __construct(User $user, array $params = [], $fromSocial = false, $locale = null)
+    public function __construct(User $user, $password, $fromSocial = false, array $params = [], $locale = null)
     {
         parent::__construct($params, $locale);
         $this->user = $user;
+        $this->password = $password;
         $this->fromSocial = $fromSocial;
     }
 
@@ -39,7 +41,7 @@ class UserAfterRegistered extends Event
             'display_name' => $this->user->display_name,
             'email' => $this->user->email,
             'name' => $this->user->name,
-            'password' => $this->user->password,
+            'password' => $this->password,
             'activation_code' => $this->user->activation_code,
             'url_activate' => homeUrl('auth/activate/{id}/{activation_code}', ['id' => $this->user->id, 'activation_code' => $this->user->activation_code], $this->locale),
         ], $this->params);

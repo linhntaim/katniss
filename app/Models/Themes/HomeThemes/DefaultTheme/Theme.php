@@ -6,15 +6,15 @@
  * Time: 02:53
  */
 
-namespace Katniss\Models\Themes\HomeThemes\Egret;
+namespace Katniss\Models\Themes\HomeThemes\DefaultTheme;
 
 
 use Katniss\Models\Themes\HomeThemes\HomeTheme;
 
 class Theme extends HomeTheme
 {
-    const NAME = 'Egret';
-    const VIEW = 'egret';
+    const NAME = 'Default';
+    const VIEW = 'default';
 
     public function __construct()
     {
@@ -28,6 +28,9 @@ class Theme extends HomeTheme
 
     protected function registerComposers($is_auth = false)
     {
+        view()->composer(
+            $this->masterPath('index'), Composers\MainMenuComposer::class
+        );
     }
 
     public function extensions()

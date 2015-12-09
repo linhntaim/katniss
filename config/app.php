@@ -201,7 +201,7 @@ return [
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-        'LmsTheme' => Katniss\Models\Themes\HomeThemes\HomeThemeFacade::class,
+        'HomeTheme' => Katniss\Models\Themes\HomeThemes\HomeThemeFacade::class,
         'AdminTheme' => Katniss\Models\Themes\AdminThemes\AdminThemeFacade::class,
         'Widgets' => Katniss\Models\Themes\WidgetsFacade::class,
         'Extensions' => Katniss\Models\Themes\ExtensionsFacade::class,

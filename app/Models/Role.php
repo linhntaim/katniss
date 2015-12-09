@@ -4,10 +4,13 @@ namespace Katniss\Models;
 
 use Zizaco\Entrust\EntrustRole;
 
-class UserRole extends EntrustRole
+class Role extends EntrustRole
 {
+    const STATUS_HIDDEN = 0;
+    const STATUS_NORMAL = 1;
+
     protected $fillable = [
-        'name', 'display_name', 'public', 'description',
+        'name', 'display_name', 'public', 'description', 'status',
     ];
 
     /**
@@ -27,5 +30,14 @@ class UserRole extends EntrustRole
     public function perms()
     {
         return $this->belongsToMany(config('entrust.permission'), config('entrust.permission_role_table'), 'role_id', 'permission_id');
+    }
+
+    public function scopeHaveStatuses($query, array $statuses)
+    {
+        if (empty($statuses)) {
+            return $query;
+        }
+
+        return $query->whereIn('status', $statuses);
     }
 }

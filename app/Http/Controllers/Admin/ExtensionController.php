@@ -48,8 +48,8 @@ class ExtensionController extends MultipleLocaleContentController
 
         return view($this->themePage('extension.edit'), array_merge([
             'extension' => $extension,
-            'extension_view' => $extension->getAdminViewPath(),
-        ], $extension->getAdminViewParams()));
+            'extension_view' => $extension->viewAdmin(),
+        ], $extension->viewAdminParams()));
     }
 
     public function update(Request $request)
@@ -98,7 +98,7 @@ class ExtensionController extends MultipleLocaleContentController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && !in_array($name, $activatedExtensions)) {
             $activatedExtensions[] = $name;
-            setAppOption('activated_extensions', $activatedExtensions);
+            setOption('activated_extensions', $activatedExtensions);
         }
 
         $redirect_url = adminUrl('extensions');
@@ -116,7 +116,7 @@ class ExtensionController extends MultipleLocaleContentController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && in_array($name, $activatedExtensions)) {
             $activatedExtensions = array_diff($activatedExtensions, [$name]);
-            setAppOption('activated_extensions', $activatedExtensions);
+            setOption('activated_extensions', $activatedExtensions);
         }
 
         $redirect_url = adminUrl('extensions');

@@ -83,6 +83,19 @@ class Menu
     }
 
     /**
+     * @param integer $index
+     * @return MenuItem
+     */
+    public function getItem($index)
+    {
+        if ($index < 0 || $index > $this->itemsNum) {
+            return null;
+        }
+
+        return $this->items[$index];
+    }
+
+    /**
      * @return \Katniss\Models\Helpers\MenuItem
      */
     public function last()

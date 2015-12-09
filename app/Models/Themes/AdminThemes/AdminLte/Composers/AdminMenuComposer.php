@@ -10,8 +10,7 @@ namespace Katniss\Models\Themes\AdminThemes\AdminLte\Composers;
 
 use Katniss\Models\Helpers\Menu;
 use Katniss\Models\Helpers\MenuItem;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Contracts\View\View;;
 
 class AdminMenuComposer
 {

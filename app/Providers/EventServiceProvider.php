@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         \Katniss\Events\UserAfterRegistered::class => [
             \Katniss\Listeners\EmailAccountActivation::class,
         ],
+        \Katniss\Events\UserPasswordChanged::class => [
+            \Katniss\Listeners\EmailAccountPassword::class,
+        ],
     ];
 
     /**
