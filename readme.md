@@ -1,27 +1,136 @@
-## Laravel PHP Framework
+## Road Map 1
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
+## Installation
+
+### PHP
+
+PHP >= 5.6
+
+### Database
+
+MySQL >= 5.5
+
+Configuration (`my.ini` or `my.cnf`):
+
+```
+innodb_file_format=BARRACUDA
+innodb_large_prefix=ON
+```
+
+Create database `katniss` with `default character set utf8mb4` and `default collate utf8mb4_unicode_ci`
+
+Initialize database
+
+`php artisan migrate`
+
+`php artisan db:seed --class=DefaultSeeder`
+
+## Components and Modules
+
+### Vendors
+
+#### laravel/laravel:5.1.26
+
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+#### zizaco/entrust:1.4.1
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+[![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
-## Official Documentation
+- Conflict between EntrustUserTrait and Authorizable was resolved
+- Middleware to authorize routes was created
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+#### barryvdh/laravel-debugbar:2.0.6
 
-## Contributing
+[![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-debugbar/version.png)](https://packagist.org/packages/barryvdh/laravel-debugbar)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+#### barryvdh/laravel-elfinder:0.3.4
 
-## Security Vulnerabilities
+[![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-elfinder/version.png)](https://packagist.org/packages/barryvdh/laravel-elfinder)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+#### jenssegers/agent:2.3.1
 
-### License
+[![Latest Stable Version](http://img.shields.io/packagist/v/jenssegers/agent.svg)](https://packagist.org/packages/jenssegers/agent) 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+#### laravel/socialite:2.0.14
+
+#### mcamara/laravel-localization:1.0.12
+
+[![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
+
+### App Options:
+
+To store/retrieve runtime application's options in database
+
+### Theme & Plugin Definition
+
+#### Theme
+
+##### Admin Theme
+
+Sample Themes: 
+- Admin LTE (base on [AdminLTE](https://github.com/almasaeed2010/AdminLTE))
+
+##### Home Theme
+    
+Sample Themes:
+- Default Theme (base on [Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav))
+
+#### Plugin
+    
+##### Extension
+
+Sample Extensions:
+
+- Open Graph Tags
+- Analytic Services
+- Social Integration
+
+##### Widget
+
+Sample Widgets:
+
+- Extra HTML
+- Base Links
+
+### Authentication:
+
+Functions/Features:
+
+- Registration
+- Activation
+- Login
+- Logout
+- Forgot/Reset Password
+- Register/Login using Accounts on Social Networks (Facebook, Google)
+- Email supported (for registering, resending activation & password resetting & password changed)
+    - Emails for registering & password changed are queued before sending
+    - Configure a queue listener or `php artisan queue:listen` for sending queued emails (see [Running The Queue Listener](http://laravel.com/docs/5.1/queues#running-the-queue-listener)) 
+
+### Authorization
+
+Mainly based on zizaco/entrust 1.4.1.
+
+Database seeding:
+
+- Access admin permission
+- Owner role (has permission of Accessing Admin)
+- Administrators role (has permission of Accessing Admin)
+- Tester role (has permission of Accessing Admin)
+- User role
+- 3 starting users: owner (Owner role), admin (Owner & Administrator role), tester (Tester role)
+
+Anonymous users will get the role of User after registering.
+
+### File Manager:
+
+To easily upload & manage files.
+
+Ready for integrating with:
+
+- CKEditor
+- Input field
+
+### Links
+
+Manage links and categories of links

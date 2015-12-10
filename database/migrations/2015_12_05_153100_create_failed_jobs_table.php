@@ -13,6 +13,9 @@ class CreateFailedJobsTable extends Migration
     public function up()
     {
         Schema::create('failed_jobs', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
             $table->increments('id');
             $table->text('connection');
             $table->text('queue');

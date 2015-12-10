@@ -6,7 +6,15 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "zizaco/entrust": "1.4.1",
+        "barryvdh/laravel-debugbar": "^2.0",
+        "barryvdh/laravel-elfinder": "^0.3.4",
+        "jenssegers/agent": "^2.3",
+        "laravel/socialite": "^2.0",
+        "mcamara/laravel-localization": "^1.0",
+        "mews/purifier": "^2.0",
+        "dimsav/laravel-translatable": "^5.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -20,7 +28,10 @@
         ],
         "psr-4": {
             "Katniss\\": "app/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

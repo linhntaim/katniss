@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
     /**
      * Create a new filter instance.
      *
-     * @param  Guard  $auth
+     * @param  Guard $auth
      * @return void
      */
     public function __construct(Guard $auth)
@@ -28,14 +28,28 @@ class RedirectIfAuthenticated
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/home');
+            $redirect_url = null;
+            $user = $this->auth->user();
+            $activatePath = homePath('auth/activate');
+            $inactivePath = homePath('auth/inactive');
+            if (!$user->active) {
+                if (!$request->is($activatePath . '/*') && !$request->is($inactivePath)) {
+                    $redirect_url = $inactivePath;
+                }
+            } else {
+                $redirect_url = redirectUrlAfterLogin($user);
+            }
+
+            if (!empty($redirect_url)) {
+                return redirect($redirect_url);
+            }
         }
 
         return $next($request);

@@ -48,9 +48,29 @@ return [
             'root'   => storage_path('app'),
         ],
 
+        'cache_assets' => [
+            'driver' => 'local',
+            'root'   => storage_path('../public/assets/cache'),
+        ],
+
         'upload' => [
             'driver' => 'local',
             'root'   => storage_path('../public/upload'),
+        ],
+
+        'file_manager' => [
+            'driver' => 'local',
+            'root'   => storage_path('../public/files'),
+        ],
+
+        'lang' => [
+            'driver' => 'local',
+            'root'   => storage_path('../resources/lang'),
+        ],
+
+        'email' => [
+            'driver' => 'local',
+            'root'   => storage_path('../resources/views/emails'),
         ],
 
         'ftp' => [
