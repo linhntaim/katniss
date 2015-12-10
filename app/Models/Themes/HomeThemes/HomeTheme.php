@@ -25,9 +25,12 @@ abstract class HomeTheme extends Theme
         return $this->viewPath . 'plugins.' . $name . '.' . $render;
     }
 
-    public function adminWidget($name)
+    public function adminWidget($name, $render = 'admin')
     {
-        return $this->plugin($name, 'admin');
+        if (empty($render)) {
+            $render = 'admin';
+        }
+        return $this->plugin($name, $render);
     }
 
     public function widget($name, $render = 'render')
@@ -38,9 +41,12 @@ abstract class HomeTheme extends Theme
         return $this->plugin($name, $render);
     }
 
-    public function adminExtension($name)
+    public function adminExtension($name, $render = 'admin')
     {
-        return $this->plugin($name, 'admin');
+        if (empty($render)) {
+            $render = 'admin';
+        }
+        return $this->plugin($name, $render);
     }
 
     public function extension($name, $render = 'render')
@@ -56,9 +62,12 @@ abstract class HomeTheme extends Theme
         return 'plugins.' . $name . '.' . $render;
     }
 
-    public function commonAdminWidget($name)
+    public function commonAdminWidget($name, $render = 'admin')
     {
-        return $this->commonPlugin($name, 'admin');
+        if (empty($render)) {
+            $render = 'admin';
+        }
+        return $this->commonPlugin($name, $render);
     }
 
     public function commonWidget($name, $render = 'render')
@@ -69,9 +78,12 @@ abstract class HomeTheme extends Theme
         return $this->commonPlugin($name, $render);
     }
 
-    public function commonAdminExtension($name)
+    public function commonAdminExtension($name, $render = 'admin')
     {
-        return $this->commonPlugin($name, 'admin');
+        if (empty($render)) {
+            $render = 'admin';
+        }
+        return $this->commonPlugin($name, $render);
     }
 
     public function commonExtension($name, $render = 'render')

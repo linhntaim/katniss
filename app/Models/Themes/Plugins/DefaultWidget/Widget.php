@@ -12,8 +12,8 @@ use Katniss\Models\Themes\Widget as BaseWidget;
 
 class Widget extends BaseWidget
 {
-    const WIDGET_NAME = 'default';
-    const WIDGET_DISPLAY_NAME = 'Default';
+    const WIDGET_NAME = 'default_widget';
+    const WIDGET_DISPLAY_NAME = 'Default Widget';
     const WIDGET_TRANSLATABLE = true;
 
     public $name = '';

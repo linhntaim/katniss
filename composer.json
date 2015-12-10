@@ -12,7 +12,9 @@
         "barryvdh/laravel-elfinder": "^0.3.4",
         "jenssegers/agent": "^2.3",
         "laravel/socialite": "^2.0",
-        "mcamara/laravel-localization": "^1.0"
+        "mcamara/laravel-localization": "^1.0",
+        "mews/purifier": "^2.0",
+        "dimsav/laravel-translatable": "^5.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

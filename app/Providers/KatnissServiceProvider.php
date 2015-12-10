@@ -38,19 +38,6 @@ class KatnissServiceProvider extends ServiceProvider
         if (!defined('ELFINDER_IMG_PARENT_URL')) {
             define('ELFINDER_IMG_PARENT_URL', libraryAsset('elfinder'));
         }
-
-        if (!session()->has('settings')) {
-            session([
-                'settings.locale' => 'en',
-                'settings.country' => 'US',
-                'settings.timezone' => 'UTC',
-                'settings.first_day_of_week' => 0,
-                'settings.long_date_format' => 0,
-                'settings.short_date_format' => 0,
-                'settings.long_time_format' => 0,
-                'settings.short_time_format' => 0,
-            ]);
-        }
     }
 
     /**
@@ -62,16 +49,16 @@ class KatnissServiceProvider extends ServiceProvider
     {
         $this->app['home_theme'] = $this->app->share(
             function () {
-                $homeTheme = config('katniss.home_theme');
-                $homeTheme = '\Katniss\Models\Themes\HomeThemes' . '\\' . $homeTheme . '\Theme';
+                $homeThemeName = config('katniss.home_theme');
+                $homeTheme = config('katniss.home_themes.' . $homeThemeName);
                 return new $homeTheme;
             }
         );
 
         $this->app['admin_theme'] = $this->app->share(
             function () {
-                $adminTheme = config('katniss.admin_theme');
-                $adminTheme = '\Katniss\Models\Themes\AdminThemes' . '\\' . $adminTheme . '\Theme';
+                $adminThemeName = config('katniss.admin_theme');
+                $adminTheme = config('katniss.admin_themes.' . $adminThemeName);
                 return new $adminTheme;
             }
         );

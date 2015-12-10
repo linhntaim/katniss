@@ -10,7 +10,9 @@ namespace Katniss\Models\Themes\AdminThemes\AdminLte\Composers;
 
 use Katniss\Models\Helpers\Menu;
 use Katniss\Models\Helpers\MenuItem;
-use Illuminate\Contracts\View\View;;
+use Illuminate\Contracts\View\View;
+
+;
 
 class AdminMenuComposer
 {
@@ -95,6 +97,20 @@ class AdminMenuComposer
                     trans('pages.admin_ui_lang_email_title'), 'li', '', '', '<i class="fa fa-file-text-o"></i> <span>', '</span>'
                 ));
                 $menu->last()->setChildMenu($sub_menu);
+
+                //Links
+                $menu->addItem(new MenuItem( // add a menu header
+                    null,
+                    mb_strtoupper(trans('pages.admin_link_header')), 'li', 'header'
+                ));
+                $menu->addItem(new MenuItem( //add a menu item
+                    adminUrl('link-categories'),
+                    trans('pages.admin_link_categories_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                ));
+                $menu->addItem(new MenuItem( //add a menu item
+                    adminUrl('links'),
+                    trans('pages.admin_links_title'), 'li', '', '', '<i class="fa fa-external-link"></i> <span>', '</span>'
+                ));
             }
         }
 

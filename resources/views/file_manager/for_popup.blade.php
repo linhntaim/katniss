@@ -14,39 +14,39 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-                jQuery(document).ready(function () {
-                    var elfinderOptions = {
-                        lang: '{{ $site_locale }}',
-                        customData: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        url: '{{ localizedURL('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
-                        getFileCallback: function (file) {
-                            window.opener.processSelectedFile(file.url, '{{ $input_id }}');
-                            window.close();
-                        },
-                        uiOptions: {
-                            toolbar: [
-                                ['back', 'forward'],
-                                ['home', 'reload', 'up'],
-                                ['mkdir', 'mkfile', 'upload'],
-                                ['open', 'download', 'getfile'],
-                                ['info', 'quicklook'],
-                                ['copy', 'cut', 'paste'],
-                                ['rm'],
-                                ['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
-                                ['search'],
-                                ['view', 'sort']
-                            ]
-                        },
-                        dateFormat: '{{ $dateFormat }} {{ $timeFormat }}'
-                    };
-                    var onlyMimes = '{{ $onlyMimes }}';
-                    if (onlyMimes.trim() != '') {
-                        elfinderOptions.onlyMimes = onlyMimes.split(',');
-                    }
-                    jQuery('#elfinder').elfinder(elfinderOptions);
-                });
+        jQuery(document).ready(function () {
+            var elfinderOptions = {
+                lang: '{{ $site_locale }}',
+                customData: {
+                    _token: '{{ csrf_token() }}'
+                },
+                url: '{{ homeUrl('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
+                getFileCallback: function (file) {
+                    window.opener.processSelectedFile(file.url, '{{ $input_id }}');
+                    window.close();
+                },
+                uiOptions: {
+                    toolbar: [
+                        ['back', 'forward'],
+                        ['home', 'reload', 'up'],
+                        ['mkdir', 'mkfile', 'upload'],
+                        ['open', 'download', 'getfile'],
+                        ['info', 'quicklook'],
+                        ['copy', 'cut', 'paste'],
+                        ['rm'],
+                        ['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
+                        ['search'],
+                        ['view', 'sort']
+                    ]
+                },
+                dateFormat: '{{ $dateFormat }} {{ $timeFormat }}'
+            };
+            var onlyMimes = '{{ $onlyMimes }}';
+            if (onlyMimes.trim() != '') {
+                elfinderOptions.onlyMimes = onlyMimes.split(',');
+            }
+            jQuery('#elfinder').elfinder(elfinderOptions);
+        });
         {!! cdataClose() !!}
     </script>
 @endsection

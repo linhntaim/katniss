@@ -6,7 +6,7 @@
  * Time: 23:37
  */
 
-namespace Katniss\Models\Themes\Themes\Plugins\ExtraHtml;
+namespace Katniss\Models\Themes\Plugins\ExtraHtml;
 
 use Katniss\Models\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 use Katniss\Models\Themes\HomeThemes\HomeThemeFacade;
@@ -24,20 +24,20 @@ class Widget extends DefaultWidget
 
         $this->content = '';
         if (!empty($this->localizedData)) {
-            $this->content = empty($this->localizedData['content']) ? '' : $this->localizedData['content'];
+            $this->content = defPr($this->localizedData['content'], '');
         }
     }
 
-    public function __initAdminViewParams()
+    public function viewAdminParams()
     {
-        $this->setViewParams([
+        return array_merge(parent::viewAdminParams(), [
             'extended_localizing_path' => HomeThemeFacade::commonWidget($this::WIDGET_NAME, 'admin_localizing')
         ]);
     }
 
     public function render()
     {
-        return $this->content;
+        return '<div id="' . $this->getHtmlId() . '" class="widget-extra-html">' . $this->content . '</div>';
     }
 
     public function localizedFields()

@@ -14,9 +14,11 @@ class AppConfig
     const KEY_WIZARD = 'x_wizard';
     const KEY_FORCE_LANG = 'x_force_lang';
     const KEY_FORCE_THEME = 'x_force_theme';
+    const KEY_HTML_INPUTS = 'x_html_inputs';
 
     const REGEX_YOUTUBE_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(youtube.com\/watch\?v=|youtube.com\/embed\/|youtu.be\/)(.+)$/';
 
+    const DEFAULT_HTML_CLEAN_SETTING = 'typical';
     const DEFAULT_ITEMS_PER_PAGE = 10;
 
     const TITLE_SHORTEN_TEXT_LENGTH = 25;

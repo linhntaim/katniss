@@ -28,6 +28,10 @@ class HomepageController extends ViewController
                 '#facebook-comment',
                 'Facebook Comment', 'li', null, 'page-scroll'
             ));
+            $menu->addItem(new MenuItem(
+                '#example-widgets',
+                'Example Widgets', 'li', null, 'page-scroll'
+            ));
             return $menu;
         }));
         return view($this->themePage('home'));

@@ -7,24 +7,28 @@
  */
 
 return [
-    'admin_theme' => 'AdminLte',
-    'home_theme' => 'DefaultTheme',
-    'paths_use_admin_theme' => [
-        'admin', 'auth', 'documents', 'password'
+    'admin_theme' => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME,
+    'home_theme' => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME,
+    'admin_themes' => [
+        Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::class,
     ],
-
+    'home_themes' => [
+        Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::class,
+    ],
     'widgets' => [
-
+        Katniss\Models\Themes\Plugins\ExtraHtml\Widget::WIDGET_NAME => Katniss\Models\Themes\Plugins\ExtraHtml\Widget::class,
+        Katniss\Models\Themes\Plugins\BaseLinks\Widget::WIDGET_NAME => Katniss\Models\Themes\Plugins\BaseLinks\Widget::class,
     ],
-
     'extensions' => [
         Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::class,
         Katniss\Models\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\SocialIntegration\Extension::class,
     ],
-
     'static_extensions' => [
         Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
+    ],
+    'paths_use_admin_theme' => [
+        'admin', 'auth', 'documents', 'password'
     ],
 
     'genders' => [

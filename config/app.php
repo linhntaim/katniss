@@ -150,6 +150,8 @@ return [
         Zizaco\Entrust\EntrustServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
         Barryvdh\Elfinder\ElfinderServiceProvider::class,
+        Mews\Purifier\PurifierServiceProvider::class,
+        Dimsav\Translatable\TranslatableServiceProvider::class,
     ],
 
     /*
@@ -199,15 +201,15 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
         'HomeTheme' => Katniss\Models\Themes\HomeThemes\HomeThemeFacade::class,
         'AdminTheme' => Katniss\Models\Themes\AdminThemes\AdminThemeFacade::class,
         'Widgets' => Katniss\Models\Themes\WidgetsFacade::class,
         'Extensions' => Katniss\Models\Themes\ExtensionsFacade::class,
 
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Purifier' => Mews\Purifier\Facades\Purifier::class,
     ],
 
 ];

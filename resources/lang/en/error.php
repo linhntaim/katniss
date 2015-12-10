@@ -19,4 +19,5 @@ return [
     'is_not_author' => 'You are not the author',
     '_is_not_author' => 'You are not the author of :object',
     '_cannot_delete' => 'Cannot delete due to: :reason',
+    'category_not_empty' => 'Category is not empty',
 ];

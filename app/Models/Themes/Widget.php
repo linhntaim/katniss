@@ -136,7 +136,7 @@ abstract class Widget
     protected function __init()
     {
         if ($this::WIDGET_TRANSLATABLE) {
-            $locale = currentLocale();
+            $locale = currentLocaleCode();
             $fallbackLocale = config('app.fallback_locale');
 
             $this->localizedData = null;
@@ -221,12 +221,13 @@ abstract class Widget
             $localizedData = [];
         }
 
+        $order = ThemeWidget::where('placeholder', $placeholder)->count() + 1;
         $this->themeWidget = ThemeWidget::create([
             'widget_name' => $this::WIDGET_NAME,
             'theme_name' => $this::THEME_NAME,
             'placeholder' => $placeholder,
-            'translatable' => $this::WIDGET_TRANSLATABLE,
-            'constructing_data' => json_encode(array_merge($data, $localizedData))
+            'constructing_data' => json_encode(array_merge($data, $localizedData)),
+            'order' => $order,
         ]);
         return empty($this->themeWidget) ? [trans('error.database_insert')] : true;
     }

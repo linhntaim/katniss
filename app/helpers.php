@@ -77,14 +77,14 @@ function rdrQueryParam($url)
 #endregion
 
 #region Locale
-function setCurrentLocale($locale)
+function setCurrentLocale($localeCode)
 {
-    LaravelLocalization::setLocale($locale);
+    LaravelLocalization::setLocale($localeCode);
 }
 
-function fullLocale($locale, $separator = '_')
+function fullLocaleCode($localeCode, $separator = '_')
 {
-    return $locale . $separator . allLocale($locale, 'country_code');
+    return $localeCode . $separator . allLocale($localeCode, 'country_code');
 }
 
 /**
@@ -104,15 +104,15 @@ function allLocaleCodes()
 }
 
 /**
- * @param string $locale
+ * @param string $localeCode
  * @param string $property
  * @return array|string|null
  */
-function allLocale($locale, $property = '')
+function allLocale($localeCode, $property = '')
 {
     $locales = allLocales();
-    if (empty($locales[$locale])) return null;
-    return empty($property) || $property == 'all' ? $locales[$locale] : $locales[$locale][$property];
+    if (empty($locales[$localeCode])) return null;
+    return empty($property) || $property == 'all' ? $locales[$localeCode] : $locales[$localeCode][$property];
 }
 
 /**
@@ -143,24 +143,24 @@ function allSupportedFullLocaleCodes()
     $localeCodes = allSupportedLocaleCodes();
     $fullLocaleCodes = [];
     foreach ($localeCodes as $localeCode) {
-        $fullLocaleCodes[] = fullLocale($localeCode);
+        $fullLocaleCodes[] = fullLocaleCode($localeCode);
     }
     return $fullLocaleCodes;
 }
 
 /**
- * @param string $locale
+ * @param string $localeCode
  * @param string $property
  * @return array|string|null
  */
-function allSupportedLocale($locale, $property = '')
+function allSupportedLocale($localeCode, $property = '')
 {
     $locales = allSupportedLocales();
-    if (empty($locales[$locale])) return null;
-    return empty($property) || $property == 'all' ? $locales[$locale] : $locales[$locale][$property];
+    if (empty($locales[$localeCode])) return null;
+    return empty($property) || $property == 'all' ? $locales[$localeCode] : $locales[$localeCode][$property];
 }
 
-function currentLocale($property = '')
+function currentLocaleCode($property = '')
 {
     if (empty($property)) {
         return app()->getLocale();
@@ -168,9 +168,9 @@ function currentLocale($property = '')
     return allSupportedLocale(app()->getLocale(), $property);
 }
 
-function currentFullLocale($separator = '_')
+function currentFullLocaleCode($separator = '_')
 {
-    return fullLocale(currentLocale(), $separator);
+    return fullLocaleCode(currentLocaleCode(), $separator);
 }
 
 #endregion
@@ -191,75 +191,85 @@ function adminRoute($route)
     return transRoute('admin/' . $route);
 }
 
+function embedParamsInRoute($route, array $params = [])
+{
+    if (empty($params)) return $route;
+    foreach ($params as $key => $value) {
+        $route = str_replace(['{' . $key . '}', '{' . $key . '?}'], $value, $route);
+    }
+    return $route;
+}
+
 function currentPath()
 {
     $path = parse_url(currentUrl())['path'];
     return empty($path) ? '/' : $path;
 }
 
-function transPath($route = '', array $params = [], $locale = null)
+function transPath($route = '', array $params = [], $localeCode = null)
 {
-    if (empty($locale)) {
-        $locale = currentLocale();
+    if (empty($localeCode)) {
+        $localeCode = currentLocaleCode();
     }
     if (empty($route)) {
-        return $locale;
+        return $localeCode;
     }
-    $route = trans('routes.' . $route);
-    foreach ($params as $key => $value) {
-        $route = str_replace(['{' . $key . '}', '{' . $key . '?}'], $value, $route);
-    }
-    return $locale . '/' . $route;
+    return $localeCode . '/' . embedParamsInRoute(trans('routes.' . $route), $params);
 }
 
-function homePath($route = '', array $params = [], $locale = null)
+function homePath($route = '', array $params = [], $localeCode = null)
 {
-    return transPath($route, $params, $locale);
+    return transPath($route, $params, $localeCode);
 }
 
-function adminPath($route = '', array $params = [], $locale = null)
+function adminPath($route = '', array $params = [], $localeCode = null)
 {
-    return empty($route) ? homePath('admin', $params, $locale) : homePath('admin/' . $route, $params, $locale);
+    return empty($route) ? homePath('admin', $params, $localeCode) : homePath('admin/' . $route, $params, $localeCode);
 }
 
-function currentUrl($locale = null)
+function currentUrl($localeCode = null)
 {
-    if (empty($locale)) {
+    if (empty($localeCode)) {
         return request()->url();
     }
 
-    return LaravelLocalization::getLocalizedUrl($locale, null);
+    return LaravelLocalization::getLocalizedUrl($localeCode, null);
 }
 
-function currentFullUrl($locale = null)
+function currentFullUrl($localeCode = null)
 {
-    if (empty($locale)) {
+    if (empty($localeCode)) {
         return request()->fullUrl();
     }
     $url_parts = parse_url(request()->fullUrl());
-    $localizedUrl = LaravelLocalization::getLocalizedUrl($locale, null);
+    $localizedUrl = LaravelLocalization::getLocalizedUrl($localeCode, null);
     return $localizedUrl . '?' . $url_parts['query'] . '#' . $url_parts['hash'];
 }
 
-function transUrl($route = '', array $params = [], $locale = null)
+function transUrl($route = '', array $params = [], $localeCode = null)
 {
-    $path = transPath($route, $params, $locale = null);
+    $path = transPath($route, $params, $localeCode = null);
     return url($path);
 }
 
-function homeUrl($route = '', array $params = [], $locale = null)
+function homeUrl($route = '', array $params = [], $localeCode = null)
 {
-    return transUrl($route, $params, $locale);
+    return transUrl($route, $params, $localeCode);
 }
 
-function adminUrl($route = '', array $params = [], $locale = null)
+function adminUrl($route = '', array $params = [], $localeCode = null)
 {
-    return empty($route) ? homeUrl('admin', $params, $locale) : homeUrl('admin/' . $route, $params, $locale);
+    return empty($route) ? homeUrl('admin', $params, $localeCode) : homeUrl('admin/' . $route, $params, $localeCode);
 }
 
 function notRootUrl($url)
 {
     return $url != homeUrl() && $url != adminUrl();
+}
+
+function apiUrl($route, array $params = [], $version = 1)
+{
+    return url('api/v' . $version . '/' . embedParamsInRoute($route, $params));
 }
 
 function redirectUrlAfterLogin(User $user)
@@ -514,9 +524,9 @@ function cdataClose()
     return '//]]>';
 }
 
-function widget($placeholder, $before = '', $after = '')
+function placeholder($name, $before = '', $after = '')
 {
-    return WidgetsFacade::display($placeholder, $before, $after);
+    return WidgetsFacade::display($name, $before, $after);
 }
 
 function activatedExtensions()

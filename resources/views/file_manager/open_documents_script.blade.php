@@ -2,7 +2,7 @@
     {!! cdataOpen() !!}
     function openMyDocuments(fromInputId, documentType) {
         window.open(
-                '{{ localizedURL('documents/for/popup/{input_id}', ['input_id' => '{input_id}']) }}'.replace('{input_id}', fromInputId) + '?custom_type=' + documentType,
+                '{{ homeUrl('documents/for/popup/{input_id}', ['input_id' => '{input_id}']) }}'.replace('{input_id}', fromInputId) + '?custom_type=' + documentType,
                 '{{ trans('pages.my_documents_title') }}',
                 'width=900,height=480'
         );

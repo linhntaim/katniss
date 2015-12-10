@@ -30,6 +30,8 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \Katniss\Http\Middleware\RedirectIfAuthenticated::class,
         // custom
+        'katniss.api' => \Katniss\Http\Middleware\ApiMiddleware::class,
+        'katniss.view' => \Katniss\Http\Middleware\ViewMiddleware::class,
         'entrust' => \Katniss\Http\Middleware\AuthorizationWithEntrust::class,
         'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,

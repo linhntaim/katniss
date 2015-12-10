@@ -7,9 +7,9 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        function enableAlong(id) {
+        function enableAlongCheckbox(id) {
             jQuery(id).on('ifChanged', function () {
-                jQuery('[data-enable-target="' + id + '"]').prop('disabled', !jQuery(this).is(':checked'))
+                jQuery('[data-enable-target="' + id + '"]').prop('disabled', !jQuery(this).is(':checked'));
             }).trigger('ifChanged');
         }
         jQuery(document).ready(function () {
@@ -19,11 +19,16 @@
                 increaseArea: '20%' // optional
             });
 
-            enableAlong('#inputFacebookCommentEnable');
-            enableAlong('#inputFacebookLikeEnable');
-            enableAlong('#inputFacebookShareEnable');
-            enableAlong('#inputFacebookRecommendEnable');
-            enableAlong('#inputLinkedInShareEnable')
+            enableAlongCheckbox('#inputFacebookEnable');
+            enableAlongCheckbox('#inputFacebookCommentEnable');
+            enableAlongCheckbox('#inputFacebookLikeEnable');
+            enableAlongCheckbox('#inputFacebookShareEnable');
+            enableAlongCheckbox('#inputFacebookRecommendEnable');
+            enableAlongCheckbox('#inputTwitterEnable');
+            enableAlongCheckbox('#inputLinkedInEnable');
+            enableAlongCheckbox('#inputLinkedInShareEnable');
+            enableAlongCheckbox('#inputGoogleEnable');
+            enableAlongCheckbox('#inputGoogleShareEnable');
         });
         {!! cdataClose() !!}
     </script>
@@ -47,13 +52,14 @@
         </div>
         <div class="form-group">
             <label for="inputFacebookAppId">Facebook App ID</label>
-            <input id="inputFacebookAppId" type="text" class="form-control" name="facebook_app_id" value="{{ $facebook_app_id }}">
+            <input id="inputFacebookAppId" type="text" class="form-control" name="facebook_app_id"
+                   value="{{ $facebook_app_id }}" data-enable-target="#inputFacebookEnable">
         </div>
         <hr>
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookCommentEnable">
-                    <input id="inputFacebookCommentEnable" type="checkbox" name="facebook_comment_enable"
+                    <input id="inputFacebookCommentEnable" type="checkbox" name="facebook_comment_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_comment_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_comment_enable') }}
                 </label>
@@ -98,7 +104,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookLikeEnable">
-                    <input id="inputFacebookLikeEnable" type="checkbox" name="facebook_like_enable"
+                    <input id="inputFacebookLikeEnable" type="checkbox" name="facebook_like_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_like_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_like_enable') }}
                 </label>
@@ -123,7 +129,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookShareEnable">
-                    <input id="inputFacebookShareEnable" type="checkbox" name="facebook_share_enable"
+                    <input id="inputFacebookShareEnable" type="checkbox" name="facebook_share_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_share_enable') }}
                 </label>
@@ -148,7 +154,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookRecommendEnable">
-                    <input id="inputFacebookRecommendEnable" type="checkbox" name="facebook_recommend_enable"
+                    <input id="inputFacebookRecommendEnable" type="checkbox" name="facebook_recommend_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_recommend_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_recommend_enable') }}
                 </label>
@@ -173,7 +179,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookSendEnable">
-                    <input id="inputFacebookSendEnable" type="checkbox" name="facebook_send_enable"
+                    <input id="inputFacebookSendEnable" type="checkbox" name="facebook_send_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_send_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_send_enable') }}
                 </label>
@@ -201,7 +207,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputTwitterShareEnable">
-                    <input id="inputTwitterShareEnable" type="checkbox" name="twitter_share_enable"
+                    <input id="inputTwitterShareEnable" type="checkbox" name="twitter_share_enable" data-enable-target="#inputTwitterEnable"
                            value="1"{{ $twitter_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.twitter_share_enable') }}
                 </label>
@@ -229,7 +235,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputLinkedInShareEnable">
-                    <input id="inputLinkedInShareEnable" type="checkbox" name="linkedin_share_enable"
+                    <input id="inputLinkedInShareEnable" type="checkbox" name="linkedin_share_enable" data-enable-target="#inputLinkedInEnable"
                            value="1"{{ $linkedin_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.linkedin_share_enable') }}
                 </label>
@@ -247,6 +253,70 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">
+            Google
+        </h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputGoogleEnable">
+                    <input id="inputGoogleEnable" type="checkbox" name="google_enable"
+                           value="1"{{ $google_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.google_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputGoogleShareEnable">
+                    <input id="inputGoogleShareEnable" type="checkbox" name="google_share_enable" data-enable-target="#inputGoogleEnable"
+                           value="1"{{ $google_share_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.google_share_enable') }}
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputGoogleShareButtonSize">{{ trans('social_integration.google_share_button_size') }}</label>
+                    <select id="inputGoogleShareButtonSize" name="google_share_button_size"
+                            class="form-control" data-enable-target="#inputGoogleShareEnable">
+                        @foreach($google_share_button_size_values as $google_share_button_size_value)
+                            <option value="{{ $google_share_button_size_value }}"{{ $google_share_button_size_value == $google_share_button_size ? ' selected' : '' }}>
+                                {{ trans('social_integration.google_share_button_size_' . $google_share_button_size_value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputGoogleShareButtonAnnotation">{{ trans('social_integration.google_share_button_annotation') }}</label>
+                    <select id="inputGoogleShareButtonAnnotation" name="google_share_button_annotation"
+                            class="form-control" data-enable-target="#inputGoogleShareEnable">
+                        @foreach($google_share_button_annotation_values as $google_share_button_annotation_value)
+                            <option value="{{ $google_share_button_annotation_value }}"{{ $google_share_button_annotation_value == $google_share_button_annotation ? ' selected' : '' }}>
+                                {{ trans('social_integration.google_share_button_annotation_' . $google_share_button_annotation_value) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputGoogleShareButtonWidth">{{ trans('social_integration.google_share_button_width') }}</label>
+                    <input id="inputGoogleShareButtonWidth" type="number" min="1"
+                           name="google_share_button_width" value="{{ $google_share_button_width }}"
+                           class="form-control" data-enable-target="#inputGoogleShareEnable">
                 </div>
             </div>
         </div>

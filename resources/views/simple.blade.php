@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $site_title }}</title>
+    <title>{{ $site_name }}</title>
     <meta name="description" content="{{ $site_description }}">
     @include('fav_icons')
     @yield('lib_styles')

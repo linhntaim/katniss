@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
 use Katniss\Http\Controllers\Controller;
+use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\AppOptionHelper;
 
 class KatnissController extends Controller
@@ -23,13 +24,13 @@ class KatnissController extends Controller
     /**
      * @var string
      */
-    public $locale;
+    public $localeCode;
 
     public function __construct(Request $request)
     {
         AppOptionHelper::load();
 
-        $this->locale = currentLocale();
+        $this->localeCode = currentLocaleCode();
         $this->is_auth = isAuth();
         $this->auth_user = authUser();
 
@@ -40,5 +41,19 @@ class KatnissController extends Controller
                 'root' => storage_path('../public/upload/file_manager/users/' . $own_directory),
             ]]);
         }
+    }
+
+    protected function htmlInputs(Request $request)
+    {
+        $tmpHtmlInputs = $request->input(AppConfig::KEY_HTML_INPUTS, '');
+        $htmlInputs = [];
+        if (!empty($tmpHtmlInputs)) {
+            $tmpHtmlInputs = explode(',', $tmpHtmlInputs);
+            foreach ($tmpHtmlInputs as $tmpHtmlInput) {
+                $tmpHtmlInput = explode('|', $tmpHtmlInput);
+                $htmlInputs[$tmpHtmlInput[0]] = empty($tmpHtmlInput[1]) ? AppConfig::DEFAULT_HTML_CLEAN_SETTING : $tmpHtmlInput[1];
+            }
+        }
+        return $htmlInputs;
     }
 }

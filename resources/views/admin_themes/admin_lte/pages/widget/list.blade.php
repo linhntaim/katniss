@@ -34,21 +34,21 @@
                 connectWith: '.theme-widget-sortable',
                 zIndex: 999999,
                 update: function (e, ui) {
-                    var widgets = [];
+                    var items = [];
                     var self = $(this);
                     self.children().each(function () {
-                        widgets.push($(this).attr('data-widget'));
+                        items.push($(this).attr('data-widget'));
                     });
-                    if (widgets.length == 0) {
+                    if (items.length == 0) {
                         self.addClass('theme-widget-empty');
                     }
                     else {
                         self.removeClass('theme-widget-empty');
                     }
-                    jQuery.post('{{ url('api/v1/widgets/updateOrder') }}', {
+                    jQuery.post('{{ apiUrl('widgets/update-order') }}', {
                         _token: '{{ csrf_token() }}',
                         placeholder: self.attr('data-placeholder'),
-                        widgets: widgets
+                        widget_ids: items
                     }).done(function (data) {
                         if (data.success) {
                             console.log('success');
@@ -85,7 +85,7 @@
                 var placeholder = $li.closest('.box').find('.box-title').text();
                 cloneModal.find('.clone-widget').text(widgetName);
                 cloneModal.find('.from-placeholder').text(placeholder);
-                cloneModal.find('[name="widgetId"]').val(widgetId);
+                cloneModal.find('[name="widget_id"]').val(widgetId);
                 cloneModal.modal('show');
 
                 return false;
@@ -104,7 +104,7 @@
                 </div>
                 <form method="post" action="{{ adminUrl('widgets/clone') }}?{{ $rdr_param }}">
                     {{ csrf_field() }}
-                    <input type="hidden" name="widgetId" value="">
+                    <input type="hidden" name="widget_id" value="">
                     <div id="clone-modal-content" class="modal-body">
                         <div class="form-group">
                             {{ trans('form.action_clone') }}

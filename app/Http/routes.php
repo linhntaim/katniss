@@ -12,8 +12,31 @@
 */
 
 Route::group([
+    'prefix' => 'api/v1',
+    'namespace' => 'Api\V1',
+    'middleware' => 'katniss.api',
+], function () {
+    Route::group([
+        'middleware' => 'auth'
+    ], function () {
+        Route::group([
+            'middleware' => 'entrust:,access-admin'
+        ], function () {
+            #region Admin Role
+            Route::group([
+                'middleware' => 'entrust:admin'
+            ], function () {
+                Route::post('widgets/update-order', 'WidgetController@updateOrder');
+                Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
+            });
+            #endregion
+        });
+    });
+});
+
+Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect']
+    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'katniss.view']
 ], function () {
     Route::get('/', 'Home\HomepageController@index');
 
@@ -101,6 +124,26 @@ Route::group([
                 Route::get(adminRoute('users/verifying-certificates'), 'UserController@listVerifyingCertificates');
                 Route::get(adminRoute('users/verifying-certificates/{id}/verify'), 'UserController@verifyCertificate')
                     ->where('id', '[0-9]+');
+                //Link Categories
+                Route::get(adminRoute('link-categories'), 'LinkCategoryController@index');
+                Route::get(adminRoute('link-categories/add'), 'LinkCategoryController@create');
+                Route::post(adminRoute('link-categories/add'), 'LinkCategoryController@store');
+                Route::get(adminRoute('link-categories/{id}/edit'), 'LinkCategoryController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('link-categories/update'), 'LinkCategoryController@update');
+                Route::get(adminRoute('link-categories/{id}/delete'), 'LinkCategoryController@destroy')
+                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('link-categories/{id}/sort'), 'LinkCategoryController@layoutSort')
+                    ->where('id', '[0-9]+');
+                //Links
+                Route::get(adminRoute('links'), 'LinkController@index');
+                Route::get(adminRoute('links/{id}/delete'), 'LinkController@destroy')
+                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('links/add'), 'LinkController@create');
+                Route::post(adminRoute('links/add'), 'LinkController@store');
+                Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('links/update'), 'LinkController@update');
             });
         });
         #endregion

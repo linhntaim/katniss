@@ -21,7 +21,7 @@ class ViewController extends KatnissController
         $this->theme = Theme::byRequest();
         $this->theme->register($this->is_auth);
         $this->globalViewParams = [
-            'site_locale' => $this->locale,
+            'site_locale' => $this->localeCode,
             'site_version' => appVersion(),
             'site_name' => appName(),
             'site_logo' => appLogo(),

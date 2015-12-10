@@ -14,7 +14,7 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery.urlParam = function (name) {
+        function urlParam(name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results == null) {
                 return null;
@@ -22,16 +22,16 @@
             else {
                 return decodeURIComponent(results[1]) || 0;
             }
-        };
+        }
 
         jQuery(document).ready(function () {
-            var funcNum = $.urlParam('CKEditorFuncNum');
+            var funcNum = urlParam('CKEditorFuncNum');
             var elfinderOptions = {
                 lang: '{{ $site_locale }}',
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },
-                url: '{{ localizedURL('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
+                url: '{{ homeUrl('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
                 getFileCallback: function (file) {
                     window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     window.close();

@@ -25,7 +25,7 @@ class EntrustSetupTables extends Migration
         });
 
         // Create table for associating roles to users (Many-to-Many)
-        Schema::create('role_user', function (Blueprint $table) {
+        Schema::create('roles_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->rowFormat = 'DYNAMIC';
 
@@ -53,7 +53,7 @@ class EntrustSetupTables extends Migration
         });
 
         // Create table for associating permissions to roles (Many-to-Many)
-        Schema::create('permission_role', function (Blueprint $table) {
+        Schema::create('permissions_roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->rowFormat = 'DYNAMIC';
 
@@ -76,9 +76,9 @@ class EntrustSetupTables extends Migration
      */
     public function down()
     {
-        Schema::drop('permission_role');
+        Schema::drop('permissions_roles');
         Schema::drop('permissions');
-        Schema::drop('role_user');
+        Schema::drop('roles_users');
         Schema::drop('roles');
     }
 }

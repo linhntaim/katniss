@@ -8,25 +8,33 @@ use Illuminate\Support\Facades\Validator;
 
 class MultipleLocaleContentController extends ViewController
 {
-    public function validateMultipleLocaleData(Request $request, array $field_names, array $rules, &$data, &$successes, &$fails, &$old)
+    public function validateMultipleLocaleData(Request $request, array $fieldNames, array $rules, &$data, &$successes, &$fails, &$old, array $htmlInputs = [])
     {
+        $emptyHtmlInputs = empty($htmlInputs);
+        $allSupportedLocaleCodes = allSupportedLocaleCodes();
         $data = [];
         $successes = [];
         $fails = [];
         $old = [];
 
-        foreach ($field_names as $field_name) {
-            $input = $request->input($field_name);
+        foreach ($fieldNames as $fieldName) {
+            $input = $request->input($fieldName);
             if (empty($input)) {
-                $input = $request->file($field_name);
+                $input = $request->file($fieldName);
             }
             if (empty($input)) continue;
             foreach ($input as $locale => $value) {
+                if (!in_array($locale, $allSupportedLocaleCodes)) {
+                    continue;
+                }
                 if (!isset($data[$locale])) {
                     $data[$locale] = [];
                 }
-                $data[$locale][$field_name] = $value;
-                $old[$field_name . '_' . $locale] = $value;
+                if (!$emptyHtmlInputs && array_key_exists($fieldName, $htmlInputs)) {
+                    $value = clean($value, $htmlInputs[$fieldName]);
+                }
+                $data[$locale][$fieldName] = $value;
+                $old[$fieldName . '_' . $locale] = $value;
             }
         }
 

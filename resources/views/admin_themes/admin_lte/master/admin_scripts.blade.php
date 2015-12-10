@@ -8,5 +8,6 @@
 <script src="{{ libraryAsset('fastclick/fastclick.min.js') }}"></script>
 <script src="{{ AdminTheme::jsAsset('app.min.js') }}"></script>
 @yield('lib_scripts')
+<script src="{{ AdminTheme::jsAsset('extra.js') }}"></script>
 @yield('extended_scripts')
 {!! theme_footer() !!}

@@ -58,6 +58,18 @@ class Extension extends BaseExtension
         'right', 'top', 'no_count'
     ];
 
+    protected $googleEnable;
+    protected $googleShareEnable;
+    protected $googleShareButtonSize;
+    protected $googleShareButtonSizeValues = [
+        'small', 'medium', 'standard', 'tall'
+    ];
+    protected $googleShareButtonAnnotation;
+    protected $googleShareButtonAnnotationValues = [
+        'inline', 'bubble', 'none'
+    ];
+    protected $googleShareButtonWidth;
+
     public function __construct()
     {
         parent::__construct();
@@ -87,6 +99,12 @@ class Extension extends BaseExtension
         $this->linkedInEnable = $this->getProperty('linkedin_enable') == 1;
         $this->linkedInShareEnable = $this->getProperty('linkedin_share_enable') == 1;
         $this->linkedInShareCountMode = defPr($this->getProperty('linkedin_share_count_mode'), 'horizontal');
+
+        $this->googleEnable = $this->getProperty('google_enable') == 1;
+        $this->googleShareEnable = $this->getProperty('google_share_enable') == 1;
+        $this->googleShareButtonSize = defPr($this->getProperty('google_share_button_size'), 'medium');
+        $this->googleShareButtonAnnotation = defPr($this->getProperty('google_share_button_annotation'), 'bubble');
+        $this->googleShareButtonWidth = defPr($this->getProperty('google_share_button_width'), 300);
     }
 
     public function viewAdminParams()
@@ -116,17 +134,24 @@ class Extension extends BaseExtension
             'linkedin_share_enable' => $this->linkedInShareEnable,
             'linkedin_share_count_mode' => $this->linkedInShareCountMode,
             'linkedin_share_count_mode_values' => $this->linkedInShareCountModeValues,
+            'google_enable' => $this->googleEnable,
+            'google_share_enable' => $this->googleShareEnable,
+            'google_share_button_size' => $this->googleShareButtonSize,
+            'google_share_button_size_values' => $this->googleShareButtonSizeValues,
+            'google_share_button_annotation' => $this->googleShareButtonAnnotation,
+            'google_share_button_annotation_values' => $this->googleShareButtonAnnotationValues,
+            'google_share_button_width' => $this->googleShareButtonWidth,
         ]);
     }
 
-    protected function facebookJsSdk($facebookAppId)
+    protected function facebookJsSdk()
     {
         return '<div id="fb-root"></div>
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/' . currentFullLocale() . '/sdk.js#xfbml=1&version=v2.5&facebookAppId=' . $facebookAppId . '";
+  js.src = "//connect.facebook.net/' . currentFullLocaleCode() . '/sdk.js#xfbml=1&version=v2.5&facebookAppId=' . $this->facebookAppId . '";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, \'script\', \'facebook-jssdk\'));</script>';
     }
@@ -138,12 +163,12 @@ class Extension extends BaseExtension
 
     protected function linkedInJsSdk()
     {
-        return '<script src="//platform.linkedin.com/in.js">lang: ' . currentFullLocale() . '</script>';
+        return '<script src="//platform.linkedin.com/in.js">lang:' . currentFullLocaleCode() . '</script>';
     }
 
-    protected function googlePlusJsSdk()
+    protected function googleJsSdk()
     {
-        return '<script src="https://apis.google.com/js/platform.js" async defer>{lang: \'' . currentLocale() . '\'}</script>';
+        return '<script src="https://apis.google.com/js/platform.js" async defer>{lang: \'' . currentLocaleCode() . '\'}</script>';
     }
 
     public function register()
@@ -151,7 +176,7 @@ class Extension extends BaseExtension
         $sharing_buttons = [];
 
         if ($this->facebookEnable) {
-            enqueue_theme_footer($this->facebookJsSdk($this->facebookAppId), 'facebook_js_sdk');
+            enqueue_theme_footer($this->facebookJsSdk(), 'facebook_js_sdk');
             add_filter('open_graph_tags_before_render', new CallableObject(function ($data) {
                 $data['fb:app_id'] = $this->facebookAppId;
                 return $data;
@@ -169,6 +194,10 @@ class Extension extends BaseExtension
                     $width = ' data-width="100%';
                     return '<div class="fb-comments" data-href="' . $url . '"' . $color_scheme . $num_posts . $order_by . $width . '"></div>';
                 }));
+            }
+
+            if ($this->facebookLikeEnable || $this->facebookShareEnable || $this->facebookRecommendEnable || $this->facebookSendEnable) {
+                enqueue_theme_header('<style>.fb_iframe_widget > span{vertical-align: baseline!important;}</style>', 'facebook_css_fixed');
             }
 
             if ($this->facebookLikeEnable) {
@@ -191,7 +220,7 @@ class Extension extends BaseExtension
         if ($this->twitterEnable) {
             enqueue_theme_footer($this->twitterJsSdk(), 'twitter_js_sdk');
             if ($this->twitterShareEnable) {
-                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="{sharing_url}">Tweet</a>';
+                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
             }
         }
 
@@ -202,6 +231,17 @@ class Extension extends BaseExtension
                     $sharing_buttons['linkedin_share'] = '<script type="IN/Share" data-url="{sharing_url}" data-counter="' . $this->linkedInShareCountMode . '"></script>';
                 } else {
                     $sharing_buttons['linkedin_share'] = '<script type="IN/Share" data-url="{sharing_url}"></script>';
+                }
+            }
+        }
+
+        if ($this->googleEnable) {
+            enqueue_theme_footer($this->googleJsSdk(), 'google_plus_js_sdk');
+            if ($this->googleShareEnable) {
+                if ($this->googleShareButtonAnnotation == 'inline') {
+                    $sharing_buttons['google_share'] = '<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="{sharing_url}"></div>';
+                } else {
+                    $sharing_buttons['google_share'] = '<div class="g-plusone" data-size="' . $this->googleShareButtonSize . '" data-annotation="' . $this->googleShareButtonAnnotation . '" data-href="{sharing_url}"></div>';
                 }
             }
         }
@@ -240,6 +280,11 @@ class Extension extends BaseExtension
             'linkedin_enable',
             'linkedin_share_enable',
             'linkedin_share_count_mode',
+            'google_enable',
+            'google_share_enable',
+            'google_share_button_size',
+            'google_share_button_annotation',
+            'google_share_button_width',
         ]);
     }
 
@@ -247,7 +292,7 @@ class Extension extends BaseExtension
     {
         return array_merge(parent::validationRules(), [
             'facebook_enable' => 'sometimes|in:1',
-            'facebook_app_id' => 'required',
+            'facebook_app_id' => 'required_if:facebook_enable,1',
             'facebook_comment_enable' => 'sometimes|in:1',
             'facebook_comment_color_scheme' => 'required_if:facebook_comment_enable,1|in:' . implode(',', $this->facebookCommentColorSchemeValues),
             'facebook_comment_num_posts' => 'required_if:facebook_comment_enable,1|min:1',
@@ -264,6 +309,11 @@ class Extension extends BaseExtension
             'linkedin_enable' => 'sometimes|in:1',
             'linkedin_share_enable' => 'sometimes|in:1',
             'linkedin_share_count_mode' => 'required_if:linkedin_share_enable,1|in:' . implode(',', $this->linkedInShareCountModeValues),
+            'google_enable' => 'sometimes|in:1',
+            'google_share_enable' => 'sometimes|in:1',
+            'google_share_button_size' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonSizeValues),
+            'google_share_button_annotation' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonAnnotationValues),
+            'google_share_button_width' => 'required_if:google_share_button_annotation,inline|integer|min:1',
         ]);
     }
 }

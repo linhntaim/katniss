@@ -52,5 +52,10 @@ return [
     'admin_roles_title' => 'Roles',
     'admin_roles_desc' => 'Manage roles of users',
     'admin_users_title' => 'Users',
-    'admin_users_desc'  => 'Manage Users',
+    'admin_users_desc' => 'Manage Users',
+    'admin_link_header' => 'Links',
+    'admin_link_categories_title' => 'Link Categories',
+    'admin_link_categories_desc' => 'Manage link categories',
+    'admin_links_title' => 'Links',
+    'admin_links_desc' => 'Manage links',
 ];

@@ -28,4 +28,20 @@
             </div>
         </div>
     </section>
+    <section id="example-widgets" class="even-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="text-uppercase">Example Widgets</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-10">
+                    {!! placeholder('default_placeholder') !!}
+                </div>
+                <div class="col-xs-1"></div>
+            </div>
+        </div>
+    </section>
 @endsection

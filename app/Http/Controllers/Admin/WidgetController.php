@@ -82,8 +82,8 @@ class WidgetController extends MultipleLocaleContentController
         return view($this->themePage('widget.edit'), array_merge([
             'widget' => $widget,
             'themeWidget' => $themeWidget,
-            'widget_view' => $widget->getAdminViewPath(),
-        ], $widget->getAdminViewParams()));
+            'widget_view' => $widget->viewAdmin(),
+        ], $widget->viewAdminParams()));
     }
 
     public function update(Request $request)
@@ -99,9 +99,16 @@ class WidgetController extends MultipleLocaleContentController
 
         $redirect = redirect(adminUrl('widgets/{id}/edit', ['id' => $themeWidget->id]));
 
+        $htmlInputs = $this->htmlInputs($request);
+        $emptyHtmlInputs = empty($htmlInputs);
+
         $data = [];
         foreach ($widget->fields() as $field) {
-            $data[$field] = $request->input($field, '');
+            $value = $request->input($field, '');
+            if (!$emptyHtmlInputs && array_key_exists($field, $htmlInputs)) {
+                $value = clean($value, $htmlInputs[$field]);
+            }
+            $data[$field] = $value;
         }
         $validator = Validator::make($data, $widget->validationRules());
         if ($validator->fails()) {
@@ -170,7 +177,7 @@ class WidgetController extends MultipleLocaleContentController
 
     public function copyTo(Request $request)
     {
-        $themeWidget = ThemeWidget::findOrFail($request->input('widgetId'));
+        $themeWidget = ThemeWidget::findOrFail($request->input('widget_id'));
 
         $validator = Validator::make($request->all(), [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
@@ -185,7 +192,6 @@ class WidgetController extends MultipleLocaleContentController
             'widget_name' => $themeWidget->widget_name,
             'theme_name' => $themeWidget->theme_name,
             'placeholder' => $request->input('placeholder'),
-            'translatable' => $themeWidget->translatable,
             'constructing_data' => $themeWidget->constructing_data,
             'active' => $themeWidget->active,
             'order' => ThemeWidget::where('placeholder', $request->input('placeholder'))->count() + 1,

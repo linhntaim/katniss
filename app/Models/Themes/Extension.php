@@ -102,7 +102,7 @@ class Extension
         if (!$this::EXTENSION_EDITABLE) abort(404);
 
         if ($this::EXTENSION_TRANSLATABLE) {
-            $locale = currentLocale();
+            $locale = currentLocaleCode();
             $fallbackLocale = config('app.fallback_locale');
 
             $this->localizedData = null;

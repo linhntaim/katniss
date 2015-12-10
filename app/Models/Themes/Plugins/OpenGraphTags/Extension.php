@@ -47,7 +47,7 @@ class Extension extends BaseExtension
         $this->ogDescription = appDescription();
         $this->ogImage = appLogo();
         $this->ogSiteName = appName();
-        $this->ogLocale = currentFullLocale();
+        $this->ogLocale = currentFullLocaleCode();
         $this->ogLocaleAlternate = allSupportedFullLocaleCodes();
     }
 

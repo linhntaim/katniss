@@ -36,19 +36,21 @@ class Theme extends HomeTheme
     public function extensions()
     {
         return [
-            // define extension here
-        ];
-    }
-
-    public function placeholders()
-    {
-        return [
+            // define extension here: extension name => extension class
         ];
     }
 
     public function widgets()
     {
         return [
+            // define widget here: widget name => widget class
+        ];
+    }
+
+    public function placeholders()
+    {
+        return [
+            'default_placeholder' => 'Default Placeholder'
         ];
     }
 }

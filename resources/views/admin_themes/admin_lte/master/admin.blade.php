@@ -26,29 +26,29 @@
     <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-    @include('admin_themes.admin_lte.master.admin_menu')
-    <div class="content-wrapper">
-        <section class="content-header">
-            <h1>
-                @yield('page_title')
-                <small>@yield('page_description')</small>
-            </h1>
-            @yield('page_breadcrumb')
-        </section>
-        <section class="content">
-            @yield('page_content')
-        </section>
-    </div>
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            {{ $site_description }}
+    <div class="wrapper">
+        @include('admin_themes.admin_lte.master.admin_menu')
+        <div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    @yield('page_title')
+                    <small>@yield('page_description')</small>
+                </h1>
+                @yield('page_breadcrumb')
+            </section>
+            <section class="content">
+                @yield('page_content')
+            </section>
         </div>
-        <strong>Copyright &copy; {{ date('Y') }} <a href="{{ $site_home_url }}">{{ $site_name }} {{ $site_version }}</a></strong>
-    </footer>
-    @include('admin_themes.admin_lte.master.admin_control_sidebar')
-</div>
-@yield('modals')
-@include('admin_themes.admin_lte.master.admin_scripts')
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                {{ $site_description }}
+            </div>
+            <strong>Copyright &copy; {{ date('Y') }} <a href="{{ $site_home_url }}">{{ $site_name }} {{ $site_version }}</a></strong>
+        </footer>
+        @include('admin_themes.admin_lte.master.admin_control_sidebar')
+    </div>
+    @yield('modals')
+    @include('admin_themes.admin_lte.master.admin_scripts')
 </body>
 </html>

@@ -18,7 +18,7 @@ class ThemeWidget extends Model
      *
      * @var array
      */
-    protected $fillable = ['widget_name', 'theme_name', 'placeholder', 'translatable', 'constructing_data', 'active', 'order'];
+    protected $fillable = ['widget_name', 'theme_name', 'placeholder', 'constructing_data', 'active', 'order'];
 
     public function getParamsAttribute()
     {
