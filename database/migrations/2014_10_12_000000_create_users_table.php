@@ -12,6 +12,21 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
+        Schema::create('user_settings', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('locale')->default('en');
+            $table->string('country')->default('US');
+            $table->string('timezone')->default('UTC');
+            $table->string('currency')->default('USD');
+            $table->string('number_format')->default('point');
+            $table->tinyInteger('first_day_of_week')->unsigned()->default(0);
+            $table->tinyInteger('long_date_format')->unsigned()->default(0);
+            $table->tinyInteger('short_date_format')->unsigned()->default(0);
+            $table->tinyInteger('long_time_format')->unsigned()->default(0);
+            $table->tinyInteger('short_time_format')->unsigned()->default(0);
+            $table->timestamps();
+        });
+
         Schema::create('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->rowFormat = 'DYNAMIC';
@@ -25,8 +40,11 @@ class CreateUsersTable extends Migration
             $table->string('url_avatar_thumb');
             $table->string('activation_code')->default('');
             $table->boolean('active')->default(false);
+            $table->bigInteger('setting_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('setting_id')->references('id')->on('user_settings');
         });
 
         Schema::create('user_socials', function (Blueprint $table) {
@@ -52,5 +70,6 @@ class CreateUsersTable extends Migration
     {
         Schema::drop('user_socials');
         Schema::drop('users');
+        Schema::drop('user_settings');
     }
 }

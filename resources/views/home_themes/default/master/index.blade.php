@@ -78,6 +78,9 @@
                             <a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a>
                         </p>
                     @endif
+                    <p>
+                        <a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a>
+                    </p>
                 @endif
             </div>
         </div>

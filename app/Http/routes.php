@@ -36,7 +36,7 @@ Route::group([
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'katniss.view']
+    'middleware' => ['katniss.view', 'localeSessionRedirect', 'localizationRedirect']
 ], function () {
     Route::get('/', 'Home\HomepageController@index');
 

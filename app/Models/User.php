@@ -38,7 +38,7 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $fillable = [
         'display_name', 'name', 'email', 'password', 'url_avatar', 'url_avatar_thumb',
-        'activation_code', 'active'
+        'activation_code', 'active', 'setting_id',
     ];
 
     /**
@@ -69,5 +69,17 @@ class User extends Model implements AuthenticatableContract,
             $query->orWhere('email', $email);
         }
         return $query;
+    }
+
+    public function settings()
+    {
+        return $this->hasOne(UserSettings::class, 'id', 'setting_id');
+    }
+
+    public static function create(array $attributes = [])
+    {
+        $settings = UserSettings::create();
+        $attributes['setting_id'] = $settings->id;
+        return parent::create($attributes);
     }
 }
