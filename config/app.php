@@ -152,6 +152,7 @@ return [
         Barryvdh\Elfinder\ElfinderServiceProvider::class,
         Mews\Purifier\PurifierServiceProvider::class,
         Dimsav\Translatable\TranslatableServiceProvider::class,
+        Jenssegers\Agent\AgentServiceProvider::class,
     ],
 
     /*
@@ -210,6 +211,7 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
         'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 ;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
+use Katniss\Models\Helpers\Settings;
 use Katniss\Models\Themes\Extensions;
 use Katniss\Models\Themes\Widgets;
 
@@ -72,6 +73,12 @@ class KatnissServiceProvider extends ServiceProvider
         $this->app['widgets'] = $this->app->share(
             function () {
                 return new Widgets();
+            }
+        );
+
+        $this->app['settings'] = $this->app->share(
+            function () {
+                return new Settings();
             }
         );
     }

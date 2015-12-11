@@ -7,6 +7,18 @@
  */
 
 return [
+    'settings' => [
+        'city' => 'LA',
+        'country' => 'US',
+        'currency' => 'USD',
+        'number_format' => 'point', // comma
+        'first_day_of_week' => 0,
+        'long_date_format' => 0,
+        'short_date_format' => 0,
+        'long_time_format' => 0,
+        'short_time_format' => 0,
+    ],
+
     'admin_theme' => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME,
     'home_theme' => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME,
     'admin_themes' => [

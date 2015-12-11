@@ -22,6 +22,30 @@ use Katniss\Models\Themes\WidgetsFacade;
 use Katniss\Models\Themes\ExtensionsFacade;
 use Katniss\Models\User;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Jenssegers\Agent\Facades\Agent;
+
+#region Detect Client
+function isPhoneClient()
+{
+    return Agent::isPhone();
+}
+
+function isDesktopClient()
+{
+    return Agent::isDesktop();
+}
+
+function isMobileClient()
+{
+    return Agent::isMobile();
+}
+
+function isTabletClient()
+{
+    return Agent::isTablet();
+}
+
+#endregion
 
 #region User
 function clientIp()
@@ -214,7 +238,8 @@ function transPath($route = '', array $params = [], $localeCode = null)
     if (empty($route)) {
         return $localeCode;
     }
-    return $localeCode . '/' . embedParamsInRoute(trans('routes.' . $route), $params);
+    $route = trans('routes.' . $route, [], '', $localeCode);
+    return $localeCode . '/' . embedParamsInRoute($route, $params);
 }
 
 function homePath($route = '', array $params = [], $localeCode = null)
@@ -248,7 +273,7 @@ function currentFullUrl($localeCode = null)
 
 function transUrl($route = '', array $params = [], $localeCode = null)
 {
-    $path = transPath($route, $params, $localeCode = null);
+    $path = transPath($route, $params, $localeCode);
     return url($path);
 }
 
@@ -274,12 +299,13 @@ function apiUrl($route, array $params = [], $version = 1)
 
 function redirectUrlAfterLogin(User $user)
 {
+    $localeCode = $user->settings->locale;
     $redirect_url = homeURL();
     $overwrite_url = session()->pull(AppConfig::KEY_REDIRECT_URL);
     if (!empty($overwrite_url)) {
         $redirect_url = $overwrite_url;
     } elseif ($user->can('access-admin')) {
-        $redirect_url = adminUrl();
+        $redirect_url = adminUrl(null, [], $localeCode);
     }
     return $redirect_url;
 }

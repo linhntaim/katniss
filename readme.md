@@ -58,6 +58,12 @@ Initialize database
 
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 
+#### dimsav/laravel-translatable:5.4
+
+[![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
+
+### mews/purifier:2.0.3
+
 ### App Options:
 
 To store/retrieve runtime application's options in database
@@ -65,6 +71,8 @@ To store/retrieve runtime application's options in database
 ### Theme & Plugin Definition
 
 #### Theme
+
+Organize templates into themes.
 
 ##### Admin Theme
 
@@ -121,6 +129,10 @@ Database seeding:
 - 3 starting users: owner (Owner role), admin (Owner & Administrator role), tester (Tester role)
 
 Anonymous users will get the role of User after registering.
+
+### Settings
+
+To store customized settings of each user
 
 ### File Manager:
 

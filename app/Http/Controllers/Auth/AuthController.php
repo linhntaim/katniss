@@ -125,7 +125,7 @@ class AuthController extends ViewController
 
     protected function authenticated(Request $request, User $user)
     {
-        return redirect(homeUrl('auth/inactive'));
+        return redirect(homeUrl('auth/inactive', [], $user->settings->locale));
     }
 
     /**

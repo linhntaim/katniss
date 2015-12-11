@@ -41,7 +41,7 @@ class RedirectIfAuthenticated
             $inactivePath = homePath('auth/inactive');
             if (!$user->active) {
                 if (!$request->is($activatePath . '/*') && !$request->is($inactivePath)) {
-                    $redirect_url = $inactivePath;
+                    $redirect_url = homePath('auth/inactive', [], $user->settings->locale);
                 }
             } else {
                 $redirect_url = redirectUrlAfterLogin($user);

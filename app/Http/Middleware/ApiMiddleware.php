@@ -9,9 +9,21 @@
 namespace Katniss\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use Katniss\Models\Helpers\AppConfig;
+use Katniss\Models\Helpers\SettingsFacade;
 
 class ApiMiddleware
 {
+    protected function checkSettings(Request $request)
+    {
+        if (!SettingsFacade::fromUser()) {
+            if (!SettingsFacade::fromSession($request->session())) {
+                SettingsFacade::fromCookie($request);
+            }
+        }
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -21,20 +33,15 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->session()->has('settings')) {
-            session([
-                'settings.locale' => currentLocaleCode(),
-                'settings.country' => 'US',
-                'settings.timezone' => 'UTC',
-                'settings.first_day_of_week' => 0,
-                'settings.long_date_format' => 0,
-                'settings.short_date_format' => 0,
-                'settings.long_time_format' => 0,
-                'settings.short_time_format' => 0,
-            ]);
-        } else {
-            setCurrentLocale($request->session()->get('settings.locale'));
+        $this->checkSettings($request);
+
+        $forceLocale = SettingsFacade::getLocale();
+        if ($request->has(AppConfig::KEY_FORCE_LANG)) {
+            $forceLocale = $request->input(AppConfig::KEY_FORCE_LANG);
         }
+
+        setCurrentLocale($forceLocale);
+
         return $next($request);
     }
 }
