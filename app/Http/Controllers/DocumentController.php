@@ -17,6 +17,7 @@ class DocumentController extends ViewController
         if (!$storage->exists($own_directory)) {
             $storage->makeDirectory($own_directory);
         }
+        return $own_directory;
     }
 
     public function onlyMimes($customType)
@@ -51,8 +52,6 @@ class DocumentController extends ViewController
         $this->theme->title(trans('pages.my_documents_title'));
         $this->theme->title(trans('pages.my_documents_desc'));
 
-        $this->makeDirectory();
-
         $customType = $request->input('custom_type', '');
         $onlyMimes = $this->onlyMimes($customType);
 
@@ -69,8 +68,6 @@ class DocumentController extends ViewController
         $this->theme->title(trans('pages.my_documents_title'));
         $this->theme->title(trans('pages.my_documents_desc'));
 
-        $this->makeDirectory();
-
         $customType = $request->input('custom_type', '');
         $onlyMimes = $this->onlyMimes($customType);
 
@@ -85,7 +82,7 @@ class DocumentController extends ViewController
 
     public function getConnector(Request $request)
     {
-        $own_directory = $this->auth_user->ownDirectory;
+        $own_directory = $this->makeDirectory();
         $uploadAllow = [
             'image/jpeg',
             'image/png',
