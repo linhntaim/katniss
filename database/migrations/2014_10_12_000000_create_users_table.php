@@ -13,6 +13,9 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('user_settings', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
             $table->bigIncrements('id');
             $table->string('locale')->default('en');
             $table->string('country')->default('US');

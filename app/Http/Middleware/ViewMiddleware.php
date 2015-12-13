@@ -73,8 +73,8 @@ class ViewMiddleware
         $allSupportedLocaleCodes = allSupportedLocaleCodes();
         $isDirectLocale = in_array($request->segment(1), $allSupportedLocaleCodes);
         $forceLocale = $isDirectLocale ? currentLocaleCode() : SettingsFacade::getLocale();
-        if ($request->has(AppConfig::KEY_FORCE_LANG)) {
-            $forceLocale = $request->input(AppConfig::KEY_FORCE_LANG);
+        if ($request->has(AppConfig::KEY_FORCE_LOCALE)) {
+            $forceLocale = $request->input(AppConfig::KEY_FORCE_LOCALE);
         }
         if (in_array($forceLocale, $allSupportedLocaleCodes)) {
             if ($forceLocale != SettingsFacade::getLocale()) {
