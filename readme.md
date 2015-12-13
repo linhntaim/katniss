@@ -141,7 +141,7 @@ For admin template.
 
 #### IronSummitMedia/startbootstrap-scrolling-nav:1.0.4
 
-[Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav))
+[Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav)
 
 For home template.
 
@@ -150,8 +150,6 @@ For home template.
 To store/retrieve runtime application's options in database.
 
 ### Theme and Plugin Definition
-
-**How-to-Develop-Theme-and-Plugin-with-Katniss is coming soon**
 
 #### Theme
 
@@ -163,7 +161,7 @@ Themes for administration.
 
 Sample Themes:
 
-- Admin LTE (base on AdminLTE).
+- Admin LTE (base on [AdminLTE](#almasaeed2010adminlte232)).
 
 ##### Home Theme
 
@@ -173,7 +171,7 @@ Home themes are easily extended with plugins.
     
 Sample Themes:
 
-- Default Theme (base on Start Bootstrap - Scrolling Nav)
+- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav104))
 
 #### Plugins
     
@@ -183,9 +181,14 @@ Define extensions for adding extra functions/features to themes (or even the sys
 
 Sample Extensions:
 
-- Open Graph Tags: add open graph tags into website
-- Analytic Services: add website analytics (Google, MixPanel)
-- Social Integration: integrate website with social networks (Facebook, Twitter, Google, LinkedIn)
+- Open Graph Tags 
+    - Add open graph tags into website
+- Analytic Services
+    - Add website analytics
+    - Current: Google, MixPanel
+- Social Integration:
+    - Integrate website with social networks
+    - Current: Facebook, Twitter, Google, LinkedIn
 
 ##### Widget
 
@@ -195,8 +198,10 @@ Widgets in a placeholder are sortable.
 
 Sample Widgets:
 
-- Extra HTML: add HTML content to website
-- Base Links: add collection of links to website
+- Extra HTML
+    - Add HTML content to website
+- Base Links
+    - Add collection of links to website
 
 ### Authentication:
 
@@ -216,7 +221,7 @@ Functions/Features:
 
 To authorize users with roles & permissions.
 
-Mainly based on zizaco/entrust:1.4.1.
+Mainly based on [zizaco/entrust:1.4.1](#zizacoentrust141).
 
 Database seeding:
 
@@ -241,7 +246,7 @@ For authenticated users, settings are saved in database & session & cookie.
 
 To easily upload & manage files.
 
-Based on barryvdh/laravel-elfinder:0.3.4.
+Based on [barryvdh/laravel-elfinder:0.3.4](#barryvdhlaravel-elfinder034).
 
 Ready for integrating with:
 
