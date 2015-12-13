@@ -55,6 +55,18 @@ return [
     'picture' => 'Picture',
     'url' => 'URL',
 
+    'settings' => 'Settings',
+    'country' => 'Country',
+    'language' => 'Language',
+    'timezone' => 'Timezone',
+    'number_format' => 'Number format',
+    'currency' => 'Currency',
+    'first_day_of_week' => 'First Day of Week',
+    'long_date_format' => 'Long Date Format',
+    'short_date_format' => 'Short Date Format',
+    'long_time_format' => 'Long Time Format',
+    'short_time_format' => 'Short Time Format',
+
     'or' => 'Or',
     'or_lc' => 'or',
     'from' => 'From',

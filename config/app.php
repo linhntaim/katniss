@@ -206,6 +206,7 @@ return [
         'AdminTheme' => Katniss\Models\Themes\AdminThemes\AdminThemeFacade::class,
         'Widgets' => Katniss\Models\Themes\WidgetsFacade::class,
         'Extensions' => Katniss\Models\Themes\ExtensionsFacade::class,
+        'Settings' => Katniss\Models\Helpers\SettingsFacade::class,
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,

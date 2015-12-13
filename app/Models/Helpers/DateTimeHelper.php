@@ -11,6 +11,11 @@ namespace Katniss\Models\Helpers;
 
 class DateTimeHelper
 {
+    const LONG_DATE_FUNCTION = 'longDate';
+    const SHORT_DATE_FUNCTION = 'shortDate';
+    const LONG_TIME_FUNCTION = 'longTime';
+    const SHORT_TIME_FUNCTION = 'shortTime';
+
     private static $instance;
 
     /**
@@ -25,6 +30,11 @@ class DateTimeHelper
         return self::$instance;
     }
 
+    private $transLongDate;
+    private $transShortDate;
+    private $transLongTime;
+    private $transShortTime;
+
     /**
      * @var float|int
      */
@@ -32,7 +42,14 @@ class DateTimeHelper
 
     private function __construct()
     {
-        $timeZone = session('settings.timezone');
+        $settings = settings();
+
+        $this->transLongDate = 'datetime.long_date_' . $settings->getLongDateFormat();
+        $this->transShortDate = 'datetime.short_date_' . $settings->getShortDateFormat();
+        $this->transLongTime = 'datetime.long_time_' . $settings->getLongTimeFormat();
+        $this->transShortTime = 'datetime.short_time_' . $settings->getShortTimeFormat();
+
+        $timeZone = $settings->getTimezone();
         if (empty($timeZone)) {
             $this->dateTimeOffset = 0;
             return;
@@ -62,7 +79,7 @@ class DateTimeHelper
     {
         $now = \DateTime::createFromFormat($format, $inputString);
         if ($now === false) return false;
-        if ($no_offset) {
+        if (!$no_offset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
                 $now->sub(new \DateInterval('PT' . $offset . 'S'));
@@ -87,7 +104,7 @@ class DateTimeHelper
     public function format($format, $time = 'now', $start = 0, $no_offset = false)
     {
         $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
-        if ($no_offset) {
+        if (!$no_offset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
                 $now->add(new \DateInterval('PT' . $offset . 'S'));
@@ -96,7 +113,7 @@ class DateTimeHelper
             }
         }
         if ($start == 1) {
-            $now->setTime(23, 59, 0);
+            $now->setTime(23, 59, 59);
         } elseif ($start == -1) {
             $now->setTime(0, 0);
         }
@@ -107,14 +124,16 @@ class DateTimeHelper
      * @param string $time
      * @return array
      */
-    public function getBags($time = 'now')
+    public function getBags($time = 'now', $no_offset = false)
     {
         $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
-        $offset = $this->getDateTimeOffset();
-        if ($offset > 0) {
-            $now->add(new \DateInterval('PT' . $offset . 'S'));
-        } elseif ($offset < 0) {
-            $now->sub(new \DateInterval('PT' . abs($offset) . 'S'));
+        if (!$no_offset) {
+            $offset = $this->getDateTimeOffset();
+            if ($offset > 0) {
+                $now->add(new \DateInterval('PT' . $offset . 'S'));
+            } elseif ($offset < 0) {
+                $now->sub(new \DateInterval('PT' . abs($offset) . 'S'));
+            }
         }
         return [
             'ld' => $now->format('l'),
@@ -136,31 +155,69 @@ class DateTimeHelper
         ];
     }
 
-    public function compound($func_1, $separation, $func_2, $time = 'now')
+    public function compound($func_1 = self::SHORT_DATE_FUNCTION, $separation = ' ', $func_2 = self::SHORT_TIME_FUNCTION, $time = 'now', $no_offset = false)
     {
-        return call_user_func(array($this, $func_1), $time)
+        $allowedFunctions = [self::LONG_DATE_FUNCTION, self::LONG_TIME_FUNCTION, self::SHORT_DATE_FUNCTION, self::SHORT_TIME_FUNCTION];
+        if (!in_array($func_1, $allowedFunctions) || !in_array($func_2, $allowedFunctions)) {
+            throw new \Exception('Not allowed methods');
+        }
+
+        return call_user_func(array($this, $func_1), $time, $no_offset)
         . $separation
-        . call_user_func(array($this, $func_2), $time);
+        . call_user_func(array($this, $func_2), $time, $no_offset);
     }
 
-    public function longDate($time = 'now')
+    public function compoundBags($func_1 = self::SHORT_DATE_FUNCTION, $separation = ' ', $func_2 = self::SHORT_TIME_FUNCTION, array $bags = [])
     {
-        return trans('datetime.long_date_' . session('settings.long_date_format'), $this->getBags($time));
+        $allowedFunctions = [self::LONG_DATE_FUNCTION, self::LONG_TIME_FUNCTION, self::SHORT_DATE_FUNCTION, self::SHORT_TIME_FUNCTION];
+        if (!in_array($func_1, $allowedFunctions) || !in_array($func_2, $allowedFunctions)) {
+            throw new \Exception('Not allowed methods');
+        }
+        $func_1 .= 'FromBags';
+        $func_2 .= 'FromBags';
+        return call_user_func(array($this, $func_1), $bags)
+        . $separation
+        . call_user_func(array($this, $func_2), $bags);
     }
 
-    public function shortDate($time = 'now')
+    public function longDate($time = 'now', $no_offset = false)
     {
-        return trans('datetime.short_date_' . session('settings.short_date_format'), $this->getBags($time));
+        return $this->longDateFromBags($this->getBags($time, $no_offset));
     }
 
-    public function longTime($time = 'now')
+    public function shortDate($time = 'now', $no_offset = false)
     {
-        return trans('datetime.long_time_' . session('settings.long_time_format'), $this->getBags($time));
+        return $this->shortDateFromBags($this->getBags($time, $no_offset));
     }
 
-    public function shortTime($time = 'now')
+    public function longTime($time = 'now', $no_offset = false)
     {
-        return trans('datetime.short_time_' . session('settings.short_time_format'), $this->getBags($time));
+        return $this->longTimeFromBags($this->getBags($time, $no_offset));
+    }
+
+    public function shortTime($time = 'now', $no_offset = false)
+    {
+        return $this->shortTimeFromBags($this->getBags($time, $no_offset));
+    }
+
+    public function longDateFromBags(array $bags)
+    {
+        return trans($this->transLongDate, $bags);
+    }
+
+    public function shortDateFromBags(array $bags)
+    {
+        return trans($this->transShortDate, $bags);
+    }
+
+    public function longTimeFromBags(array $bags)
+    {
+        return trans($this->transLongTime, $bags);
+    }
+
+    public function shortTimeFromBags(array $bags)
+    {
+        return trans($this->transShortTime, $bags);
     }
 
     public function getCurrentTimeZone()
@@ -248,6 +305,11 @@ class DateTimeHelper
         return $options;
     }
 
+    protected static function getExampleBags()
+    {
+        return self::getInstance()->getBags(date('Y') . '-12-24 08:00:00', true);
+    }
+
     /**
      * @param int $selected_format
      * @return string
@@ -256,7 +318,7 @@ class DateTimeHelper
     {
         $options = '';
         for ($i = 0; $i < 4; ++$i) {
-            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.long_date_' . $i, self::getInstance()->getBags()) . '</option>';
+            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.long_date_' . $i, self::getExampleBags()) . '</option>';
         }
         return $options;
     }
@@ -269,7 +331,7 @@ class DateTimeHelper
     {
         $options = '';
         for ($i = 0; $i < 4; ++$i) {
-            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.short_date_' . $i, self::getInstance()->getBags()) . '</option>';
+            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.short_date_' . $i, self::getExampleBags()) . '</option>';
         }
         return $options;
     }
@@ -282,7 +344,7 @@ class DateTimeHelper
     {
         $options = '';
         for ($i = 0; $i < 5; ++$i) {
-            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.long_time_' . $i, self::getInstance()->getBags()) . '</option>';
+            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.long_time_' . $i, self::getExampleBags()) . '</option>';
         }
         return $options;
     }
@@ -295,7 +357,7 @@ class DateTimeHelper
     {
         $options = '';
         for ($i = 0; $i < 5; ++$i) {
-            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.short_time_' . $i, self::getInstance()->getBags()) . '</option>';
+            $options .= '<option value="' . $i . '"' . ($selected_format == $i ? ' selected' : '') . '>' . trans('datetime.short_time_' . $i, self::getExampleBags()) . '</option>';
         }
         return $options;
     }
@@ -378,47 +440,47 @@ class DateTimeHelper
 
     public static function longDateFormat()
     {
-        return trans('datetime.long_date_' . session('settings.long_date_format'), self::getFormatBags());
+        return self::getInstance()->longDateFromBags(self::getFormatBags());
     }
 
     public static function longDateJsFormat()
     {
-        return trans('datetime.long_date_' . session('settings.long_date_format'), self::getMomentJsFormatBags());
+        return self::getInstance()->longDateFromBags(self::getMomentJsFormatBags());
     }
 
     public static function shortDateFormat()
     {
-        return trans('datetime.short_date_' . session('settings.short_date_format'), self::getFormatBags());
+        return self::getInstance()->shortDateFromBags(self::getFormatBags());
     }
 
     public static function shortDateJsFormat()
     {
-        return trans('datetime.short_date_' . session('settings.short_date_format'), self::getMomentJsFormatBags());
+        return self::getInstance()->shortDateFromBags(self::getMomentJsFormatBags());
     }
 
     public static function shortDatePickerJsFormat()
     {
-        return trans('datetime.short_date_' . session('settings.short_date_format'), self::getDatePickerJsFormatBags());
+        return self::getInstance()->shortDateFromBags(self::getDatePickerJsFormatBags());
     }
 
     public static function longTimeFormat()
     {
-        return trans('datetime.long_time_' . session('settings.long_time_format'), self::getFormatBags());
+        return self::getInstance()->longTimeFromBags(self::getFormatBags());
     }
 
     public static function longTimeJsFormat()
     {
-        return trans('datetime.long_time_' . session('settings.long_time_format'), self::getMomentJsFormatBags());
+        return self::getInstance()->longTimeFromBags(self::getMomentJsFormatBags());
     }
 
     public static function shortTimeFormat()
     {
-        return trans('datetime.short_time_' . session('settings.short_time_format'), self::getFormatBags());
+        return self::getInstance()->shortTimeFromBags(self::getFormatBags());
     }
 
     public static function shortTimeJsFormat()
     {
-        return trans('datetime.short_time_' . session('settings.short_time_format'), self::getMomentJsFormatBags());
+        return self::getInstance()->shortTimeFromBags(self::getMomentJsFormatBags());
     }
 
     public static function diff($time_from, $time_to = 'now')

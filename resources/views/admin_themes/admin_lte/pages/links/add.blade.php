@@ -23,7 +23,6 @@
         {!! cdataClose() !!}
     </script>
 @endsection
-
 @section('page_content')
     <div class="row">
         <form method="post">
