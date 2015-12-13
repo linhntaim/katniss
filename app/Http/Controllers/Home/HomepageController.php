@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
 use Katniss\Http\Controllers\ViewController;
+use Katniss\Models\Helpers\DateTimeHelper;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
 use Katniss\Models\Helpers\Menu;
 use Katniss\Models\Helpers\MenuItem;
+use Katniss\Models\Helpers\NumberFormatHelper;
 
 class HomepageController extends ViewController
 {
@@ -32,9 +34,26 @@ class HomepageController extends ViewController
                 '#example-widgets',
                 'Example Widgets', 'li', null, 'page-scroll'
             ));
+            $menu->addItem(new MenuItem(
+                '#my-settings',
+                trans('pages.my_settings_title'), 'li', null, 'page-scroll'
+            ));
             return $menu;
         }));
-        return view($this->themePage('home'));
+        $settings = settings();
+        $datetimeHelper = DateTimeHelper::getInstance();
+        $localeCode = $settings->getLocale();
+        $locale = allLocale($localeCode);
+        $countryCode = $settings->getCountry();
+        $country = allCountry($countryCode);
+        return view($this->themePage('home'), [
+            'country' => $countryCode . ' - ' . $country['name'] . ' (+' . $country['calling_code'] . ')',
+            'locale' => $localeCode . '_' . $locale['country_code'] . ' - ' . $locale['name'] . ' (' . $locale['native'] . ')',
+            'timezone' => $settings->getTimezone() . ' (' . $datetimeHelper->getCurrentTimeZone() . ')',
+            'price' => NumberFormatHelper::getInstance()->formatCurrency(12345.67),
+            'long_datetime' => $datetimeHelper->compound(DateTimeHelper::LONG_DATE_FUNCTION, ' ', DateTimeHelper::LONG_TIME_FUNCTION),
+            'short_datetime' => $datetimeHelper->compound(),
+        ]);
     }
 
     /**

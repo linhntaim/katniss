@@ -7,6 +7,8 @@
  */
 
 return [
+    'my-settings'                                   => 'my-settings',
+
     'auth'                                          => 'auth',
     'auth/login'                                    => 'auth/login',
     'auth/logout'                                   => 'auth/logout',

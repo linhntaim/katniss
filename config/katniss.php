@@ -11,7 +11,7 @@ return [
         'city' => 'LA',
         'country' => 'US',
         'currency' => 'USD',
-        'number_format' => 'point', // comma
+        'number_format' => 'point_comma',
         'first_day_of_week' => 0,
         'long_date_format' => 0,
         'short_date_format' => 0,
@@ -40,11 +40,23 @@ return [
         Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
     ],
     'paths_use_admin_theme' => [
-        'admin', 'auth', 'documents', 'password'
+        'admin', 'auth', 'documents', 'password', 'my-settings'
     ],
 
     'genders' => [
         'male', 'female', 'other'
+    ],
+
+    'number_formats' => [
+        'point_comma',
+        'point_space',
+        'comma_point',
+        'comma_space',
+    ],
+
+    'currencies' => [
+        'USD' => ['name' => 'U.S. Dollar', 'symbol' => '$'],
+        'VND' => ['name' => 'Vietnam Dong', 'symbol' => '₫'],
     ],
 
     'locales' => [

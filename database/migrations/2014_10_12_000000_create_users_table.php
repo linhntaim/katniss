@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('country')->default('US');
             $table->string('timezone')->default('UTC');
             $table->string('currency')->default('USD');
-            $table->string('number_format')->default('point');
+            $table->string('number_format')->default('point_comma');
             $table->tinyInteger('first_day_of_week')->unsigned()->default(0);
             $table->tinyInteger('long_date_format')->unsigned()->default(0);
             $table->tinyInteger('short_date_format')->unsigned()->default(0);

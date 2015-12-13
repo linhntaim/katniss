@@ -39,6 +39,8 @@ Route::group([
     'middleware' => ['katniss.view', 'localeSessionRedirect', 'localizationRedirect']
 ], function () {
     Route::get('/', 'Home\HomepageController@index');
+    Route::get(homeRoute('my-settings'), 'Admin\SettingsController@index');
+    Route::post(homeRoute('my-settings'), 'Admin\SettingsController@update');
 
     Route::group([
         'namespace' => 'Auth',

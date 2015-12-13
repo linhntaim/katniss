@@ -93,6 +93,10 @@
 <script src="{{ HomeTheme::jsAsset('jquery.easing.min.js') }}"></script>
 <script src="{{ HomeTheme::jsAsset('scrolling-nav.js') }}"></script>
 @yield('lib_scripts')
+<script>
+    var SETTINGS_NUMBER_FORMAT = '{{ Settings::getNumberFormat() }}';
+</script>
+<script src="{{ libraryAsset('katniss.js') }}"></script>
 @yield('extended_scripts')
 {!! theme_footer() !!}
 </body>

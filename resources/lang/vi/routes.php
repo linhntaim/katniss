@@ -7,6 +7,8 @@
  */
 
 return [
+    'custom-settings'                               => 'thiet-lap-nguoi-dung',
+
     'auth'                                          => 'xac-thuc',
     'auth/login'                                    => 'xac-thuc/dang-nhap',
     'auth/logout'                                   => 'xac-thuc/dang-xuat',

@@ -23,6 +23,8 @@ use Katniss\Models\Themes\ExtensionsFacade;
 use Katniss\Models\User;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Jenssegers\Agent\Facades\Agent;
+use Katniss\Models\Helpers\DateTimeHelper;
+use Katniss\Models\Helpers\NumberFormatHelper;
 
 #region Detect Client
 function isPhoneClient()
@@ -182,6 +184,16 @@ function allSupportedLocale($localeCode, $property = '')
     $locales = allSupportedLocales();
     if (empty($locales[$localeCode])) return null;
     return empty($property) || $property == 'all' ? $locales[$localeCode] : $locales[$localeCode][$property];
+}
+
+function supportedLocalesAsOptions()
+{
+    $selected_locale = currentLocaleCode();
+    $options = '';
+    foreach (allSupportedLocales() as $localeCode => $properties) {
+        $options .= '<option value="' . $localeCode . '"' . ($localeCode == $selected_locale ? ' selected' : '') . '>' . $properties['native'] . '</option>';
+    }
+    return $options;
 }
 
 function currentLocaleCode($property = '')
@@ -638,7 +650,7 @@ function theme_footer()
     return HomeThemeFacade::getFooter();
 }
 
-#end region
+#endregion
 
 #region Runtime
 function appKey()
@@ -700,5 +712,122 @@ function appDomain()
 function appDefaultUserProfilePicture()
 {
     return asset(env('APP_DEFAULT_USER_PICTURE'));
+}
+
+/**
+ * @return Katniss\Models\Helpers\Settings
+ */
+function settings() {
+    return app('settings');
+}
+
+function allGenders()
+{
+    return config('katniss.genders');
+}
+
+function allCountries()
+{
+    return config('katniss.countries');
+}
+
+function allCountryCodes()
+{
+    return array_keys(allCountries());
+}
+
+function allCountry($code, $property = '')
+{
+    $countries = allCountries();
+    if (empty($countries[$code])) return null;
+    return empty($property) || $property == 'all' ? $countries[$code] : $countries[$code][$property];
+}
+
+function countriesAsOptions($selected_country = 'VN')
+{
+    $options = '';
+    foreach (allCountries() as $code => $properties) {
+        $options .= '<option value="' . $code . '"' . ($selected_country == $code ? ' selected' : '') . '>' . $properties['name'] . '</option>';
+    }
+    return $options;
+}
+
+function callingCodesAsOptions($selected_country = 'VN')
+{
+    $options = '';
+    foreach (allCountries() as $code => $properties) {
+        $options .= '<option value="' . $code . '"' . ($selected_country == $code ? ' selected' : '') . '>(+' . $properties['calling_code'] . ') ' . $properties['name'] . '</option>';
+    }
+    return $options;
+}
+
+function allCurrencies()
+{
+    return config('katniss.currencies');
+}
+
+function allCurrencyCodes()
+{
+    return array_keys(allCurrencies());
+}
+
+function allCurrency($code, $property = '')
+{
+    $currencies = allCurrencies();
+    if (empty($currencies[$code])) return null;
+    return empty($property) || $property == 'all' ? $currencies[$code] : $currencies[$code][$property];
+}
+
+function currenciesAsOptions($selected_currency = 'VND')
+{
+    $options = '';
+    foreach (allCurrencies() as $code => $properties) {
+        $options .= '<option value="' . $code . '"' . ($selected_currency == $code ? ' selected' : '') . '>' . $properties['name'] . ' (' . $properties['symbol'] . ')' . '</option>';
+    }
+    return $options;
+}
+
+function allNumberFormats()
+{
+    return config('katniss.number_formats');
+}
+
+function numberFormatsAsOptions($selected_number_format = 'point-comma')
+{
+    $options = '';
+    foreach (allNumberFormats() as $number_format) {
+        $options .= '<option value="' . $number_format . '"' . ($selected_number_format == $number_format ? ' selected' : '') . '>' . NumberFormatHelper::doFormat(12345.67, $number_format) . '</option>';
+    }
+    return $options;
+}
+
+function timeZoneListAsOptions($selected)
+{
+    return DateTimeHelper::getTimeZoneListAsOptions($selected);
+}
+
+function daysOfWeekAsOptions($selected)
+{
+    return DateTimeHelper::getDaysOfWeekAsOptions($selected);
+}
+
+function longDateFormatsAsOptions($selected)
+{
+    return DateTimeHelper::getLongDateFormatsAsOptions($selected);
+}
+
+function shortDateFormatsAsOptions($selected)
+{
+    return DateTimeHelper::getShortDateFormatsAsOptions($selected);
+}
+
+function longTimeFormatsAsOptions($selected)
+{
+    return DateTimeHelper::getLongTimeFormatsAsOptions($selected);
+}
+
+function shortTimeFormatsAsOptions($selected)
+{
+    return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
 }
 #endregion
