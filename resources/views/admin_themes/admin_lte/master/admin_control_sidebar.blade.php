@@ -5,46 +5,20 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
+            <h3 class="control-sidebar-heading"></h3>
             <ul class="control-sidebar-menu">
                 <li>
-                    <a href="javascript:return false;">
-                        <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                        <div class="menu-info">
-                            <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                            <p>Will be 23 on April 24th</p>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            <h3 class="control-sidebar-heading">Tasks Progress</h3>
-            <ul class="control-sidebar-menu">
-                <li>
-                    <a href="javascript:return false;">
-                        <h4 class="control-sidebar-subheading">
-                            Custom Template Design
-                            <span class="label label-danger pull-right">70%</span>
-                        </h4>
-                        <div class="progress progress-xxs">
-                            <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                        </div>
-                    </a>
                 </li>
             </ul>
         </div>
-        <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
         <div class="tab-pane" id="control-sidebar-settings-tab">
             <form method="post">
-                <h3 class="control-sidebar-heading">General Settings</h3>
-                <div class="form-group">
-                    <label class="control-sidebar-subheading">
-                        Report panel usage
-                        <input type="checkbox" class="pull-right" checked>
-                    </label>
-                    <p>
-                        Some information about this general settings option
-                    </p>
-                </div>
+                <h3 class="control-sidebar-heading">{{ trans('label.settings') }}</h3>
+                <ul class="control-sidebar-menu">
+                    <li>
+                        <a href="{{ homeUrl('my-settings') }}">{{ trans('pages.my_settings_title') }}</a>
+                    </li>
+                </ul>
             </form>
         </div>
     </div>

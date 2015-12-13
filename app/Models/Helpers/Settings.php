@@ -70,6 +70,11 @@ class Settings
         }
     }
 
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
     public function setTimezone($timezone)
     {
         $old = $this->timezone;
@@ -79,6 +84,11 @@ class Settings
         if ($old != $timezone) {
             $this->changingDataStore['timezone'] = $this->timezone;
         }
+    }
+
+    public function getTimezone()
+    {
+        return $this->timezone;
     }
 
     public function setCurrency($currency)
@@ -92,6 +102,11 @@ class Settings
         }
     }
 
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
     public function setNumberFormat($number_format)
     {
         $old = $this->number_format;
@@ -103,10 +118,15 @@ class Settings
         }
     }
 
+    public function getNumberFormat()
+    {
+        return $this->number_format;
+    }
+
     public function setFirstDayOfWeek($first_day_of_week)
     {
         $old = $this->first_day_of_week;
-        if (!empty($first_day_of_week)) {
+        if (!empty($first_day_of_week) || $first_day_of_week == 0) {
             $this->first_day_of_week = $first_day_of_week;
         }
         if ($old != $first_day_of_week) {
@@ -114,10 +134,15 @@ class Settings
         }
     }
 
+    public function getFirstDayOfWeek()
+    {
+        return $this->first_day_of_week;
+    }
+
     public function setLongDateFormat($long_date_format)
     {
         $old = $this->long_date_format;
-        if (!empty($long_date_format)) {
+        if (!empty($long_date_format) || $long_date_format == 0) {
             $this->long_date_format = $long_date_format;
         }
         if ($old != $long_date_format) {
@@ -125,10 +150,15 @@ class Settings
         }
     }
 
+    public function getLongDateFormat()
+    {
+        return $this->long_date_format;
+    }
+
     public function setShortDateFormat($short_date_format)
     {
         $old = $this->short_date_format;
-        if (!empty($short_date_format)) {
+        if (!empty($short_date_format) || $short_date_format == 0) {
             $this->short_date_format = $short_date_format;
         }
         if ($old != $short_date_format) {
@@ -136,10 +166,15 @@ class Settings
         }
     }
 
+    public function getShortDateFormat()
+    {
+        return $this->short_date_format;
+    }
+
     public function setLongTimeFormat($long_time_format)
     {
         $old = $this->long_time_format;
-        if (!empty($long_time_format)) {
+        if (!empty($long_time_format) || $long_time_format == 0) {
             $this->long_time_format = $long_time_format;
         }
         if ($old != $long_time_format) {
@@ -147,10 +182,15 @@ class Settings
         }
     }
 
+    public function getLongTimeFormat()
+    {
+        return $this->long_time_format;
+    }
+
     public function setShortTimeFormat($short_time_format)
     {
         $old = $this->short_time_format;
-        if (!empty($short_time_format)) {
+        if (!empty($short_time_format) || $short_time_format == 0) {
             $this->short_time_format = $short_time_format;
         }
         if ($old != $short_time_format) {
@@ -158,10 +198,21 @@ class Settings
         }
     }
 
+    public function getShortTimeFormat()
+    {
+        return $this->short_time_format;
+    }
+
+    public function getChangingDataStore()
+    {
+        return $this->changingDataStore;
+    }
+
     public function fromUser()
     {
         if (isAuth()) {
             $userSettings = authUser()->settings;
+            debug($userSettings);
             $this->setLocale($userSettings->locale);
             $this->setCountry($userSettings->country);
             $this->setTimezone($userSettings->timezone);
@@ -211,11 +262,6 @@ class Settings
         $this->setShortTimeFormat($request->cookie('settings_short_time_format'));
 
         return $request->hasCookie('settings_locale');
-    }
-
-    public function changingDataStore()
-    {
-        return $this->changingDataStore;
     }
 
     public function storeUser()

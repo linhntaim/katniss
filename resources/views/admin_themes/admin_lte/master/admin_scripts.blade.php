@@ -8,6 +8,9 @@
 <script src="{{ libraryAsset('fastclick/fastclick.min.js') }}"></script>
 <script src="{{ AdminTheme::jsAsset('app.min.js') }}"></script>
 @yield('lib_scripts')
-<script src="{{ AdminTheme::jsAsset('extra.js') }}"></script>
+<script>
+    var SETTINGS_NUMBER_FORMAT = '{{ Settings::getNumberFormat() }}';
+</script>
+<script src="{{ libraryAsset('katniss.js') }}"></script>
 @yield('extended_scripts')
 {!! theme_footer() !!}

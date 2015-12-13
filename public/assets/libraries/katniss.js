@@ -15,7 +15,7 @@ function toDigits(digit, minLength) {
         minLength = 2;
     }
     var max = Math.pow(10, minLength - 1);
-    return digit < max ? str_repeat('0', minLength - 1) + digit : digit;
+    return digit < max ? strRepeat('0', minLength - 1) + digit : digit;
 }
 
 function urlParam(name) {
@@ -73,3 +73,37 @@ jQuery.fn.extend({
         });
     }
 });
+
+function NumberFormatHelper() {
+    this.type = typeof SETTINGS_NUMBER_FORMAT === 'undefined' ? 'point_comma' : NUMBER_FORMAT;
+}
+NumberFormatHelper.prototype.format = function (number) {
+    number = parseFloat(number);
+    switch (this.type) {
+        case 'point_comma':
+            return this.formatPointComma(number);
+        case 'point_space':
+            return this.formatPointSpace(number);
+        case 'comma_point':
+            return this.formatCommaPoint(number);
+        case 'comma_space':
+            return this.formatCommaSpace(number);
+        default:
+            return number;
+    }
+};
+
+NumberFormatHelper.prototype.formatPointComma = function (number) {
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+};
+NumberFormatHelper.prototype.formatPointSpace = function (number) {
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1 ');
+};
+NumberFormatHelper.prototype.formatCommaPoint = function (number) {
+    number = this.formatPointSpace(number);
+    return number.replace('.', ',').replace(' ', '.');
+};
+NumberFormatHelper.prototype.formatCommaSpace = function (number) {
+    number = this.formatPointSpace(number);
+    return number.replace('.', ',');
+};

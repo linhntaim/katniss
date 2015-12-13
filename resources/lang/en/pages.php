@@ -14,7 +14,7 @@ return [
     'my_public_profile_title' => 'My Public Profile',
     'my_profile_edit_title' => 'Edit My Profile',
     'my_settings_title' => 'My Settings',
-    'my_settings_desc' => 'Customize application settings',
+    'my_settings_desc' => 'Customize settings',
     'my_documents_title' => 'My Documents',
     'my_documents_desc' => 'Store and manage uploaded documents like photos, docs, presentations, ...',
     'my_notifications_title' => 'My Notification Center',
