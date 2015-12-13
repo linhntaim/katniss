@@ -135,7 +135,7 @@ For filtering HTML content.
 
 #### almasaeed2010/AdminLTE:2.3.2
 
-[AdminLTE](https://github.com/almasaeed2010/AdminLTE))
+[AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
 For admin template.
 
