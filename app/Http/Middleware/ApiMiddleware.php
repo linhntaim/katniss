@@ -36,8 +36,8 @@ class ApiMiddleware
         $this->checkSettings($request);
 
         $forceLocale = SettingsFacade::getLocale();
-        if ($request->has(AppConfig::KEY_FORCE_LANG)) {
-            $forceLocale = $request->input(AppConfig::KEY_FORCE_LANG);
+        if ($request->has(AppConfig::KEY_FORCE_LOCALE)) {
+            $forceLocale = $request->input(AppConfig::KEY_FORCE_LOCALE);
         }
 
         setCurrentLocale($forceLocale);

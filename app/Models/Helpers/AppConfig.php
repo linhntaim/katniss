@@ -12,7 +12,7 @@ class AppConfig
 {
     const KEY_REDIRECT_URL = 'x_rdr';
     const KEY_WIZARD = 'x_wizard';
-    const KEY_FORCE_LANG = 'x_force_lang';
+    const KEY_FORCE_LOCALE = 'x_force_locale';
     const KEY_FORCE_THEME = 'x_force_theme';
     const KEY_HTML_INPUTS = 'x_html_inputs';
 
