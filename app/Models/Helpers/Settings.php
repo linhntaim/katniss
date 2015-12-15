@@ -142,7 +142,7 @@ class Settings
     public function setLongDateFormat($long_date_format)
     {
         $old = $this->long_date_format;
-        if (!empty($long_date_format) || $long_date_format == 0) {
+        if (!empty($long_date_format) || $long_date_format === 0) {
             $this->long_date_format = $long_date_format;
         }
         if ($old != $long_date_format) {
@@ -158,7 +158,7 @@ class Settings
     public function setShortDateFormat($short_date_format)
     {
         $old = $this->short_date_format;
-        if (!empty($short_date_format) || $short_date_format == 0) {
+        if (!empty($short_date_format) || $short_date_format === 0) {
             $this->short_date_format = $short_date_format;
         }
         if ($old != $short_date_format) {
@@ -174,7 +174,7 @@ class Settings
     public function setLongTimeFormat($long_time_format)
     {
         $old = $this->long_time_format;
-        if (!empty($long_time_format) || $long_time_format == 0) {
+        if (!empty($long_time_format) || $long_time_format === 0) {
             $this->long_time_format = $long_time_format;
         }
         if ($old != $long_time_format) {
@@ -190,7 +190,7 @@ class Settings
     public function setShortTimeFormat($short_time_format)
     {
         $old = $this->short_time_format;
-        if (!empty($short_time_format) || $short_time_format == 0) {
+        if (!empty($short_time_format) || $short_time_format === 0) {
             $this->short_time_format = $short_time_format;
         }
         if ($old != $short_time_format) {
