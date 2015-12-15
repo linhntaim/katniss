@@ -238,11 +238,45 @@ class LaravelLocalization {
             $url = $this->request->fullUrl();
 
         }
-        
-        if ( $locale && $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale) )
-        {
-            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
-        }
+
+        if(filter_var($url, FILTER_VALIDATE_URL)) { // if no fixed, delete
+            // linhnt.aim@outlook.com
+            $parsed_url = parse_url($url);
+            if (!empty($parsed_url['query'])) {
+                if ($parsed_url['query'] == '}' && mb_strpos($parsed_url['path'], '{') !== false) {
+                    $parsed_url['path'] .= '?}';
+                    $parsed_url['query'] = '';
+                } else {
+                    $tmp = explode('=', $parsed_url['query'])[0];
+                    $i = mb_strpos($tmp, '?');
+                    while ($i !== false) {
+                        if ($tmp{$i + 1} != '}') {
+                            $parsed_url['path'] .= '?' . mb_substr($tmp, 0, $i);
+                            $parsed_url['query'] = mb_substr($parsed_url['query'], $i + 1);
+                            break;
+                        }
+                        $i = mb_strpos($tmp, '?', $i + 1);
+                    }
+                }
+            }
+            $tmpUrl = $parsed_url['scheme'] . '://' . $parsed_url['host'] . $parsed_url['path'];
+            // end fixed // if no fixed, delete
+
+//            if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)) { // if no fixed, uncomment
+            if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($tmpUrl, $attributes, $this->currentLocale)) { // if no fixed, delete
+                // linhnt.aim@outlook.com
+                $translatedUrl = $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+                if (!empty($parsed_url['query'])) {
+                    $translatedUrl .= '?' . $parsed_url['query'];
+                }
+                if (!empty($parsed_url['fragment'])) {
+                    $translatedUrl .= '#' . $parsed_url['fragment'];
+                }
+                return $translatedUrl;
+                // end fixed // if no fixed, delete
+//            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes); // if no fixed, uncomment
+            }
+        } // if no fixed, delete
 
         $base_path = $this->request->getBaseUrl();
         $parsed_url = parse_url($url);
