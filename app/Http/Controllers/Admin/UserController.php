@@ -87,6 +87,8 @@ class UserController extends ViewController
                 'email' => $request->input('email'),
                 'name' => $request->input('name'),
                 'password' => bcrypt($request->input('password')),
+                'url_avatar' => appDefaultUserProfilePicture(),
+                'url_avatar_thumb' => appDefaultUserProfilePicture(),
                 'activation_code' => str_random(32),
                 'active' => false
             ));
