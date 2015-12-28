@@ -4,6 +4,17 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "repositories":
+    [
+        {
+            "type": "vcs",
+            "url": "https://github.com/linhntaim/ortc-laravel"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/linhntaim/ortc-php"
+        }
+    ],
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",

@@ -10,6 +10,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Support\Facades\DB;
+use Katniss\Models\Helpers\ORTC\PushClient;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract,
@@ -38,7 +39,7 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $fillable = [
         'display_name', 'name', 'email', 'password', 'url_avatar', 'url_avatar_thumb',
-        'activation_code', 'active', 'setting_id',
+        'activation_code', 'active', 'setting_id', 'channel'
     ];
 
     /**
@@ -76,10 +77,16 @@ class User extends Model implements AuthenticatableContract,
         return $this->hasOne(UserSettings::class, 'id', 'setting_id');
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(UserNotification::class, 'user_id', 'id');
+    }
+
     public static function create(array $attributes = [])
     {
         $settings = UserSettings::create();
         $attributes['setting_id'] = $settings->id;
+        $attributes['channel'] = PushClient::generateChannelKey(PushClient::PREFIX_CHANNEL_NOTIFICATION);
         return parent::create($attributes);
     }
 }

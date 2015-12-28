@@ -61,4 +61,19 @@ class UserSession extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function isGuest()
+    {
+        return empty($this->user_id);
+    }
+
+    public function getIdleTimeAttribute() // seconds
+    {
+        return time() - $this->last_activity;
+    }
+
+    public function isIdle()
+    {
+        return $this->idleTime > config('katniss.idle_switching_time');
+    }
 }

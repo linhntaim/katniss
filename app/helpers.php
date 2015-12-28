@@ -330,9 +330,8 @@ function redirectUrlAfterLogin(User $user)
  * @param string $type
  * @return string
  */
-function escapeObject($input, &$type)
+function escapeObject($input, &$type = 'string')
 {
-    $type = 'string';
     if (empty($input)) return '';
 
     if ($input instanceof Arrayable && !$input instanceof \JsonSerializable) {
@@ -717,7 +716,8 @@ function appDefaultUserProfilePicture()
 /**
  * @return Katniss\Models\Helpers\Settings
  */
-function settings() {
+function settings()
+{
     return app('settings');
 }
 
@@ -829,5 +829,69 @@ function longTimeFormatsAsOptions($selected)
 function shortTimeFormatsAsOptions($selected)
 {
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
+}
+
+#endregion
+
+#region DateTime
+/**
+ * @param string $time
+ * @return string
+ */
+function defaultTime($time)
+{
+    return DateTimeHelper::getInstance()->format('Y-m-d H:i:s', $time);
+}
+
+/**
+ * @param string $time
+ * @return string
+ */
+function defaultTimeTZ($time)
+{
+    return DateTimeHelper::getInstance()->format('Y-m-d\TH:i:s\Z', $time);
+}
+
+function formatTime($format, $time = 'now', $start = 0, $no_offset = false)
+{
+    return DateTimeHelper::getInstance()->format($format, $time, $start, $no_offset);
+}
+
+function fromFormattedTime($format, $inputString, $no_offset = false)
+{
+    return DateTimeHelper::getInstance()->fromFormat($format, $inputString, $no_offset);
+}
+
+function toDatabaseTime($current_format, $inputString, $no_offset = false)
+{
+    return DateTimeHelper::getInstance()->convertToDatabaseFormat($current_format, $inputString, $no_offset);
+}
+
+function currentTimeZone()
+{
+    return DateTimeHelper::getInstance()->getCurrentTimeZone();
+}
+
+#endregion
+
+#region ORTC
+function appOrtcServer()
+{
+    return env('ORTC_SERVER');
+}
+
+function appOrtcClientKey()
+{
+    return env('ORTC_CLIENT_KEY');
+}
+
+function appOrtcClientSecret()
+{
+    return env('ORTC_CLIENT_SECRET');
+}
+
+function appOrtcClientToken()
+{
+    return session()->getId();
 }
 #endregion

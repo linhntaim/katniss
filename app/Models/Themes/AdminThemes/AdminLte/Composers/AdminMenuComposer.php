@@ -119,6 +119,19 @@ class AdminMenuComposer
             }
         }
 
-        $view->with('admin_menu', $menu->render());
+        $notification_menu = new Menu('ul', 'menu', '', 'notification-holder');
+        $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(10)->get();
+        foreach ($notifications as $notification) {
+            $notification_menu->addItem(new MenuItem(
+                $notification->url,
+                $notification->message,
+                'li', $notification->read ? 'read' : 'unread', '', '<h4>',
+                '</h4><p><small><i class="fa fa-clock-o"></i> <span class="time-ago" title="' . $notification->timeTz . '">' . $notification->time . '</span></small></p>',
+                'notification-' . $notification->id
+            ));
+        }
+
+        $view->with('admin_menu', $menu->render())
+            ->with('notification_menu', $notification_menu->render());
     }
 }

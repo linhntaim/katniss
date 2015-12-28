@@ -9,6 +9,22 @@
         </a>
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
+                <li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell-o"></i>
+                        <span class="label label-warning hidden" id="notification-count">0</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            {!! $notification_menu !!}
+                        </li>
+                        <li class="footer">
+                            <a href="{{ homeUrl('notification') }}">
+                                {{ trans('form.action_view_all') }}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ $auth_user->url_avatar_thumb }}" class="user-image" alt="{{ trans('label.profile_picture') }}">
