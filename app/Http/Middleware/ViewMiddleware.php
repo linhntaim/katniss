@@ -25,11 +25,6 @@ class ViewMiddleware
     protected $auth;
 
     /**
-     * @var bool
-     */
-    protected $continueCookie;
-
-    /**
      * Create a new filter instance.
      *
      * @param  Guard $auth
@@ -44,8 +39,8 @@ class ViewMiddleware
     {
         $continueSession = SettingsFacade::fromSession($request->session());
         $needCheckCookie = false;
+        debug(app('settings'));
         if (SettingsFacade::fromUser()) {
-            debug(app('settings'));
             SettingsFacade::storeSession();
             $needCheckCookie = true;
         } else {
