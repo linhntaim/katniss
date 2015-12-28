@@ -166,6 +166,7 @@ class AuthController extends ViewController
                 'name' => $data['name'],
                 'password' => bcrypt($data['password']),
                 'url_avatar' => $data['url_avatar'],
+                'url_avatar_thumb' => $data['url_avatar'],
                 'activation_code' => str_random(32),
             ]);
             $defaultRole = Role::where('name', 'user')->firstOrFail();
