@@ -131,9 +131,7 @@ class LaravelDebugbar extends DebugBar
             $startTime = defined('LARAVEL_START') ? LARAVEL_START : null;
             $this->addCollector(new TimeDataCollector($startTime));
 
-            if ($this->isLumen()) {
-                $debugbar->startMeasure('application', 'Application');
-            } else {
+            if ( ! $this->isLumen()) {
                 $this->app->booted(
                   function () use ($debugbar, $startTime) {
                       if ($startTime) {
@@ -141,26 +139,9 @@ class LaravelDebugbar extends DebugBar
                       }
                   }
                 );
-
-                //Check if App::before is already called..
-                if ($this->app->isBooted()) {
-                    $debugbar->startMeasure('application', 'Application');
-                } else {
-                    $this->app['router']->before(
-                      function () use ($debugbar) {
-                          $debugbar->startMeasure('application', 'Application');
-                      }
-                    );
-                }
-
-                $this->app['router']->after(
-                  function () use ($debugbar) {
-                      $debugbar->stopMeasure('application');
-                      $debugbar->startMeasure('after', 'After application');
-                  }
-                );
             }
-
+            
+            $debugbar->startMeasure('application', 'Application');
         }
 
         if ($this->shouldCollect('memory', true)) {
@@ -307,8 +288,20 @@ class LaravelDebugbar extends DebugBar
 
             try {
                 $db->listen(
-                    function ($query, $bindings, $time, $connectionName) use ($db, $queryCollector) {
-                        $connection = $db->connection($connectionName);
+                    function ($query, $bindings = null, $time = null, $connectionName = null) use ($db, $queryCollector) {
+                        // Laravel 5.2 changed the way some core events worked. We must account for
+                        // the first argument being an "event object", where arguments are passed
+                        // via object properties, instead of individual arguments.
+                        if (version_compare($this->version, '5.2.0', '>=')) {
+                            $bindings = $query->bindings;
+                            $time = $query->time;
+                            $connection = $query->connection;
+
+                            $query = $query->sql;
+                        } else {
+                            $connection = $db->connection($connectionName);
+                        }
+
                         $queryCollector->addQuery((string) $query, $bindings, $time, $connection);
                     }
                 );
@@ -371,6 +364,15 @@ class LaravelDebugbar extends DebugBar
                         'Cannot add AuthCollector to Laravel Debugbar: ' . $e->getMessage(), $e->getCode(), $e
                     )
                 );
+            }
+        }
+
+        if ($this->shouldCollect('gate', false)) {
+            try {
+                $gateCollector = $this->app->make(GateCollector::class);
+                $this->addCollector($gateCollector);
+            } catch (\Exception $e){
+                // No Gate collector
             }
         }
 
@@ -456,7 +458,7 @@ class LaravelDebugbar extends DebugBar
      * @param  \Symfony\Component\HttpFoundation\Response $response
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function modifyResponse($request, $response)
+    public function modifyResponse(Request $request, Response $response)
     {
         $app = $this->app;
         if ($app->runningInConsole() || !$this->isEnabled() || $this->isDebugbarRequest()) {
@@ -593,7 +595,7 @@ class LaravelDebugbar extends DebugBar
      * @param  \Symfony\Component\HttpFoundation\Request $request
      * @return bool
      */
-    protected function isJsonRequest($request)
+    protected function isJsonRequest(Request $request)
     {
         // If XmlHttpRequest, return true
         if ($request->isXmlHttpRequest()) {
@@ -841,7 +843,7 @@ class LaravelDebugbar extends DebugBar
         }
     }
 
-    protected function addClockworkHeaders($response)
+    protected function addClockworkHeaders(Response $response)
     {
         $prefix = $this->app['config']->get('debugbar.route_prefix');
         $response->headers->set('X-Clockwork-Id', $this->getCurrentRequestId(), true);
