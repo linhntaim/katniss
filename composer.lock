@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fc1a648826b9ecc52835e505d309cc65",
+    "hash": "2dc0ab363974c21d2c5f43ace28542dc",
     "content-hash": "ed24f275c7f927b83ed143d951807942",
     "packages": [
         {
@@ -1334,16 +1334,16 @@
         },
         {
             "name": "mcamara/laravel-localization",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcamara/laravel-localization.git",
-                "reference": "a086769ca5b6f72fd824a4729bfc454deee09752"
+                "reference": "e305d2d2b32dc07a24e0699dcb05cf4f2064cdf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/a086769ca5b6f72fd824a4729bfc454deee09752",
-                "reference": "a086769ca5b6f72fd824a4729bfc454deee09752",
+                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/e305d2d2b32dc07a24e0699dcb05cf4f2064cdf8",
+                "reference": "e305d2d2b32dc07a24e0699dcb05cf4f2064cdf8",
                 "shasum": ""
             },
             "require": {
@@ -1378,7 +1378,7 @@
                 "localization",
                 "php"
             ],
-            "time": "2015-12-24 00:17:29"
+            "time": "2016-01-08 07:14:49"
         },
         {
             "name": "mews/purifier",

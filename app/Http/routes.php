@@ -51,7 +51,7 @@ Route::group(['middleware' => ['web']], function () {
 
     Route::group([
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['katniss.view', 'localeSessionRedirect', 'localizationRedirect']
+        'middleware' => ['katniss.view', 'localeSessionRedirect', 'localizationRedirect', 'localize']
     ], function () {
         Route::get('/', 'Home\HomepageController@index');
         Route::get(homeRoute('my-settings'), 'Admin\SettingsController@index');
