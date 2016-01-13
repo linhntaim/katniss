@@ -63,7 +63,7 @@ $table->rowFormat = 'DYNAMIC';
 
 ### Vendors
 
-#### laravel/laravel:5.1.26
+#### laravel/laravel:5.2.8
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
@@ -78,10 +78,9 @@ Base framework.
 [![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
 - To authorize users with roles and permissions
-- Conflict between EntrustUserTrait and Authorizable was resolved
 - Middleware to authorize routes was created
 
-#### barryvdh/laravel-debugbar:2.0.6
+#### barryvdh/laravel-debugbar:2.1.1
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
@@ -89,7 +88,7 @@ Base framework.
 
 For debugging.
 
-#### barryvdh/laravel-elfinder:0.3.4
+#### barryvdh/laravel-elfinder:0.3.5
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
@@ -111,9 +110,11 @@ For detecting client.
 
 For logging in & registering from social networks.
 
-#### mcamara/laravel-localization:1.0.12
+#### mcamara/laravel-localization:1.1.1
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
+
+- Some bugs were fixed
 
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 

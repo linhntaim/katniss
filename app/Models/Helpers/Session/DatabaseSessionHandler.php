@@ -31,34 +31,7 @@ class DatabaseSessionHandler extends BaseDatabaseSessionHandler
      */
     public function write($sessionId, $data)
     {
-        $userId = null;
-        $status = UserSession::STATUS_OFFLINE;
-        $clientIp = clientIp();
-        if (isAuth()) {
-            $userId = authUser()->id;
-            $status = UserSession::STATUS_ONLINE;
-        }
-
-        if ($this->exists) {
-            $this->getQuery()->where('id', $sessionId)->update([
-                'payload' => base64_encode($data),
-                'last_activity' => time(),
-                'user_id' => $userId,
-                'status' => $status,
-                'client_ip' => $clientIp,
-            ]);
-        } else {
-            $this->getQuery()->insert([
-                'id' => $sessionId,
-                'payload' => base64_encode($data),
-                'last_activity' => time(),
-                'user_id' => $userId,
-                'status' => $status,
-                'client_ip' => $clientIp,
-            ]);
-        }
-
-        $this->exists = true;
+        parent::write($sessionId, $data);
     }
 
     /**

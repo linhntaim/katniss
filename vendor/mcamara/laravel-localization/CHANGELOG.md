@@ -1,5 +1,8 @@
+### 1.1
+- Added compatibility with Laravel 5.2
+
 ### 1.0.12
-- Added reginal for date localization
+- Added regional for date localization
 
 ### 1.0.7
 - Added Session and Cookie Middleware

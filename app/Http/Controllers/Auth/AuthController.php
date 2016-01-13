@@ -31,10 +31,18 @@ class AuthController extends ViewController
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+    /**
+     * Where to redirect users after login / registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/';
+
     protected $redirectPath;
     protected $loginPath;
     protected $redirectAfterLogout;
     protected $socialRegisterPath;
+    protected $username;
 
     /**
      * Create a new authentication controller instance.
@@ -50,11 +58,18 @@ class AuthController extends ViewController
         $this->redirectAfterLogout = homePath();
         $this->socialRegisterPath = homePath('auth/register/social');
 
-        $this->middleware('guest', ['except' => 'getLogout']);
+        $this->username = 'account';
+
+        $this->middleware('guest', ['except' => ['getLogout']]);
         $this->middleware('auth', ['only' => ['getInactive', 'postInactive']]);
     }
 
-    public function getLogin()
+    /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showLoginForm()
     {
         $this->theme->title(trans('pages.account_login_title'));
         $this->theme->description(trans('pages.account_login_desc'));
@@ -68,16 +83,16 @@ class AuthController extends ViewController
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function postLogin(Request $request)
+    public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'account' => 'required',
+            $this->loginUsername() => 'required',
             'password' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect($this->loginPath())
-                ->withInput($request->only('account', 'remember'))
+            return redirect($this->loginPath)
+                ->withInput($request->only($this->loginUsername(), 'remember'))
                 ->withErrors($validator);
         }
 
@@ -90,11 +105,11 @@ class AuthController extends ViewController
             return $this->sendLockoutResponse($request);
         }
 
-        $credentials = $request->only('account', 'password');
+        $credentials = $this->getCredentials($request);
 
         // try email
         $try_credentials = [
-            'email' => $credentials['account'],
+            'email' => $credentials[$this->loginUsername()],
             'password' => $credentials['password'],
         ];
         if (Auth::attempt($try_credentials, $request->has('remember'))) {
@@ -102,7 +117,7 @@ class AuthController extends ViewController
         }
         // try user name
         $try_credentials = [
-            'name' => $credentials['account'],
+            'name' => $credentials[$this->loginUsername()],
             'password' => $credentials['password'],
         ];
         if (Auth::attempt($try_credentials, $request->has('remember'))) {
@@ -116,8 +131,8 @@ class AuthController extends ViewController
             $this->incrementLoginAttempts($request);
         }
 
-        return redirect($this->loginPath())
-            ->withInput($request->only('account', 'remember'))
+        return redirect()->back()
+            ->withInput($request->only($this->loginUsername(), 'remember'))
             ->withErrors([
                 $this->loginUsername() => $this->getFailedLoginMessage(),
             ]);
@@ -131,7 +146,8 @@ class AuthController extends ViewController
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array $data
+     * @param array $data
+     * @param boolean $fromSocial
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data, $fromSocial = false)
@@ -153,7 +169,8 @@ class AuthController extends ViewController
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array $data
+     * @param array $data
+     * @param boolean $fromSocial
      * @return User
      */
     protected function create(array $data, $fromSocial = false)
@@ -191,7 +208,7 @@ class AuthController extends ViewController
      * @param Request $request
      * @return \Illuminate\View\View
      */
-    public function getRegister(Request $request)
+    public function showRegistrationForm()
     {
         $this->theme->title(trans('pages.account_register_title'));
         $this->theme->description(trans('pages.account_register_desc'));
@@ -205,32 +222,31 @@ class AuthController extends ViewController
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function postRegister(Request $request)
+    public function register(Request $request)
     {
         $validator = $this->validator($request->all());
 
-        $error_rdr = redirect(homeUrl('auth/register'))
-            ->withInput();
+        $errorRdr = redirect(homeUrl('auth/register'))->withInput();
         if ($validator->fails()) {
-            return $error_rdr->withErrors($validator);
+            return $errorRdr->withErrors($validator);
         }
 
-        $stored_user = $this->create($request->all());
-        if ($stored_user) {
-            event(new UserAfterRegistered($stored_user, $request->input('password'), false,
+        $storedUser = $this->create($request->all());
+        if ($storedUser) {
+            event(new UserAfterRegistered($storedUser, $request->input('password'), false,
                 array_merge($this->globalViewParams, [
                     MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                    MailHelper::EMAIL_TO => $stored_user->email,
-                    MailHelper::EMAIL_TO_NAME => $stored_user->display_name,
+                    MailHelper::EMAIL_TO => $storedUser->email,
+                    MailHelper::EMAIL_TO_NAME => $storedUser->display_name,
                 ])
             ));
 
-            Auth::login($stored_user);
+            Auth::login($storedUser);
         } else {
-            return $error_rdr->withErrors([trans('auth.register_failed_system_error')]);
+            return $errorRdr->withErrors([trans('auth.register_failed_system_error')]);
         }
 
-        return redirect($this->redirectPath);
+        return redirect($this->redirectPath());
     }
 
     public function redirectToProvider(Request $request, $provider)

@@ -145,7 +145,7 @@ class DocumentController extends ViewController
             'roots' => [
                 [
                     'driver' => 'LocalFileSystem',
-                    'path' => storage_path('../public/files/' . $own_directory . '/'),
+                    'path' => public_path('files/' . $own_directory),
                     'alias' => 'Online drive: \Home',
                     'URL' => asset('files/' . $own_directory . '/'),
                     'accessControl' => config('elfinder.access'),
@@ -153,7 +153,7 @@ class DocumentController extends ViewController
                     'timeFormat' => DateTimeHelper::shortTimeFormat(),
                     'uploadAllow' => $uploadAllow,
                     'uploadDeny' => ['all'],
-                    'uploadOrder' => ['deny', 'allow']
+                    'uploadOrder' => ['deny', 'allow'],
                 ],
             ]
         ]));

@@ -4,8 +4,6 @@ namespace Katniss\Providers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-
-;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
 use Katniss\Models\Helpers\Settings;
 use Katniss\Models\Themes\Extensions;

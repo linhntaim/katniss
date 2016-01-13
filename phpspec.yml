@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: Katniss
-        psr4_prefix: Katniss
-        src_path: app

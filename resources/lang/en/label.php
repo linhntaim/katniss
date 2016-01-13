@@ -99,6 +99,7 @@ click the button below to get another welcome email from us.',
     'send_welcome_mail' => 'Send welcome email',
     '_hi' => 'Hi, :name',
     'toggle_navigation' => 'Toggle Navigation',
+    '_member_since' => 'Member since :time',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

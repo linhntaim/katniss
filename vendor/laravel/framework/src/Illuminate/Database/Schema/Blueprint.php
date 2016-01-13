@@ -798,9 +798,9 @@ class Blueprint
      */
     public function timestamps()
     {
-        $this->timestamp('created_at');
+        $this->timestamp('created_at')->useCurrent();
 
-        $this->timestamp('updated_at');
+        $this->timestamp('updated_at')->useCurrent();
     }
 
     /**
@@ -1041,7 +1041,7 @@ class Blueprint
     public function getChangedColumns()
     {
         return array_filter($this->columns, function ($column) {
-            return ! ! $column->change;
+            return (bool) $column->change;
         });
     }
 }
