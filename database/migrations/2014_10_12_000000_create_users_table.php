@@ -44,6 +44,7 @@ class CreateUsersTable extends Migration
             $table->string('activation_code')->default('');
             $table->boolean('active')->default(false);
             $table->bigInteger('setting_id')->unsigned();
+            $table->string('channel');
             $table->rememberToken();
             $table->timestamps();
 

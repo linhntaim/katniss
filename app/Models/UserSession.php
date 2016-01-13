@@ -16,7 +16,7 @@ class UserSession extends Model
     /**
      * @var string
      */
-    public $table = 'sessions';
+    public $table = 'user_sessions';
 
     /**
      * @var bool
@@ -28,7 +28,7 @@ class UserSession extends Model
      *
      * @var array
      */
-    protected $fillable = ['payload', 'last_activity', 'client_ip', 'user_id', 'status'];
+    protected $fillable = ['payload', 'last_activity', 'ip_address', 'user_id', 'user_agent'];
 
     /**
      * Returns all the guest users.

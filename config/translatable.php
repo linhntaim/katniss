@@ -37,7 +37,7 @@ return [
     | you can specify what default should be used here.
     |
     */
-    'locale' => 'en',
+    'locale' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +62,7 @@ return [
     | set it to false.
     |
     */
-    'fallback_locale' => 'en',
+    'fallback_locale' => env('APP_DEFAULT_FALLBACK_LOCALE', 'en'),
 
     /*
     |--------------------------------------------------------------------------

@@ -32,9 +32,9 @@ return [
         'test'    => [
             'Attr.EnableID' => true
         ],
-        "youtube" => [
+        'youtube' => [
             "HTML.SafeIframe"      => 'true',
-            "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
+            "URI.SafeIframeRegexp" => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
         ],
         'kses' => [
             'HTML.Allowed' => '

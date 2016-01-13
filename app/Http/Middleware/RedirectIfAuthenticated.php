@@ -3,40 +3,24 @@
 namespace Katniss\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    /**
-     * The Guard implementation.
-     *
-     * @var Guard
-     */
-    protected $auth;
-
-    /**
-     * Create a new filter instance.
-     *
-     * @param  Guard $auth
-     * @return void
-     */
-    public function __construct(Guard $auth)
-    {
-        $this->auth = $auth;
-    }
-
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Closure $next
+     * @param  string|null $guard
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $guard = null)
     {
-        if ($this->auth->check()) {
+        $auth = Auth::guard($guard);
+        if ($auth->check()) {
             $redirect_url = null;
-            $user = $this->auth->user();
+            $user = $auth->user();
             $activatePath = homePath('auth/activate');
             $inactivePath = homePath('auth/inactive');
             if (!$user->active) {

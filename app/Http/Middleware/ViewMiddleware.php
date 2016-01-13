@@ -39,7 +39,6 @@ class ViewMiddleware
     {
         $continueSession = SettingsFacade::fromSession($request->session());
         $needCheckCookie = false;
-        debug(app('settings'));
         if (SettingsFacade::fromUser()) {
             SettingsFacade::storeSession();
             $needCheckCookie = true;

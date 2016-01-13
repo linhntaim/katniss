@@ -5,7 +5,6 @@ namespace Katniss\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Katniss\Http\Requests;
-use Katniss\Http\Controllers\Controller;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\AppOptionHelper;
 

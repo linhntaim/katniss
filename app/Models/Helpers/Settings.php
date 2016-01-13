@@ -212,7 +212,6 @@ class Settings
     {
         if (isAuth()) {
             $userSettings = authUser()->settings;
-            debug($userSettings);
             $this->setLocale($userSettings->locale);
             $this->setCountry($userSettings->country);
             $this->setTimezone($userSettings->timezone);

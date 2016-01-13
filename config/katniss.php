@@ -19,6 +19,8 @@ return [
         'short_time_format' => 0,
     ],
 
+    'idle_switching_time' => 120, // seconds
+
     'admin_theme' => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME,
     'home_theme' => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME,
     'admin_themes' => [
