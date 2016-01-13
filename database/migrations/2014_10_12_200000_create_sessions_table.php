@@ -17,7 +17,7 @@ class CreateSessionsTable extends Migration
             $table->rowFormat = 'DYNAMIC';
 
             $table->string('id')->unique();
-            $table->integer('user_id')->nullable();
+            $table->bigInteger('user_id')->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->text('payload');

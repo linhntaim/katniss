@@ -23,7 +23,7 @@ class DatabaseSessionHandler extends BaseDatabaseSessionHandler
      */
     public function __construct()
     {
-        parent::__construct(DB::connection(config('session.connection')), config('session.table'));
+        parent::__construct(DB::connection(config('session.connection')), config('session.table'), app());
     }
 
     /**
