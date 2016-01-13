@@ -110,7 +110,7 @@ For detecting client.
 
 For logging in & registering from social networks.
 
-#### mcamara/laravel-localization:1.1.1
+#### mcamara/laravel-localization:1.1.2
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
