@@ -94,7 +94,11 @@
 <script src="{{ HomeTheme::jsAsset('scrolling-nav.js') }}"></script>
 @yield('lib_scripts')
 <script>
+    {!! cdataOpen() !!}
+    var THEME_PATH = '{{ HomeTheme::asset() }}/';
+    var AJAX_REQUEST_TOKEN = '{{ csrf_token() }}';
     var SETTINGS_NUMBER_FORMAT = '{{ Settings::getNumberFormat() }}';
+    {!! cdataClose() !!}
 </script>
 <script src="{{ libraryAsset('katniss.js') }}"></script>
 @yield('extended_scripts')
