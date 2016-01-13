@@ -51,7 +51,7 @@ class LaravelLocalization {
     /**
      * Illuminate request class.
      *
-     * @var \Illuminate\Foundation\Application
+     * @var Illuminate\Foundation\Application
      */
     protected $app;
 
