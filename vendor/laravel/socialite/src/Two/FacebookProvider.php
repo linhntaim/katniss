@@ -109,7 +109,7 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
 
         return (new User)->setRaw($user)->map([
             'id' => $user['id'], 'nickname' => null, 'name' => $firstName.' '.$lastName,
-            'email' => isset($user['email']) ? $user['email'] : null, 'avatar' => $avatarUrl.'?type=normal',
+            'email' => isset($user['email']) ? $user['email'] : null, 'avatar' => $avatarUrl.'?type=large',
             'avatar_original' => $avatarUrl.'?width=1920',
         ]);
     }
