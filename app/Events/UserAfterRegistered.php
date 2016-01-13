@@ -10,8 +10,6 @@ namespace Katniss\Events;
 
 
 use Illuminate\Queue\SerializesModels;
-use Katniss\Models\Helpers\ORTC\PushClient;
-use Katniss\Models\Role;
 use Katniss\Models\User;
 
 class UserAfterRegistered extends Event
@@ -34,8 +32,6 @@ class UserAfterRegistered extends Event
         $this->user = $user;
         $this->password = $password;
         $this->fromSocial = $fromSocial;
-
-        event(new PushNotification(Role::where('name', 'admin')->users, 'admin/users', 'user_new_registration'));
     }
 
     public function getParamsForMailing()
