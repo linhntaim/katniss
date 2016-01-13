@@ -9,9 +9,11 @@
 <script src="{{ AdminTheme::jsAsset('app.min.js') }}"></script>
 @yield('lib_scripts')
 <script>
+    {!! cdataOpen() !!}
     var THEME_PATH = '{{ AdminTheme::asset() }}/';
     var AJAX_REQUEST_TOKEN = '{{ csrf_token() }}';
     var SETTINGS_NUMBER_FORMAT = '{{ Settings::getNumberFormat() }}';
+    {!! cdataClose() !!}
 </script>
 <script src="{{ libraryAsset('katniss.js') }}"></script>
 @yield('extended_scripts')
