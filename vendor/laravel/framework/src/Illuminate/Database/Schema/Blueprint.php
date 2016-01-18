@@ -798,9 +798,9 @@ class Blueprint
      */
     public function timestamps()
     {
-        $this->timestamp('created_at')->useCurrent();
+        $this->timestamp('created_at');
 
-        $this->timestamp('updated_at')->useCurrent();
+        $this->timestamp('updated_at');
     }
 
     /**
