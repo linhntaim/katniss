@@ -24,11 +24,11 @@ class Widgets
         $this->widgets = ThemeWidget::forDisplay()->get();
     }
 
-    public function display($placeholder, $before = '', $after = '')
+    public function display($placeholder, $before = '', $after = '', $default = '')
     {
         $widgets = $this->widgets->where('placeholder', $placeholder)->sortBy('order');
         $count_widgets = $widgets->count();
-        $output = $count_widgets > 0 ? $before : '';
+        $output = $count_widgets > 0 ? $before : $default;
         foreach ($widgets as $widget) {
             $output .= $widget->render();
         }

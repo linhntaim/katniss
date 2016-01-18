@@ -21,6 +21,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="text-uppercase">Social Sharing</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>{{ isActivatedExtension('social_integration') ? 'Social Integration extension is activated' : 'Social Integration extension is not activated' }}</p>
                     <p>
                         {!! content_place('sharing_buttons', [currentUrl()]) !!}
                     </p>
@@ -38,6 +43,7 @@
             <div class="row">
                 <div class="col-xs-1 col-sm-2 col-md-3"></div>
                 <div class="col-xs-10 col-sm-8 col-md-6">
+                    <p>{{ isActivatedExtension('social_integration') ? 'Social Integration extension is activated' : 'Social Integration extension is not activated' }}</p>
                     {!! content_place('facebook_comment', [currentUrl()]) !!}
                 </div>
                 <div class="col-xs-1 col-sm-2 col-md-3"></div>
@@ -54,7 +60,7 @@
             <div class="row">
                 <div class="col-xs-1"></div>
                 <div class="col-xs-10">
-                    {!! placeholder('default_placeholder') !!}
+                    {!! placeholder('default_placeholder', KATNISS_EMPTY_STRING, KATNISS_EMPTY_STRING, 'No widget is placed here') !!}
                 </div>
                 <div class="col-xs-1"></div>
             </div>

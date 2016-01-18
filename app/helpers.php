@@ -561,9 +561,9 @@ function cdataClose()
     return '//]]>';
 }
 
-function placeholder($name, $before = '', $after = '')
+function placeholder($name, $before = '', $after = '', $default = '')
 {
-    return WidgetsFacade::display($name, $before, $after);
+    return WidgetsFacade::display($name, $before, $after, $default);
 }
 
 function activatedExtensions()

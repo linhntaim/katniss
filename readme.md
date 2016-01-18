@@ -2,8 +2,8 @@
 
 Katniss extends the Laravel Framework by:
 
-- Integrating with useful external solutions from communities
-- Developing some custom modules 
+- Integrating with existed useful external solutions from communities
+- Developing new helpful modules for customization 
 
 The destination of Katniss is to help to build website more faster:
 
@@ -16,11 +16,15 @@ The destination of Katniss is to help to build website more faster:
 
 Duplicate the file named `.env.example` at the root directory of the application and change the name of the duplicated file to `.env`.
 
+Change some configuration as you want.
+
 ### PHP
 
 Require PHP >= `5.6`.
 
 ### Database
+
+MySQL is recommended.
 
 Require MySQL >= `5.5`.
 
@@ -31,9 +35,9 @@ innodb_file_format=BARRACUDA
 innodb_large_prefix=ON
 ```
 
-Create database `katniss` with `default character set utf8mb4` and `default collate utf8mb4_unicode_ci`
+Those settings require to create database `katniss` with `default character set utf8mb4` and `default collate utf8mb4_unicode_ci`
 
-Initialize database by running these commands when in root directory of the application:
+After creating, you should initialize database by running these commands when in root directory of the application:
 
 `php artisan migrate`
 
@@ -48,9 +52,9 @@ DB_CHARSET=utf8
 DB_COLLATION=utf8_unicode_ci
 ```
 
-Then, you don't have to change MySQL Configuration.
+Then, you don't have to change MySQL configuration.
 
-In addition, you must create database `katniss` with `default character set utf8` and `default collate utf8_unicode_ci`
+Therefore, you must create database `katniss` with `default character set utf8` and `default collate utf8_unicode_ci`
 
 Furthermore, you must go through all the migrating files in directory `root\database\migrations` and delete these lines when you see them in the code:
 
@@ -63,86 +67,143 @@ $table->rowFormat = 'DYNAMIC';
 
 ### Vendors
 
-#### laravel/laravel:5.2.8
+#### laravel/laravel
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
+
+Current version: 5.2.10
+
+Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
 
 Base framework.
 
-#### zizaco/entrust:1.4.1
+Customization:
+
+- Add property `$rowFormat` to class `\Illuminate\Database\Schema\Blueprint`.
+- Enable set row format of table in method `\Illuminate\Database\Schema\Grammars\MySqlGrammar@compileCreate`.
+
+#### zizaco/entrust
 
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
+Current version: 1.4.1
+
+Latest version:
+
 [![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
-- To authorize users with roles and permissions
+To authorize users with roles and permissions
+
+Customization:
+
 - Middleware to authorize routes was created
 
-#### barryvdh/laravel-debugbar:2.1.1
+Why I don't use latest version?
+
+- Problem with enabled `Cache::tags` feature if we cache data through file or database. [Reference](https://laravel.com/docs/5.2/cache#cache-tags)
+- I don't have time to configure memcache server right now.
+
+#### barryvdh/laravel-debugbar
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
+
+Current version: 2.1.1
+
+Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-debugbar/version.png)](https://packagist.org/packages/barryvdh/laravel-debugbar)
 
 For debugging.
 
-#### barryvdh/laravel-elfinder:0.3.5
+#### barryvdh/laravel-elfinder
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
+
+Current version: 0.3.5
+
+Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-elfinder/version.png)](https://packagist.org/packages/barryvdh/laravel-elfinder)
 
 For file managing/uploading.
 
-#### jenssegers/agent:2.3.1
+#### jenssegers/agent
 
 [Agent](https://github.com/jenssegers/agent)
+
+Current version: 2.3.1
+
+Latest version:
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/jenssegers/agent.svg)](https://packagist.org/packages/jenssegers/agent) 
 
 For detecting client.
 
-#### laravel/socialite:2.0.14
+#### laravel/socialite
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
+Current version: 2.0.14
+
 For logging in & registering from social networks.
 
-#### mcamara/laravel-localization:1.1.2
+Customization:
+
+- Change avatar of Facebook user to large in method `Laravel\Socialite\Two\FacebookProvider@mapUserToObject`.
+
+#### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-- Some bugs were fixed
+Current version: 1.1.2
+
+Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 
 For localizing (esp. with URL).
 
-#### dimsav/laravel-translatable:5.4
+Customization:
+
+- Fix bug: Method `\Mcamara\LaravelLocalization@getLocalizedURL` does not include GET parameters or hash from old URL into new URL.
+- Fix bug: If locale detected by browser is different from default locale, then it will throw 404 exception when user accesses the localized URL.
+    - Fixed in method `\Mcamara\LaravelLocalization@setLocale`.
+
+#### dimsav/laravel-translatable
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
+
+Current version: 5.4
+
+Latest version:
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 
 For multilingual models (Database Entities & App Models)
 
-#### mews/purifier:2.0.3
+#### mews/purifier
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
+Current version: 2.0.3
+
 For filtering HTML content.
 
-#### almasaeed2010/AdminLTE:2.3.2
+#### almasaeed2010/AdminLTE
 
 [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
+Current version: 2.3.2
+
 For admin template.
 
-#### IronSummitMedia/startbootstrap-scrolling-nav:1.0.4
+#### IronSummitMedia/startbootstrap-scrolling-nav
 
 [Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav)
+
+Current version: 1.0.4
 
 For home template.
 
@@ -162,7 +223,7 @@ Themes for administration.
 
 Sample Themes:
 
-- Admin LTE (base on [AdminLTE](#almasaeed2010adminlte232)).
+- Admin LTE (base on [AdminLTE](#almasaeed2010adminlte)).
 
 ##### Home Theme
 
@@ -172,7 +233,7 @@ Home themes are easily extended with plugins.
     
 Sample Themes:
 
-- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav104))
+- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav))
 
 #### Plugins
     
@@ -188,14 +249,14 @@ Sample Extensions:
     - Add website analytics
     - Current: Google, MixPanel
 - Social Integration:
-    - Integrate website with social networks
+    - Integrate website into social networks
     - Current: Facebook, Twitter, Google, LinkedIn
 
 ##### Widget
 
 Define widgets of content for inserting into placeholders of any theme.
 
-Widgets in a placeholder are sortable.
+Widgets in a placeholder are sortable; their orders can be changed.
 
 Sample Widgets:
 
@@ -222,7 +283,7 @@ Functions/Features:
 
 To authorize users with roles & permissions.
 
-Mainly based on [zizaco/entrust:1.4.1](#zizacoentrust141).
+Mainly based on [zizaco/entrust](#zizacoentrust).
 
 Database seeding:
 
@@ -247,7 +308,7 @@ For authenticated users, settings are saved in database & session & cookie.
 
 To easily upload & manage files.
 
-Based on [barryvdh/laravel-elfinder:0.3.4](#barryvdhlaravel-elfinder034).
+Based on [barryvdh/laravel-elfinder](#barryvdhlaravel-elfinder).
 
 Ready for integrating with:
 
