@@ -72,7 +72,9 @@ $table->rowFormat = 'DYNAMIC';
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
 Current version: 5.2.10
+
 Latest version:
+
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
 
 Base framework.
@@ -87,7 +89,9 @@ Customization:
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
 Current version: 1.4.1
+
 Latest version:
+
 [![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
 To authorize users with roles and permissions
@@ -106,7 +110,9 @@ Why I don't use latest version?
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
 Current version: 2.1.1
+
 Latest version:
+
 [![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-debugbar/version.png)](https://packagist.org/packages/barryvdh/laravel-debugbar)
 
 For debugging.
@@ -116,7 +122,9 @@ For debugging.
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
 Current version: 0.3.5
+
 Latest version:
+
 [![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-elfinder/version.png)](https://packagist.org/packages/barryvdh/laravel-elfinder)
 
 For file managing/uploading.
@@ -126,7 +134,9 @@ For file managing/uploading.
 [Agent](https://github.com/jenssegers/agent)
 
 Current version: 2.3.1
+
 Latest version:
+
 [![Latest Stable Version](http://img.shields.io/packagist/v/jenssegers/agent.svg)](https://packagist.org/packages/jenssegers/agent) 
 
 For detecting client.
@@ -149,6 +159,8 @@ Customization:
 
 Current version: 1.1.2
 
+Latest version:
+
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 
 For localizing (esp. with URL).
@@ -164,7 +176,9 @@ Customization:
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
 Current version: 5.4
+
 Latest version:
+
 [![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 
 For multilingual models (Database Entities & App Models)
