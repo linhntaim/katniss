@@ -37,6 +37,10 @@ class KatnissServiceProvider extends ServiceProvider
         if (!defined('ELFINDER_IMG_PARENT_URL')) {
             define('ELFINDER_IMG_PARENT_URL', libraryAsset('elfinder'));
         }
+
+        if (!defined('KATNISS_EMPTY_STRING')) {
+            define('KATNISS_EMPTY_STRING', '');
+        }
     }
 
     /**

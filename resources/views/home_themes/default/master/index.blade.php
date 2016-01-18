@@ -14,20 +14,6 @@
     <link rel="stylesheet" href="{{ HomeTheme::cssAsset('bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ HomeTheme::cssAsset('scrolling-nav.css') }}">
     @yield('lib_styles')
-    <style>
-        .odd-section {
-            height: 100%;
-            padding-top: 150px;
-            text-align: center;
-            background: #fff;
-        }
-        .even-section {
-            height: 100%;
-            padding-top: 150px;
-            text-align: center;
-            background: #eee;
-        }
-    </style>
     @yield('extended_styles')
     {!! theme_header() !!}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -60,7 +46,7 @@
 </nav>
 
 <!-- Intro Section -->
-<section id="intro" class="intro-section">
+<section id="intro" class="odd-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -87,6 +73,9 @@
     </div>
 </section>
 @yield('extra_sections')
+<footer>
+    <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
+</footer>
 @yield('modals')
 <script src="{{ HomeTheme::jsAsset('jquery.js') }}"></script>
 <script src="{{ HomeTheme::jsAsset('bootstrap.min.js') }}"></script>
