@@ -400,13 +400,24 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 			return $this->setError('PDO connection failed: '.$e->getMessage());
 		}
 		
-		$res = $this->deltaCheck(!empty($_REQUEST['reload']) && strpos($_REQUEST['target'], $this->id) === 0);
+		$res = $this->deltaCheck($this->isMyReload());
 		if ($res !== true) {
 			if (is_string($res)) {
 				return $this->setError($res);
 			} else {
 				return $this->setError('Could not check API "delta"');
 			}
+		}
+		
+		if (is_null($this->options['syncChkAsTs'])) {
+			$this->options['syncChkAsTs'] = true;
+		}
+		if ($this->options['syncChkAsTs']) {
+			// 'tsPlSleep' minmum 5 sec
+			$this->options['tsPlSleep'] = max(5, $this->options['tsPlSleep']);
+		} else {
+			// 'lsPlSleep' minmum 10 sec
+			$this->options['lsPlSleep'] = max(10, $this->options['lsPlSleep']);
 		}
 		
 		return true;
@@ -538,6 +549,8 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 			}
 			$delete = false;
 			$reset = false;
+			$ptimes = array();
+			$now = time();
 			do {
 				@ ini_set('max_execution_time', 120);
 				$_info = $this->dropbox->delta($cursor);
@@ -563,11 +576,14 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 					$where = 'where path='.$path.' and fname='.$fname;
 					
 					if (empty($entry[1])) {
+						$ptimes[$pkey] = isset($ptimes[$pkey])? max(array($now, $ptimes[$pkey])) : $now;
 						$this->DB->exec('delete from '.$this->DB_TableName.' '.$where);
 						! $delete && $delete = true;
 						continue;
 					}
 
+					$_itemTime = strtotime(isset($entry[1]['client_mtime'])? $entry[1]['client_mtime'] : $entry[1]['modified']);
+					$ptimes[$pkey] = isset($ptimes[$pkey])? max(array($_itemTime, $ptimes[$pkey])) : $_itemTime;
 					$sql = 'select path from '.$this->DB_TableName.' '.$where.' limit 1';
 					if (! $reset && $this->query($sql)) {
 						$this->DB->exec('update '.$this->DB_TableName.' set dat='.$this->DB->quote(serialize($entry[1])).', isdir='.($entry[1]['is_dir']? 1 : 0).' ' .$where);
@@ -576,6 +592,26 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 					}
 				}
 			} while (! empty($_info['has_more']));
+			
+			// update time stamp of parent holder
+			foreach ($ptimes as $_p => $_t) {
+				if ($praw = $this->getDBdat($_p)) {
+					$_update = false;
+					if (isset($praw['client_mtime']) && $_t > strtotime($praw['client_mtime'])) {
+						$praw['client_mtime'] = date('r', $_t);
+						$_update = true;
+					}
+					if ($_t > strtotime($praw['modified'])) {
+						$praw['modified'] = date('r', $_t);
+						$_update = true;
+					}
+					if ($_update) {
+						$pwhere = 'where path='.$this->DB->quote(strtolower($this->_dirname($_p))).' and fname='.$this->DB->quote(strtolower(basename($_p)));
+						$this->DB->exec('update '.$this->DB_TableName.' set dat='.$this->DB->quote(serialize($praw)).' '.$pwhere);
+					}
+				}
+			}
+			
 			$this->DB->exec('update '.$this->DB_TableName.' set dat='.$this->DB->quote(serialize(array('cursor'=>$cursor, 'mtime'=>$_SERVER['REQUEST_TIME']))).' where path=\'\' and fname=\'\'');
 			if (! $this->DB->commit()) {
 				$e = $this->DB->errorInfo();
@@ -638,7 +674,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 				$raw = unserialize($raw);
 				if ($stat = $this->parseRaw($raw)) {
 					$stat = $this->updateCache($raw['path'], $stat);
-					if (empty($stat['hidden'])) {
+					if (empty($stat['hidden']) && $path !== $raw['path']) {
 						$this->dirsCache[$path][] = $raw['path'];
 					}
 				}
@@ -659,10 +695,17 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 	protected function doSearch($path, $q, $mimes) {
 		$result = array();
 		$sth = $this->DB->prepare('select dat from '.$this->DB_TableName.' WHERE path LIKE ? AND fname LIKE ?');
-		$sth->execute(array('%'.(($path === '/')? '' : strtolower($path)), '%'.strtolower($q).'%'));
+		$sth->execute(array((($path === '/')? '' : strtolower($path)).'%', '%'.strtolower($q).'%'));
 		$res = $sth->fetchAll(PDO::FETCH_COLUMN);
+		$timeout = $this->options['searchTimeout']? $this->searchStart + $this->options['searchTimeout'] : 0;
+		
 		if ($res) {
 			foreach($res as $raw) {
+				if ($timeout && $timeout < time()) {
+					$this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode($path)));
+					break;
+				}
+				
 				$raw = unserialize($raw);
 				if ($stat = $this->parseRaw($raw)) {
 					if (!isset($this->cache[$raw['path']])) {
@@ -671,7 +714,9 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 					if (!empty($stat['hidden']) || ($mimes && $stat['mime'] === 'directory') || !$this->mimeAccepted($stat['mime'], $mimes)) {
 						continue;
 					}
-					$result[] = $this->stat($raw['path']);
+					$stat = $this->stat($raw['path']);
+					$stat['path'] = $this->path($stat['hash']);
+					$result[] = $stat;
 				}
 			}
 		}
@@ -963,9 +1008,6 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 	 * @author Troex Nevelin
 	 **/
 	protected function _normpath($path) {
-		if (DIRECTORY_SEPARATOR !== '/') {
-			$path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
-		}
 		$path = '/' . ltrim($path, '/');
 		return $path;
 	}
@@ -1000,7 +1042,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _path($path) {
-		return $path;
+		return $this->rootName . $this->_normpath(substr($path, strlen($this->root)));
 	}
 
 	/**
@@ -1036,6 +1078,10 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _stat($path) {
+		//if (!empty($this->ARGS['reload']) && isset($this->ARGS['target']) && strpos($this->ARGS['target'], $this->id) === 0) {
+		if ($this->isMyReload()) {
+			$this->deltaCheck();
+		}
 		if ($raw = $this->getDBdat($path)) {
 			return $this->parseRaw($raw);
 		}
