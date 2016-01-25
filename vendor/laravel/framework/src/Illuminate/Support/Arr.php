@@ -2,6 +2,7 @@
 
 namespace Illuminate\Support;
 
+use ArrayAccess;
 use Illuminate\Support\Traits\Macroable;
 
 class Arr
@@ -217,7 +218,7 @@ class Arr
     /**
      * Get an item from an array using "dot" notation.
      *
-     * @param  array   $array
+     * @param  array|\ArrayAccess   $array
      * @param  string  $key
      * @param  mixed   $default
      * @return mixed
@@ -233,7 +234,8 @@ class Arr
         }
 
         foreach (explode('.', $key) as $segment) {
-            if (! is_array($array) || ! array_key_exists($segment, $array)) {
+            if ((! is_array($array) || ! array_key_exists($segment, $array)) &&
+                (! $array instanceof ArrayAccess || ! $array->offsetExists($segment))) {
                 return value($default);
             }
 
@@ -301,7 +303,7 @@ class Arr
     /**
      * Pluck an array of values from an array.
      *
-     * @param  array|\ArrayAccess  $array
+     * @param  \ArrayAccess|array  $array
      * @param  string|array  $value
      * @param  string|array|null  $key
      * @return array
