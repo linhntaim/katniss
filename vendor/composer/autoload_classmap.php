@@ -3044,6 +3044,7 @@ return array(
     'Psy\\VarDumper\\Dumper' => $vendorDir . '/psy/psysh/src/Psy/VarDumper/Dumper.php',
     'Psy\\VarDumper\\Presenter' => $vendorDir . '/psy/psysh/src/Psy/VarDumper/Presenter.php',
     'Psy\\VarDumper\\PresenterAware' => $vendorDir . '/psy/psysh/src/Psy/VarDumper/PresenterAware.php',
+    'RecursiveCallbackFilterIterator' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeLocalFileSystem.class.php',
     'S3SoapClient' => $vendorDir . '/studio-42/elfinder/php/elFinderVolumeS3.class.php',
     'ScopesTest' => $vendorDir . '/dimsav/laravel-translatable/tests/ScopesTest.php',
     'SebastianBergmann\\Comparator\\ArrayComparator' => $vendorDir . '/sebastian/comparator/src/ArrayComparator.php',
