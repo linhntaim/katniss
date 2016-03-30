@@ -65,10 +65,14 @@ class MySqlGrammar extends Grammar
 
         if (isset($blueprint->engine)) {
             $sql .= ' engine = '.$blueprint->engine;
+        } elseif (! is_null($engine = $connection->getConfig('engine'))) {
+            $sql .= ' engine = '.$engine;
         }
 
         if (isset($blueprint->rowFormat)) {
             $sql .= ' row_format = '.$blueprint->rowFormat;
+        } elseif (! is_null($rowFormat = $connection->getConfig('row_format'))) {
+            $sql .= ' row_format = '.$rowFormat;
         }
 
         return $sql;
@@ -167,7 +171,9 @@ class MySqlGrammar extends Grammar
 
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} add {$type} `{$command->index}`($columns)";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} add {$type} {$index}($columns)";
     }
 
     /**
@@ -233,7 +239,9 @@ class MySqlGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} drop index `{$command->index}`";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} drop index {$index}";
     }
 
     /**
@@ -247,7 +255,9 @@ class MySqlGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} drop index `{$command->index}`";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} drop index {$index}";
     }
 
     /**
@@ -261,7 +271,9 @@ class MySqlGrammar extends Grammar
     {
         $table = $this->wrapTable($blueprint);
 
-        return "alter table {$table} drop foreign key `{$command->index}`";
+        $index = $this->wrap($command->index);
+
+        return "alter table {$table} drop foreign key {$index}";
     }
 
     /**
@@ -574,6 +586,28 @@ class MySqlGrammar extends Grammar
     protected function typeUuid(Fluent $column)
     {
         return 'char(36)';
+    }
+
+    /**
+     * Create the column definition for an IP address type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeIpAddress(Fluent $column)
+    {
+        return 'varchar(45)';
+    }
+
+    /**
+     * Create the column definition for a MAC address type.
+     *
+     * @param  \Illuminate\Support\Fluent  $column
+     * @return string
+     */
+    protected function typeMacAddress(Fluent $column)
+    {
+        return 'varchar(17)';
     }
 
     /**
