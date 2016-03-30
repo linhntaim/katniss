@@ -181,8 +181,10 @@ trait Translatable
         if ($this->isTranslationAttribute($key)) {
             $this->getTranslationOrNew($locale)->$key = $value;
         } else {
-            parent::setAttribute($key, $value);
+            return parent::setAttribute($key, $value);
         }
+
+        return $this;
     }
 
     /**
@@ -206,6 +208,7 @@ trait Translatable
                 // false. So we have to save the translations
                 if ($saved = $this->saveTranslations()) {
                     $this->fireModelEvent('saved', false);
+                    $this->fireModelEvent('updated', false);
                 }
 
                 return $saved;
@@ -532,6 +535,27 @@ trait Translatable
             $query->where($this->getTranslationsTable().'.'.$key, $value);
             if ($locale) {
                 $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), $locale);
+            }
+        });
+    }
+
+
+    /**
+     * This scope filters results by checking the translation fields.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $key
+     * @param string                                $value
+     * @param string                                $locale
+     *
+     * @return \Illuminate\Database\Eloquent\Builder|static
+     */
+    public function scopeWhereTranslationLike($query, $key, $value, $locale = null)
+    {
+        return $query->whereHas('translations', function ($query) use ($key, $value, $locale) {
+            $query->where($this->getTranslationsTable().'.'.$key, 'LIKE', $value);
+            if ($locale) {
+                $query->where($this->getTranslationsTable().'.'.$this->getLocaleKey(), 'LIKE', $locale);
             }
         });
     }

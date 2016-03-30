@@ -71,7 +71,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.10
+Current version: 5.2.27
 
 Latest version:
 
@@ -109,7 +109,7 @@ Why I don't use latest version?
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: 2.1.1
+Current version: 2.2.0
 
 Latest version:
 
@@ -121,7 +121,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: 0.3.5
+Current version: 0.3.6
 
 Latest version:
 
@@ -133,7 +133,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: 2.3.1
+Current version: 2.3.3
 
 Latest version:
 
@@ -145,13 +145,13 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.14
+Current version: 2.0.15
 
 For logging in & registering from social networks.
 
 Customization:
 
-- Change avatar of Facebook user to large in method `Laravel\Socialite\Two\FacebookProvider@mapUserToObject`.
+- Change avatar type of Facebook user to `large` (originally, `normal`) in method `Laravel\Socialite\Two\FacebookProvider@mapUserToObject`.
 
 #### mcamara/laravel-localization
 
@@ -175,7 +175,7 @@ Customization:
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: 5.4
+Current version: 5.5
 
 Latest version:
 
@@ -187,7 +187,7 @@ For multilingual models (Database Entities & App Models)
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: 2.0.3
+Current version: 2.0.4
 
 For filtering HTML content.
 

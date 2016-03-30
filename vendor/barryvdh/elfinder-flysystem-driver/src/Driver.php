@@ -6,8 +6,9 @@ use elFinderVolumeDriver;
 use Intervention\Image\ImageManager;
 use League\Flysystem\Util;
 use League\Flysystem\FilesystemInterface;
-use League\Glide\Http\UrlBuilderFactory;
+use League\Glide\Urls\UrlBuilderFactory;
 use Barryvdh\elFinderFlysystemDriver\Plugin\GetUrl;
+use Barryvdh\elFinderFlysystemDriver\Plugin\HasDir;
 
 /**
  * elFinder driver for Flysytem (https://github.com/thephpleague/flysystem)
@@ -27,6 +28,9 @@ class Driver extends elFinderVolumeDriver {
 
     /** @var FilesystemInterface $fs */
     protected $fs;
+
+    /** @var FilesystemCachedCacheInterface $fscache */
+    protected $fscache = null;
 
     /** @var \League\Glide\Http\UrlBuilder $urlBuilder */
     protected $urlBuilder = null;
@@ -99,7 +103,15 @@ class Driver extends elFinderVolumeDriver {
             return $this->setError('A filesystem instance is required');
         }
 
+        // flysystem cache object instance (cached adapter dose not have method like a `getCache()`.
+        if (isset($this->options['fscache']) && interface_exists('\League\Flysystem\Cached\CacheInterface', false)) {
+            if ($this->options['fscache'] instanceof \League\Flysystem\Cached\CacheInterface) {
+                $this->fscache = $this->options['fscache'];
+            }
+        }
+
         $this->fs->addPlugin(new GetUrl());
+        $this->fs->addPlugin(new HasDir());
 
         $this->options['icon'] = $this->options['icon'] ?: $this->getIcon();
         $this->root = $this->options['path'];
@@ -115,6 +127,19 @@ class Driver extends elFinderVolumeDriver {
         }
 
         return true;
+    }
+
+    /**
+     * Configure after successfull mount.
+     *
+     * @return void
+     **/
+    protected function configure()
+    {
+        parent::configure();
+        if ($this->fscache && $this->isMyReload()) {
+            $this->fscache->flush();
+        }
     }
 
     /**
@@ -157,6 +182,30 @@ class Driver extends elFinderVolumeDriver {
         }
 
         return false;
+    }
+
+    /**
+     * Get item path from FS method result, It supports item ID based file system
+     * 
+     * @param boolean|array $result
+     * @param string $requestPath
+     */
+    protected function _resultPath($result, $requestPath)
+    {
+        if (! is_array($result)) {
+            if ($this->fscache) {
+                $this->fscache->flush();
+            }
+            $result = $this->fs->getMetaData($requestPath);
+        }
+
+        $path = ($result && isset($result['path']))? $result['path'] : false;
+
+        if ($this->fscache && $path !== $requestPath) {
+			$this->fscache->storeMiss($requestPath);
+        }
+
+        return $path;
     }
 
     /**
@@ -209,6 +258,11 @@ class Driver extends elFinderVolumeDriver {
 
         $meta = $this->fs->getMetadata($path);
 
+        // Set item filename to `name` if exists
+        if (isset($meta['filename'])) {
+            $stat['name'] = $meta['filename'];
+        }
+
         // Get timestamp/size
         $stat['ts'] = isset($meta['timestamp'])? $meta['timestamp'] : $this->fs->getTimestamp($path);
         $stat['size'] = isset($meta['size'])? $meta['size'] : $this->fs->getSize($path);
@@ -247,10 +301,14 @@ class Driver extends elFinderVolumeDriver {
     protected function _subdirs($path)
     {
         $ret = false;
-        foreach ($this->fs->listContents($path) as $meta) {
-            if ($meta['type'] !== 'file') {
-                $ret = true;
-                break;
+        if ($this->fs->hasDir()) {
+        	$ret = $this->fs->hasDir($path);
+        } else {
+            foreach ($this->fs->listContents($path) as $meta) {
+                if ($meta['type'] !== 'file') {
+                    $ret = true;
+                    break;
+                }
             }
         }
         return $ret;
@@ -327,11 +385,7 @@ class Driver extends elFinderVolumeDriver {
     {
         $path = $this->_joinPath($path, $name);
 
-        if ($this->fs->createDir($path)) {
-            return $path;
-        }
-
-        return false;
+        return $this->_resultPath($this->fs->createDir($path), $path);
     }
 
     /**
@@ -345,11 +399,7 @@ class Driver extends elFinderVolumeDriver {
     {
         $path = $this->_joinPath($path, $name);
 
-        if ($this->fs->write($path, '')) {
-            return $path;
-        }
-
-        return false;
+        return $this->_resultPath($this->fs->write($path, ''), $path);
     }
 
     /**
@@ -362,7 +412,13 @@ class Driver extends elFinderVolumeDriver {
      **/
     protected function _copy($source, $target, $name)
     {
-        return $this->fs->copy($source, $this->_joinPath($target, $name));
+        $result = $this->fs->copy($source, $this->_joinPath($target, $name));
+
+        if ($result && $this->fscache) {
+            $this->fscache->flush();
+        }
+
+        return $result;
     }
 
     /**
@@ -378,11 +434,7 @@ class Driver extends elFinderVolumeDriver {
     {
         $path = $this->_joinPath($target, $name);
 
-        if ($this->fs->rename($source, $path)) {
-            return $path;
-        }
-
-        return false;
+        return $this->_resultPath($this->fs->rename($source, $path), $path);
     }
 
     /**
@@ -427,9 +479,7 @@ class Driver extends elFinderVolumeDriver {
             $config['mimetype'] = self::$mimetypes[$ext];
         }
 
-        if ($this->fs->putStream($path, $fp, $config)) {
-            return $path;
-        }
+        return $this->_resultPath($this->fs->putStream($path, $fp, $config), $path);
 
         return false;
     }
