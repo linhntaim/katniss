@@ -23,7 +23,7 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
      *
      * @var array
      */
-    protected $fields = ['first_name', 'last_name', 'email', 'gender', 'verified'];
+    protected $fields = ['name', 'email', 'gender', 'verified'];
 
     /**
      * The scopes being requested.
@@ -38,6 +38,13 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
      * @var bool
      */
     protected $popup = false;
+
+    /**
+     * Re-request a declined permission.
+     *
+     * @var bool
+     */
+    protected $reRequest = false;
 
     /**
      * {@inheritdoc}
@@ -103,12 +110,8 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
     {
         $avatarUrl = $this->graphUrl.'/'.$this->version.'/'.$user['id'].'/picture';
 
-        $firstName = isset($user['first_name']) ? $user['first_name'] : null;
-
-        $lastName = isset($user['last_name']) ? $user['last_name'] : null;
-
         return (new User)->setRaw($user)->map([
-            'id' => $user['id'], 'nickname' => null, 'name' => $firstName.' '.$lastName,
+            'id' => $user['id'], 'nickname' => null, 'name' => isset($user['name']) ? $user['name'] : null,
             'email' => isset($user['email']) ? $user['email'] : null, 'avatar' => $avatarUrl.'?type=large',
             'avatar_original' => $avatarUrl.'?width=1920',
         ]);
@@ -123,6 +126,10 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
 
         if ($this->popup) {
             $fields['display'] = 'popup';
+        }
+
+        if ($this->reRequest) {
+            $fields['auth_type'] = 'rerequest';
         }
 
         return $fields;
@@ -151,5 +158,15 @@ class FacebookProvider extends AbstractProvider implements ProviderInterface
         $this->popup = true;
 
         return $this;
+    }
+
+    /**
+     * Re-request permissions which were previously declined.
+     *
+     * @return $this
+     */
+    public function reRequest()
+    {
+        $this->reRequest = true;
     }
 }
