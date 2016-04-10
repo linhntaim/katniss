@@ -5,6 +5,9 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Application;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Request;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Cached\Storage\Memory;
+use League\Flysystem\Filesystem;
 
 class ElfinderController extends Controller
 {
@@ -89,9 +92,17 @@ class ElfinderController extends Controller
                 }
                 $disk = app('filesystem')->disk($key);
                 if ($disk instanceof FilesystemAdapter) {
+                    $filesystem = $disk->getDriver();
+                    if (method_exists($filesystem, 'getAdapter')) {
+                        $adapter = $filesystem->getAdapter();
+                        if ( ! $adapter instanceof CachedAdapter) {
+                            $adapter = new CachedAdapter($adapter, new Memory());
+                            $filesystem = new Filesystem($adapter);
+                        }
+                    }
                     $defaults = [
                         'driver' => 'Flysystem',
-                        'filesystem' => $disk->getDriver(),
+                        'filesystem' => $filesystem,
                         'alias' => $key,
                     ];
                     $roots[] = array_merge($defaults, $root);
@@ -106,8 +117,13 @@ class ElfinderController extends Controller
             $session = null;
         }
 
+        $rootOptions = $this->app->config->get('elfinder.root_options', array());
+        foreach ($roots as $key => $root) {
+            $roots[$key] = array_merge($rootOptions, $root);
+        }
+
         $opts = $this->app->config->get('elfinder.options', array());
-        $opts = array_merge(['roots' => $roots, 'session' => $session], $opts);
+        $opts = array_merge($opts, ['roots' => $roots, 'session' => $session]);
 
         // run elFinder
         $connector = new Connector(new \elFinder($opts));
