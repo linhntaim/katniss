@@ -92,10 +92,14 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 	 * @author Cem (DiscoFever)
 	 **/
 	public function __construct() {
-		
-		//ini_set('memory_limit', '128M');
-		@ include_once 'Dropbox/autoload.php';
-		$this->dropbox_phpFound = in_array('Dropbox_autoload', spl_autoload_functions());
+
+		if (@include_once 'Dropbox/autoload.php') {
+			// check with pear
+			$this->dropbox_phpFound = in_array('Dropbox_autoload', spl_autoload_functions());
+		} else {
+			// check with composer
+			$this->dropbox_phpFound = class_exists('Dropbox_API');
+		}
 		
 		$opts = array(
 			'consumerKey'       => '',
@@ -148,7 +152,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 				if (class_exists('OAuth', false)) {
 					$this->oauth = new Dropbox_OAuth_PHP($options['consumerKey'], $options['consumerSecret']);
 				} else {
-					if (! class_exists('HTTP_OAuth_Consumer', false)) {
+					if (! class_exists('HTTP_OAuth_Consumer')) {
 						// We're going to try to load in manually
 						include 'HTTP/OAuth/Consumer.php';
 					}
@@ -311,7 +315,7 @@ class elFinderVolumeDropbox extends elFinderVolumeDriver {
 				if (class_exists('OAuth', false)) {
 					$this->oauth = new Dropbox_OAuth_PHP($this->options['consumerKey'], $this->options['consumerSecret']);
 				} else {
-					if (! class_exists('HTTP_OAuth_Consumer', false)) {
+					if (! class_exists('HTTP_OAuth_Consumer')) {
 						// We're going to try to load in manually
 						include 'HTTP/OAuth/Consumer.php';
 					}

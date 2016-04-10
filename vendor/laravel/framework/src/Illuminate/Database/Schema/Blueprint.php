@@ -38,7 +38,7 @@ class Blueprint
     public $engine;
 
     /**
-     * The row format that should be used for the table.
+     * The storage row format that should be used for the table.
      *
      * @var string
      */

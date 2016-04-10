@@ -71,7 +71,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.27
+Current version: 5.2.29
 
 Latest version:
 
@@ -121,7 +121,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: 0.3.6
+Current version: 0.3.7
 
 Latest version:
 
