@@ -71,7 +71,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.29
+Current version: 5.2.32
 
 Latest version:
 
@@ -109,7 +109,7 @@ Why I don't use latest version?
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: 2.2.0
+Current version: 2.2.2
 
 Latest version:
 
@@ -175,7 +175,7 @@ Customization:
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: 5.5
+Current version: 5.6
 
 Latest version:
 
@@ -187,7 +187,7 @@ For multilingual models (Database Entities & App Models)
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: 2.0.4
+Current version: 2.0.5
 
 For filtering HTML content.
 
