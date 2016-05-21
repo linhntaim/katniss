@@ -2,9 +2,7 @@
 
 namespace Katniss\Listeners;
 
-use Katniss\Events\PushNotification;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Katniss\Events\NotificationPushing;
 use Katniss\Models\Helpers\ORTC\PushClient;
 use Katniss\Models\UserNotification;
 
@@ -23,20 +21,20 @@ class NotificationPusher
     /**
      * Handle the event.
      *
-     * @param  PushNotification $event
+     * @param  NotificationPushing $event
      * @return void
      */
-    public function handle(PushNotification $event)
+    public function handle(NotificationPushing $event)
     {
         $pushClient = PushClient::getInstance();
 
-        foreach ($event->users as $user) {
+        foreach ($event->pushUsers as $user) {
             $notification = UserNotification::create([
                 'user_id' => $user->id,
-                'url_index' => $event->urlIndex,
-                'url_params' => escapeObject($event->urlParams),
-                'message_index' => $event->messageIndex,
-                'message_params' => escapeObject($event->messageParams),
+                'url_index' => $event->pushUrlIndex,
+                'url_params' => escapeObject($event->pushUrlParams),
+                'message_index' => $event->pushMessageIndex,
+                'message_params' => escapeObject($event->pushMessageParams),
             ]);
             if ($notification) {
                 $pushClient->queue($user->notificationChannel, $notification->toPushArray());
