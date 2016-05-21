@@ -1,5 +1,13 @@
 ## Version History
 
+### v.5.6
+
+- Added scope notTranslatedIn() [#235](https://github.com/dimsav/laravel-translatable/pull/235)
+
+### v.5.5.1
+
+- Fixed a bug in locale fallback on toArray()
+
 ### v.5.5
 
 - Added Laravel 5.2 support
