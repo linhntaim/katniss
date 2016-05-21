@@ -59,7 +59,7 @@ class HomepageController extends ViewController
             'country' => $countryCode . ' - ' . $country['name'] . ' (+' . $country['calling_code'] . ')',
             'locale' => $localeCode . '_' . $locale['country_code'] . ' - ' . $locale['name'] . ' (' . $locale['native'] . ')',
             'timezone' => $settings->getTimezone() . ' (' . $datetimeHelper->getCurrentTimeZone() . ')',
-            'price' => NumberFormatHelper::getInstance()->formatCurrency(12345.67),
+            'price' => toFormattedNumber(22270) . ' VND = ' . toFormattedCurrency(22270, 'VND'),
             'long_datetime' => $datetimeHelper->compound(DateTimeHelper::LONG_DATE_FUNCTION, ' ', DateTimeHelper::LONG_TIME_FUNCTION),
             'short_datetime' => $datetimeHelper->compound(),
             'user_sessions' => $userSessions,

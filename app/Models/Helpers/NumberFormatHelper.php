@@ -11,6 +11,18 @@ namespace Katniss\Models\Helpers;
 
 class NumberFormatHelper
 {
+    const FILTER_FORMAT_CURRENCY = 'format_currency';
+    const FILTER_FROM_FORMAT_CURRENCY = 'from_format_currency';
+    const DEFAULT_NUMBER_OF_DECIMAL_POINTS = 2;
+
+    /**
+     * @var int
+     */
+    public static $NUMBER_OF_DECIMAL_POINTS;
+
+    /**
+     * @var NumberFormatHelper
+     */
     private static $instance;
 
     public static function getInstance()
@@ -21,22 +33,62 @@ class NumberFormatHelper
         return self::$instance;
     }
 
+    /**
+     * @var string
+     */
     private $type;
-    private $currency;
+
+    /**
+     * @var string
+     */
+    private $currencyCode;
 
     private function __construct()
     {
         $settings = settings();
         $this->type = $settings->getNumberFormat();
-        $this->currency = $settings->getCurrency();
+        $this->currencyCode = $settings->getCurrency();
+
+        $this->modeNormal();
     }
 
-    public function formatCurrency($number)
+    public function modeInt()
     {
-        $number = $this->format($number);
-        return $number . ' ' . $this->currency;
+        $this->mode(0);
     }
 
+    public function modeNormal()
+    {
+        $this->mode(self::DEFAULT_NUMBER_OF_DECIMAL_POINTS);
+    }
+
+    /**
+     * @param int $numberOfDecimalPoints
+     */
+    public function mode($numberOfDecimalPoints)
+    {
+        self::$NUMBER_OF_DECIMAL_POINTS = $numberOfDecimalPoints;
+    }
+
+    /**
+     * @param float $number
+     * @param string $originalCurrencyCode
+     * @return string
+     */
+    public function formatCurrency($number, $originalCurrencyCode = null)
+    {
+        if (empty($originalCurrencyCode)) {
+            $originalCurrencyCode = $this->currencyCode;
+        }
+        $number = floatval($number);
+        $number = content_filter(self::FILTER_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
+        return $this->format($number) . ' ' . $this->currencyCode;
+    }
+
+    /**
+     * @param float $number
+     * @return string
+     */
     public function format($number)
     {
         $number = floatval($number);
@@ -54,9 +106,28 @@ class NumberFormatHelper
         }
     }
 
+    /**
+     * @param string $formattedCurrency
+     * @param string $originalCurrencyCode
+     * @return float
+     */
+    public function fromFormatCurrency($formattedCurrency, $originalCurrencyCode = null)
+    {
+        if (empty($originalCurrencyCode)) {
+            $originalCurrencyCode = $this->currencyCode;
+        }
+        $number = $this->fromFormat($formattedCurrency);
+        $number = content_filter(self::FILTER_FROM_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
+        return $number;
+    }
+
+    /**
+     * @param string $formattedNumber
+     * @return float
+     */
     public function fromFormat($formattedNumber)
     {
-        $formattedNumber = str_replace(' ' . $this->currency, '', $formattedNumber);
+        $formattedNumber = str_replace(' ' . $this->currencyCode, '', $formattedNumber);
         switch ($this->type) {
             case 'point_comma':
             case 'point_space':
@@ -65,35 +136,59 @@ class NumberFormatHelper
             case 'comma_space':
                 return $this->fromFormatComma($formattedNumber);
             default:
-                return $formattedNumber;
+                return floatval($formattedNumber);
         }
     }
 
+    /**
+     * @param float $number
+     * @return string
+     */
     public function formatPointComma($number)
     {
-        return number_format($number, 2, '.', ',');
+        return number_format($number, self::$NUMBER_OF_DECIMAL_POINTS, '.', ',');
     }
 
+    /**
+     * @param float $number
+     * @return string
+     */
     public function formatPointSpace($number)
     {
-        return number_format($number, 2, '.', ' ');
+        return number_format($number, self::$NUMBER_OF_DECIMAL_POINTS, '.', ' ');
     }
 
+    /**
+     * @param string $formattedNumber
+     * @return float
+     */
     public function fromFormatPoint($formattedNumber)
     {
         return floatval(preg_replace('/[^\d\.]+/', '', $formattedNumber));
     }
 
+    /**
+     * @param float $number
+     * @return string
+     */
     public function formatCommaPoint($number)
     {
-        return number_format($number, 2, ',', '.');
+        return number_format($number, self::$NUMBER_OF_DECIMAL_POINTS, ',', '.');
     }
 
+    /**
+     * @param float $number
+     * @return string
+     */
     public function formatCommaSpace($number)
     {
-        return number_format($number, 2, ',', ' ');
+        return number_format($number, self::$NUMBER_OF_DECIMAL_POINTS, ',', ' ');
     }
 
+    /**
+     * @param string $formattedNumber
+     * @return float
+     */
     public function fromFormatComma($formattedNumber)
     {
         return floatval(str_replace(',', '.', preg_replace('/[^\d\,]+/', '', $formattedNumber)));
@@ -111,7 +206,7 @@ class NumberFormatHelper
             case 'comma_space':
                 return self::getInstance()->formatCommaSpace($number);
             default:
-                return $number;
+                return self::getInstance()->format($number);
         }
     }
 
@@ -125,7 +220,7 @@ class NumberFormatHelper
             case 'comma_space':
                 return self::getInstance()->fromFormatComma($formattedNumber);
             default:
-                return $formattedNumber;
+                return self::getInstance()->fromFormat($formattedNumber);
         }
     }
 }

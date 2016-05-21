@@ -1,0 +1,47 @@
+@section('lib_styles')
+    <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
+@endsection
+@section('lib_scripts')
+    <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
+@endsection
+@section('extended_scripts')
+    <script>
+        {!! cdataOpen() !!}
+        jQuery(document).ready(function () {
+            jQuery('[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
+        {!! cdataClose() !!}
+    </script>
+@endsection
+
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">
+            {{ trans_choice('currency_exchange.exchange_rate',2) }}
+        </h3>
+    </div>
+    <div class="box-body form-horizontal">
+        @foreach($currencies as $currencyCode => $currency)
+            <div class="form-group">
+                <label for="inputExchange_{{ $currencyCode }}" class="col-sm-2 control-label">{{ $currency['name'] }}
+                    ({{ $currency['symbol'] }})</label>
+                <div class="col-sm-4">
+                    <input id="inputExchange_{{ $currencyCode }}" class="form-control" type="text"
+                           name="exchange_rates[{{ $currencyCode }}]"
+                           value="{{ toFormattedNumber($exchange_rates[$currencyCode]) }}"{{ $main_currency_code == $currencyCode ? ' disabled' : '' }}>
+                </div>
+                <div class="col-sm-6">
+                    @if($main_currency_code != $currencyCode)
+                        <em>({{ toFormattedNumber(2*$exchange_rates[$currencyCode]) }} {{ $currencyCode }} = {{ toFormattedCurrency(2*$exchange_rates[$currencyCode], $currencyCode) }})</em>
+                    @else
+                        {{ trans('currency_exchange.main_currency') }} (<em>{!! trans('currency_exchange.change_here', ['url' => transUrl('my-settings')]) !!})</em>
+                    @endif
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>

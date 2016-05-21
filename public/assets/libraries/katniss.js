@@ -75,8 +75,21 @@ jQuery.fn.extend({
 });
 
 function NumberFormatHelper() {
-    this.type = typeof SETTINGS_NUMBER_FORMAT === 'undefined' ? 'point_comma' : NUMBER_FORMAT;
+    var DEFAULT_NUMBER_FORMAT = 'point_comma';
+    this.DEFAULT_NUMBER_OF_DECIMAL_POINTS = 2;
+
+    this.type = typeof SETTINGS_NUMBER_FORMAT === 'undefined' ? DEFAULT_NUMBER_FORMAT : SETTINGS_NUMBER_FORMAT;
+    this.numberOfDecimalPoints = this.DEFAULT_NUMBER_OF_DECIMAL_POINTS;
 }
+NumberFormatHelper.prototype.modeInt = function (numberOfDecimalPoints) {
+    this.mode(0);
+};
+NumberFormatHelper.prototype.modeNormal = function (numberOfDecimalPoints) {
+    this.mode(this.DEFAULT_NUMBER_OF_DECIMAL_POINTS);
+};
+NumberFormatHelper.prototype.mode = function (numberOfDecimalPoints) {
+    this.numberOfDecimalPoints = numberOfDecimalPoints;
+};
 NumberFormatHelper.prototype.format = function (number) {
     number = parseFloat(number);
     switch (this.type) {
@@ -92,12 +105,11 @@ NumberFormatHelper.prototype.format = function (number) {
             return number;
     }
 };
-
 NumberFormatHelper.prototype.formatPointComma = function (number) {
-    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    return number.toFixed(this.numberOfDecimalPoints).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 };
 NumberFormatHelper.prototype.formatPointSpace = function (number) {
-    return number.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1 ');
+    return number.toFixed(this.numberOfDecimalPoints).replace(/(\d)(?=(\d{3})+\.)/g, '$1 ');
 };
 NumberFormatHelper.prototype.formatCommaPoint = function (number) {
     number = this.formatPointSpace(number);

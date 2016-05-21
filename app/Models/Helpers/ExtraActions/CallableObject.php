@@ -50,6 +50,11 @@ class CallableObject
         $this->tmpParams[] = $param;
     }
 
+    public function pushParams(array $params)
+    {
+        $this->tmpParams = array_merge($this->tmpParams, $params);
+    }
+
     public function execute()
     {
         if (!empty($this->definition)) {
