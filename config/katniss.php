@@ -37,9 +37,15 @@ return [
         Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::class,
         Katniss\Models\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\SocialIntegration\Extension::class,
+        Katniss\Models\Themes\Plugins\CurrencyExchange\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\CurrencyExchange\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
+    ],
+    'admin_except_extensions' => [
+        Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
+        Katniss\Models\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME,
+        Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME,
     ],
     'paths_use_admin_theme' => [
         'admin', 'auth', 'documents', 'password', 'my-settings'

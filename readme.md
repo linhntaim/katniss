@@ -251,6 +251,8 @@ Sample Extensions:
 - Social Integration:
     - Integrate website into social networks
     - Current: Facebook, Twitter, Google, LinkedIn
+- Currency Exchange:
+    - Allow user to configure the exchange rates to automatically convert to/from any currencies
 
 ##### Widget
 
