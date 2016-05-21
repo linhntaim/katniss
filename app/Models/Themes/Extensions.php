@@ -18,21 +18,26 @@ class Extensions
 
     private $activated;
 
+    private $adminExcepts;
+
     public function __construct()
     {
         $this->defines = array_merge(config('katniss.extensions'), HomeThemeFacade::extensions());
         $this->statics = config('katniss.static_extensions');
         $this->activated = array_unique(array_merge((array)getOption('activated_extensions', []), $this->staticExtensions()));
+        $this->adminExcepts = config('katniss.admin_except_extensions');
     }
 
     public function register()
     {
         $extensions = $this->activated();
         foreach ($extensions as $extension) {
-            $extensionClass = $this->extensionClass($extension);
-            if (!empty($extensionClass) && class_exists($extensionClass)) {
-                $extension = new $extensionClass();
-                $extension->register();
+            if (!in_admin() || !in_array($extension, $this->adminExcepts)) {
+                $extensionClass = $this->extensionClass($extension);
+                if (!empty($extensionClass) && class_exists($extensionClass)) {
+                    $extension = new $extensionClass();
+                    $extension->register();
+                }
             }
         }
     }

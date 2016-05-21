@@ -37,13 +37,14 @@ class ContentFilter
      * @param string|mixed $content
      * @return mixed
      */
-    public static function flush($id, $content)
+    public static function flush($id, $content, array $params = [])
     {
         self::check($id);
 
         $filter = self::$filters[$id];
         foreach ($filter as $callableObject) {
             $callableObject->unShiftParam($content);
+            $callableObject->pushParams($params);
             $content = $callableObject->execute();
         }
 

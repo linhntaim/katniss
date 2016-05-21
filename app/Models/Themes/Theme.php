@@ -8,7 +8,6 @@
 
 namespace Katniss\Models\Themes;
 
-use Illuminate\Support\Facades\Request;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
 use Katniss\Models\Helpers\HtmlTag\Html5;
@@ -298,9 +297,12 @@ abstract class Theme
         foreach ($admin_paths as $path) {
             $path = homePath($path);
             if ($request->is($path, $path . '/*')) {
+                self::$isAdmin = true;
                 return app('admin_theme');
             }
         }
         return app('home_theme');
     }
+
+    public static $isAdmin = false;
 }

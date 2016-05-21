@@ -471,6 +471,88 @@ function startWith($haystack, $needle)
     return Str::startsWith($haystack, $needle);
 }
 
+/**
+ * @param int $number
+ * @return string
+ */
+function toFormattedInt($number)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->modeInt();
+    $number = $helper->format($number);
+    $helper->modeNormal();
+    return $number;
+}
+
+/**
+ * @param float $number
+ * @param int $mode
+ * @return string
+ */
+function toFormattedNumber($number, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->mode($mode);
+    $number = $helper->format($number);
+    $helper->modeNormal();
+    return $number;
+}
+
+/**
+ * @param float $number
+ * @param string $originalCurrencyCode
+ * @param int $mode
+ * @return string
+ */
+function toFormattedCurrency($number, $originalCurrencyCode = null, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->mode($mode);
+    $number = $helper->formatCurrency($number, $originalCurrencyCode);
+    $helper->modeNormal();
+    return $number;
+}
+
+/**
+ * @param string $formattedNumber
+ * @return int
+ */
+function fromFormattedInt($formattedNumber)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->modeInt();
+    $number = $helper->fromFormat($formattedNumber);
+    $helper->modeNormal();
+    return (int)$number;
+}
+
+/**
+ * @param string $formattedNumber
+ * @return float
+ */
+function fromFormattedNumber($formattedNumber, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->mode($mode);
+    $number = $helper->fromFormat($formattedNumber);
+    $helper->modeNormal();
+    return $number;
+}
+
+/**
+ * @param string $formattedCurrency
+ * @param string $originalCurrencyCode
+ * @return float
+ */
+function fromFormattedCurrency($formattedCurrency, $originalCurrencyCode = null, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+{
+    $helper = NumberFormatHelper::getInstance();
+    $helper->mode($mode);
+    $number = $helper->fromFormatCurrency($formattedCurrency);
+    $helper->modeNormal();
+    return $number;
+}
+
 #endregion
 
 #region Utilities
@@ -517,9 +599,9 @@ function add_filter($id, CallableObject $callableObject)
  * @param string|mixed $content
  * @return mixed
  */
-function content_filter($id, $content)
+function content_filter($id, $content, array $params = [])
 {
-    return ContentFilter::flush($id, $content);
+    return ContentFilter::flush($id, $content, $params);
 }
 
 /**
@@ -648,6 +730,11 @@ function dequeue_theme_footer($key)
 function theme_footer()
 {
     return HomeThemeFacade::getFooter();
+}
+
+function in_admin()
+{
+    return Theme::$isAdmin;
 }
 
 #endregion
