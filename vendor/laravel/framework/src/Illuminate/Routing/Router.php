@@ -619,7 +619,7 @@ class Router implements RegistrarContract
             return false;
         }
 
-        return is_string($action) || is_string(isset($action['uses']) ? $action['uses'] : null);
+        return is_string($action) || (isset($action['uses']) && is_string($action['uses']));
     }
 
     /**
@@ -1164,7 +1164,7 @@ class Router implements RegistrarContract
     }
 
     /**
-     * Alias for the "currentRouteNamed" method.
+     * Alias for the "currentRouteName" method.
      *
      * @param  mixed  string
      * @return bool
