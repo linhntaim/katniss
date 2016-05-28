@@ -19,9 +19,9 @@ class CreateUserNotifications extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             $table->string('url_index');
-            $table->json('url_params');
+            $table->string('url_params')->default('{}');
             $table->string('message_index');
-            $table->json('message_params');
+            $table->string('message_params')->default('{}');
             $table->tinyInteger('type')->unsigned()->default(0);
             $table->boolean('read')->default(false);
             $table->timestamps();

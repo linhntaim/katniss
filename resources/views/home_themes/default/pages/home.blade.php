@@ -6,7 +6,7 @@
 
         }
         jQuery(document).ready(function () {
-            var jActiveMessage;
+            var jActiveMessage, jFirstActiveMessage = true;
             jQuery('[data-toggle="message"]').on('click', function (e) {
                 e.preventDefault();
 
@@ -14,6 +14,7 @@
 
                 if (jActiveMessage) {
                     if (jActiveMessage.attr('data-id') == jThis.attr('data-id')) {
+                        jScrollTo('#my-messages');
                         return;
                     }
                     jActiveMessage.removeClass('message-user-selected');
@@ -22,7 +23,10 @@
                 jActiveMessage = jThis;
                 jActiveMessage.addClass('message-user-selected');
 
-                jScrollTo('#my-messages')
+                if (!jFirstActiveMessage) {
+                    jScrollTo('#my-messages');
+                }
+                jFirstActiveMessage = false;
                 activateConversation(jActiveMessage.attr('data-id'));
             }).first().trigger('click');
         });
@@ -36,7 +40,6 @@
             border: 2px solid #337ab7;
             font-weight: bold
         }
-
         .message-user:focus,
         .message-user:hover,
         .message-user-selected {
@@ -152,6 +155,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="text-uppercase">Conversation</h1>
+                    <div class="message-holder">
+                        <img src="{{ HomeTheme::imageAsset('loading.gif') }}">
+                    </div>
                 </div>
             </div>
         </div>
