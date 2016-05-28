@@ -45,6 +45,7 @@ class CreateConversations extends Migration
             $table->string('client_display_name');
             $table->string('client_email');
             $table->string('client_ip');
+            $table->string('title')->nullable();
             $table->text('content');
             $table->timestamps();
 

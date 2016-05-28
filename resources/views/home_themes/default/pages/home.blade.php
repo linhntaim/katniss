@@ -7,13 +7,41 @@
             jQuery('[data-toggle="message"]').on('click', function (e) {
                 e.preventDefault();
 
-                if (jActiveMessage) jActiveMessage.removeClass('text-bold');
-                jActiveMessage = jQuery(this);
-                jActiveMessage.addClass('text-bold');
-            });
+                var jThis = jQuery(this);
+
+                if (jActiveMessage) {
+                    if (jActiveMessage.attr('data-user') == jThis.attr('data-user') && jActiveMessage.attr('data-id') == jThis.attr('data-id')) {
+                        return;
+                    }
+                    jActiveMessage.removeClass('message-user-selected');
+                }
+
+                jActiveMessage = jThis;
+                jActiveMessage.addClass('message-user-selected');
+
+                jScrollTo('#my-messages');
+            }).first().trigger('click');
         });
         {!! cdataClose() !!}
     </script>
+@endsection
+@section('extended_styles')
+    <style>
+        .message-user {
+            padding: 5px 7px;
+            border: 2px solid #337ab7;
+            font-weight: bold
+        }
+
+        .message-user:focus,
+        .message-user:hover,
+        .message-user-selected {
+            border-color: #23527c;
+            background: #23527c;
+            text-decoration: none;
+            color: #fff;
+        }
+    </style>
 @endsection
 @section('extra_sections')
     <section id="social-sharing" class="even-section">
@@ -77,40 +105,46 @@
                     <p><strong>Currency + Number Format</strong><br>{{ $price }}</p>
                     <p><strong>Long Date Time</strong><br>{{ $long_datetime }}</p>
                     <p><strong>Short Date Time</strong><br>{{ $short_datetime }}</p>
-                    <p><a href="{{ homeUrl('my-settings') }}">{{ trans('form.action_go_to') }} {{ trans('pages.my_settings_title') }}</a></p>
+                    <p>
+                        <a href="{{ homeUrl('my-settings') }}">{{ trans('form.action_go_to') }} {{ trans('pages.my_settings_title') }}</a>
+                    </p>
                 </div>
             </div>
         </div>
     </section>
-    <section id="my-messages" class="even-section">
+    <section id="my-conversations" class="even-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">My Messages</h1>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-sm-9 col-md-8">
-                    <p>Message</p>
-                </div>
-                <div class="col-xs-12 col-sm-3 col-md-4">
-                    <p>List of users</p>
-                    <ul class="list-unstyled">
+                    <h1 class="text-uppercase">List of Users</h1>
+                    <ul class="list-unstyled list-inline">
                         @foreach($user_sessions as $user_session)
                             @if($user_session->isGuest())
                                 <li>
-                                    <a href="#" data-toggle="message" data-id="{{ $user_session->id }}">Anonymous #{{ $user_session->id }}</a>
+                                    <a class="message-user" href="#" data-toggle="message"
+                                       data-id="{{ $user_session->id }}" data-user="false">Anonymous
+                                        #{{ $user_session->id }}</a>
                                 </li>
                             @else
                                 <?php
                                 $user = $user_session->user;
                                 ?>
                                 <li>
-                                    <a href="#" data-toggle="message" data-id="{{ $user->id }}">{{ $user->display_name }}</a>
+                                    <a class="message-user" href="#" data-toggle="message" data-id="{{ $user->id }}"
+                                       data-user="true">{{ $user->display_name }}</a>
                                 </li>
                             @endif
                         @endforeach
                     </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="my-messages" class="odd-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="text-uppercase">Conversation</h1>
                 </div>
             </div>
         </div>

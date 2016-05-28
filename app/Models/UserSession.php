@@ -2,7 +2,9 @@
 
 namespace Katniss\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class UserSession extends Model
 {
@@ -50,6 +52,26 @@ class UserSession extends Model
     public function scopeLoggedInUsers($query)
     {
         return $query->whereNotNull('user_id')->with('user');
+    }
+
+    public static function existed()
+    {
+        return self::select('id',
+            'payload',
+            DB::raw('max(`last_activity`) as `last_activity`'),
+            'ip_address',
+            'user_id',
+            'user_agent')
+            ->whereNotNull('user_id')
+            ->groupBy('user_id')
+            ->union(self::select('id',
+                'payload',
+                DB::raw('max(`last_activity`) as `last_activity`'),
+                'ip_address',
+                'user_id',
+                'user_agent')
+                ->whereNull('user_id')
+                ->groupBy('ip_address'));
     }
 
     /**

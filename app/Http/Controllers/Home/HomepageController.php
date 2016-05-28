@@ -41,7 +41,7 @@ class HomepageController extends ViewController
                 trans('pages.my_settings_title'), 'li', null, 'page-scroll'
             ));
             $menu->addItem(new MenuItem(
-                '#my-messages',
+                '#my-conversations',
                 trans('pages.my_messages_title'), 'li', null, 'page-scroll'
             ));
             return $menu;
@@ -53,7 +53,7 @@ class HomepageController extends ViewController
         $countryCode = $settings->getCountry();
         $country = allCountry($countryCode);
 
-        $userSessions = UserSession::all();
+        $userSessions = UserSession::existed()->get();
 
         return view($this->themePage('home'), [
             'country' => $countryCode . ' - ' . $country['name'] . ' (+' . $country['calling_code'] . ')',
