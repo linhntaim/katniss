@@ -2,6 +2,9 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
+        function activateConversation(sessionId) {
+
+        }
         jQuery(document).ready(function () {
             var jActiveMessage;
             jQuery('[data-toggle="message"]').on('click', function (e) {
@@ -10,7 +13,7 @@
                 var jThis = jQuery(this);
 
                 if (jActiveMessage) {
-                    if (jActiveMessage.attr('data-user') == jThis.attr('data-user') && jActiveMessage.attr('data-id') == jThis.attr('data-id')) {
+                    if (jActiveMessage.attr('data-id') == jThis.attr('data-id')) {
                         return;
                     }
                     jActiveMessage.removeClass('message-user-selected');
@@ -19,7 +22,8 @@
                 jActiveMessage = jThis;
                 jActiveMessage.addClass('message-user-selected');
 
-                jScrollTo('#my-messages');
+                jScrollTo('#my-messages')
+                activateConversation(jActiveMessage.attr('data-id'));
             }).first().trigger('click');
         });
         {!! cdataClose() !!}
@@ -120,19 +124,22 @@
                     <ul class="list-unstyled list-inline">
                         @foreach($user_sessions as $user_session)
                             @if($user_session->isGuest())
-                                <li>
-                                    <a class="message-user" href="#" data-toggle="message"
-                                       data-id="{{ $user_session->id }}" data-user="false">Anonymous
-                                        #{{ $user_session->id }}</a>
-                                </li>
+                                @if($user_session->ip_address != clientIp())
+                                    <li>
+                                        <a class="message-user" href="#" data-toggle="message"
+                                           data-id="{{ $user_session->id }}">Anonymous #{{ $user_session->id }}</a>
+                                    </li>
+                                @endif
                             @else
                                 <?php
                                 $user = $user_session->user;
                                 ?>
-                                <li>
-                                    <a class="message-user" href="#" data-toggle="message" data-id="{{ $user->id }}"
-                                       data-user="true">{{ $user->display_name }}</a>
-                                </li>
+                                @if(!$is_auth || $user->id != $auth_user->id)
+                                    <li>
+                                        <a class="message-user" href="#" data-toggle="message"
+                                           data-id="{{ $user_session->id }}">{{ $user->display_name }}</a>
+                                    </li>
+                                @endif
                             @endif
                         @endforeach
                     </ul>
