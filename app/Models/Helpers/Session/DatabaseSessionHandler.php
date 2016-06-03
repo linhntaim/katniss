@@ -8,9 +8,9 @@
 
 namespace Katniss\Models\Helpers\Session;
 
+use Illuminate\Container\Container;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Session\DatabaseSessionHandler as BaseDatabaseSessionHandler;
-use Illuminate\Support\Facades\DB;
-use Katniss\Models\UserSession;
 
 class DatabaseSessionHandler extends BaseDatabaseSessionHandler
 {
@@ -21,9 +21,9 @@ class DatabaseSessionHandler extends BaseDatabaseSessionHandler
      * @param  string $table
      * @return void
      */
-    public function __construct()
+    public function __construct(ConnectionInterface $connection, $table, Container $container = null)
     {
-        parent::__construct(DB::connection(config('session.connection')), config('session.table'), app());
+        parent::__construct($connection, $table, $container);
     }
 
     /**
