@@ -5,6 +5,7 @@ namespace Katniss\Providers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Katniss\Models\Helpers\Session\DatabaseSessionHandler;
+use Katniss\Models\Helpers\Session\EnhancedFileSessionHandler;
 use Katniss\Models\Helpers\Settings;
 use Katniss\Models\Themes\Extensions;
 use Katniss\Models\Themes\Widgets;
@@ -18,8 +19,12 @@ class KatnissServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        session()->extend('katniss', function ($app) {
-            return new DatabaseSessionHandler();
+        session()->extend('katniss_database', function ($app) {
+            $connection = $app['config']['session.connection'];
+            return new DatabaseSessionHandler($app['db']->connection($connection), $app['config']['session.table'], $app);
+        });
+        session()->extend('katniss_file', function ($app) {
+            return new EnhancedFileSessionHandler($app['files'], $app['config']['session.files']);
         });
 
         config([

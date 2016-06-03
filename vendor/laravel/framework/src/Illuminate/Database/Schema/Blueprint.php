@@ -38,13 +38,6 @@ class Blueprint
     public $engine;
 
     /**
-     * The storage row format that should be used for the table.
-     *
-     * @var string
-     */
-    public $rowFormat;
-
-    /**
      * The default character set that should be used for the table.
      */
     public $charset;
