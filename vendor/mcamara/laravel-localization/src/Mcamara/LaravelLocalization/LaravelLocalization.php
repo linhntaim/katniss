@@ -1,6 +1,5 @@
 <?php namespace Mcamara\LaravelLocalization;
 
-use Illuminate\Support\Facades\Lang;
 use Mcamara\LaravelLocalization\Exceptions\SupportedLocalesNotDefined;
 use Mcamara\LaravelLocalization\Exceptions\UnsupportedLocaleException;
 use Illuminate\Config\Repository;
@@ -160,20 +159,6 @@ class LaravelLocalization {
             else
             {
                 $this->currentLocale = $this->getCurrentLocale();
-                // linhnt.aim@outlook.com
-                $path = $this->request->path();
-                $matchedLocale = false;
-                foreach (Lang::get('routes', [], $this->currentLocale) as $name => $trans) { // lang of default locale
-                    $name_regex = '/^' . str_replace('/', '\\/', preg_replace('/\{[^\}]+\}/', '(.*)', $trans)) . '$/';
-                    if (preg_match($name_regex, $path, $matches)) {
-                        $matchedLocale = true;
-                        break;
-                    }
-                }
-                if (!$matchedLocale) {
-                    $this->currentLocale = $this->defaultLocale;
-                }
-                // end fixed // if no fixed, delete
             }
         }
 
@@ -254,47 +239,10 @@ class LaravelLocalization {
 
         }
 
-        if (filter_var($url, FILTER_VALIDATE_URL)) { // if no fixed, delete
-            // linhnt.aim@outlook.com
-            $parsed_url = parse_url($url);
-            if (!empty($parsed_url['query'])) {
-                if ($parsed_url['query'] == '}' && mb_strpos($parsed_url['path'], '{') !== false) {
-                    $parsed_url['path'] .= '?}';
-                    $parsed_url['query'] = '';
-                } else {
-                    $tmp = explode('=', $parsed_url['query'])[0];
-                    $i = mb_strpos($tmp, '?');
-                    while ($i !== false) {
-                        if ($tmp{$i + 1} != '}') {
-                            $parsed_url['path'] .= '?' . mb_substr($tmp, 0, $i);
-                            $parsed_url['query'] = mb_substr($parsed_url['query'], $i + 1);
-                            break;
-                        }
-                        $i = mb_strpos($tmp, '?', $i + 1);
-                    }
-                }
-            }
-            $tmpUrl = $parsed_url['scheme'] . '://' . $parsed_url['host'];
-            if (!empty($parsed_url['path'])) {
-                $tmpUrl .= $parsed_url['path'];
-            }
-            // end fixed // if no fixed, delete
-
-//            if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)) { // if no fixed, uncomment
-            if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($tmpUrl, $attributes, $this->currentLocale)) { // if no fixed, delete
-                // linhnt.aim@outlook.com
-                $translatedUrl = $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
-                if (!empty($parsed_url['query'])) {
-                    $translatedUrl .= '?' . $parsed_url['query'];
-                }
-                if (!empty($parsed_url['fragment'])) {
-                    $translatedUrl .= '#' . $parsed_url['fragment'];
-                }
-                return $translatedUrl;
-                // end fixed // if no fixed, delete
-//            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes); // if no fixed, uncomment
-            }
-        } // if no fixed, delete
+        if ( $locale && $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale) )
+        {
+            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+        }
 
         $base_path = $this->request->getBaseUrl();
         $parsed_url = parse_url($url);

@@ -71,18 +71,13 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.32
+Current version: 5.2.39
 
 Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
 
 Base framework.
-
-Customization:
-
-- Add property `$rowFormat` to class `\Illuminate\Database\Schema\Blueprint`.
-- Enable set row format of table in method `\Illuminate\Database\Schema\Grammars\MySqlGrammar@compileCreate`.
 
 #### zizaco/entrust
 
@@ -145,7 +140,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.15
+Current version: 2.0.18
 
 For logging in & registering from social networks.
 
@@ -157,7 +152,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: 1.1.2
+Current version: 1.1.3
 
 Latest version:
 

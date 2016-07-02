@@ -37,7 +37,7 @@ class LaravelLocalizationRedirectFilter {
                 // If the current url does not contain any locale
                 // The system redirect the user to the very same url "localized"
                 // we use the current locale to redirect him
-                $redirection = app('laravellocalization')->getLocalizedURL();
+                $redirection = app('laravellocalization')->getLocalizedURL(session('locale'), $request->path());
             }
 
             if ( $redirection )
@@ -45,7 +45,7 @@ class LaravelLocalizationRedirectFilter {
                 // Save any flashed data for redirect
                 app('session')->reflash();
 
-                return new RedirectResponse($redirection, 301, [ 'Vary' => 'Accept-Language' ]);
+                return new RedirectResponse($redirection, 302, [ 'Vary' => 'Accept-Language' ]);
             }
         }
 
