@@ -39,6 +39,8 @@ Those settings require to create database `katniss` with `default character set 
 
 After creating, you should initialize database by running these commands when in root directory of the application:
 
+`composer install`
+
 `php artisan migrate --seed`
 
 **Notice:**
