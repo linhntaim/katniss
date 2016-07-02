@@ -14,12 +14,16 @@ class MySqlConnection extends BaseMySqlConnection
 {
     public function getSchemaBuilder()
     {
-        $this->schemaGrammar = new MySqlGrammar();
         $schemaBuilder = parent::getSchemaBuilder();
         $schemaBuilder->blueprintResolver(function ($table, $callback) {
             return new Blueprint($table, $callback);
         });
 
         return $schemaBuilder;
+    }
+
+    protected function getDefaultSchemaGrammar()
+    {
+        return $this->withTablePrefix(new MySqlGrammar());
     }
 }
