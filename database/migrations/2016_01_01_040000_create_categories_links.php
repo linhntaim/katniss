@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
+use Katniss\Models\Helpers\Database\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateCategoriesLinks extends Migration

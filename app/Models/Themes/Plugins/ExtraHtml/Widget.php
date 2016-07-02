@@ -17,6 +17,7 @@ class Widget extends DefaultWidget
     const WIDGET_DISPLAY_NAME = 'Extra HTML';
 
     public $content;
+    public $name;
 
     public function __init()
     {
@@ -24,6 +25,7 @@ class Widget extends DefaultWidget
 
         $this->content = '';
         if (!empty($this->localizedData)) {
+            $this->name = defPr($this->localizedData['name'], '');
             $this->content = defPr($this->localizedData['content'], '');
         }
     }
@@ -37,7 +39,7 @@ class Widget extends DefaultWidget
 
     public function render()
     {
-        return '<div id="' . $this->getHtmlId() . '" class="widget-extra-html">' . $this->content . '</div>';
+        return sprintf('<div id="%s" class="widget-extra-html"><h4>%s</h4>%s</div>', $this->getHtmlId(), $this->name, $this->content);
     }
 
     public function localizedFields()

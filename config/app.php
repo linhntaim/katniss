@@ -155,7 +155,6 @@ return [
         Katniss\Providers\AuthServiceProvider::class,
         Katniss\Providers\EventServiceProvider::class,
         Katniss\Providers\RouteServiceProvider::class,
-        Katniss\Providers\KatnissServiceProvider::class,
 
         Laravel\Socialite\SocialiteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
@@ -165,6 +164,8 @@ return [
         Mews\Purifier\PurifierServiceProvider::class,
         Dimsav\Translatable\TranslatableServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
+
+        Katniss\Providers\KatnissServiceProvider::class,
     ],
 
     /*

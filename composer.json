@@ -25,7 +25,9 @@
         "mcamara/laravel-localization": "^1.1",
         "dimsav/laravel-translatable": "^5.4",
         "mews/purifier": "^2.0",
-        "zizaco/entrust": "1.4.1"
+        "zizaco/entrust": "1.4.1",
+        "doctrine/dbal": "^2.5",
+        "almasaeed2010/AdminLTE": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
