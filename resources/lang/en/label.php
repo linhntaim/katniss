@@ -114,4 +114,10 @@ click the button below to get another welcome email from us.',
     'category_lc' => 'category|categories',
     'link' => 'Link|Links',
     'link_lc' => 'link|links',
+
+    'social_sharing' => 'Social Sharing',
+    'facebook_comment' => 'Facebook Comments',
+    'example_widget' => 'Example Widgets',
+
+    'no_widget' => 'No widget is placed here.',
 ];

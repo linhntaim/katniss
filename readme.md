@@ -39,9 +39,9 @@ Those settings require to create database `katniss` with `default character set 
 
 After creating, you should initialize database by running these commands when in root directory of the application:
 
-`php artisan migrate`
+`composer install`
 
-`php artisan db:seed --class=DefaultSeeder`
+`php artisan migrate --seed`
 
 **Notice:**
 
@@ -71,18 +71,13 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.32
+Current version: 5.2.39
 
 Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
 
 Base framework.
-
-Customization:
-
-- Add property `$rowFormat` to class `\Illuminate\Database\Schema\Blueprint`.
-- Enable set row format of table in method `\Illuminate\Database\Schema\Grammars\MySqlGrammar@compileCreate`.
 
 #### zizaco/entrust
 
@@ -145,31 +140,21 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.15
+Current version: 2.0.18
 
 For logging in & registering from social networks.
-
-Customization:
-
-- Change avatar type of Facebook user to `large` (originally, `normal`) in method `Laravel\Socialite\Two\FacebookProvider@mapUserToObject`.
 
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: 1.1.2
+Current version: 1.1.3
 
 Latest version:
 
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 
 For localizing (esp. with URL).
-
-Customization:
-
-- Fix bug: Method `\Mcamara\LaravelLocalization@getLocalizedURL` does not include GET parameters or hash from old URL into new URL.
-- Fix bug: If locale detected by browser is different from default locale, then it will throw 404 exception when user accesses the localized URL.
-    - Fixed in method `\Mcamara\LaravelLocalization@setLocale`.
 
 #### dimsav/laravel-translatable
 

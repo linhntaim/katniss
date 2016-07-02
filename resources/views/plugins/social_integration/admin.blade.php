@@ -24,6 +24,8 @@
             enableAlongCheckbox('#inputFacebookLikeEnable');
             enableAlongCheckbox('#inputFacebookShareEnable');
             enableAlongCheckbox('#inputFacebookRecommendEnable');
+            enableAlongCheckbox('#inputFacebookSendEnable');
+            enableAlongCheckbox('#inputFacebookSaveEnable');
             enableAlongCheckbox('#inputTwitterEnable');
             enableAlongCheckbox('#inputLinkedInEnable');
             enableAlongCheckbox('#inputLinkedInShareEnable');
@@ -182,6 +184,16 @@
                     <input id="inputFacebookSendEnable" type="checkbox" name="facebook_send_enable" data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_send_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_send_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputFacebookSaveEnable">
+                    <input id="inputFacebookSaveEnable" type="checkbox" name="facebook_save_enable" data-enable-target="#inputFacebookEnable"
+                           value="1"{{ $facebook_save_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.facebook_save_enable') }}
                 </label>
             </div>
         </div>

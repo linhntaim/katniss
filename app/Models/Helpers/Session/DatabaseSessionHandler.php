@@ -21,9 +21,9 @@ class DatabaseSessionHandler extends BaseDatabaseSessionHandler
      * @param  string $table
      * @return void
      */
-    public function __construct(ConnectionInterface $connection, $table, Container $container = null)
+    public function __construct(ConnectionInterface $connection, $table, $minutes, Container $container = null)
     {
-        parent::__construct($connection, $table, $container);
+        parent::__construct($connection, $table, $minutes, $container);
     }
 
     /**

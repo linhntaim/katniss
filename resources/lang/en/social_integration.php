@@ -6,6 +6,8 @@
  * Time: 17:07
  */
 return [
+    'ext_not_activated' => 'Social Integration extension is not activated.',
+    'ext_activated' => 'Social Integration extension is activated.',
     'facebook_enable' => 'Facebook enable',
     'facebook_comment_enable' => 'Comment enable',
     'facebook_comment_color_scheme' => 'Color scheme',
@@ -37,6 +39,7 @@ return [
     'facebook_recommend_layout_button_count' => 'Button Count',
     'facebook_recommend_layout_button' => 'Button',
     'facebook_send_enable' => 'Send enable',
+    'facebook_save_enable' => 'Save enable',
     'twitter_enable' => 'Twitter enable',
     'twitter_share_enable' => 'Share enable',
     'linkedin_enable' => 'LinkedIn enable',
