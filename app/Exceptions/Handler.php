@@ -5,6 +5,7 @@ namespace Katniss\Exceptions;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Session\TokenMismatchException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -45,6 +46,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if($e instanceof TokenMismatchException) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors([trans('error.token_mismatch')]);
+        }
+
         return parent::render($request, $e);
     }
 }
