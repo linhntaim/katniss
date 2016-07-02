@@ -144,10 +144,6 @@ Current version: 2.0.18
 
 For logging in & registering from social networks.
 
-Customization:
-
-- Change avatar type of Facebook user to `large` (originally, `normal`) in method `Laravel\Socialite\Two\FacebookProvider@mapUserToObject`.
-
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
@@ -159,12 +155,6 @@ Latest version:
 [![Latest Stable Version](https://poser.pugx.org/mcamara/laravel-localization/version.png)](https://packagist.org/packages/mcamara/laravel-localization) 
 
 For localizing (esp. with URL).
-
-Customization:
-
-- Fix bug: Method `\Mcamara\LaravelLocalization@getLocalizedURL` does not include GET parameters or hash from old URL into new URL.
-- Fix bug: If locale detected by browser is different from default locale, then it will throw 404 exception when user accesses the localized URL.
-    - Fixed in method `\Mcamara\LaravelLocalization@setLocale`.
 
 #### dimsav/laravel-translatable
 

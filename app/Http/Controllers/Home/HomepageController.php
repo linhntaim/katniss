@@ -24,15 +24,15 @@ class HomepageController extends ViewController
         add_filter('main_menu', new CallableObject(function (Menu $menu) {
             $menu->addItem(new MenuItem(
                 '#social-sharing',
-                'Social Sharing', 'li', null, 'page-scroll'
+                trans('label.social_sharing'), 'li', null, 'page-scroll'
             ));
             $menu->addItem(new MenuItem(
                 '#facebook-comment',
-                'Facebook Comment', 'li', null, 'page-scroll'
+                trans('label.facebook_comment'), 'li', null, 'page-scroll'
             ));
             $menu->addItem(new MenuItem(
                 '#example-widgets',
-                'Example Widgets', 'li', null, 'page-scroll'
+                trans('label.example_widget'), 'li', null, 'page-scroll'
             ));
             $menu->addItem(new MenuItem(
                 '#my-settings',

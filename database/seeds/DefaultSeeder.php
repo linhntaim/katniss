@@ -4,6 +4,9 @@ use Illuminate\Database\Seeder;
 use Katniss\Models\Permission;
 use Katniss\Models\Role;
 use Katniss\Models\User;
+use Katniss\Models\Category;
+use Katniss\Models\Link;
+use Katniss\Models\Themes\ThemeWidget;
 
 class DefaultSeeder extends Seeder
 {
@@ -80,5 +83,96 @@ class DefaultSeeder extends Seeder
             'active' => true
         ));
         $tester->attachRole($tester_role);
+
+        $locales = ['en', 'vi'];
+        $category = new Category();
+        $category->type = Category::LINK;
+        $data = [
+            'en' => [
+                'name' => 'Example link category',
+                'slug' => 'example-link-category',
+                'description' => 'Example link category',
+            ],
+            'vi' => [
+                'name' => 'Chuyên mục liên kết ví dụ',
+                'slug' => 'chuyen-muc-lien-ket-vi-du',
+                'description' => 'Chuyên mục liên kết ví dụ',
+            ]
+        ];
+        foreach ($locales as $locale) {
+            $transData = $data[$locale];
+            $trans = $category->translateOrNew($locale);
+            $trans->name = $transData['name'];
+            $trans->slug = $transData['slug'];
+            $trans->description = $transData['description'];
+        }
+        $category->save();
+        $data = [
+            [
+                'en' => [
+                    'name' => 'Author on Facebook',
+                    'url' => 'https://www.facebook.com/linhntaim',
+                    'description' => 'Author on Facebook',
+                ],
+                'vi' => [
+                    'name' => 'Hồ sơ tác giả trên Facebook',
+                    'url' => 'https://www.facebook.com/linhntaim',
+                    'description' => 'Hồ sơ tác giả trên Facebook',
+                ]
+            ],
+            [
+                'en' => [
+                    'name' => 'Author\'s Personal Site',
+                    'url' => 'http://linhntaim.com',
+                    'description' => 'Author\'s Personal Site',
+                ],
+                'vi' => [
+                    'name' => 'Trang cá nhân của tác giả',
+                    'url' => 'http://linhntaim.com',
+                    'description' => 'Trang cá nhân của tác giả',
+                ]
+            ],
+            [
+                'en' => [
+                    'name' => 'Katniss on Github',
+                    'url' => 'https://github.com/linhntaim/katniss',
+                    'description' => 'Katniss on Github',
+                ],
+                'vi' => [
+                    'name' => 'Katniss trên Github',
+                    'url' => 'https://github.com/linhntaim/katniss',
+                    'description' => 'Katniss trên Github',
+                ]
+            ]
+        ];
+
+        foreach ($data as $item) {
+            $link = new Link();
+            foreach ($locales as $locale) {
+                $transData = $item[$locale];
+                $trans = $link->translateOrNew($locale);
+                $trans->name = $transData['name'];
+                $trans->description = $transData['description'];
+                $trans->url = $transData['url'];
+            }
+            $link->save();
+            $link->categories()->attach($category->id);
+        }
+        ThemeWidget::create([
+            'widget_name' => 'base_links',
+            'theme_name' => '',
+            'placeholder' => 'default_placeholder',
+            'constructing_data' => '{"category_id":"' . $category->id . '","en":{"name":"Widget named Base Links","description":""},"vi":{"name":"Ví dụ về Công cụ hiển thị Base Links","description":""}}',
+            'active' => true,
+            'order' => 1
+        ]);
+        ThemeWidget::create([
+            'widget_name' => 'extra_html',
+            'theme_name' => '',
+            'placeholder' => 'default_placeholder',
+            'constructing_data' => '{"en":{"name":"Widget named Extra HTML","description":"","content":"<p><strong>Lorem Ipsum<\/strong><sup>&reg;<\/sup> is simply dummy text of the <em>printing and typesetting industry<\/em>. <span style=\"color:#FFFF00\"><span style=\"background-color:#000000\">Lorem Ipsum<\/span><\/span> has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <span style=\"font-size:16px\">Aldus PageMaker <\/span>including versions of <em><strong><u>Lorem Ipsum<\/u><\/strong><\/em>. <img alt=\"smiley\" src=\"http:\/\/katniss.linhntaim.com\/assets\/libraries\/ckeditor-4.5.5\/plugins\/smiley\/images\/regular_smile.png\" style=\"height:23px; width:23px\" title=\"smiley\"><\/p>\r\n\r\n<p><img alt=\"\" src=\"http:\/\/katniss.linhntaim.com\/files\/user_2\/katniss.png\" style=\"height:120px; width:120px\"><\/p>\r\n"},"vi":{"name":"V\u00ed d\u1ee5 v\u1ec1 C\u00f4ng c\u1ee5 hi\u1ec3n th\u1ecb Extra HTML","description":"","content":"<p><strong>Lorem Ipsum<\/strong><sup>&reg;<\/sup> is simply dummy text of the <em>printing and typesetting industry<\/em>. <span style=\"color:#FFFF00\"><span style=\"background-color:#000000\">Lorem Ipsum<\/span><\/span> has been the industry&#39;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like <span style=\"font-size:16px\">Aldus PageMaker <\/span>including versions of <em><strong><u>Lorem Ipsum<\/u><\/strong><\/em>. <img alt=\"smiley\" src=\"http:\/\/katniss.linhntaim.com\/assets\/libraries\/ckeditor-4.5.5\/plugins\/smiley\/images\/regular_smile.png\" style=\"height:23px; width:23px\" title=\"smiley\"><\/p>\r\n\r\n<p><img alt=\"\" src=\"http:\/\/katniss.linhntaim.com\/files\/user_2\/katniss.png\" style=\"height:120px; width:120px\"><\/p>\r\n"}}',
+            'active' => true,
+            'order' => 2
+        ]);
     }
 }

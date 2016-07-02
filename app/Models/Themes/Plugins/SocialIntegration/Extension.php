@@ -31,6 +31,15 @@ class Extension extends BaseExtension
     protected $facebookCommentOrderByValues = [
         'social', 'reversing_time', 'time'
     ];
+    protected $facebookCommentMobile;
+    protected $facebookCommentMobileValues = [
+        'auto', 'yes', 'no'
+    ];
+    protected $facebookCommentWidth;
+    protected $facebookCommentWidthUnit;
+    protected $facebookCommentWidthUnitValues = [
+        'px', '%'
+    ];
     protected $facebookLikeEnable;
     protected $facebookLikeLayout;
     protected $facebookLikeLayoutValues = [
@@ -47,6 +56,8 @@ class Extension extends BaseExtension
         'box_count', 'button_count', 'button', 'standard'
     ];
     protected $facebookSendEnable;
+    protected $facebookSaveEnable;
+    protected $facebookFollowEnable;
 
     protected $twitterEnable;
     protected $twitterShareEnable;
@@ -85,6 +96,9 @@ class Extension extends BaseExtension
         $this->facebookCommentColorScheme = defPr($this->getProperty('facebook_comment_color_scheme'), 'light');
         $this->facebookCommentNumPosts = defPr($this->getProperty('facebook_comment_num_posts'), 10);
         $this->facebookCommentOrderBy = defPr($this->getProperty('facebook_comment_order_by'), 'social');
+        $this->facebookCommentMobile = defPr($this->getProperty('facebook_comment_mobile'), 'auto');
+        $this->facebookCommentWidth = defPr($this->getProperty('facebook_comment_width'), '100');
+        $this->facebookCommentWidthUnit = defPr($this->getProperty('facebook_comment_width_unit'), '%');
         $this->facebookLikeEnable = $this->getProperty('facebook_like_enable') == 1;
         $this->facebookLikeLayout = defPr($this->getProperty('facebook_like_layout'), 'button_count');
         $this->facebookShareEnable = $this->getProperty('facebook_share_enable') == 1;
@@ -92,6 +106,7 @@ class Extension extends BaseExtension
         $this->facebookRecommendEnable = $this->getProperty('facebook_recommend_enable') == 1;
         $this->facebookRecommendLayout = defPr($this->getProperty('facebook_recommend_layout'), 'button_count');
         $this->facebookSendEnable = $this->getProperty('facebook_send_enable') == 1;
+        $this->facebookSaveEnable = $this->getProperty('facebook_save_enable') == 1;
 
         $this->twitterEnable = $this->getProperty('twitter_enable') == 1;
         $this->twitterShareEnable = $this->getProperty('twitter_share_enable') == 1;
@@ -128,6 +143,7 @@ class Extension extends BaseExtension
             'facebook_recommend_layout' => $this->facebookRecommendLayout,
             'facebook_recommend_layout_values' => $this->facebookRecommendLayoutValues,
             'facebook_send_enable' => $this->facebookSendEnable,
+            'facebook_save_enable' => $this->facebookSaveEnable,
             'twitter_enable' => $this->twitterEnable,
             'twitter_share_enable' => $this->twitterShareEnable,
             'linkedin_enable' => $this->linkedInEnable,
@@ -187,12 +203,18 @@ class Extension extends BaseExtension
                 $color_scheme = $this->facebookCommentColorScheme;
                 $num_posts = $this->facebookCommentNumPosts;
                 $order_by = $this->facebookCommentOrderBy;
-                add_place('facebook_comment', new CallableObject(function ($url) use ($color_scheme, $num_posts, $order_by) {
+                $mobile = $this->facebookCommentMobile;
+                $width = $this->facebookCommentWidth;
+                $widthUnit = $this->facebookCommentWidthUnit;
+                add_place('facebook_comment', new CallableObject(function ($url) use ($color_scheme, $num_posts, $order_by, $mobile, $width, $widthUnit) {
                     $color_scheme = ' data-colorscheme="' . $color_scheme . '"';
                     $num_posts = ' data-numposts="' . $num_posts . '"';
                     $order_by = ' data-order-by="' . $order_by . '"';
-                    $width = ' data-width="100%';
-                    return '<div class="fb-comments" data-href="' . $url . '"' . $color_scheme . $num_posts . $order_by . $width . '"></div>';
+                    if ($mobile != 'auto') {
+                        $mobile = ' data-mobile="' . ($mobile == 'yes' ? 'true' : 'false') . '"';
+                    }
+                    $width = ' data-width="' . $width . $widthUnit . '"';
+                    return '<div class="fb-comments" data-href="' . $url . '"' . $color_scheme . $num_posts . $order_by . $mobile . $width . '"></div>';
                 }));
             }
 
@@ -214,6 +236,10 @@ class Extension extends BaseExtension
 
             if ($this->facebookSendEnable) {
                 $sharing_buttons['facebook_send'] = '<div class="fb-send" data-href="{sharing_url}"></div>';
+            }
+
+            if ($this->facebookSaveEnable) {
+                $sharing_buttons['facebook_save'] = '<div class="fb-save" data-uri="{sharing_url}" data-size="small"></div>';
             }
         }
 
@@ -275,6 +301,7 @@ class Extension extends BaseExtension
             'facebook_recommend_enable',
             'facebook_recommend_layout',
             'facebook_send_enable',
+            'facebook_save_enable',
             'twitter_enable',
             'twitter_share_enable',
             'linkedin_enable',
@@ -304,6 +331,7 @@ class Extension extends BaseExtension
             'facebook_recommend_enable' => 'sometimes|in:1',
             'facebook_recommend_layout' => 'required_if:facebook_recommend_enable,1|in:' . implode(',', $this->facebookRecommendLayoutValues),
             'facebook_send_enable' => 'sometimes|in:1',
+            'facebook_save_enable' => 'sometimes|in:1',
             'twitter_enable' => 'sometimes|in:1',
             'twitter_share_enable' => 'sometimes|in:1',
             'linkedin_enable' => 'sometimes|in:1',
