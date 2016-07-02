@@ -101,6 +101,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'toggle_navigation' => 'Ẩn/hiện trình đơn',
     '_member_since' => 'Là thành viên từ :time',
 
+    'guest' => 'Khách',
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
     'role_lc' => 'vai trò',
@@ -118,6 +119,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'social_sharing' => 'Chia sẻ cho cộng đồng',
     'facebook_comment' => 'Bình luận trên Facebook',
     'example_widget' => 'Công cụ hiển thị',
+    'conversation' => 'Cuộc hội thoại',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây.',
 ];

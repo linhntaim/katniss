@@ -101,6 +101,7 @@ click the button below to get another welcome email from us.',
     'toggle_navigation' => 'Toggle Navigation',
     '_member_since' => 'Member since :time',
 
+    'guest' => 'Guest|Guests',
     'user_lc' => 'user|users',
     'user' => 'User|Users',
     'role_lc' => 'role|roles',
@@ -118,6 +119,7 @@ click the button below to get another welcome email from us.',
     'social_sharing' => 'Social Sharing',
     'facebook_comment' => 'Facebook Comments',
     'example_widget' => 'Example Widgets',
+    'conversation' => 'Conversation',
 
     'no_widget' => 'No widget is placed here.',
 ];
