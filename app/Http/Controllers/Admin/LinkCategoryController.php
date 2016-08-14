@@ -14,6 +14,13 @@ use Katniss\Http\Controllers\MultipleLocaleContentController;
 
 class LinkCategoryController extends MultipleLocaleContentController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'link_category';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,12 +28,15 @@ class LinkCategoryController extends MultipleLocaleContentController
      */
     public function index(Request $request)
     {
+        $this->theme->title(trans('pages.admin_link_categories_title'));
+        $this->theme->description(trans('pages.admin_link_categories_desc'));
+
         $categories = Category::where('type', Category::LINK)->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
 
         $query = new QueryStringBuilder([
             'page' => $categories->currentPage()
         ], adminUrl('link-categories'));
-        return view($this->themePage('link_categories.list'), [
+        return $this->_list([
             'categories' => $categories,
             'query' => $query,
             'page_helper' => new PaginationHelper($categories->lastPage(), $categories->currentPage(), $categories->perPage()),
@@ -41,7 +51,10 @@ class LinkCategoryController extends MultipleLocaleContentController
      */
     public function create()
     {
-        return view($this->themePage('link_categories.add'), [
+        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_add')]);
+        $this->theme->description(trans('pages.admin_link_categories_desc'));
+
+        return $this->_add([
             'categories' => Category::where('type', Category::LINK)->get()
         ]);
     }
@@ -119,7 +132,11 @@ class LinkCategoryController extends MultipleLocaleContentController
         if ($category->type != Category::LINK) {
             abort(404);
         }
-        return view($this->themePage('link_categories.edit'), [
+
+        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_edit')]);
+        $this->theme->description(trans('pages.admin_link_categories_desc'));
+
+        return $this->_edit([
             'category' => $category,
             'categories' => Category::where('type', Category::LINK)->get(),
         ]);
@@ -215,7 +232,10 @@ class LinkCategoryController extends MultipleLocaleContentController
     {
         $category = Category::where('type', Category::LINK)->where('id', $id)->firstOrFail();
 
-        return view($this->themePage('link_categories.sort'), [
+        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
+        $this->theme->description(trans('pages.admin_link_categories_desc'));
+
+        return $this->_any('sort', [
             'category' => $category,
             'links' => $category->links,
         ]);

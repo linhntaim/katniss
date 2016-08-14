@@ -21,6 +21,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends ViewController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'user';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,11 +35,14 @@ class UserController extends ViewController
      */
     public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE); // Helper::DEFAULT_ITEMS_PER_PAGE items per page
+        $this->theme->title(trans('pages.admin_users_title'));
+        $this->theme->description(trans('pages.admin_users_desc'));
+
+        $users = User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
         $users_query = new QueryStringBuilder([
             'page' => $users->currentPage()
         ], adminUrl('users'));
-        return view($this->themePage('user.list'), [
+        return $this->_list([
             'users' => $users,
             'users_query' => $users_query,
             'page_helper' => new PaginationHelper($users->lastPage(), $users->currentPage(), $users->perPage()),
@@ -47,7 +57,10 @@ class UserController extends ViewController
      */
     public function create()
     {
-        return view($this->themePage('user.add'), [
+        $this->theme->title([trans('pages.admin_users_title'), trans('form.action_add')]);
+        $this->theme->description(trans('pages.admin_users_desc'));
+
+        return $this->_add([
             'roles' => Role::haveStatuses([Role::STATUS_NORMAL])->get(),
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
@@ -135,7 +148,10 @@ class UserController extends ViewController
     {
         $user = User::findOrFail($id);
 
-        return view($this->themePage('user.edit'), [
+        $this->theme->title([trans('pages.admin_users_title'), trans('form.action_edit')]);
+        $this->theme->description(trans('pages.admin_users_desc'));
+
+        return $this->_edit([
             'user' => $user,
             'user_roles' => $user->roles,
             'roles' => Role::haveStatuses([Role::STATUS_NORMAL])->get(),

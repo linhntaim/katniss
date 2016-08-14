@@ -11,9 +11,9 @@
     <meta name="keywords" content="{!! theme_keywords() !!}">
     <meta name="application-name" content="{!! theme_application_name() !!}">
     @include('fav_icons')
-    <link rel="stylesheet" href="{{ HomeTheme::cssAsset('bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ HomeTheme::cssAsset('scrolling-nav.css') }}">
+    {!! lib_styles() !!}
     @yield('lib_styles')
+    {!! ext_styles() !!}
     @yield('extended_styles')
     {!! theme_header() !!}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -44,8 +44,6 @@
     </div>
     <!-- /.container -->
 </nav>
-
-<!-- Intro Section -->
 <section id="intro" class="odd-section">
     <div class="container">
         <div class="row">
@@ -77,19 +75,9 @@
     <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
 </footer>
 @yield('modals')
-<script src="{{ HomeTheme::jsAsset('jquery.js') }}"></script>
-<script src="{{ HomeTheme::jsAsset('bootstrap.min.js') }}"></script>
-<script src="{{ HomeTheme::jsAsset('jquery.easing.min.js') }}"></script>
-<script src="{{ HomeTheme::jsAsset('scrolling-nav.js') }}"></script>
+{!! lib_scripts() !!}
 @yield('lib_scripts')
-<script>
-    {!! cdataOpen() !!}
-    var THEME_PATH = '{{ HomeTheme::asset() }}/';
-    var AJAX_REQUEST_TOKEN = '{{ csrf_token() }}';
-    var SETTINGS_NUMBER_FORMAT = '{{ Settings::getNumberFormat() }}';
-    {!! cdataClose() !!}
-</script>
-<script src="{{ libraryAsset('katniss.js') }}"></script>
+{!! ext_scripts() !!}
 @yield('extended_scripts')
 {!! theme_footer() !!}
 </body>

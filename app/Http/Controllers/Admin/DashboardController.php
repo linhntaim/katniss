@@ -3,24 +3,26 @@
 namespace Katniss\Http\Controllers\Admin;
 
 use Katniss\Http\Controllers\ViewController;
-use Katniss\Models\BlogArticle;
-use Katniss\Models\Teacher;
-use Katniss\Models\TmpLearningRequest;
-use Katniss\Models\Topic;
 use Illuminate\Http\Request;
-
-use Katniss\Http\Requests;
 
 class DashboardController extends ViewController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'dashboard';
+    }
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
-        return view($this->themePage('dashboard'), [
-        ]);
+        $this->theme->title(trans('pages.admin_dashboard_title'));
+        $this->theme->description(trans('pages.admin_dashboard_desc'));
+
+        return $this->_view();
     }
 }

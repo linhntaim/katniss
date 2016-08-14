@@ -1,5 +1,5 @@
 <header class="main-header">
-    <a href="{{ homeURL() }}" class="logo">
+    <a href="{{ homeUrl() }}" class="logo">
         <span class="logo-mini">{{ $site_short_name }}</span>
         <span class="logo-lg">{{ $site_name }}</span>
     </a>

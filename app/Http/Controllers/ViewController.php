@@ -14,6 +14,8 @@ class ViewController extends KatnissController
 
     protected $globalViewParams;
 
+    protected $viewPath;
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
@@ -44,5 +46,35 @@ class ViewController extends KatnissController
     protected function themePage($name)
     {
         return $this->theme->page($name);
+    }
+
+    protected function _view($data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath), $data, $mergeData);
+    }
+
+    protected function _any($view, $data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath . '.' . $view), $data, $mergeData);
+    }
+
+    protected function _list($data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath . '.list'), $data, $mergeData);
+    }
+
+    protected function _add($data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath . '.add'), $data, $mergeData);
+    }
+
+    protected function _edit($data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath . '.edit'), $data, $mergeData);
+    }
+
+    protected function _detail($data = [], $mergeData = [])
+    {
+        return view($this->themePage($this->viewPath . '.detail'), $data, $mergeData);
     }
 }

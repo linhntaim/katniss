@@ -12,6 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 class WidgetController extends MultipleLocaleContentController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'widget';
+    }
+
     public function index(Request $request)
     {
         $widgetClasses = WidgetsFacade::all();
@@ -36,7 +43,10 @@ class WidgetController extends MultipleLocaleContentController
             $themePlaceholders[$placeholderName][] = $themeWidget;
         }
 
-        return view($this->themePage('widget.list'), [
+        $this->theme->title(trans('pages.admin_widgets_title'));
+        $this->theme->description(trans('pages.admin_widgets_desc'));
+
+        return $this->_list([
             'widgets' => $widgets,
             'placeholders' => $placeholders,
             'placeholderNames' => $placeholderNames,
@@ -79,7 +89,10 @@ class WidgetController extends MultipleLocaleContentController
         $widget = new $widgetClass($params);
         $widget->setThemeWidget($themeWidget);
 
-        return view($this->themePage('widget.edit'), array_merge([
+        $this->theme->title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
+        $this->theme->description(trans('pages.admin_widgets_desc'));
+
+        return $this->_edit(array_merge([
             'widget' => $widget,
             'themeWidget' => $themeWidget,
             'widget_view' => $widget->viewAdmin(),

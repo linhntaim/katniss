@@ -6,7 +6,7 @@
 <body>
 <h2>Xin chào, {{ $display_name }}</h2>
 <p>
-    Mật khẩu của bạn đã được thiết lập lại tại <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
+    Mật khẩu của bạn đã được thiết lập lại tại <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
     Tài khoản hiện nay của bạn:<br>
     - Hộp thư điện tử: {{ $email }}<br>
     - Tên tài khoản: {{ $name }}<br>

@@ -16,6 +16,27 @@ class Html5
         return '<script' . ($async ? ' async' : '') . ' src="' . $src . '"></script>';
     }
 
+    public static function jsInline($content)
+    {
+        return '<script>
+' . cdataOpen() . '
+' . $content . '
+' . cdataClose() . '
+</script>';
+    }
+
+    public static function css($href)
+    {
+        return '<link rel="stylesheet" href="' . $href . '">';
+    }
+
+    public static function cssInline($content)
+    {
+        return '<style>
+' . $content . '
+</style>';
+    }
+
     public static function metaProperty($property, $content)
     {
         return '<meta property="' . $property . '" content="' . $content . '">';

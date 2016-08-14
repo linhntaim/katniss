@@ -5,6 +5,7 @@
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
         <li><a href="{{ adminUrl('users') }}">{{ trans('pages.admin_users_title') }}</a></li>
+        <li><a href="#">{{ trans('form.action_edit') }}</a></li>
     </ol>
 @endsection
 @section('lib_styles')

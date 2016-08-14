@@ -1,5 +1,5 @@
 @extends('admin_themes.admin_lte.master.auth')
-@section('auth_type','register')
+@section('auth_type', 'register')
 @section('box_message', trans('pages.account_register_desc'))
 @section('auth_form')
     @if (count($errors) > 0)
@@ -52,5 +52,5 @@
     </div><!-- /.social-auth-links -->
 
     <a href="{{ homeUrl('auth/login') }}" class="text-center">{{ trans('label.already_member') }}</a><br>
-    <a href="{{ homeURL() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
+    <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection
