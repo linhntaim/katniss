@@ -10,12 +10,19 @@ use Katniss\Http\Controllers\ViewController;
 
 class SettingsController extends ViewController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'my_settings';
+    }
+
     public function index(Request $request)
     {
         $this->theme->title(trans('pages.my_settings_title'));
         $this->theme->description(trans('pages.my_settings_desc'));
 
-        return view($this->themePage('my_settings'), [
+        return $this->_view([
             'settings' => app('settings'),
         ]);
     }

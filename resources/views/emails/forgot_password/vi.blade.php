@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Bạn đã xác nhận quên mật khẩu tài khoản của mình tại <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a></h2>
+<h2>Bạn đã xác nhận quên mật khẩu tài khoản của mình tại <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a></h2>
 <p>
     Bấm vào đây để tiến hành thay đổi mật khẩu:<br>
     <a href="{{ homeUrl('password/reset/{token}', ['token' => $token], $site_locale) }}">

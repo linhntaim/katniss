@@ -9,7 +9,9 @@
 namespace Katniss\Models\Themes\HomeThemes\DefaultTheme;
 
 
+use Katniss\Models\Themes\CssQueue;
 use Katniss\Models\Themes\HomeThemes\HomeTheme;
+use Katniss\Models\Themes\JsQueue;
 
 class Theme extends HomeTheme
 {
@@ -31,6 +33,36 @@ class Theme extends HomeTheme
         view()->composer(
             $this->masterPath('index'), Composers\MainMenuComposer::class
         );
+    }
+
+    protected function registerLibStyles($is_auth = false)
+    {
+        parent::registerLibStyles($is_auth);
+
+        $this->libCssQueue->add(CssQueue::LIB_BOOTSTRAP_NAME, $this->cssAsset('bootstrap.min.css'));
+    }
+
+    protected function registerExtStyles($is_auth = false)
+    {
+        $this->extCssQueue->add('theme-style', $this->cssAsset('scrolling-nav.css'));
+
+        parent::registerExtStyles($is_auth);
+    }
+
+    protected function registerLibScripts($is_auth = false)
+    {
+        parent::registerLibScripts($is_auth);
+
+        $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, $this->jsAsset('jquery.js'));
+        $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
+        $this->libJsQueue->add('jquery-easing', $this->jsAsset('jquery.easing.min.js'));
+    }
+
+    protected function registerExtScripts($is_auth = false)
+    {
+        $this->extJsQueue->add('theme-script', $this->jsAsset('scrolling-nav.js'));
+
+        parent::registerExtScripts($is_auth);
     }
 
     public function extensions()

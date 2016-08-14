@@ -11,13 +11,9 @@
     <meta name="keywords" content="{{ theme_keywords() }}">
     <meta name="application-name" content="{{ theme_application_name() }}">
     @include('fav_icons')
-    <link rel='stylesheet' href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {!! lib_styles() !!}
     @yield('lib_styles')
-    <link rel="stylesheet" href="{{ AdminTheme::cssAsset('AdminLTE.min.css') }}">
-    <link rel="stylesheet" href="{{ AdminTheme::cssAsset('skins/skin-blue.min.css') }}">
-    <link rel="stylesheet" href="{{ AdminTheme::cssAsset('extra.css') }}">
+    {!! ext_styles() !!}
     @yield('extended_styles')
     {!! theme_header() !!}
     <!--[if lt IE 9]>
@@ -48,7 +44,11 @@
         </footer>
         @include('admin_themes.admin_lte.master.admin_control_sidebar')
     </div>
-    @yield('modals')
-    @include('admin_themes.admin_lte.master.admin_scripts')
+@yield('modals')
+{!! lib_scripts() !!}
+@yield('lib_scripts')
+{!! ext_scripts() !!}
+@yield('extended_scripts')
+{!! theme_footer() !!}
 </body>
 </html>

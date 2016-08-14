@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class UiLangController extends ViewController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'ui_lang';
+    }
+
     public function editPHP(Request $request)
     {
         $file_locale = $request->input('file_locale', 'en');
@@ -36,7 +43,11 @@ class UiLangController extends ViewController
                 ];
             }
         }
-        return view($this->themePage('ui_lang.php'), [
+
+        $this->theme->title(trans('pages.admin_ui_lang_php_title'));
+        $this->theme->description(trans('pages.admin_ui_lang_php_desc'));
+
+        return $this->_any('php', [
             'file_locale' => $file_locale,
             'file_name' => $file_name,
             'file_content' => $file_content,
@@ -94,7 +105,11 @@ class UiLangController extends ViewController
                 }
             }
         }
-        return view($this->themePage('ui_lang.email'), [
+
+        $this->theme->title(trans('pages.admin_ui_lang_email_title'));
+        $this->theme->description(trans('pages.admin_ui_lang_email_desc'));
+
+        return $this->_any('email', [
             'file_locale' => $file_locale,
             'file_name' => $file_name,
             'file_content' => $file_content,

@@ -46,5 +46,5 @@
 
     <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot_password') }}</a><br>
     <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
-    <a href="{{ homeURL() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
+    <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection

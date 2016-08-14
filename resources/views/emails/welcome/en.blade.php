@@ -6,7 +6,7 @@
 <body>
 <h2>Your registration has been successfully applied</h2>
 <p>
-    Thank {{ $display_name }} for registering at <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
+    Thank {{ $display_name }} for registering at <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
     Your account:<br>
     - Email address: {{ $email }}<br>
     - User name: {{ $name }}<br>
