@@ -12,8 +12,18 @@ use Illuminate\Support\Facades\Validator;
 
 class ExtensionController extends MultipleLocaleContentController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'extension';
+    }
+
     public function index(Request $request)
     {
+        $this->theme->title(trans('pages.admin_extensions_title'));
+        $this->theme->description(trans('pages.admin_extensions_desc'));
+
         $extensionClasses = ExtensionsFacade::all();
         $extensions = [];
         foreach ($extensionClasses as $extensionClass) {
@@ -29,7 +39,7 @@ class ExtensionController extends MultipleLocaleContentController
             ];
         }
 
-        return view($this->themePage('extension.list'), [
+        return $this->_list([
             'extensions' => $extensions,
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
@@ -46,7 +56,10 @@ class ExtensionController extends MultipleLocaleContentController
             abort(404);
         }
 
-        return view($this->themePage('extension.edit'), array_merge([
+        $this->theme->title([trans('pages.admin_extensions_title'), $extension->getDisplayName(), trans('form.action_edit')]);
+        $this->theme->description($extension->getDescription());
+
+        return $this->_edit(array_merge([
             'extension' => $extension,
             'extension_view' => $extension->viewAdmin(),
         ], $extension->viewAdminParams()));

@@ -6,7 +6,7 @@
 <body>
 <h2>Chào mừng bạn đến với chúng tôi</h2>
 <p>
-    Cảm ơn {{ $display_name }} đã tham gia cộng đồng <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
+    Cảm ơn {{ $display_name }} đã tham gia cộng đồng <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
     Địa chỉ để bạn kích hoạt tài khoản của mình:<br>
     <a href="{{ $url_activate }}">{{ $url_activate }}</a><br>
     Sau khi kích hoạt tài khoản, bạn có thể sử dụng tài khoản {{ $provider }} của bạn để truy cập các dịch vụ của chúng tôi.<br>

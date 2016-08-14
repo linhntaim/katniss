@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 
 class LinkController extends MultipleLocaleContentController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'link';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +29,15 @@ class LinkController extends MultipleLocaleContentController
      */
     public function index(Request $request)
     {
+        $this->theme->title(trans('pages.admin_links_title'));
+        $this->theme->description(trans('pages.admin_links_desc'));
+
         $links = Link::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
 
         $query = new QueryStringBuilder([
             'page' => $links->currentPage()
         ], adminUrl('links'));
-        return view($this->themePage('links.list'), [
+        return $this->_list([
             'links' => $links,
             'query' => $query,
             'page_helper' => new PaginationHelper($links->lastPage(), $links->currentPage(), $links->perPage()),
@@ -42,7 +52,10 @@ class LinkController extends MultipleLocaleContentController
      */
     public function create()
     {
-        return view($this->themePage('links.add'), [
+        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_add')]);
+        $this->theme->description(trans('pages.admin_links_desc'));
+
+        return $this->_add([
             'categories' => Category::where('type', Category::LINK)->get()
         ]);
     }
@@ -128,7 +141,10 @@ class LinkController extends MultipleLocaleContentController
     {
         $link = Link::findOrFail($id);
 
-        return view($this->themePage('links.edit'), [
+        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_edit')]);
+        $this->theme->description(trans('pages.admin_links_desc'));
+
+        return $this->_edit([
             'link' => $link,
             'link_categories' => $link->categories,
             'categories' => Category::where('type', Category::LINK)->get(),

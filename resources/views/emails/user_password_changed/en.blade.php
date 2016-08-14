@@ -6,7 +6,7 @@
 <body>
 <h2>Hi, {{ $display_name }}</h2>
 <p>
-    Your password has been reset at <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
+    Your password has been reset at <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
     Your current account:<br>
     - Email address: {{ $email }}<br>
     - User name: {{ $name }}<br>

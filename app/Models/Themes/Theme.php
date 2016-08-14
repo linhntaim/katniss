@@ -11,6 +11,7 @@ namespace Katniss\Models\Themes;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
 use Katniss\Models\Helpers\HtmlTag\Html5;
+use Katniss\Models\Helpers\SettingsFacade;
 
 abstract class Theme
 {
@@ -18,6 +19,22 @@ abstract class Theme
     const VIEW = '';
     const TYPE_ADMIN = 'admin_themes';
     const TYPE_HOME = 'home_themes';
+
+    public static $isAdmin = false;
+
+    public static function byRequest()
+    {
+        $admin_paths = config('katniss.paths_use_admin_theme');
+        $request = request();
+        foreach ($admin_paths as $path) {
+            $path = homePath($path);
+            if ($request->is($path, $path . '/*')) {
+                self::$isAdmin = true;
+                return app('admin_theme');
+            }
+        }
+        return app('home_theme');
+    }
 
     protected $name;
 
@@ -38,14 +55,19 @@ abstract class Theme
     protected $keywords;
 
     /**
-     * @var array
+     * @var TextQueue
      */
     protected $header;
 
     /**
-     * @var array
+     * @var TextQueue
      */
     protected $footer;
+
+    protected $libJsQueue;
+    protected $extJsQueue;
+    protected $libCssQueue;
+    protected $extCssQueue;
 
     protected function __construct($type)
     {
@@ -54,8 +76,12 @@ abstract class Theme
         $this->type = $type;
         $this->viewPath = empty($type) ? $this->view . '.' : $this->type . '.' . $this->view . '.';
         $this->assetPath = empty($type) ? 'assets/' . $this->view . '/' : 'assets/' . $this->type . '/' . $this->view . '/';
-        $this->header = [];
-        $this->footer = [];
+        $this->header = new TextQueue();
+        $this->footer = new TextQueue();
+        $this->libJsQueue = new JsQueue();
+        $this->extJsQueue = new JsQueue();
+        $this->libCssQueue = new CssQueue();
+        $this->extCssQueue = new CssQueue();
         $this->titleRoot = appName();
         $this->title = appName();
         $this->description = appDescription();
@@ -223,16 +249,12 @@ abstract class Theme
      */
     public function addHeader($output, $key = null)
     {
-        if (empty($key)) {
-            $key = count($this->header);
-        }
-
-        $this->header[$key] = $output;
+        $this->header->add($key, $output);
     }
 
     public function removeHeader($key)
     {
-        unset($this->header[$key]);
+        $this->header->remove($key);
     }
 
     /**
@@ -241,42 +263,54 @@ abstract class Theme
      */
     public function addFooter($output, $key = null)
     {
-        if (empty($key)) {
-            $key = count($this->footer);
-        }
-
-        $this->footer[$key] = $output;
+        $this->footer->add($key, $output);
     }
 
     public function removeFooter($key)
     {
-        unset($this->footer[$key]);
+        $this->footer->remove($key);
     }
 
     public function getHeader()
     {
-        $output = '<!-- Extra header -->';
-        foreach ($this->header as $header) {
-            if (is_a($header, CallableObject::class)) {
-                $output .= PHP_EOL . $header->execute();
-            } else {
-                $output .= PHP_EOL . $header;
-            }
-        }
-        return $output . PHP_EOL . '<!-- End extra header -->';
+        return wrapContent($this->header->flush(false),
+            '<!-- Extra header -->' . PHP_EOL,
+            PHP_EOL . '<!-- End extra header -->');
     }
 
     public function getFooter()
     {
-        $output = '<!-- Extra footer -->';
-        foreach ($this->footer as $footer) {
-            if (is_a($footer, CallableObject::class)) {
-                $output .= PHP_EOL . $footer->execute();
-            } else {
-                $output .= PHP_EOL . $footer;
-            }
-        }
-        return $output . PHP_EOL . '<!-- End extra footer -->';
+        return wrapContent($this->footer->flush(false),
+            '<!-- Extra footer -->' . PHP_EOL,
+            PHP_EOL . '<!-- End extra footer -->');
+    }
+
+    public function getLibCss()
+    {
+        return wrapContent($this->libCssQueue->flush(false),
+            '<!-- Lib styles -->' . PHP_EOL,
+            PHP_EOL . '<!-- End lib styles -->');
+    }
+
+    public function getExtCss()
+    {
+        return wrapContent($this->extCssQueue->flush(false),
+            '<!-- Extended styles -->' . PHP_EOL,
+            PHP_EOL . '<!-- End extended styles -->');
+    }
+
+    public function getLibJs()
+    {
+        return wrapContent($this->libJsQueue->flush(false),
+            '<!-- Lib scripts -->' . PHP_EOL,
+            PHP_EOL . '<!-- End lib scripts -->');
+    }
+
+    public function getExtJs()
+    {
+        return wrapContent($this->extJsQueue->flush(false),
+            '<!-- Extended scripts -->' . PHP_EOL,
+            PHP_EOL . '<!-- End extended scripts -->');
     }
 
     public function register($is_auth = false)
@@ -284,25 +318,35 @@ abstract class Theme
         enqueue_theme_header(Html5::metaName('generator', $this->generator), 'framework_version');
 
         $this->registerComposers($is_auth);
+        $this->registerLibStyles($is_auth);
+        $this->registerExtStyles($is_auth);
+        $this->registerLibScripts($is_auth);
+        $this->registerExtScripts($is_auth);
     }
 
     protected function registerComposers($is_auth = false)
     {
     }
 
-    public static function byRequest()
+    protected function registerLibStyles($is_auth = false)
     {
-        $admin_paths = config('katniss.paths_use_admin_theme');
-        $request = request();
-        foreach ($admin_paths as $path) {
-            $path = homePath($path);
-            if ($request->is($path, $path . '/*')) {
-                self::$isAdmin = true;
-                return app('admin_theme');
-            }
-        }
-        return app('home_theme');
     }
 
-    public static $isAdmin = false;
+    protected function registerExtStyles($is_auth = false)
+    {
+    }
+
+    protected function registerLibScripts($is_auth = false)
+    {
+    }
+
+    protected function registerExtScripts($is_auth = false)
+    {
+        $this->extJsQueue->add('global-vars', [
+            'THEME_PATH' => $this->asset(),
+            'AJAX_REQUEST_TOKEN' => csrf_token(),
+            'SETTINGS_NUMBER_FORMAT' => SettingsFacade::getNumberFormat(),
+        ], JsQueue::TYPE_VAR);
+        $this->extJsQueue->add('global-app-script', libraryAsset('katniss.js'));
+    }
 }

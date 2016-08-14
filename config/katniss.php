@@ -617,4 +617,14 @@ return [
         'ZM' => ['name' => 'Zambia', 'calling_code' => '260'],
         'ZW' => ['name' => 'Zimbabwe', 'calling_code' => '263'],
     ],
+
+    'external_links' => [
+        'jquery' => 'http://code.jquery.com/jquery-2.1.4.min.js',
+        'jquery-ui' => 'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js',
+        'jquery-ui-bootstrap' => '$.widget.bridge(\'uibutton\', $.ui.button); // Resolve conflict in jQuery UI tooltip with Bootstrap tooltip',
+        'bootstrap' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js',
+        'bootstrap-css' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
+        'font-awesome-css' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
+        'source-sans-pro-css' => 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext',
+    ],
 ];

@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('site_meta')
-    <title>{!! AdminTheme::title() !!}</title>
-    <meta name="description" content="{!! AdminTheme::description() !!}">
-    <meta name="author" content="{{ AdminTheme::author() }}">
-    <meta name="keywords" content="{{ AdminTheme::keywords() }}">
+    <title>{!! theme_title() !!}</title>
+    <meta name="description" content="{!! theme_description() !!}">
+    <meta name="author" content="{{ theme_author() }}">
+    <meta name="keywords" content="{{ theme_keywords() }}">
     @include('fav_icons')
     <link rel='stylesheet' href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -27,7 +27,7 @@
 <body class="hold-transition lockscreen">
 <div class="lockscreen-wrapper">
     <div class="lockscreen-logo">
-        <a href="{{ homeURL() }}"><strong>{{ $site_name }}</strong></a>
+        <a href="{{ homeUrl() }}"><strong>{{ $site_name }}</strong></a>
     </div>
     <div class="lockscreen-name">@yield('page_name')</div>
     <div class="lockscreen-item">

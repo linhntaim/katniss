@@ -44,5 +44,5 @@
     </form>
 
     <a href="{{ homeUrl('auth/login') }}" class="text-center">{{ trans('label.already_member') }}</a><br>
-    <a href="{{ homeURL() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
+    <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection

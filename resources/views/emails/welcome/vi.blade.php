@@ -6,7 +6,7 @@
 <body>
 <h2>Bạn đã đăng ký tài khoản thành công</h2>
 <p>
-    Cảm ơn {{ $display_name }} đã tham gia <a href="{{ homeURL(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
+    Cảm ơn {{ $display_name }} đã tham gia <a href="{{ homeUrl(null, [], $site_locale) }}">{{ $site_name }}</a>.<br>
     Tài khoản của bạn:<br>
     - Hộp thư điện tử: {{ $email }}<br>
     - Tên tài khoản: {{ $name }}<br>

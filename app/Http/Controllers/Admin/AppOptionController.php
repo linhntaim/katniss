@@ -13,6 +13,13 @@ use Katniss\Http\Requests;
 
 class AppOptionController extends ViewController
 {
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->viewPath = 'app_option';
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,12 +31,15 @@ class AppOptionController extends ViewController
             $this->destroy($request, $request->input('delete'));
         }
 
+        $this->theme->title(trans('pages.admin_app_options_title'));
+        $this->theme->description(trans('pages.admin_app_options_desc'));
+
         $options = AppOption::paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
         $query = new QueryStringBuilder([
             'page' => $options->currentPage(),
             'delete' => null,
         ], adminUrl('app-options'));
-        return view($this->themePage('app_option.list'), [
+        return $this->_list([
             'options' => $options,
             'query' => $query,
             'page_helper' => new PaginationHelper($options->lastPage(), $options->currentPage(), $options->perPage()),

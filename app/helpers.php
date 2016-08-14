@@ -15,6 +15,7 @@ use Katniss\Models\Helpers\ExtraActions\ContentFilter;
 use Katniss\Models\Helpers\ExtraActions\ContentPlace;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
 use Katniss\Models\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Models\Themes\AdminThemes\AdminThemeFacade;
 use Katniss\Models\Helpers\AppConfig;
 use Illuminate\Support\Facades\Hash;
 use Katniss\Models\Themes\Theme;
@@ -25,6 +26,32 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Models\Helpers\DateTimeHelper;
 use Katniss\Models\Helpers\NumberFormatHelper;
+
+#region Katniss Configuration
+/**
+ * Get katniss configuration
+ *
+ * @param string|null $key
+ * @param mixed $default
+ * @return string|mixed
+ */
+function _k($key = null, $default = null)
+{
+    if (!empty($key)) {
+        $key = '.' . $key;
+    }
+    return config('katniss' . $key, $default);
+}
+
+function _kExternalLink($key, $default = null)
+{
+    if (!empty($key)) {
+        $key = '.' . $key;
+    }
+    return config('katniss.external_links' . $key, $default);
+}
+
+#endregion
 
 #region Detect Client
 function isPhoneClient()
@@ -312,7 +339,7 @@ function apiUrl($route, array $params = [], $version = 1)
 function redirectUrlAfterLogin(User $user)
 {
     $localeCode = $user->settings->locale;
-    $redirect_url = homeURL();
+    $redirect_url = homeUrl();
     $overwrite_url = session()->pull(AppConfig::KEY_REDIRECT_URL);
     if (!empty($overwrite_url)) {
         $redirect_url = $overwrite_url;
@@ -375,6 +402,11 @@ function fromEscapedObject($input, $type)
 function defPr($value, $default)
 {
     return empty($value) ? $default : $value;
+}
+
+function wrapContent($content, $before = '', $after = '', $default = '')
+{
+    return empty($content) ? $default : $before . $content . $after;
 }
 
 #endregion
@@ -666,32 +698,64 @@ function isStaticExtension($extension)
 
 function theme_title($titles = '', $use_root = true, $separator = '&raquo;')
 {
-    return HomeThemeFacade::title($titles, $use_root, $separator);
+    return in_admin() ?
+        AdminThemeFacade::title($titles, $use_root, $separator)
+        : HomeThemeFacade::title($titles, $use_root, $separator);
 }
 
 function theme_description($description = '')
 {
-    return HomeThemeFacade::description($description);
+    return in_admin() ?
+        AdminThemeFacade::description($description)
+        : HomeThemeFacade::description($description);
 }
 
 function theme_author($author = '')
 {
-    return HomeThemeFacade::author($author);
+    return in_admin() ?
+        AdminThemeFacade::author($author)
+        : HomeThemeFacade::author($author);
 }
 
 function theme_application_name($applicationName = '')
 {
-    return HomeThemeFacade::applicationName($applicationName);
+    return in_admin() ?
+        AdminThemeFacade::applicationName($applicationName)
+        : HomeThemeFacade::applicationName($applicationName);
 }
 
 function theme_generator($generator = '')
 {
-    return HomeThemeFacade::generator($generator);
+    return in_admin() ?
+        AdminThemeFacade::generator($generator)
+        : HomeThemeFacade::generator($generator);
 }
 
 function theme_keywords($keywords = '')
 {
-    return HomeThemeFacade::keywords($keywords);
+    return in_admin() ?
+        AdminThemeFacade::keywords($keywords)
+        : HomeThemeFacade::keywords($keywords);
+}
+
+function lib_styles()
+{
+    return in_admin() ? AdminThemeFacade::getLibCss() : HomeThemeFacade::getLibCss();
+}
+
+function ext_styles()
+{
+    return in_admin() ? AdminThemeFacade::getExtCss() : HomeThemeFacade::getExtCss();
+}
+
+function lib_scripts()
+{
+    return in_admin() ? AdminThemeFacade::getLibJs() : HomeThemeFacade::getLibJs();
+}
+
+function ext_scripts()
+{
+    return in_admin() ? AdminThemeFacade::getExtJs() : HomeThemeFacade::getExtJs();
 }
 
 /**
