@@ -21,7 +21,7 @@ class ViewController extends KatnissController
         parent::__construct($request);
 
         $this->theme = Theme::byRequest();
-        $this->theme->register($this->is_auth);
+        $this->theme->register($this->isAuth);
         $this->globalViewParams = [
             'site_locale' => $this->localeCode,
             'site_version' => appVersion(),
@@ -34,9 +34,14 @@ class ViewController extends KatnissController
             'site_email' => appEmail(),
             'site_domain' => appDomain(),
             'site_home_url' => homeUrl(),
-            'is_auth' => $this->is_auth,
-            'auth_user' => $this->auth_user,
+            'is_auth' => $this->isAuth,
+            'auth_user' => $this->authUser,
             'session_id' => $request->session()->getId(),
+            'successes' => $request->session()->has('successes') ?
+                collect((array)$request->session()->get('successes')) : collect([]),
+            'info' => $request->session()->has('info') ?
+                collect((array)$request->session()->get('info')) : collect([]),
+            'max_upload_file_size' => maxUploadFileSize()
         ];
         foreach ($this->globalViewParams as $key => $value) {
             view()->share($key, $value);

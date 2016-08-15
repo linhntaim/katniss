@@ -24,11 +24,11 @@ abstract class Theme
 
     public static function byRequest()
     {
-        $admin_paths = config('katniss.paths_use_admin_theme');
+        $adminPaths = _k('paths_use_admin_theme');
         $request = request();
-        foreach ($admin_paths as $path) {
-            $path = homePath($path);
-            if ($request->is($path, $path . '/*')) {
+        foreach ($adminPaths as $adminPath) {
+            $adminPath = homePath($adminPath);
+            if ($request->is($adminPath, $adminPath . '/*')) {
                 self::$isAdmin = true;
                 return app('admin_theme');
             }

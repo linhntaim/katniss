@@ -11,7 +11,7 @@ class DocumentController extends ViewController
 {
     private function makeDirectory()
     {
-        $own_directory = $this->auth_user->ownDirectory;
+        $own_directory = $this->authUser->ownDirectory;
         $storage = Storage::disk('file_manager');
 
         if (!$storage->exists($own_directory)) {

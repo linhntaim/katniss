@@ -23,6 +23,11 @@
                             </p>
                         </li>
                         <li class="user-footer">
+                            <div class="pull-left">
+                                <a href="{{ homeUrl('me/account') }}" class="btn btn-default btn-flat">
+                                    {{ trans('pages.my_account_title') }}
+                                </a>
+                            </div>
                             <div class="pull-right">
                                 <a href="{{ homeUrl('auth/logout') }}" class="btn btn-default btn-flat">
                                     {{ trans('form.action_logout') }}

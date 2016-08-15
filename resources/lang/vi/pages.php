@@ -19,6 +19,8 @@ return [
     'my_documents_desc' => 'Lưu trữ và quản lý các tài liệu như hình ảnh, tài liệu soạn thảo, tài liệu trình diễn, ...',
     'my_notifications_title' => 'Trung tâm thông báo của tôi',
     'my_notifications_desc' => 'Thông tin về các hoạt động',
+    'my_account_title' => 'Tài khoản của tôi',
+    'my_account_desc' => 'Thay đổi thông tin tài khoản',
 
     'account_login_title' => 'Trang đăng nhập',
     'account_login_desc' => 'Đăng nhập hệ thống',

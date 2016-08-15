@@ -587,6 +587,32 @@ function fromFormattedCurrency($formattedCurrency, $originalCurrencyCode = null,
 
 #endregion
 
+#region File
+function maxUploadFileSize()
+{
+    $max_upload = intval(ini_get('upload_max_filesize'));
+    $max_post = intval(ini_get('post_max_size'));
+    $memory_limit = intval(ini_get('memory_limit'));
+    return min($max_upload, $max_post, $memory_limit) * 1024 * 1024; // in bytes
+}
+
+function asByte($fileSize)
+{
+    return $fileSize . ' byte' . ($fileSize > 1 ? 's' : '');
+}
+
+function asKb($fileSize)
+{
+    return round($fileSize / 1024) . 'KB';
+}
+
+function asMb($fileSize)
+{
+    return round($fileSize / 1024 / 1024) . 'MB';
+}
+
+#endregion
+
 #region Utilities
 /**
  * @param string $password

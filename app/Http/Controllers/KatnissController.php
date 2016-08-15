@@ -13,12 +13,12 @@ class KatnissController extends Controller
     /**
      * @var boolean
      */
-    public $is_auth;
+    public $isAuth;
 
     /**
      * @var \Katniss\Models\User
      */
-    public $auth_user;
+    public $authUser;
 
     /**
      * @var string
@@ -30,11 +30,11 @@ class KatnissController extends Controller
         AppOptionHelper::load();
 
         $this->localeCode = currentLocaleCode();
-        $this->is_auth = isAuth();
-        $this->auth_user = authUser();
+        $this->isAuth = isAuth();
+        $this->authUser = authUser();
 
-        if ($this->is_auth) {
-            $own_directory = $this->auth_user->ownDirectory;
+        if ($this->isAuth) {
+            $own_directory = $this->authUser->ownDirectory;
             config(['katniss.disks.' . $own_directory => [
                 'driver' => 'local',
                 'root' => storage_path('../public/upload/file_manager/users/' . $own_directory),

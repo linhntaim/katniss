@@ -7,7 +7,9 @@
  */
 
 return [
-    'my-settings'                               => 'thiet-lap-nguoi-dung',
+    'me'                                            => 'ca-nhan-toi',
+    'me/settings'                                   => 'ca-nhan-toi/thiet-lap',
+    'me/account'                                    => 'ca-nhan-toi/tai-khoan',
 
     'auth'                                          => 'xac-thuc',
     'auth/login'                                    => 'xac-thuc/dang-nhap',

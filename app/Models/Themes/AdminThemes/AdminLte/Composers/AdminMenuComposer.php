@@ -45,9 +45,14 @@ class AdminMenuComposer
                 adminUrl(),
                 trans('pages.admin_dashboard_title'), 'li', '', '', '<i class="fa fa-dashboard"></i> <span>', '</span>'
             ));
+            // My Account
+            $menu->addItem(new MenuItem( // add a menu item
+                homeUrl('me/account'),
+                trans('pages.my_account_title'), 'li', '', '', '<i class="fa fa-user"></i> <span>', '</span>'
+            ));
             // My Settings
             $menu->addItem(new MenuItem( // add a menu item
-                homeUrl('my-settings'),
+                homeUrl('me/settings'),
                 trans('pages.my_settings_title'), 'li', '', '', '<i class="fa fa-cog"></i> <span>', '</span>'
             ));
             // File Manager

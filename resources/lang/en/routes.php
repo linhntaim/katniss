@@ -7,7 +7,9 @@
  */
 
 return [
-    'my-settings'                                   => 'my-settings',
+    'me'                                            => 'me',
+    'me/settings'                                   => 'me/settings',
+    'me/account'                                    => 'me/account',
 
     'auth'                                          => 'auth',
     'auth/login'                                    => 'auth/login',

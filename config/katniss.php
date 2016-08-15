@@ -48,7 +48,7 @@ return [
         Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME,
     ],
     'paths_use_admin_theme' => [
-        'admin', 'auth', 'documents', 'password', 'my-settings'
+        'admin', 'auth', 'documents', 'password', 'me'
     ],
 
     'genders' => [

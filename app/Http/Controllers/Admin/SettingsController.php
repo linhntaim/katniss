@@ -43,7 +43,7 @@ class SettingsController extends ViewController
         ]);
 
         if ($validator->fails()) {
-            return redirect(homeUrl('custom-settings'))
+            return redirect(homeUrl('me/settings'))
                 ->withErrors($validator);
         }
 
@@ -61,6 +61,6 @@ class SettingsController extends ViewController
 
         $settings->storeUser();
         $settings->storeSession();
-        return $settings->storeCookie(redirect(homeUrl('my-settings', [], $settings->getLocale())));
+        return $settings->storeCookie(redirect(homeUrl('me/settings', [], $settings->getLocale())));
     }
 }

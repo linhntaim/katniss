@@ -38,7 +38,7 @@
                     @if($main_currency_code != $currencyCode)
                         <em>({{ toFormattedNumber(2*$exchange_rates[$currencyCode]) }} {{ $currencyCode }} = {{ toFormattedCurrency(2*$exchange_rates[$currencyCode], $currencyCode) }})</em>
                     @else
-                        {{ trans('currency_exchange.main_currency') }} (<em>{!! trans('currency_exchange.change_here', ['url' => transUrl('my-settings')]) !!})</em>
+                        {{ trans('currency_exchange.main_currency') }} (<em>{!! trans('currency_exchange.change_here', ['url' => homeUrl('me/settings')]) !!})</em>
                     @endif
                 </div>
             </div>

@@ -10,15 +10,13 @@
     <meta name="description" content="{!! theme_description() !!}">
     <meta name="author" content="{{ theme_author() }}">
     <meta name="keywords" content="{{ theme_keywords() }}">
-@include('fav_icons')
-    <link rel='stylesheet' href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    @include('fav_icons')
+    {!! lib_styles() !!}
     @yield('lib_styles')
-    <link rel="stylesheet" href="{{ AdminTheme::cssAsset('AdminLTE.min.css') }}">
-    <link rel="stylesheet" href="{{ AdminTheme::cssAsset('skins/skin-blue.min.css') }}">
+    {!! ext_styles() !!}
     <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
     @yield('extended_styles')
+    {!! theme_header() !!}
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -34,8 +32,7 @@
         @yield('auth_form')
     </div>
 </div>
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+{!! lib_scripts() !!}
 <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @yield('lib_scripts')
 <script>
@@ -49,6 +46,9 @@
     });
     {!! cdataClose() !!}
 </script>
+{!! ext_scripts() !!}
 @yield('extended_scripts')
+@yield('modals')
+{!! theme_footer() !!}
 </body>
 </html>

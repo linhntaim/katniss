@@ -44,11 +44,11 @@
         </footer>
         @include('admin_themes.admin_lte.master.admin_control_sidebar')
     </div>
-@yield('modals')
 {!! lib_scripts() !!}
 @yield('lib_scripts')
 {!! ext_scripts() !!}
 @yield('extended_scripts')
+@yield('modals')
 {!! theme_footer() !!}
 </body>
 </html>

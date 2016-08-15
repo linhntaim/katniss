@@ -342,8 +342,8 @@ class AuthController extends ViewController
 
     public function getInactive(Request $request)
     {
-        if ($this->auth_user->active) {
-            return redirect(redirectUrlAfterLogin($this->auth_user));
+        if ($this->authUser->active) {
+            return redirect(redirectUrlAfterLogin($this->authUser));
         }
 
         $this->theme->title(trans('pages.account_inactive_title'));
@@ -356,16 +356,16 @@ class AuthController extends ViewController
     {
         MailHelper::sendTemplate('welcome', array_merge([
             MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-            MailHelper::EMAIL_TO => $this->auth_user->email,
-            MailHelper::EMAIL_TO_NAME => $this->auth_user->display_name,
+            MailHelper::EMAIL_TO => $this->authUser->email,
+            MailHelper::EMAIL_TO_NAME => $this->authUser->display_name,
 
-            'id' => $this->auth_user->id,
-            'display_name' => $this->auth_user->display_name,
-            'name' => $this->auth_user->name,
-            'email' => $this->auth_user->email,
+            'id' => $this->authUser->id,
+            'display_name' => $this->authUser->display_name,
+            'name' => $this->authUser->name,
+            'email' => $this->authUser->email,
             'password' => '******',
-            'activation_code' => $this->auth_user->activation_code,
-            'url_activate' => homeUrl('auth/activate/{id}/{activation_code}', ['id' => $this->auth_user->id, 'activation_code' => $this->auth_user->activation_code]),
+            'activation_code' => $this->authUser->activation_code,
+            'url_activate' => homeUrl('auth/activate/{id}/{activation_code}', ['id' => $this->authUser->id, 'activation_code' => $this->authUser->activation_code]),
         ], $this->globalViewParams));
 
         $this->theme->title(trans('pages.account_inactive_title'));
@@ -391,7 +391,7 @@ class AuthController extends ViewController
 
         return view($this->themePage('auth.activate'), [
             'active' => $active,
-            'url' => $this->is_auth ? redirectUrlAfterLogin($this->auth_user) : homeUrl('auth/login'),
+            'url' => $this->isAuth ? redirectUrlAfterLogin($this->authUser) : homeUrl('auth/login'),
         ]);
     }
 }
