@@ -27,6 +27,8 @@ class Settings
 
     protected $changingDataStore;
 
+    protected $isApi;
+
     public function __construct()
     {
         $this->locale = config('app.locale');
@@ -41,6 +43,8 @@ class Settings
         $this->short_time_format = config('katniss.settings.short_time_format');
 
         $this->changingDataStore = [];
+
+        $this->isApi = false;
     }
 
     public function setLocale($locale)
@@ -210,6 +214,8 @@ class Settings
 
     public function fromUser()
     {
+        $this->isApi = false;
+
         if (isAuth()) {
             $userSettings = authUser()->settings;
             $this->setLocale($userSettings->locale);
@@ -231,6 +237,8 @@ class Settings
 
     public function fromSession(Store $session)
     {
+        $this->isApi = false;
+
         if ($session->has('settings')) {
             $this->setLocale($session->get('settings.locale'));
             $this->setCountry($session->get('settings.country'));
@@ -249,18 +257,54 @@ class Settings
 
     public function fromCookie(Request $request)
     {
-        $this->setLocale($request->cookie('settings_locale'));
-        $this->setCountry($request->cookie('settings_country'));
-        $this->setTimezone($request->cookie('settings_timezone'));
-        $this->setCurrency($request->cookie('settings_currency'));
-        $this->setNumberFormat($request->cookie('settings_number_format'));
-        $this->setFirstDayOfWeek($request->cookie('settings_first_day_of_week'));
-        $this->setLongDateFormat($request->cookie('settings_long_date_format'));
-        $this->setShortDateFormat($request->cookie('settings_short_date_format'));
-        $this->setLongTimeFormat($request->cookie('settings_long_time_format'));
-        $this->setShortTimeFormat($request->cookie('settings_short_time_format'));
+        $this->isApi = false;
 
-        return $request->hasCookie('settings_locale');
+        if ($request->hasCookie('settings')) {
+            $settings = json_decode($request->cookie('settings'));
+            if (!empty($settings)) {
+                $this->setLocale($settings->locale);
+                $this->setCountry($settings->country);
+                $this->setTimezone($settings->timezone);
+                $this->setCurrency($settings->currency);
+                $this->setNumberFormat($settings->number_format);
+                $this->setFirstDayOfWeek($settings->first_day_of_week);
+                $this->setLongDateFormat($settings->long_date_format);
+                $this->setShortDateFormat($settings->short_date_format);
+                $this->setLongTimeFormat($settings->long_time_format);
+                $this->setShortTimeFormat($settings->short_time_format);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function fromApi(Request $request)
+    {
+        $this->isApi = true;
+
+        if ($request->has('_settings')) {
+            $settings = $request->input('_settings');
+            if (is_string($settings)) {
+                $settings = json_decode($settings, true);
+                if (empty($settings)) {
+                    return false;
+                }
+            }
+            $this->setLocale($settings['locale']);
+            $this->setCountry($settings['country']);
+            $this->setTimezone($settings['timezone']);
+            $this->setCurrency($settings['currency']);
+            $this->setNumberFormat($settings['number_format']);
+            $this->setFirstDayOfWeek($settings['first_day_of_week']);
+            $this->setLongDateFormat($settings['long_date_format']);
+            $this->setShortDateFormat($settings['short_date_format']);
+            $this->setLongTimeFormat($settings['long_time_format']);
+            $this->setShortTimeFormat($settings['short_time_format']);
+
+            return true;
+        }
+
+        return false;
     }
 
     public function storeUser()
@@ -294,9 +338,7 @@ class Settings
     public function storeCookie($response)
     {
         if (count($this->changingDataStore) > 0) {
-            foreach ($this->changingDataStore as $key => $value) {
-                $response->withCookie(cookie()->forever('settings_' . $key, $value));
-            }
+            $response->withCookie(cookie()->forever('settings', $this->toJson()));
         }
         return $response;
     }
@@ -351,5 +393,21 @@ class Settings
             }
         }
         return $diff;
+    }
+
+    public function toJson()
+    {
+        return json_encode([
+            'locale' => $this->locale,
+            'country' => $this->country,
+            'timezone' => $this->timezone,
+            'currency' => $this->currency,
+            'number_format' => $this->number_format,
+            'first_day_of_week' => $this->first_day_of_week,
+            'long_date_format' => $this->long_date_format,
+            'short_date_format' => $this->short_date_format,
+            'long_time_format' => $this->long_time_format,
+            'short_time_format' => $this->short_time_format,
+        ]);
     }
 }

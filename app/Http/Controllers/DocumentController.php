@@ -9,17 +9,6 @@ use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends ViewController
 {
-    private function makeDirectory()
-    {
-        $own_directory = $this->authUser->ownDirectory;
-        $storage = Storage::disk('file_manager');
-
-        if (!$storage->exists($own_directory)) {
-            $storage->makeDirectory($own_directory);
-        }
-        return $own_directory;
-    }
-
     public function onlyMimes($customType)
     {
         $onlyMimes = [];
@@ -82,7 +71,7 @@ class DocumentController extends ViewController
 
     public function getConnector(Request $request)
     {
-        $own_directory = $this->makeDirectory();
+        $own_directory = $this->authUser->ownDirectory;
         $uploadAllow = [
             'image/jpeg',
             'image/png',
@@ -145,7 +134,7 @@ class DocumentController extends ViewController
             'roots' => [
                 [
                     'driver' => 'LocalFileSystem',
-                    'path' => public_path('files/' . $own_directory),
+                    'path' => userPublicPath($own_directory),
                     'alias' => 'Online drive: \Home',
                     'URL' => asset('files/' . $own_directory . '/'),
                     'accessControl' => config('elfinder.access'),

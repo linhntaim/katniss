@@ -29,10 +29,12 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Katniss\Http\Middleware\VerifyCsrfToken::class,
+            \Katniss\Http\Middleware\ViewMiddleware::class
         ],
 
         'api' => [
             'throttle:60,1',
+            \Katniss\Http\Middleware\ApiMiddleware::class,
         ],
     ];
 
@@ -49,8 +51,6 @@ class Kernel extends HttpKernel
         'guest' => \Katniss\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'katniss.api' => \Katniss\Http\Middleware\ApiMiddleware::class,
-        'katniss.view' => \Katniss\Http\Middleware\ViewMiddleware::class,
         'entrust' => \Katniss\Http\Middleware\AuthorizationWithEntrust::class,
         'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,

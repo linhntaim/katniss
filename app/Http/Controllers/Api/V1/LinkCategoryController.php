@@ -4,12 +4,10 @@ namespace Katniss\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Validator;
-use Katniss\Http\Requests;
-use Katniss\Http\Controllers\Controller;
+use Katniss\Http\Controllers\ApiController;
 use Katniss\Models\Category;
 
-class LinkCategoryController extends Controller
+class LinkCategoryController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -90,15 +88,12 @@ class LinkCategoryController extends Controller
     public function updateOrder(Request $request, $id)
     {
         $category = Category::findOrFail($id);
-        $validator = Validator::make($request->all(), [
-            'link_ids' => 'required|array|exists:links,id',
-        ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'msg' => $validator->errors()->all()
-            ]);
+        if (!$this->validate($request, [
+            'link_ids' => 'required|array|exists:links,id',
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
         }
 
         $link_ids = $request->input('link_ids');
@@ -109,8 +104,6 @@ class LinkCategoryController extends Controller
             $category_links->updateExistingPivot($link_id, ['order' => $order]);
         }
 
-        return response()->json([
-            'success' => true,
-        ]);
+        return $this->responseSuccess();
     }
 }

@@ -12,6 +12,7 @@ use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
 use Katniss\Models\Helpers\HtmlTag\Html5;
 use Katniss\Models\Helpers\SettingsFacade;
+use Katniss\Models\UserApp;
 
 abstract class Theme
 {
@@ -342,11 +343,14 @@ abstract class Theme
 
     protected function registerExtScripts($is_auth = false)
     {
+        $userApp = UserApp::findOrFail(KATNISS_DEFAULT_APP);
         $this->extJsQueue->add('global-vars', [
-            'THEME_PATH' => $this->asset(),
-            'AJAX_REQUEST_TOKEN' => csrf_token(),
-            'SETTINGS_NUMBER_FORMAT' => SettingsFacade::getNumberFormat(),
-        ], JsQueue::TYPE_VAR);
+            'KATNISS_THEME_PATH' => $this->asset(),
+            'KATNISS_REQUEST_TOKEN' => csrf_token(),
+            'KATNISS_APP' => $userApp->toJson(),
+            'KATNISS_SETTINGS' => SettingsFacade::toJson(),
+            'KATNISS_API_URL' => apiUrl(null, [], $userApp->version),
+        ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS']);
         $this->extJsQueue->add('global-app-script', libraryAsset('katniss.js'));
     }
 }

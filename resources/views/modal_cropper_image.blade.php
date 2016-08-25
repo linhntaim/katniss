@@ -2,7 +2,7 @@
 <div class="modal fade" id="cropper-image-modal" aria-hidden="true" aria-labelledby="cropper-image-modal-label" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form class="cropper-image-form" action="{{ apiUrl('upload/js-cropper') }}" enctype="multipart/form-data" method="post">
+            <form class="cropper-image-form" enctype="multipart/form-data" method="post">
                 {!! csrf_field() !!}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -12,8 +12,8 @@
                     <div class="cropper-image-body">
                         <!-- Upload image and data -->
                         <div class="cropper-image-upload">
-                            <input type="hidden" class="cropper-image-src" name="cropper-image_src">
-                            <input type="hidden" class="cropper-image-data" name="cropper-image_data">
+                            <input type="hidden" class="cropper-image-src" name="cropper_image_src">
+                            <input type="hidden" class="cropper-image-data" name="cropper_image_data">
                             <label for="inputCropImage">{{ trans('form.action_upload') }}:</label>
                             <input type="file" class="cropper-image-input" id="inputCropImage" name="cropper_image_file">
                         </div>

@@ -4,7 +4,7 @@ namespace Katniss\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 use Katniss\Http\Controllers\ApiController;
-use Katniss\Models\Helpers\JsCropper;
+use Katniss\Models\Helpers\Storage\StorePhotoByCropperJs;
 
 class UploadController extends ApiController
 {
@@ -14,34 +14,15 @@ class UploadController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function useJsCropper(Request $request) {
-        $avatar_basename = uniqid($user->id . '_');
-
-        $success = false;
-        $crop = new JsCropper();
-        if ($crop->fromUploadFile($request->hasFile('avatar_file') ? $request->file('avatar_file') : null)) {
-            $crop->setDataFromJson($request->input('avatar_data', null));
-            $crop->setDestination(asset('storage/app/profile_pictures/' . $avatar_basename), storage_path('app/profile_pictures/' . $avatar_basename));
-            if ($crop->doCrop()) {
-                $user->profile_picture = $crop->getResult();
-                $user->save();
-
-                $success = true;
-            }
+    public function useJsCropper(Request $request)
+    {
+        try {
+            $store = new StorePhotoByCropperJs($request->file('cropper_image_file')->getRealPath(), $request->input('cropper_image_data'));
+            return $this->responseSuccess([
+                'store_path' => $store->getTargetFileRelativePath()
+            ]);
+        } catch (\Exception $ex) {
+            return $this->responseFail($ex->getMessage());
         }
-
-        if (!$success) {
-            $response = [
-                'success' => false,
-                'message' => $crop->getMsg(),
-            ];
-        } else {
-            $response = [
-                'success' => true,
-                'result' => $crop->getResult()
-            ];
-        }
-
-        return response()->json($response);
     }
 }

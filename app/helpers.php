@@ -8,24 +8,26 @@
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Str;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
+use Jenssegers\Agent\Facades\Agent;
+use Katniss\Models\Helpers\Utils\Str;
+use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\AppOptionHelper;
+use Katniss\Models\Helpers\DateTimeHelper;
 use Katniss\Models\Helpers\ExtraActions\Hook;
 use Katniss\Models\Helpers\ExtraActions\ContentFilter;
 use Katniss\Models\Helpers\ExtraActions\ContentPlace;
 use Katniss\Models\Helpers\ExtraActions\CallableObject;
+use Katniss\Models\Helpers\NumberFormatHelper;
 use Katniss\Models\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Models\Themes\AdminThemes\AdminThemeFacade;
-use Katniss\Models\Helpers\AppConfig;
-use Illuminate\Support\Facades\Hash;
 use Katniss\Models\Themes\Theme;
 use Katniss\Models\Themes\WidgetsFacade;
 use Katniss\Models\Themes\ExtensionsFacade;
 use Katniss\Models\User;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Jenssegers\Agent\Facades\Agent;
-use Katniss\Models\Helpers\DateTimeHelper;
-use Katniss\Models\Helpers\NumberFormatHelper;
+use Illuminate\Support\Facades\Storage;
 
 #region Katniss Configuration
 /**
@@ -331,9 +333,9 @@ function notRootUrl($url)
     return $url != homeUrl() && $url != adminUrl();
 }
 
-function apiUrl($route, array $params = [], $version = 1)
+function apiUrl($route = '', array $params = [], $version = 'v1')
 {
-    return url('api/v' . $version . '/' . embedParamsInRoute($route, $params));
+    return url('api/' . $version . '/' . embedParamsInRoute($route, $params));
 }
 
 function redirectUrlAfterLogin(User $user)
@@ -588,24 +590,93 @@ function fromFormattedCurrency($formattedCurrency, $originalCurrencyCode = null,
 #endregion
 
 #region File
-function maxUploadFileSize()
+function randomizeFilename($prefix = null, $extension = null)
 {
-    $max_upload = intval(ini_get('upload_max_filesize'));
-    $max_post = intval(ini_get('post_max_size'));
-    $memory_limit = intval(ini_get('memory_limit'));
-    return min($max_upload, $max_post, $memory_limit) * 1024 * 1024; // in bytes
+    return Str::format('{0}{1}_{2}{3}',
+        empty($prefix) ? '' : $prefix . '_',
+        time(),
+        uniqid('', true),
+        empty($extension) ? '' : '.' . $extension
+    );
 }
 
+function makeUserPublicPath($userRelativePath)
+{
+    $storage = Storage::disk('file_manager');
+    if (!$storage->exists($userRelativePath)) {
+        $storage->makeDirectory($userRelativePath);
+    }
+}
+
+function userPublicPath($userRelativePath)
+{
+    return public_path(concatDirectories('files', $userRelativePath));
+}
+
+function userPublicUrl($userRelativePath)
+{
+    return asset(urlSeparator(concatDirectories('files', $userRelativePath)));
+}
+
+function publicUrl($publicPath)
+{
+    return asset(urlSeparator(str_replace(public_path() . DIRECTORY_SEPARATOR, '', $publicPath)));
+}
+
+function urlSeparator($path)
+{
+    return str_replace('\\', '/', $path);
+}
+
+function dirSeparator($path)
+{
+    return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+}
+
+function containBackDirectory($path)
+{
+    return Str::startsWith('..\\', $path)
+    || Str::contains('\\..\\', $path)
+    || Str::startsWith('../', $path)
+    || Str::contains('/../', $path);
+}
+
+function concatDirectories()
+{
+    $args = func_get_args();
+    return implode(DIRECTORY_SEPARATOR, $args);
+}
+
+/**
+ * @return int The maximum size of an uploaded file in bytes
+ */
+function maxUploadFileSize()
+{
+    return UploadedFile::getMaxFilesize();
+}
+
+/**
+ * @param int $fileSize File size in bytes
+ * @return string
+ */
 function asByte($fileSize)
 {
     return $fileSize . ' byte' . ($fileSize > 1 ? 's' : '');
 }
 
+/**
+ * @param int $fileSize File size in bytes
+ * @return string
+ */
 function asKb($fileSize)
 {
     return round($fileSize / 1024) . 'KB';
 }
 
+/**
+ * @param int $fileSize File size in bytes
+ * @return string
+ */
 function asMb($fileSize)
 {
     return round($fileSize / 1024 / 1024) . 'MB';

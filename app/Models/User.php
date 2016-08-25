@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use EntrustUserTrait;
 
+    const AVATAR_THUMB_WIDTH = 100; // pixels
+    const AVATAR_THUMB_HEIGHT = 100; // pixels
+
     /**
      * The database table used by the model.
      *
@@ -37,7 +40,16 @@ class User extends Authenticatable
 
     public function getOwnDirectoryAttribute()
     {
-        return 'user_' . $this->id;
+        $dir = 'user_' . $this->id;
+        makeUserPublicPath($dir);
+        return $dir;
+    }
+
+    public function getProfilePictureDirectoryAttribute()
+    {
+        $dir = concatDirectories('user_' . $this->id, 'profile_pictures');
+        makeUserPublicPath($dir);
+        return $dir;
     }
 
     public function getMemberSinceAttribute()
@@ -65,12 +77,12 @@ class User extends Authenticatable
 
     public function settings()
     {
-        return $this->hasOne(UserSettings::class, 'id', 'setting_id');
+        return $this->hasOne(UserSetting::class, 'id', 'setting_id');
     }
 
     public static function create(array $attributes = [])
     {
-        $settings = UserSettings::create();
+        $settings = UserSetting::create();
         $attributes['setting_id'] = $settings->id;
         return parent::create($attributes);
     }

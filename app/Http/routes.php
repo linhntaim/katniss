@@ -11,7 +11,31 @@
 |
 */
 
-Route::group(['middleware' => ['api']], function () {
+Route::group([
+    'prefix' => 'api/v1',
+    'namespace' => 'Api\V1',
+    'middleware' => ['api']
+], function () {
+    Route::group([
+        'middleware' => 'auth'
+    ], function () {
+        Route::post('upload/cropper-js', 'UploadController@useJsCropper');
+
+        Route::post('user/{id}/avatar/cropper-js', 'UserController@postAvatarUsingCropperJs');
+
+        Route::group([
+            'middleware' => 'entrust:,access-admin'
+        ], function () {
+            #region Admin Role
+            Route::group([
+                'middleware' => 'entrust:admin'
+            ], function () {
+                Route::post('widgets/update-order', 'WidgetController@updateOrder');
+                Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
+            });
+            #endregion
+        });
+    });
 });
 
 /*
@@ -27,31 +51,8 @@ Route::group(['middleware' => ['api']], function () {
 
 Route::group(['middleware' => ['web']], function () {
     Route::group([
-        'prefix' => 'api/v1',
-        'namespace' => 'Api\V1',
-        'middleware' => 'katniss.api',
-    ], function () {
-        Route::group([
-            'middleware' => 'auth'
-        ], function () {
-            Route::group([
-                'middleware' => 'entrust:,access-admin'
-            ], function () {
-                #region Admin Role
-                Route::group([
-                    'middleware' => 'entrust:admin'
-                ], function () {
-                    Route::post('widgets/update-order', 'WidgetController@updateOrder');
-                    Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
-                });
-                #endregion
-            });
-        });
-    });
-
-    Route::group([
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['katniss.view', 'localeSessionRedirect', 'localizationRedirect', 'localize']
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
     ], function () {
         Route::get('/', 'Home\HomepageController@index');
         Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');

@@ -12,15 +12,35 @@ use Closure;
 use Illuminate\Http\Request;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\SettingsFacade;
+use Katniss\Models\UserApp;
 
 class ApiMiddleware
 {
+    protected function checkUserApp(Request $request)
+    {
+        if (!$request->has('_app')) {
+            abort(404);
+        }
+
+        $app = $request->input('_app');
+        if (is_string($app)) {
+            $app = json_decode($app, true);
+            if(empty($app) || empty($app['id']) || empty($app['secret'])) {
+                abort(404);
+            }
+        }
+        $userApp = UserApp::getByIdAndSecret($app['id'], $app['secret']);
+        if (empty($userApp)) {
+            abort(404);
+        }
+
+        auth()->setUser($userApp->user);
+    }
+
     protected function checkSettings(Request $request)
     {
-        if (!SettingsFacade::fromUser()) {
-            if (!SettingsFacade::fromSession($request->session())) {
-                SettingsFacade::fromCookie($request);
-            }
+        if (!SettingsFacade::fromApi($request)) {
+            SettingsFacade::fromUser($request);
         }
     }
 
@@ -33,14 +53,10 @@ class ApiMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $this->checkUserApp($request);
         $this->checkSettings($request);
 
-        $forceLocale = SettingsFacade::getLocale();
-        if ($request->has(AppConfig::KEY_FORCE_LOCALE)) {
-            $forceLocale = $request->input(AppConfig::KEY_FORCE_LOCALE);
-        }
-
-        setCurrentLocale($forceLocale);
+        setCurrentLocale(SettingsFacade::getLocale());
 
         return $next($request);
     }

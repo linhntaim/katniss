@@ -11,6 +11,7 @@
     <script>
         {!! cdataOpen() !!}
         jQuery(document).ready(function () {
+            new CropImageModal($('body'), 1, 'user/{{ $auth_user->id }}/avatar/cropper-js');
         });
         {!! cdataClose() !!}
     </script>
@@ -23,10 +24,8 @@
     <form method="post">
         {!! csrf_field() !!}
         <div class="form-group">
-            <img class="profile-user-img img-responsive img-circle cropper-image-view" alt="{{ $auth_user->name }}" src="{{ $auth_user->url_avatar }}">
-            {{--<div class="avatar-view" title="{{ trans('form.action_change') }} {{ trans('label.avatar') }}">--}}
-                {{--<img src="{{ $auth_user->url_avatar }}" alt="{{ $auth_user->name }}">--}}
-            {{--</div>--}}
+            <img class="profile-user-img img-responsive img-circle cropper-image-view"
+                 alt="{{ $auth_user->name }}" src="{{ $auth_user->url_avatar }}">
         </div>
         <div class="form-group">
             <label for="inputDisplayName">{{ trans('label.display_name') }}</label>

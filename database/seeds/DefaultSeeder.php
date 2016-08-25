@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Katniss\Models\Permission;
-use Katniss\Models\Role;
-use Katniss\Models\User;
 use Katniss\Models\Category;
 use Katniss\Models\Link;
+use Katniss\Models\Permission;
+use Katniss\Models\Role;
 use Katniss\Models\Themes\ThemeWidget;
+use Katniss\Models\User;
+use Katniss\Models\UserApp;
 
 class DefaultSeeder extends Seeder
 {
@@ -71,6 +72,13 @@ class DefaultSeeder extends Seeder
             'active' => true
         ));
         $admin->attachRoles([$admin_role, $owner_role]);
+
+        UserApp::create([
+            'user_id' => $admin->id,
+            'secret' => str_random(32),
+            'name' => 'Katniss Web',
+            'version' => 'v1',
+        ]);
 
         $tester = User::create(array(
             'display_name' => 'Tester',

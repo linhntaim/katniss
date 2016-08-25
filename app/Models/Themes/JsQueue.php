@@ -21,12 +21,21 @@ class JsQueue extends AssetQueue
     const TYPE_RAW = 'raw';
     const TYPE_VAR = 'var';
 
+    protected $rawValueNames;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->rawValueNames = [];
     }
 
-    public function add($name, $content, $type = AssetQueue::TYPE_DEFAULT)
+    public function setRawValueName()
+    {
+        $this->rawValueNames = func_get_args();
+    }
+
+    public function add($name, $content, $type = AssetQueue::TYPE_DEFAULT, $rawValueNames = [])
     {
         if ($name == self::LIB_BOOTSTRAP_NAME && $this->existed(self::LIB_JQUERY_UI_NAME)) {
             parent::add(
@@ -37,6 +46,9 @@ class JsQueue extends AssetQueue
         }
 
         parent::add($name, $content, $type);
+        if ($type == self::TYPE_VAR) {
+            $this->rawValueNames = $rawValueNames;
+        }
     }
 
     public function flush($echo = true)
@@ -50,7 +62,7 @@ class JsQueue extends AssetQueue
                 case self::TYPE_VAR:
                     $content = [];
                     foreach ($item['content'] as $varName => $varValue) {
-                        $content[] = 'var ' . $varName . ' = ' . $this->getVarValue($varValue) . ';';
+                        $content[] = 'var ' . $varName . ' = ' . $this->getVarValue($varValue, in_array($varName, $this->rawValueNames)) . ';';
                     }
                     $this->output[] = Html5::jsInline(implode(PHP_EOL, $content));
                     break;
@@ -63,22 +75,22 @@ class JsQueue extends AssetQueue
         return parent::flush($echo);
     }
 
-    private function getVarValue($value)
+    private function getVarValue($value, $raw = false)
     {
         if (is_string($value)) {
-            return "'" . $value . "'";
+            return $raw ? $value : "'" . $value . "'";
         } elseif (is_array($value)) {
             if (array_keys($value) !== range(0, count($value) - 1)) {
-                return $this->getVarValue(json_encode($value));
+                return $this->getVarValue(json_encode($value), $raw);
             } else {
                 $p = [];
                 foreach ($value as $item) {
-                    $p[] = $this->getVarValue($value);
+                    $p[] = $this->getVarValue($item, $raw);
                 }
                 return '[' . implode(',', $p) . ']';
             }
         } elseif (is_object($value)) {
-            return $this->getVarValue(json_encode($value));
+            return $this->getVarValue(json_encode($value), $raw);
         }
 
         return $value;
