@@ -12,7 +12,7 @@ class WidgetController extends ApiController
 {
     public function updateOrder(Request $request)
     {
-        if ($this->validate($request, [
+        if (!$this->validate($request, [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
             'widget_ids' => 'required|array|exists:theme_widgets,id',
         ])

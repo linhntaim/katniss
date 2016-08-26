@@ -2,7 +2,7 @@
 
 namespace Katniss\Http\Controllers\Admin;
 
-use Katniss\Http\Controllers\MultipleLocaleContentController;
+use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Models\Themes\ThemeWidget;
@@ -10,7 +10,7 @@ use Katniss\Models\Themes\WidgetsFacade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class WidgetController extends MultipleLocaleContentController
+class WidgetController extends ViewController
 {
     public function __construct(Request $request)
     {

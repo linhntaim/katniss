@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: Nguyen Tuan Linh
- * Date: 2016-08-18
- * Time: 23:11
+ * Date: 2016-08-26
+ * Time: 20:19
  */
 
 namespace Katniss\Http\Controllers;
@@ -11,7 +11,7 @@ namespace Katniss\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ApiController extends KatnissController
+class WebApiController extends KatnissController
 {
     use ApiResponseTrait;
 

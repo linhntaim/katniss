@@ -350,7 +350,10 @@ abstract class Theme
             'KATNISS_APP' => $userApp->toJson(),
             'KATNISS_SETTINGS' => SettingsFacade::toJson(),
             'KATNISS_API_URL' => apiUrl(null, [], $userApp->version),
-        ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS']);
+            'KATNISS_WEB_API_URL' => webApiUrl(),
+            'KATNISS_SESSION_LIFETIME' => sessionLifetime(),
+            'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
+        ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
         $this->extJsQueue->add('global-app-script', libraryAsset('katniss.js'));
     }
 }

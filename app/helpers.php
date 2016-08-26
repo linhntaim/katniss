@@ -338,6 +338,11 @@ function apiUrl($route = '', array $params = [], $version = 'v1')
     return url('api/' . $version . '/' . embedParamsInRoute($route, $params));
 }
 
+function webApiUrl($route = '', array $params = [])
+{
+    return url('web-api/' . embedParamsInRoute($route, $params));
+}
+
 function redirectUrlAfterLogin(User $user)
 {
     $localeCode = $user->settings->locale;
@@ -901,6 +906,14 @@ function in_admin()
 #endregion
 
 #region Runtime
+/**
+ * @return int Session timeout in milliseconds
+ */
+function sessionLifetime()
+{
+    return intval(config('session.lifetime')) * 60 * 1000;
+}
+
 function appKey()
 {
     return config('app.key');

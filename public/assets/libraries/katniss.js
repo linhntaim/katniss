@@ -537,6 +537,19 @@ function isSet(variable) {
     return !isUnset(variable);
 }
 
+function isString(variable) {
+    return typeof variable === 'string';
+}
+
+function isObject(variable, objectName) {
+    objectName = isUnset(objectName) ? '[object]' : '[object ' + objectName + ']';
+    return isSet(variable) && Object.prototype.toString.call(variable) === objectName;
+}
+
+function isArray(variable) {
+    return isObject(variable, 'Array');
+}
+
 function startWith(strSrc, strWith) {
     if (isSet(strSrc)) {
         return strSrc.toString().indexOf(strWith) == 0;
@@ -591,10 +604,9 @@ jQuery.fn.extend({
 });
 
 function NumberFormatHelper() {
-    var DEFAULT_NUMBER_FORMAT = 'point_comma';
     this.DEFAULT_NUMBER_OF_DECIMAL_POINTS = 2;
 
-    this.type = typeof SETTINGS_NUMBER_FORMAT === 'undefined' ? DEFAULT_NUMBER_FORMAT : SETTINGS_NUMBER_FORMAT;
+    this.type = KATNISS_SETTINGS.number_format;
     this.numberOfDecimalPoints = this.DEFAULT_NUMBER_OF_DECIMAL_POINTS;
 }
 NumberFormatHelper.prototype.modeInt = function (numberOfDecimalPoints) {
@@ -636,18 +648,50 @@ NumberFormatHelper.prototype.formatCommaSpace = function (number) {
     return number.replace('.', ',');
 };
 
-function KatnissApi() {
+function KatnissApiMessages(messages) {
+    this.messages = isArray(messages) ? messages : (isString(messages) ? [messages] : []);
+}
+KatnissApiMessages.prototype.hasAny = function () {
+    return this.messages.length > 0;
+};
+KatnissApiMessages.prototype.all = function () {
+    return this.messages;
+};
+KatnissApiMessages.prototype.first = function () {
+    return this.hasAny() ? this.messages[0] : '';
+};
+function KatnissApi(isWebApi) {
     this.REQUEST_TYPE_POST = 'post';
     this.REQUEST_TYPE_GET = 'get';
     this.REQUEST_TYPE_PUT = 'put';
     this.REQUEST_TYPE_DELETE = 'delete';
+
+    this.isWebApi = isSet(isWebApi) && isWebApi === true;
 }
+KatnissApi.prototype.switchToAppApi = function () {
+    this.isWebApi = false;
+};
+KatnissApi.prototype.switchToWebApi = function () {
+    this.isWebApi = true;
+};
 KatnissApi.prototype.buildUrl = function (relativePath) {
-    return startWith(relativePath, KATNISS_API_URL) ?
-        relativePath : KATNISS_API_URL + '/' + relativePath;
+    var apiUrl = !this.isWebApi ? KATNISS_API_URL : KATNISS_WEB_API_URL;
+    return startWith(relativePath, apiUrl) ?
+        relativePath : apiUrl + '/' + relativePath;
 };
 KatnissApi.prototype.buildParams = function (params) {
-    if (Object.prototype.toString.call(params) === '[object FormData]') {
+    if (isUnset(params)) params = {};
+    if (this.isWebApi) {
+        if (isObject(params, 'FormData')) {
+            params.append('_token', KATNISS_REQUEST_TOKEN);
+        }
+        else {
+            params._token = KATNISS_REQUEST_TOKEN;
+        }
+        return params;
+    }
+
+    if (isObject(params, 'FormData')) {
         params.append('_app', JSON.stringify(KATNISS_APP));
         params.append('_settings', JSON.stringify(KATNISS_SETTINGS));
     }
@@ -657,21 +701,7 @@ KatnissApi.prototype.buildParams = function (params) {
     }
     return params;
 };
-KatnissApi.prototype.post = function (relativePath, params, done, fail) {
-    jQuery.post(
-        this.buildUrl(relativePath),
-        this.buildParams(params)
-    ).done(function (response) {
-        if (isSet(done)) {
-            done.callback(this, response);
-        }
-    }).fail(function (response) {
-        if (isSet(fail)) {
-            fail.callback(this, response);
-        }
-    });
-};
-KatnissApi.prototype.request = function (relativePath, requestType, params, options) {
+KatnissApi.prototype.buildOptions = function (requestType, params, options) {
     if (!isSet(options)) {
         options = {};
     }
@@ -680,5 +710,105 @@ KatnissApi.prototype.request = function (relativePath, requestType, params, opti
     if (!isSet(options.dataType)) {
         options.dataType = 'json';
     }
-    jQuery.ajax(this.buildUrl(relativePath), options);
+    if (isObject(params, 'FormData')) {
+        options.processData = false;
+        options.contentType = false;
+    }
+    return options;
 };
+KatnissApi.prototype.beforeRequest = function () {
+    if (this.isWebApi) startSessionTimeout();
+};
+KatnissApi.prototype.post = function (relativePath, params, done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.post(
+            this.buildUrl(relativePath),
+            this.buildParams(params)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.get = function (relativePath, params, done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.get(
+            this.buildUrl(relativePath),
+            this.buildParams(params)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.request = function (relativePath, requestType, params, options,
+                                         done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.ajax(
+            this.buildUrl(relativePath),
+            this.buildOptions(requestType, params, options)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.promise = function (ajax, done, fail, always) {
+    var _this = this;
+    ajax.done(function (response) {
+        if (isSet(done)) {
+            done.call(
+                _this,
+                _this.isFailed(response),
+                _this.data(response),
+                _this.messages(response)
+            );
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        if (isSet(fail)) {
+            fail.call(_this, textStatus, errorThrown);
+        }
+    }).always(function () {
+        if (isSet(always)) {
+            always.call(_this);
+        }
+    })
+};
+KatnissApi.prototype.isFailed = function (response) {
+    return isSet(response._success) && response._success != true;
+};
+KatnissApi.prototype.data = function (response) {
+    return isSet(response._data) ? response._data : null;
+};
+KatnissApi.prototype.messages = function (response) {
+    return new KatnissApiMessages(response._messages);
+};
+
+function updateCsrfToken(csrfToken) {
+    KATNISS_REQUEST_TOKEN = csrfToken;
+    jQuery('input[type="hidden"][name="_token"]').val(csrfToken);
+}
+
+var _sessionTimeout = null;
+function startSessionTimeout() {
+    if (isSet(_sessionTimeout)) {
+        clearTimeout(_sessionTimeout);
+    }
+    _sessionTimeout = setTimeout(function () {
+        console.log('session end');
+        if (KATNISS_USER === false) {
+            var api = new KatnissApi(true);
+            api.get('user/csrf-token', null, function (failed, data, messages) {
+                if (!failed) {
+                    updateCsrfToken(data.csrf_token);
+                }
+            })
+        }
+        else {
+            x_lock();
+        }
+    }, KATNISS_SESSION_LIFETIME);
+}
+startSessionTimeout();
+
+var _zIndexModal = 1050;
+$(document).on('shown.bs.modal', '.modal', function (e) {
+    $(this).css('z-index', ++_zIndexModal);
+});

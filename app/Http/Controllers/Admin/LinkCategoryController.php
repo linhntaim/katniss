@@ -2,6 +2,7 @@
 
 namespace Katniss\Http\Controllers\Admin;
 
+use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Category;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\QueryStringBuilder;
@@ -9,10 +10,9 @@ use Katniss\Models\Helpers\PaginationHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Katniss\Http\Controllers\MultipleLocaleContentController;
 
 
-class LinkCategoryController extends MultipleLocaleContentController
+class LinkCategoryController extends ViewController
 {
     public function __construct(Request $request)
     {

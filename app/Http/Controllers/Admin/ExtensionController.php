@@ -2,15 +2,14 @@
 
 namespace Katniss\Http\Controllers\Admin;
 
-use Katniss\Http\Controllers\MultipleLocaleContentController;
+use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Themes\ExtensionsFacade;
 use Illuminate\Http\Request;
 
-use Katniss\Http\Requests;
 use Illuminate\Support\Facades\Validator;
 
-class ExtensionController extends MultipleLocaleContentController
+class ExtensionController extends ViewController
 {
     public function __construct(Request $request)
     {

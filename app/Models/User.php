@@ -27,8 +27,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'display_name', 'name', 'email', 'password', 'url_avatar', 'url_avatar_thumb',
-        'activation_code', 'active', 'setting_id',
+        'display_name',
+        'name',
+        'email',
+        'password',
+        'url_avatar',
+        'url_avatar_thumb',
+        'activation_code',
+        'active',
+        'setting_id',
+        'channel',
     ];
 
     /**
@@ -36,7 +44,19 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'activation_code',
+        'active',
+        'setting_id',
+        'settings',
+        'channel',
+        'created_at',
+        'updated_at',
+        'roles',
+        'perms',
+    ];
 
     public function getOwnDirectoryAttribute()
     {

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ theme_title() }}</title>
     <meta name="author" content="{{ theme_author() }}">
     <meta name="description" content="{{ theme_description() }}">
@@ -48,6 +47,7 @@
 @yield('lib_scripts')
 {!! ext_scripts() !!}
 @yield('extended_scripts')
+@include('admin_themes.admin_lte.master.common_modals')
 @yield('modals')
 {!! theme_footer() !!}
 </body>

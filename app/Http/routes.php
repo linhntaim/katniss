@@ -51,6 +51,14 @@ Route::group([
 
 Route::group(['middleware' => ['web']], function () {
     Route::group([
+        'prefix' => 'web-api',
+        'namespace' => 'WebApi',
+    ], function () {
+        Route::get('user/csrf-token', 'UserController@getCsrfToken');
+        Route::get('user/quick-login', 'UserController@getQuickLogin');
+    });
+
+    Route::group([
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
     ], function () {

@@ -2,18 +2,17 @@
 
 namespace Katniss\Http\Controllers\Admin;
 
+use Katniss\Http\Controllers\ViewController;
 use Katniss\Models\Category;
 use Katniss\Models\Link;
 use Illuminate\Http\Request;
-use Katniss\Http\Requests;
-use Katniss\Http\Controllers\MultipleLocaleContentController;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\PaginationHelper;
 use Katniss\Models\Helpers\QueryStringBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class LinkController extends MultipleLocaleContentController
+class LinkController extends ViewController
 {
     public function __construct(Request $request)
     {

@@ -27,20 +27,6 @@
                     api.post('link-categories/{{ $category->id }}/update-order', {
                         link_ids: items
                     });
-
-                    {{--jQuery.post('{{ apiUrl('link-categories/{id}/update-order', ['id' => $category->id]) }}', {--}}
-                        {{--_token: '{{ csrf_token() }}',--}}
-                        {{--link_ids: items--}}
-                    {{--}).done(function (data) {--}}
-                        {{--if (data.success) {--}}
-                            {{--console.log('success');--}}
-                        {{--}--}}
-                        {{--else {--}}
-                            {{--console.log('fail');--}}
-                        {{--}--}}
-                    {{--}).fail(function () {--}}
-                        {{--console.log('fail');--}}
-                    {{--});--}}
                 }
             });
             jQuery('a.delete').off('click').on('click', function (e) {
@@ -57,9 +43,6 @@
         });
         {!! cdataClose() !!}
     </script>
-@endsection
-@section('modals')
-    @include('admin_themes.admin_lte.master.common_modals')
 @endsection
 @section('page_content')
     <div class="row">
