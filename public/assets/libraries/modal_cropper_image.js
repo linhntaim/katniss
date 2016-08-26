@@ -97,7 +97,7 @@ CropImageModal.prototype = {
                         console.log(e.message);
                     }
 
-                    _this.submitDone(data);
+                    _this.submitDone(data, true);
                 } else {
                     _this.submitFail('Image upload failed!');
                 }
@@ -225,13 +225,11 @@ CropImageModal.prototype = {
 
         var api = new KatnissApi();
         api.request(_this.postUrl, api.REQUEST_TYPE_POST, data, {
-            processData: false,
-            contentType: false,
             beforeSend: function () {
                 _this.submitStart();
             },
             success: function (response) {
-                _this.submitDone(response);
+                _this.submitDone(response, false);
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 _this.submitFail(textStatus || errorThrown);
@@ -250,8 +248,29 @@ CropImageModal.prototype = {
         this.$loading.fadeIn();
     },
 
-    submitDone: function (response) {
-        if ($.isPlainObject(response)) {
+    submitDone: function (response, fromIframe) {
+        if(fromIframe) {
+            if ($.isPlainObject(data) && data.state === 200) {
+                if (data.result) {
+                    this.url = data.result;
+
+                    if (this.support.datauri || this.uploaded) {
+                        this.uploaded = false;
+                        this.cropDone();
+                    } else {
+                        this.uploaded = true;
+                        this.$avatarSrc.val(this.url);
+                        this.startCropper();
+                    }
+
+                    this.$avatarInput.val('');
+                } else if (data.message) {
+                    this.alert(data.message);
+                }
+            } else {
+                this.alert('Failed to response');
+            }
+        } else {
             if (response._success) {
                 this.url = response._data.store_path;
 
@@ -268,8 +287,6 @@ CropImageModal.prototype = {
             } else if (response._messages) {
                 this.alert(response._messages);
             }
-        } else {
-            this.alert('Failed to response');
         }
     },
 
