@@ -9,11 +9,11 @@
         jQuery(document).ready(function () {
             jQuery('.ck-editor').ckeditor({
                 language: '{{ $site_locale }}',
-                filebrowserBrowseUrl: '{{ homeUrl('documents/for/ckeditor') }}',
-                filebrowserFlashBrowseUrl: '{{ homeUrl('documents/for/ckeditor') }}?custom_type=flash',
-                filebrowserFlashUploadUrl: '{{ homeUrl('documents/for/ckeditor') }}?custom_type=flash',
-                filebrowserImageBrowseLinkUrl: '{{ homeUrl('documents/for/ckeditor') }}?custom_type=images',
-                filebrowserImageBrowseUrl: '{{ homeUrl('documents/for/ckeditor') }}?custom_type=images',
+                filebrowserBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}',
+                filebrowserFlashBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=flash',
+                filebrowserFlashUploadUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=flash',
+                filebrowserImageBrowseLinkUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=images',
+                filebrowserImageBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=images',
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
         });

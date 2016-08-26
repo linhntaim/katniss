@@ -5,6 +5,7 @@ namespace Katniss\Http\Controllers;
 use Illuminate\Foundation\Validation\ValidationException;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Validator;
 use Katniss\Models\Helpers\AppConfig;
 use Katniss\Models\Helpers\AppOptionHelper;
 

@@ -15,6 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 @endsection
 @section('extended_scripts')
+    @include('file_manager.open_documents_script')
     <script>
         {!! cdataOpen() !!}
         jQuery(document).ready(function () {

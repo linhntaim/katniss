@@ -31,7 +31,7 @@
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },
-                url: '{{ homeUrl('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
+                url: '{{ homeUrl('me/documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
                 getFileCallback: function (file) {
                     window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     window.close();

@@ -65,8 +65,6 @@ class StorePhoto extends StoreFile
 
     public function duplicate($targetDirectory, $name = null, $autoExtension = true)
     {
-        $name = $this->tmpFilename($name, $autoExtension);
-
         $targetFileInfo = clone $this->targetFileInfo;
         $image = clone $this->image;
         $this->targetFileInfo = $this->copy($targetDirectory, $name);

@@ -65,8 +65,6 @@ Route::group(['middleware' => ['web']], function () {
         Route::get('/', 'Home\HomepageController@index');
         Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');
         Route::post(homeRoute('me/settings'), 'Admin\SettingsController@update');
-        Route::get(homeRoute('me/account'), 'Admin\AccountController@index');
-        Route::post(homeRoute('me/account'), 'Admin\AccountController@update');
 
         Route::group([
             'namespace' => 'Auth',
@@ -93,10 +91,12 @@ Route::group(['middleware' => ['web']], function () {
         Route::group([
             'middleware' => 'auth'
         ], function () {
+            Route::get(homeRoute('me/account'), 'Admin\AccountController@index');
+            Route::post(homeRoute('me/account'), 'Admin\AccountController@update');
             // document
-            Route::any(homeRoute('documents/connector'), 'DocumentController@getConnector');
-            Route::any(homeRoute('documents/for/ckeditor'), 'DocumentController@forCkeditor');
-            Route::any(homeRoute('documents/for/popup/{input_id}'), 'DocumentController@forPopup');
+            Route::any(homeRoute('me/documents/connector'), 'DocumentController@getConnector');
+            Route::any(homeRoute('me/documents/for/ckeditor'), 'DocumentController@forCkeditor');
+            Route::any(homeRoute('me/documents/for/popup/{input_id}'), 'DocumentController@forPopup');
 
             #region Admin Role
             Route::group([
