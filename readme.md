@@ -83,6 +83,16 @@ Latest version:
 
 Base framework.
 
+Customization:
+
+- Database:
+    - Enable schema for MySQL database to support row format when creating tables.
+- Session:
+    - Extend database session handler for further purpose (currently session is based on this handler).
+    - Fix file session handler bugs may remove session of user when happening many concurrent AJAX requests.
+- Support:
+    - Extend Str class for new methods to operate string.
+
 #### barryvdh/laravel-debugbar
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
@@ -94,16 +104,6 @@ Latest version:
 [![Latest Stable Version](https://poser.pugx.org/barryvdh/laravel-debugbar/version.png)](https://packagist.org/packages/barryvdh/laravel-debugbar)
 
 For debugging.
-
-Customization:
-
-- Database:
-    - Enable schema for MySQL database to support row format when creating tables.
-- Session:
-    - Extend database session handler for further purpose (currently session is based on this handler).
-    - Fix file session handler bugs may remove session of user when happening many concurrent AJAX requests.
-- Support:
-    - Extend Str class for new methods to operate string.
 
 #### barryvdh/laravel-elfinder
 
@@ -325,7 +325,7 @@ Functions/Features:
 - Register/Login using Accounts on Social Networks (Facebook, Google).
 - Email supported (for registering, resending activation & password resetting & password changed):
     - Emails for registering & password changed are queued before sending
-    - Configure a queue listener or `php artisan queue:listen` for sending queued emails (see [Running The Queue Listener](http://laravel.com/docs/5.1/queues#running-the-queue-listener))
+    - Configure a queue worker or `php artisan queue:work` for sending queued emails (see [Running The Queue Worker](https://laravel.com/docs/5.3/queues#running-the-queue-worker))
 - Lock screen supported, when user is idle while accessing admin page.
 - Update account information.
 
@@ -343,15 +343,15 @@ Database seeding:
 - Tester role (has permission of Accessing Admin)
 - User role
 - 3 starting users (with default settings): 
-    - Name: owner. 
-        - Password: ^KM$bB-W7:Z@8eG.
-        - Role: Owner.
-    - Name: admin.
-        - Password: 123456.
-        - Role: Owner, Administrator, 
+    - Name: `owner`. 
+        - Password: `^KM$bB-W7:Z@8eG`.
+        - Role: `Owner`.
+    - Name: `admin`.
+        - Password: `123456`.
+        - Role: `Owner`, `Administrator`, 
     - Name: tester
-        - Password: 123456.
-        - Role: Tester.
+        - Password: `123456`.
+        - Role: `Tester`.
 
 Anonymous users will get the role of User after registering.
 
