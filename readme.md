@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.3.21
+Current version: `5.3.21`.
 
 Latest version:
 
@@ -97,7 +97,7 @@ Customization:
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: 2.3.0
+Current version: `2.3.0`.
 
 Latest version:
 
@@ -109,7 +109,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: 0.3.8
+Current version: `0.3.8`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: 2.3.3
+Current version: `2.3.3`.
 
 Latest version:
 
@@ -133,7 +133,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.19
+Current version: `2.0.19`.
 
 Latest version:
 
@@ -149,7 +149,7 @@ Customization:
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: 2.0.6
+Current version: `2.0.6`.
 
 For filtering HTML content.
 
@@ -157,37 +157,38 @@ For filtering HTML content.
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: 6.0.1
+Current version: `6.0.1`.
 
 Latest version:
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 
-For multilingual models (Database Entities & App Models)
+For multilingual models (Database Entities & App Models).
 
 #### zizaco/entrust
 
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
-Current version: 1.7.0
+Current version: `1.7.0`.
 
 Latest version:
 
 [![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
-To authorize users with roles and permissions
+To authorize users with roles and permissions.
 
 Customization:
 
-- Middleware to authorize routes was created
-- Force not to use Cache::tags in workflow. 
+- Middleware to authorize routes was created.
+- Force not to use the method `Cache::tags` in workflow.
     - If you plan to use the cache drivers different from file and database, you should remove this customization.
+    - See more at [Cache Tags](https://laravel.com/docs/5.3/cache#cache-tags).
 
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: 1.1.9
+Current version: `1.1.9`.
 
 Latest version:
 
@@ -205,7 +206,7 @@ Customization:
 
 [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
-Current version: 2.3.2
+Current version: `2.3.2`.
 
 Latest version:
 
@@ -217,7 +218,7 @@ For admin template.
 
 [Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav)
 
-Current version: 1.0.4
+Current version: `1.0.4`.
 
 For home template.
 
