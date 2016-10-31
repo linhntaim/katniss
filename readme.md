@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.3.21
+Current version: `5.3.21`.
 
 Latest version:
 
@@ -97,7 +97,7 @@ Customization:
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: 2.3.0
+Current version: `2.3.0`.
 
 Latest version:
 
@@ -109,7 +109,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: 0.3.8
+Current version: `0.3.8`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: 2.3.3
+Current version: `2.3.3`.
 
 Latest version:
 
@@ -133,7 +133,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.19
+Current version: `2.0.19`.
 
 Latest version:
 
@@ -149,7 +149,7 @@ Customization:
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: 2.0.6
+Current version: `2.0.6`.
 
 For filtering HTML content.
 
@@ -157,37 +157,38 @@ For filtering HTML content.
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: 6.0.1
+Current version: `6.0.1`.
 
 Latest version:
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
 
-For multilingual models (Database Entities & App Models)
+For multilingual models (Database Entities & App Models).
 
 #### zizaco/entrust
 
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
-Current version: 1.7.0
+Current version: `1.7.0`.
 
 Latest version:
 
 [![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
 
-To authorize users with roles and permissions
+To authorize users with roles and permissions.
 
 Customization:
 
-- Middleware to authorize routes was created
-- Force not to use Cache::tags in workflow. 
+- Middleware to authorize routes was created.
+- Force not to use the method `Cache::tags` in workflow.
     - If you plan to use the cache drivers different from file and database, you should remove this customization.
+    - See more at [Cache Tags](https://laravel.com/docs/5.3/cache#cache-tags).
 
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: 1.1.9
+Current version: `1.1.9`.
 
 Latest version:
 
@@ -205,7 +206,7 @@ Customization:
 
 [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
-Current version: 2.3.2
+Current version: `2.3.2`.
 
 Latest version:
 
@@ -217,7 +218,7 @@ For admin template.
 
 [Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav)
 
-Current version: 1.0.4
+Current version: `1.0.4`.
 
 For home template.
 
@@ -253,7 +254,7 @@ Request flow:
 
 - Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Response (JSON format).
 
-### App Options:
+### App Options
 
 To store/retrieve runtime application's options in database.
 
@@ -279,7 +280,7 @@ Home themes are easily extended with plugins.
     
 Sample Themes:
 
-- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav))
+- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav)).
 
 #### Plugins
     
@@ -289,16 +290,16 @@ Define extensions for adding extra functions/features to themes (or even the sys
 
 Sample Extensions:
 
-- Open Graph Tags 
-    - Add open graph tags into website
-- Analytic Services
-    - Add website analytics
-    - Current: Google, MixPanel
+- Open Graph Tags:
+    - Add open graph tags into website.
+- Analytic Services:
+    - Add website analytics.
+    - Current: Google, MixPanel.
 - Social Integration:
-    - Integrate website into social networks
-    - Current: Facebook, Twitter, Google, LinkedIn
+    - Integrate website into social networks.
+    - Current: Facebook, Twitter, Google, LinkedIn.
 - Currency Exchange:
-    - Allow user to configure the exchange rates to automatically convert to/from any currencies
+    - Allow user to configure the exchange rates to automatically convert to/from any currencies.
 
 ##### Widget
 
@@ -308,12 +309,12 @@ Widgets in a placeholder are sortable; their orders can be changed.
 
 Sample Widgets:
 
-- Extra HTML
-    - Add HTML content to website
-- Base Links
-    - Add collection of links to website
+- Extra HTML:
+    - Add HTML content to website.
+- Base Links:
+    - Add collection of links to website.
 
-### Authentication:
+### Authentication
 
 Functions/Features:
 
@@ -324,8 +325,8 @@ Functions/Features:
 - Forgot/Reset Password.
 - Register/Login using Accounts on Social Networks (Facebook, Google).
 - Email supported (for registering, resending activation & password resetting & password changed):
-    - Emails for registering & password changed are queued before sending
-    - Configure a queue worker or `php artisan queue:work` for sending queued emails (see [Running The Queue Worker](https://laravel.com/docs/5.3/queues#running-the-queue-worker))
+    - Emails for registering & password changed are queued before sending.
+    - Configure a queue worker or `php artisan queue:work` for sending queued emails (see [Running The Queue Worker](https://laravel.com/docs/5.3/queues#running-the-queue-worker)).
 - Lock screen supported, when user is idle while accessing admin page.
 - Update account information.
 
@@ -337,11 +338,11 @@ Mainly based on [zizaco/entrust](#zizacoentrust).
 
 Database seeding:
 
-- Access admin permission
-- Owner role (has permission of Accessing Admin)
-- Administrators role (has permission of Accessing Admin)
-- Tester role (has permission of Accessing Admin)
-- User role
+- Access admin permission.
+- Owner role (has permission of Accessing Admin).
+- Administrators role (has permission of Accessing Admin).
+- Tester role (has permission of Accessing Admin).
+- User role.
 - 3 starting users (with default settings): 
     - Name: `owner`. 
         - Password: `^KM$bB-W7:Z@8eG`.
@@ -349,7 +350,7 @@ Database seeding:
     - Name: `admin`.
         - Password: `123456`.
         - Role: `Owner`, `Administrator`, 
-    - Name: tester
+    - Name: `tester`.
         - Password: `123456`.
         - Role: `Tester`.
 
@@ -363,7 +364,7 @@ For anonymous users, settings are saved in cookie & session.
 
 For authenticated users, settings are saved in database & session & cookie.
 
-### File Manager:
+### File Manager
 
 For users to easily upload & manage files.
 
@@ -371,8 +372,8 @@ Based on [barryvdh/laravel-elfinder](#barryvdhlaravel-elfinder).
 
 Ready for integrating with:
 
-- CKEditor
-- Input field
+- CKEditor.
+- Input field.
 
 ### Links
 
