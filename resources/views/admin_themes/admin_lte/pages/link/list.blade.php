@@ -66,10 +66,19 @@
                                 <tr>
                                     <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
                                     <td>{{ $link->name }}</td>
-                                    <td>{{ $link->url }}</td>
+                                    <td>
+                                        <a class="open-window" href="{{ $link->url }}"
+                                           data-name="_blank" data-width="800" data-height="600">
+                                            <i class="fa fa-external-link"></i>
+                                        </a> &nbsp;
+                                        {{ $link->url }}
+                                    </td>
                                     <td>
                                         @if(!empty($link->image))
-                                            <a href="{{ $link->image }}"><i class="fa fa-external-link"></i></a>
+                                            <a class="open-window" href="{{ $link->image }}"
+                                                data-name="_blank" data-width="800" data-height="600">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>
                                         @endif
                                     </td>
                                     <td>{{ $link->categories->implode('name', ', ') }}</td>

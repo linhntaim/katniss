@@ -61,7 +61,7 @@
                 <div class="row">
                       <div class="col-xs-12 col-sm-6 col-md-4">
                           <div class="form-group">
-                              <label for="inputCategories">{{ trans_choice('label.category', 2) }}</label>
+                              <label class="required" for="inputCategories">{{ trans_choice('label.category', 2) }}</label>
                               <select id="inputCategories"  class="form-control select2" name="categories[]" multiple="multiple" required
                                       data-placeholder="{{ trans('form.action_select') }} {{ trans_choice('label.link_category', 2) }}" style="width: 100%;">
                                   @foreach ($categories as $category)
@@ -74,8 +74,16 @@
                       </div>
                 </div>
                 <div class="form-group">
-                      <label for="inputImage">{{ trans('label.picture') }}</label>
-                      <input class="form-control image-from-documents" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
+                    <label for="inputImage">
+                        {{ trans('label.picture') }}
+                        @if(!empty($link->image))
+                            (<a class="open-window" href="{{ $link->image }}"
+                               data-name="_blank" data-width="800" data-height="600">
+                                <i class="fa fa-external-link"></i>
+                            </a>)
+                        @endif
+                    </label>
+                    <input class="form-control image-from-documents" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
@@ -97,7 +105,7 @@
                             ?>
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
                                 <div class="form-group">
-                                    <label for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
+                                    <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
                                     <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
                                            placeholder="{{ trans('label.name') }}" type="text" value="{{ $name }}">
                                 </div>
@@ -107,7 +115,13 @@
                                            placeholder="{{ trans('label.description') }}" type="text" value="{{ $description }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputUrl_{{ $locale }}">{{ trans('label.url') }}</label>
+                                    <label class="required separated" for="inputUrl_{{ $locale }}">
+                                        {{ trans('label.url') }}
+                                        (<a class="open-window" href="{{ $url }}"
+                                            data-name="_blank" data-width="800" data-height="600">
+                                            <i class="fa fa-external-link"></i>
+                                        </a>)
+                                    </label>
                                     <input class="form-control" id="inputUrl_{{ $locale }}" name="url[{{ $locale }}]"
                                            placeholder="{{ trans('label.url') }}" type="text" value="{{ $url }}">
                                 </div>

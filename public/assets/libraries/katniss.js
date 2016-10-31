@@ -811,4 +811,42 @@ startSessionTimeout();
 var _zIndexModal = 1050;
 $(document).on('shown.bs.modal', '.modal', function (e) {
     $(this).css('z-index', ++_zIndexModal);
+}).on('click', '.open-window', function (e) {
+    e.preventDefault();
+
+    var $this = $(this);
+    var data = $this.data();
+    var url = '';
+    var name = '';
+    var replace = true;
+    if (data.url) {
+        url = data.url;
+        delete data.url;
+    }
+    else {
+        if ($this.is('a')) {
+            url = $this.attr('href');
+        }
+        else if ($this.is('img')) {
+            url = $this.attr('src');
+        }
+    }
+    if (data.name) {
+        name = data.name;
+        delete data.name;
+    }
+    if (data.replace) {
+        replace = data.replace;
+        delete data.replace;
+    }
+    openWindow(url, name, data, replace);
+    return false;
 });
+
+function openWindow(url, name, specs, replace) {
+    var specsArr = [];
+    for (var key in specs) {
+        specsArr.push(key + '=' + specs[key]);
+    }
+    return window.open(url, name, specsArr.join(','), replace);
+}

@@ -2,7 +2,8 @@ function CropImageModal($element, aspectRatio, postUrl) {
     this.$container = $element;
 
     this.$cropperImageView = this.$container.find('.cropper-image-view');
-    this.$cropperImage = this.$cropperImageView.is('img') ? this.$cropperImageView : this.$cropperImageView.find('img');
+    console.log($(this.$cropperImageView.attr('data-img')));
+    this.$cropperImage = this.$cropperImageView.is('img') ? this.$cropperImageView : $(this.$cropperImageView.attr('data-img'));
     this.$cropperImageModal = this.$container.find('#cropper-image-modal');
     this.$loading = this.$container.find('.cropper-image-loading');
 

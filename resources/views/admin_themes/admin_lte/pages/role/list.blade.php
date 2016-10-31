@@ -46,9 +46,9 @@
                             <td>{{ $role->perms->implode('display_name', ', ') }}</td>
                             <td>{{ $role->description }}</td>
                             <td>
-                                @if($role->status == \Katniss\Models\Role::STATUS_HIDDEN)
+                                @if($role->status == \Katniss\Everdeen\Models\Role::STATUS_HIDDEN)
                                     <span class="label label-default">{{ trans('label.status_hidden') }}</span>
-                                @elseif($role->status == \Katniss\Models\Role::STATUS_NORMAL)
+                                @elseif($role->status == \Katniss\Everdeen\Models\Role::STATUS_NORMAL)
                                     <span class="label label-info">{{ trans('label.status_normal') }}</span>
                                 @endif
                             </td>

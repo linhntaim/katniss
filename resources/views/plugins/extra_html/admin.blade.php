@@ -9,11 +9,11 @@
         jQuery(document).ready(function () {
             jQuery('.ck-editor').ckeditor({
                 language: '{{ $site_locale }}',
-                filebrowserBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}',
-                filebrowserFlashBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=flash',
-                filebrowserFlashUploadUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=flash',
-                filebrowserImageBrowseLinkUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=images',
-                filebrowserImageBrowseUrl: '{{ homeUrl('me/documents/for/ckeditor') }}?custom_type=images',
+                filebrowserBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}',
+                filebrowserFlashBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=flash',
+                filebrowserFlashUploadUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=flash',
+                filebrowserImageBrowseLinkUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=images',
+                filebrowserImageBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=images',
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
         });
@@ -21,4 +21,4 @@
     </script>
 @endsection
 
-<input type="hidden" name="{{ \Katniss\Models\Helpers\AppConfig::KEY_HTML_INPUTS }}" value="content">
+<input type="hidden" name="{{ \Katniss\Everdeen\Utils\AppConfig::KEY_HTML_INPUTS }}" value="content">

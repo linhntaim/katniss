@@ -68,19 +68,19 @@
                         </div>
                     @endif
                         <div class="form-group">
-                            <label for="inputDisplayName">{{ trans('label.display_name') }}</label>
+                            <label class="required" for="inputDisplayName">{{ trans('label.display_name') }}</label>
                             <input class="form-control" id="inputDisplayName" name="display_name" maxlength="255" placeholder="{{ trans('label.display_name') }}" type="text" required value="{{ $user->display_name }}">
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail">{{ trans('label.email') }}</label>
+                            <label class="required" for="inputEmail">{{ trans('label.email') }}</label>
                             <input class="form-control" id="inputEmail" name="email" maxlength="255" placeholder="{{ trans('label.email') }}" type="email" required value="{{ $user->email }}">
                         </div>
                         <div class="form-group">
-                            <label for="inputName">{{ trans('label.user_name') }}</label>
+                            <label class="required" for="inputName">{{ trans('label.user_name') }}</label>
                             <input class="form-control" id="inputName" name="name" maxlength="255" placeholder="{{ trans('label.user_name') }}" type="text" required value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
-                            <label for="inputPassword">{{ trans('label.password') }}</label>
+                            <label class="required" for="inputPassword">{{ trans('label.password') }}</label>
                             <input class="form-control" id="inputPassword" name="password" placeholder="{{ trans('label.password') }}" type="text">
                         </div>
                         <div class="form-group">

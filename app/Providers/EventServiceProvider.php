@@ -2,7 +2,7 @@
 
 namespace Katniss\Providers;
 
-use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -13,23 +13,19 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \Katniss\Events\UserAfterRegistered::class => [
-            \Katniss\Listeners\EmailAccountActivation::class,
-        ],
-        \Katniss\Events\UserPasswordChanged::class => [
-            \Katniss\Listeners\EmailAccountPassword::class,
+        'Katniss\Everdeen\Events\SomeEvent' => [
+            'Katniss\Everdeen\Listeners\EventListener',
         ],
     ];
 
     /**
-     * Register any other events for your application.
+     * Register any events for your application.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
      * @return void
      */
-    public function boot(DispatcherContract $events)
+    public function boot()
     {
-        parent::boot($events);
+        parent::boot();
 
         //
     }

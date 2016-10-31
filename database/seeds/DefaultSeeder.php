@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Katniss\Models\Category;
-use Katniss\Models\Link;
-use Katniss\Models\Permission;
-use Katniss\Models\Role;
-use Katniss\Models\Themes\ThemeWidget;
-use Katniss\Models\User;
-use Katniss\Models\UserApp;
+use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Link;
+use Katniss\Everdeen\Models\Permission;
+use Katniss\Everdeen\Models\Role;
+use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Models\UserApp;
 
 class DefaultSeeder extends Seeder
 {
@@ -25,6 +25,7 @@ class DefaultSeeder extends Seeder
             'description' => 'Owner of the system',
             'status' => Role::STATUS_HIDDEN,
         ));
+
         $owner_role->attachPermission($admin_access_permission);
 
         $admin_role = Role::create(array(

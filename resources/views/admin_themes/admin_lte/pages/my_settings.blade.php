@@ -93,13 +93,14 @@
         </div>
     </form>
     <p>
-        <a href="{{ homeUrl() }}">{{ trans('label.back_to_homepage') }}</a>
         @if(!$is_auth)
-            <br><a href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a>
+            <a href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a><br>
         @else
+            <a href="{{ meUrl('account') }}">{{ trans('form.action_go_to') }} {{ trans('pages.my_account_title') }}</a><br>
             @if($auth_user->can('access-admin'))
-                <br><a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a>
+                <a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a><br>
             @endif
         @endif
+        <a href="{{ homeUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.home_title') }}</a>
     </p>
 @endsection

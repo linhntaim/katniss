@@ -17,11 +17,11 @@
  */
 
 return [
-
-    'encoding'  => 'UTF-8',
-    'finalize'  => true,
-    'cachePath' => storage_path('app/purifier'),
-    'settings'  => [
+    'encoding'      => 'UTF-8',
+    'finalize'      => true,
+    'cachePath'     => storage_path('app/purifier'),
+    'cacheFileMode' => 0755,
+    'settings'      => [
         'default' => [
             'HTML.Doctype'             => 'XHTML 1.0 Strict',
             'HTML.Allowed'             => 'div,b,strong,i,em,a[href|title],ul,ol,li,p[style],br,span[style],img[width|height|alt|src]',
@@ -32,9 +32,9 @@ return [
         'test'    => [
             'Attr.EnableID' => true
         ],
-        'youtube' => [
+        "youtube" => [
             "HTML.SafeIframe"      => 'true',
-            "URI.SafeIframeRegexp" => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%',
+            "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
         ],
         'kses' => [
             'HTML.Allowed' => '

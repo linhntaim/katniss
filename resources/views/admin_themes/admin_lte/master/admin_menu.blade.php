@@ -24,7 +24,7 @@
                         </li>
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{ homeUrl('me/account') }}" class="btn btn-default btn-flat">
+                                <a href="{{ meUrl('account') }}" class="btn btn-default btn-flat">
                                     {{ trans('pages.my_account_title') }}
                                 </a>
                             </div>

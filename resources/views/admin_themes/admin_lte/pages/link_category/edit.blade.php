@@ -122,12 +122,12 @@
                             ?>
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
                                 <div class="form-group">
-                                    <label for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
+                                    <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
                                     <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
                                             placeholder="{{ trans('label.name') }}" type="text" value="{{ $name }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputSlug_{{ $locale }}">{{ trans('label.slug') }}</label>
+                                    <label class="required separated" for="inputSlug_{{ $locale }}">{{ trans('label.slug') }}</label>
                                     <input class="form-control slug" id="inputSlug_{{ $locale }}" name="slug[{{ $locale }}]"
                                             placeholder="{{ trans('label.slug') }}" type="text" value="{{ $slug }}">
                                 </div>
