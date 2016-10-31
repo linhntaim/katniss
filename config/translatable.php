@@ -12,7 +12,7 @@ return [
     */
     'locales' => [
         'en',
-        'vi',
+        'vi'
     ],
 
     /*
@@ -86,19 +86,5 @@ return [
     |
     */
     'locale_key' => 'locale',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Make translated attributes always fillable
-    |--------------------------------------------------------------------------
-    |
-    | If true, translatable automatically sets
-    | translated attributes as fillable.
-    |
-    | WARNING!
-    | Set this to true only if you understand the security risks.
-    |
-    */
-    'always_fillable' => false,
 
 ];

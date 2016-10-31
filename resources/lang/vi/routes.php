@@ -7,7 +7,13 @@
  */
 
 return [
-    'my-settings'                               => 'thiet-lap-nguoi-dung',
+    'me'                                            => 'ca-nhan-toi',
+    'me/settings'                                   => 'ca-nhan-toi/thiet-lap',
+    'me/account'                                    => 'ca-nhan-toi/tai-khoan',
+    'me/documents'                                  => 'ca-nhan-toi/tai-lieu',
+    'me/documents/connector'                        => 'ca-nhan-toi/tai-lieu/ket-noi',
+    'me/documents/for/ckeditor'                     => 'ca-nhan-toi/tai-lieu/danh-cho/ckeditor',
+    'me/documents/for/popup/{input_id}'             => 'ca-nhan-toi/tai-lieu/danh-cho/popup/{input_id}',
 
     'auth'                                          => 'xac-thuc',
     'auth/login'                                    => 'xac-thuc/dang-nhap',
@@ -25,11 +31,6 @@ return [
     'password/email'                                => 'quen-mat-khau/thu-dien-tu',
     'password/reset'                                => 'quen-mat-khau/thiet-lap-lai',
     'password/reset/{token}'                        => 'quen-mat-khau/thiet-lap-lai/{token}',
-
-    'documents'                                     => 'tai-lieu',
-    'documents/connector'                           => 'tai-lieu/ket-noi',
-    'documents/for/ckeditor'                        => 'tai-lieu/danh-cho/ckeditor',
-    'documents/for/popup/{input_id}'                => 'tai-lieu/danh-cho/popup/{input_id}',
 
     'admin'                                         => 'quan-tri',
     'admin/my-documents'                            => 'quan-tri/tai-lieu-cua-toi',

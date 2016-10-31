@@ -1,7 +1,8 @@
 <?php
 
-use Katniss\Models\Helpers\Database\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Schema\Blueprint;
 
 class CreateUsersTable extends Migration
 {
@@ -38,13 +39,13 @@ class CreateUsersTable extends Migration
             $table->string('display_name');
             $table->string('name')->unique();
             $table->string('email')->unique();
-            $table->string('password', 60);
+            $table->string('password');
             $table->string('url_avatar');
             $table->string('url_avatar_thumb');
             $table->string('activation_code')->default('');
             $table->boolean('active')->default(false);
             $table->bigInteger('setting_id')->unsigned();
-            $table->string('channel');
+            $table->string('channel')->default('');
             $table->rememberToken();
             $table->timestamps();
 
@@ -72,8 +73,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('user_socials');
-        Schema::drop('users');
-        Schema::drop('user_settings');
+        Schema::dropIfExists('user_socials');
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('user_settings');
     }
 }

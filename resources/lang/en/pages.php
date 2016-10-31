@@ -19,6 +19,8 @@ return [
     'my_documents_desc' => 'Store and manage uploaded documents like photos, docs, presentations, ...',
     'my_notifications_title' => 'My Notification Center',
     'my_notifications_desc' => 'Information about my actions',
+    'my_account_title' => 'My Account',
+    'my_account_desc' => 'Change account information',
 
     'account_login_title' => 'Log In',
     'account_login_desc' => 'Log in to start your session',

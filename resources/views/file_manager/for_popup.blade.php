@@ -20,7 +20,7 @@
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },
-                url: '{{ homeUrl('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
+                url: '{{ meUrl('documents/connector') }}{{ empty($custom_type) ? '' : '?custom_type='.$custom_type }}',
                 getFileCallback: function (file) {
                     window.opener.processSelectedFile(file.url, '{{ $input_id }}');
                     window.close();

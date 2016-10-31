@@ -21,34 +21,34 @@ return [
 
     'idle_switching_time' => 120, // seconds
 
-    'admin_theme' => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME,
-    'home_theme' => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME,
+    'admin_theme' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
+    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME,
     'admin_themes' => [
-        Katniss\Models\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Models\Themes\AdminThemes\AdminLte\Theme::class,
+        Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
     'home_themes' => [
-        Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::NAME => Katniss\Models\Themes\HomeThemes\DefaultTheme\Theme::class,
+        Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::class,
     ],
     'widgets' => [
-        Katniss\Models\Themes\Plugins\ExtraHtml\Widget::WIDGET_NAME => Katniss\Models\Themes\Plugins\ExtraHtml\Widget::class,
-        Katniss\Models\Themes\Plugins\BaseLinks\Widget::WIDGET_NAME => Katniss\Models\Themes\Plugins\BaseLinks\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::WIDGET_NAME => Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::WIDGET_NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
     ],
     'extensions' => [
-        Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::class,
-        Katniss\Models\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\AnalyticServices\Extension::class,
-        Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\SocialIntegration\Extension::class,
-        Katniss\Models\Themes\Plugins\CurrencyExchange\Extension::EXTENSION_NAME => Katniss\Models\Themes\Plugins\CurrencyExchange\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME => Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME => Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::EXTENSION_NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
     ],
     'static_extensions' => [
-        Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
+        Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
     ],
     'admin_except_extensions' => [
-        Katniss\Models\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
-        Katniss\Models\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME,
-        Katniss\Models\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME,
+        Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
+        Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME,
+        Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME,
     ],
     'paths_use_admin_theme' => [
-        'admin', 'auth', 'documents', 'password', 'my-settings'
+        'admin', 'auth', 'documents', 'password', 'me'
     ],
 
     'genders' => [

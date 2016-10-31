@@ -26,7 +26,7 @@
                 customData: {
                     _token: '{{ csrf_token() }}'
                 },
-                url : '{{ homeUrl('documents/connector') }}',
+                url : '{{ meUrl('documents/connector') }}',
                 uiOptions : {
                     toolbar: [
                         ['back', 'forward'],

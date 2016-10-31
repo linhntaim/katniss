@@ -1,7 +1,508 @@
 /**
  * Created by Nguyen Tuan Linh on 2015-12-11.
  */
-!function(e){function a(e){return o?o[e]:(o=require("unicode/category/So"),t=["sign","cross","of","symbol","staff","hand","black","white"].map(function(e){return new RegExp(e,"gi")}),o[e])}function r(e,o){e=e.toString(),"string"==typeof o&&(o={replacement:o}),o=o||{},o.mode=o.mode||r.defaults.mode;for(var s,u=r.defaults.modes[o.mode],l=["replacement","multicharmap","charmap","remove","lower"],n=0,m=l.length;m>n;n++)s=l[n],o[s]=s in o?o[s]:u[s];"undefined"==typeof o.symbols&&(o.symbols=u.symbols);var i=[];for(var s in o.multicharmap)if(o.multicharmap.hasOwnProperty(s)){var d=s.length;-1===i.indexOf(d)&&i.push(d)}for(var c,p,f,h="",n=0,m=e.length;m>n;n++){if(f=e[n],!i.some(function(a){var r=e.substr(n,a);return o.multicharmap[r]?(n+=a-1,f=o.multicharmap[r],!0):!1})&&(o.charmap[f]?(f=o.charmap[f],c=f.charCodeAt(0)):c=e.charCodeAt(n),o.symbols&&(p=a(c)))){f=p.name.toLowerCase();for(var y=0,O=t.length;O>y;y++)f=f.replace(t[y],"");f=f.replace(/^\s+|\s+$/g,"")}f=f.replace(/[^\w\s\-\.\_~]/g,""),o.remove&&(f=f.replace(o.remove,"")),h+=f}return h=h.replace(/^\s+|\s+$/g,""),h=h.replace(/[-\s]+/g,o.replacement),h=h.replace(o.replacement+"$",""),o.lower&&(h=h.toLowerCase()),h}var o,t;if(r.defaults={mode:"pretty"},r.multicharmap=r.defaults.multicharmap={"<3":"love","&&":"and","||":"or","w/":"with"},r.charmap=r.defaults.charmap={"À":"A","Á":"A","Â":"A","Ã":"A","Ä":"A","Å":"A","Æ":"AE","Ç":"C","È":"E","É":"E","Ê":"E","Ë":"E","Ì":"I","Í":"I","Î":"I","Ï":"I","Ð":"D","Ñ":"N","Ò":"O","Ó":"O","Ô":"O","Õ":"O","Ö":"O","Ő":"O","Ø":"O","Ù":"U","Ú":"U","Û":"U","Ü":"U","Ű":"U","Ý":"Y","Þ":"TH","ß":"ss","à":"a","á":"a","â":"a","ã":"a","ä":"a","å":"a","æ":"ae","ç":"c","è":"e","é":"e","ê":"e","ë":"e","ì":"i","í":"i","î":"i","ï":"i","ð":"d","ñ":"n","ò":"o","ó":"o","ô":"o","õ":"o","ö":"o","ő":"o","ø":"o","ù":"u","ú":"u","û":"u","ü":"u","ű":"u","ý":"y","þ":"th","ÿ":"y","ẞ":"SS","α":"a","β":"b","γ":"g","δ":"d","ε":"e","ζ":"z","η":"h","θ":"8","ι":"i","κ":"k","λ":"l","μ":"m","ν":"n","ξ":"3","ο":"o","π":"p","ρ":"r","σ":"s","τ":"t","υ":"y","φ":"f","χ":"x","ψ":"ps","ω":"w","ά":"a","έ":"e","ί":"i","ό":"o","ύ":"y","ή":"h","ώ":"w","ς":"s","ϊ":"i","ΰ":"y","ϋ":"y","ΐ":"i","Α":"A","Β":"B","Γ":"G","Δ":"D","Ε":"E","Ζ":"Z","Η":"H","Θ":"8","Ι":"I","Κ":"K","Λ":"L","Μ":"M","Ν":"N","Ξ":"3","Ο":"O","Π":"P","Ρ":"R","Σ":"S","Τ":"T","Υ":"Y","Φ":"F","Χ":"X","Ψ":"PS","Ω":"W","Ά":"A","Έ":"E","Ί":"I","Ό":"O","Ύ":"Y","Ή":"H","Ώ":"W","Ϊ":"I","Ϋ":"Y","ş":"s","Ş":"S","ı":"i","İ":"I","ğ":"g","Ğ":"G","а":"a","б":"b","в":"v","г":"g","д":"d","е":"e","ё":"yo","ж":"zh","з":"z","и":"i","й":"j","к":"k","л":"l","м":"m","н":"n","о":"o","п":"p","р":"r","с":"s","т":"t","у":"u","ф":"f","х":"h","ц":"c","ч":"ch","ш":"sh","щ":"sh","ъ":"u","ы":"y","ь":"","э":"e","ю":"yu","я":"ya","А":"A","Б":"B","В":"V","Г":"G","Д":"D","Е":"E","Ё":"Yo","Ж":"Zh","З":"Z","И":"I","Й":"J","К":"K","Л":"L","М":"M","Н":"N","О":"O","П":"P","Р":"R","С":"S","Т":"T","У":"U","Ф":"F","Х":"H","Ц":"C","Ч":"Ch","Ш":"Sh","Щ":"Sh","Ъ":"U","Ы":"Y","Ь":"","Э":"E","Ю":"Yu","Я":"Ya","Є":"Ye","І":"I","Ї":"Yi","Ґ":"G","є":"ye","і":"i","ї":"yi","ґ":"g","č":"c","ď":"d","ě":"e","ň":"n","ř":"r","š":"s","ť":"t","ů":"u","ž":"z","Č":"C","Ď":"D","Ě":"E","Ň":"N","Ř":"R","Š":"S","Ť":"T","Ů":"U","Ž":"Z","ą":"a","ć":"c","ę":"e","ł":"l","ń":"n","ś":"s","ź":"z","ż":"z","Ą":"A","Ć":"C","Ę":"E","Ł":"L","Ń":"N","Ś":"S","Ź":"Z","Ż":"Z","ā":"a","ē":"e","ģ":"g","ī":"i","ķ":"k","ļ":"l","ņ":"n","ū":"u","Ā":"A","Ē":"E","Ģ":"G","Ī":"I","Ķ":"K","Ļ":"L","Ņ":"N","Ū":"U","ė":"e","į":"i","ų":"u","Ė":"E","Į":"I","Ų":"U","ț":"t","Ț":"T","ţ":"t","Ţ":"T","ș":"s","Ș":"S","ă":"a","Ă":"A","Ạ":"A","Ả":"A","Ầ":"A","Ấ":"A","Ậ":"A","Ẩ":"A","Ẫ":"A","Ằ":"A","Ắ":"A","Ặ":"A","Ẳ":"A","Ẵ":"A","Ẹ":"E","Ẻ":"E","Ẽ":"E","Ề":"E","Ế":"E","Ệ":"E","Ể":"E","Ễ":"E","Ị":"I","Ỉ":"I","Ĩ":"I","Ọ":"O","Ỏ":"O","Ồ":"O","Ố":"O","Ộ":"O","Ổ":"O","Ỗ":"O","Ơ":"O","Ờ":"O","Ớ":"O","Ợ":"O","Ở":"O","Ỡ":"O","Ụ":"U","Ủ":"U","Ũ":"U","Ư":"U","Ừ":"U","Ứ":"U","Ự":"U","Ử":"U","Ữ":"U","Ỳ":"Y","Ỵ":"Y","Ỷ":"Y","Ỹ":"Y","Đ":"D","ạ":"a","ả":"a","ầ":"a","ấ":"a","ậ":"a","ẩ":"a","ẫ":"a","ằ":"a","ắ":"a","ặ":"a","ẳ":"a","ẵ":"a","ẹ":"e","ẻ":"e","ẽ":"e","ề":"e","ế":"e","ệ":"e","ể":"e","ễ":"e","ị":"i","ỉ":"i","ĩ":"i","ọ":"o","ỏ":"o","ồ":"o","ố":"o","ộ":"o","ổ":"o","ỗ":"o","ơ":"o","ờ":"o","ớ":"o","ợ":"o","ở":"o","ỡ":"o","ụ":"u","ủ":"u","ũ":"u","ư":"u","ừ":"u","ứ":"u","ự":"u","ử":"u","ữ":"u","ỳ":"y","ỵ":"y","ỷ":"y","ỹ":"y","đ":"d","€":"euro","₢":"cruzeiro","₣":"french franc","£":"pound","₤":"lira","₥":"mill","₦":"naira","₧":"peseta","₨":"rupee","₩":"won","₪":"new shequel","₫":"dong","₭":"kip","₮":"tugrik","₯":"drachma","₰":"penny","₱":"peso","₲":"guarani","₳":"austral","₴":"hryvnia","₵":"cedi","¢":"cent","¥":"yen","元":"yuan","円":"yen","﷼":"rial","₠":"ecu","¤":"currency","฿":"baht",$:"dollar","₹":"indian rupee","©":"(c)","œ":"oe","Œ":"OE","∑":"sum","®":"(r)","†":"+","“":'"',"”":'"',"‘":"'","’":"'","∂":"d","ƒ":"f","™":"tm","℠":"sm","…":"...","˚":"o","º":"o","ª":"a","•":"*","∆":"delta","∞":"infinity","♥":"love","&":"and","|":"or","<":"less",">":"greater",_:"-"},r.defaults.modes={rfc3986:{replacement:"-",symbols:!0,remove:null,lower:!0,charmap:r.defaults.charmap,multicharmap:r.defaults.multicharmap},pretty:{replacement:"-",symbols:!0,remove:/[.]/g,lower:!1,charmap:r.defaults.charmap,multicharmap:r.defaults.multicharmap}},"undefined"!=typeof define&&define.amd){for(var s in r.defaults.modes)r.defaults.modes.hasOwnProperty(s)&&(r.defaults.modes[s].symbols=!1);define([],function(){return r})}else if("undefined"!=typeof module&&module.exports)a(),module.exports=r;else{for(var s in r.defaults.modes)r.defaults.modes.hasOwnProperty(s)&&(r.defaults.modes[s].symbols=!1);e.slug=r}}(this);
+!function (e) {
+    function a(e) {
+        return o ? o[e] : (o = require("unicode/category/So"), t = ["sign", "cross", "of", "symbol", "staff", "hand", "black", "white"].map(function (e) {
+            return new RegExp(e, "gi")
+        }), o[e])
+    }
+
+    function r(e, o) {
+        e = e.toString(), "string" == typeof o && (o = {replacement: o}), o = o || {}, o.mode = o.mode || r.defaults.mode;
+        for (var s, u = r.defaults.modes[o.mode], l = ["replacement", "multicharmap", "charmap", "remove", "lower"], n = 0, m = l.length; m > n; n++)s = l[n], o[s] = s in o ? o[s] : u[s];
+        "undefined" == typeof o.symbols && (o.symbols = u.symbols);
+        var i = [];
+        for (var s in o.multicharmap)if (o.multicharmap.hasOwnProperty(s)) {
+            var d = s.length;
+            -1 === i.indexOf(d) && i.push(d)
+        }
+        for (var c, p, f, h = "", n = 0, m = e.length; m > n; n++) {
+            if (f = e[n], !i.some(function (a) {
+                    var r = e.substr(n, a);
+                    return o.multicharmap[r] ? (n += a - 1, f = o.multicharmap[r], !0) : !1
+                }) && (o.charmap[f] ? (f = o.charmap[f], c = f.charCodeAt(0)) : c = e.charCodeAt(n), o.symbols && (p = a(c)))) {
+                f = p.name.toLowerCase();
+                for (var y = 0, O = t.length; O > y; y++)f = f.replace(t[y], "");
+                f = f.replace(/^\s+|\s+$/g, "")
+            }
+            f = f.replace(/[^\w\s\-\.\_~]/g, ""), o.remove && (f = f.replace(o.remove, "")), h += f
+        }
+        return h = h.replace(/^\s+|\s+$/g, ""), h = h.replace(/[-\s]+/g, o.replacement), h = h.replace(o.replacement + "$", ""), o.lower && (h = h.toLowerCase()), h
+    }
+
+    var o, t;
+    if (r.defaults = {mode: "pretty"}, r.multicharmap = r.defaults.multicharmap = {
+            "<3": "love",
+            "&&": "and",
+            "||": "or",
+            "w/": "with"
+        }, r.charmap = r.defaults.charmap = {
+            "À": "A",
+            "Á": "A",
+            "Â": "A",
+            "Ã": "A",
+            "Ä": "A",
+            "Å": "A",
+            "Æ": "AE",
+            "Ç": "C",
+            "È": "E",
+            "É": "E",
+            "Ê": "E",
+            "Ë": "E",
+            "Ì": "I",
+            "Í": "I",
+            "Î": "I",
+            "Ï": "I",
+            "Ð": "D",
+            "Ñ": "N",
+            "Ò": "O",
+            "Ó": "O",
+            "Ô": "O",
+            "Õ": "O",
+            "Ö": "O",
+            "Ő": "O",
+            "Ø": "O",
+            "Ù": "U",
+            "Ú": "U",
+            "Û": "U",
+            "Ü": "U",
+            "Ű": "U",
+            "Ý": "Y",
+            "Þ": "TH",
+            "ß": "ss",
+            "à": "a",
+            "á": "a",
+            "â": "a",
+            "ã": "a",
+            "ä": "a",
+            "å": "a",
+            "æ": "ae",
+            "ç": "c",
+            "è": "e",
+            "é": "e",
+            "ê": "e",
+            "ë": "e",
+            "ì": "i",
+            "í": "i",
+            "î": "i",
+            "ï": "i",
+            "ð": "d",
+            "ñ": "n",
+            "ò": "o",
+            "ó": "o",
+            "ô": "o",
+            "õ": "o",
+            "ö": "o",
+            "ő": "o",
+            "ø": "o",
+            "ù": "u",
+            "ú": "u",
+            "û": "u",
+            "ü": "u",
+            "ű": "u",
+            "ý": "y",
+            "þ": "th",
+            "ÿ": "y",
+            "ẞ": "SS",
+            "α": "a",
+            "β": "b",
+            "γ": "g",
+            "δ": "d",
+            "ε": "e",
+            "ζ": "z",
+            "η": "h",
+            "θ": "8",
+            "ι": "i",
+            "κ": "k",
+            "λ": "l",
+            "μ": "m",
+            "ν": "n",
+            "ξ": "3",
+            "ο": "o",
+            "π": "p",
+            "ρ": "r",
+            "σ": "s",
+            "τ": "t",
+            "υ": "y",
+            "φ": "f",
+            "χ": "x",
+            "ψ": "ps",
+            "ω": "w",
+            "ά": "a",
+            "έ": "e",
+            "ί": "i",
+            "ό": "o",
+            "ύ": "y",
+            "ή": "h",
+            "ώ": "w",
+            "ς": "s",
+            "ϊ": "i",
+            "ΰ": "y",
+            "ϋ": "y",
+            "ΐ": "i",
+            "Α": "A",
+            "Β": "B",
+            "Γ": "G",
+            "Δ": "D",
+            "Ε": "E",
+            "Ζ": "Z",
+            "Η": "H",
+            "Θ": "8",
+            "Ι": "I",
+            "Κ": "K",
+            "Λ": "L",
+            "Μ": "M",
+            "Ν": "N",
+            "Ξ": "3",
+            "Ο": "O",
+            "Π": "P",
+            "Ρ": "R",
+            "Σ": "S",
+            "Τ": "T",
+            "Υ": "Y",
+            "Φ": "F",
+            "Χ": "X",
+            "Ψ": "PS",
+            "Ω": "W",
+            "Ά": "A",
+            "Έ": "E",
+            "Ί": "I",
+            "Ό": "O",
+            "Ύ": "Y",
+            "Ή": "H",
+            "Ώ": "W",
+            "Ϊ": "I",
+            "Ϋ": "Y",
+            "ş": "s",
+            "Ş": "S",
+            "ı": "i",
+            "İ": "I",
+            "ğ": "g",
+            "Ğ": "G",
+            "а": "a",
+            "б": "b",
+            "в": "v",
+            "г": "g",
+            "д": "d",
+            "е": "e",
+            "ё": "yo",
+            "ж": "zh",
+            "з": "z",
+            "и": "i",
+            "й": "j",
+            "к": "k",
+            "л": "l",
+            "м": "m",
+            "н": "n",
+            "о": "o",
+            "п": "p",
+            "р": "r",
+            "с": "s",
+            "т": "t",
+            "у": "u",
+            "ф": "f",
+            "х": "h",
+            "ц": "c",
+            "ч": "ch",
+            "ш": "sh",
+            "щ": "sh",
+            "ъ": "u",
+            "ы": "y",
+            "ь": "",
+            "э": "e",
+            "ю": "yu",
+            "я": "ya",
+            "А": "A",
+            "Б": "B",
+            "В": "V",
+            "Г": "G",
+            "Д": "D",
+            "Е": "E",
+            "Ё": "Yo",
+            "Ж": "Zh",
+            "З": "Z",
+            "И": "I",
+            "Й": "J",
+            "К": "K",
+            "Л": "L",
+            "М": "M",
+            "Н": "N",
+            "О": "O",
+            "П": "P",
+            "Р": "R",
+            "С": "S",
+            "Т": "T",
+            "У": "U",
+            "Ф": "F",
+            "Х": "H",
+            "Ц": "C",
+            "Ч": "Ch",
+            "Ш": "Sh",
+            "Щ": "Sh",
+            "Ъ": "U",
+            "Ы": "Y",
+            "Ь": "",
+            "Э": "E",
+            "Ю": "Yu",
+            "Я": "Ya",
+            "Є": "Ye",
+            "І": "I",
+            "Ї": "Yi",
+            "Ґ": "G",
+            "є": "ye",
+            "і": "i",
+            "ї": "yi",
+            "ґ": "g",
+            "č": "c",
+            "ď": "d",
+            "ě": "e",
+            "ň": "n",
+            "ř": "r",
+            "š": "s",
+            "ť": "t",
+            "ů": "u",
+            "ž": "z",
+            "Č": "C",
+            "Ď": "D",
+            "Ě": "E",
+            "Ň": "N",
+            "Ř": "R",
+            "Š": "S",
+            "Ť": "T",
+            "Ů": "U",
+            "Ž": "Z",
+            "ą": "a",
+            "ć": "c",
+            "ę": "e",
+            "ł": "l",
+            "ń": "n",
+            "ś": "s",
+            "ź": "z",
+            "ż": "z",
+            "Ą": "A",
+            "Ć": "C",
+            "Ę": "E",
+            "Ł": "L",
+            "Ń": "N",
+            "Ś": "S",
+            "Ź": "Z",
+            "Ż": "Z",
+            "ā": "a",
+            "ē": "e",
+            "ģ": "g",
+            "ī": "i",
+            "ķ": "k",
+            "ļ": "l",
+            "ņ": "n",
+            "ū": "u",
+            "Ā": "A",
+            "Ē": "E",
+            "Ģ": "G",
+            "Ī": "I",
+            "Ķ": "K",
+            "Ļ": "L",
+            "Ņ": "N",
+            "Ū": "U",
+            "ė": "e",
+            "į": "i",
+            "ų": "u",
+            "Ė": "E",
+            "Į": "I",
+            "Ų": "U",
+            "ț": "t",
+            "Ț": "T",
+            "ţ": "t",
+            "Ţ": "T",
+            "ș": "s",
+            "Ș": "S",
+            "ă": "a",
+            "Ă": "A",
+            "Ạ": "A",
+            "Ả": "A",
+            "Ầ": "A",
+            "Ấ": "A",
+            "Ậ": "A",
+            "Ẩ": "A",
+            "Ẫ": "A",
+            "Ằ": "A",
+            "Ắ": "A",
+            "Ặ": "A",
+            "Ẳ": "A",
+            "Ẵ": "A",
+            "Ẹ": "E",
+            "Ẻ": "E",
+            "Ẽ": "E",
+            "Ề": "E",
+            "Ế": "E",
+            "Ệ": "E",
+            "Ể": "E",
+            "Ễ": "E",
+            "Ị": "I",
+            "Ỉ": "I",
+            "Ĩ": "I",
+            "Ọ": "O",
+            "Ỏ": "O",
+            "Ồ": "O",
+            "Ố": "O",
+            "Ộ": "O",
+            "Ổ": "O",
+            "Ỗ": "O",
+            "Ơ": "O",
+            "Ờ": "O",
+            "Ớ": "O",
+            "Ợ": "O",
+            "Ở": "O",
+            "Ỡ": "O",
+            "Ụ": "U",
+            "Ủ": "U",
+            "Ũ": "U",
+            "Ư": "U",
+            "Ừ": "U",
+            "Ứ": "U",
+            "Ự": "U",
+            "Ử": "U",
+            "Ữ": "U",
+            "Ỳ": "Y",
+            "Ỵ": "Y",
+            "Ỷ": "Y",
+            "Ỹ": "Y",
+            "Đ": "D",
+            "ạ": "a",
+            "ả": "a",
+            "ầ": "a",
+            "ấ": "a",
+            "ậ": "a",
+            "ẩ": "a",
+            "ẫ": "a",
+            "ằ": "a",
+            "ắ": "a",
+            "ặ": "a",
+            "ẳ": "a",
+            "ẵ": "a",
+            "ẹ": "e",
+            "ẻ": "e",
+            "ẽ": "e",
+            "ề": "e",
+            "ế": "e",
+            "ệ": "e",
+            "ể": "e",
+            "ễ": "e",
+            "ị": "i",
+            "ỉ": "i",
+            "ĩ": "i",
+            "ọ": "o",
+            "ỏ": "o",
+            "ồ": "o",
+            "ố": "o",
+            "ộ": "o",
+            "ổ": "o",
+            "ỗ": "o",
+            "ơ": "o",
+            "ờ": "o",
+            "ớ": "o",
+            "ợ": "o",
+            "ở": "o",
+            "ỡ": "o",
+            "ụ": "u",
+            "ủ": "u",
+            "ũ": "u",
+            "ư": "u",
+            "ừ": "u",
+            "ứ": "u",
+            "ự": "u",
+            "ử": "u",
+            "ữ": "u",
+            "ỳ": "y",
+            "ỵ": "y",
+            "ỷ": "y",
+            "ỹ": "y",
+            "đ": "d",
+            "€": "euro",
+            "₢": "cruzeiro",
+            "₣": "french franc",
+            "£": "pound",
+            "₤": "lira",
+            "₥": "mill",
+            "₦": "naira",
+            "₧": "peseta",
+            "₨": "rupee",
+            "₩": "won",
+            "₪": "new shequel",
+            "₫": "dong",
+            "₭": "kip",
+            "₮": "tugrik",
+            "₯": "drachma",
+            "₰": "penny",
+            "₱": "peso",
+            "₲": "guarani",
+            "₳": "austral",
+            "₴": "hryvnia",
+            "₵": "cedi",
+            "¢": "cent",
+            "¥": "yen",
+            "元": "yuan",
+            "円": "yen",
+            "﷼": "rial",
+            "₠": "ecu",
+            "¤": "currency",
+            "฿": "baht",
+            $: "dollar",
+            "₹": "indian rupee",
+            "©": "(c)",
+            "œ": "oe",
+            "Œ": "OE",
+            "∑": "sum",
+            "®": "(r)",
+            "†": "+",
+            "“": '"',
+            "”": '"',
+            "‘": "'",
+            "’": "'",
+            "∂": "d",
+            "ƒ": "f",
+            "™": "tm",
+            "℠": "sm",
+            "…": "...",
+            "˚": "o",
+            "º": "o",
+            "ª": "a",
+            "•": "*",
+            "∆": "delta",
+            "∞": "infinity",
+            "♥": "love",
+            "&": "and",
+            "|": "or",
+            "<": "less",
+            ">": "greater",
+            _: "-"
+        }, r.defaults.modes = {
+            rfc3986: {
+                replacement: "-",
+                symbols: !0,
+                remove: null,
+                lower: !0,
+                charmap: r.defaults.charmap,
+                multicharmap: r.defaults.multicharmap
+            },
+            pretty: {
+                replacement: "-",
+                symbols: !0,
+                remove: /[.]/g,
+                lower: !1,
+                charmap: r.defaults.charmap,
+                multicharmap: r.defaults.multicharmap
+            }
+        }, "undefined" != typeof define && define.amd) {
+        for (var s in r.defaults.modes)r.defaults.modes.hasOwnProperty(s) && (r.defaults.modes[s].symbols = !1);
+        define([], function () {
+            return r
+        })
+    } else if ("undefined" != typeof module && module.exports)a(), module.exports = r; else {
+        for (var s in r.defaults.modes)r.defaults.modes.hasOwnProperty(s) && (r.defaults.modes[s].symbols = !1);
+        e.slug = r
+    }
+}(this);
 
 function strRepeat(string, repeat) {
     for (var i = 0; i < repeat - 1; ++i) {
@@ -26,6 +527,34 @@ function urlParam(name) {
     else {
         return decodeURIComponent(results[1]) || 0;
     }
+}
+
+function isUnset(variable) {
+    return variable == undefined || typeof variable === 'undefined' || variable == null;
+}
+
+function isSet(variable) {
+    return !isUnset(variable);
+}
+
+function isString(variable) {
+    return typeof variable === 'string';
+}
+
+function isObject(variable, objectName) {
+    objectName = isUnset(objectName) ? '[object]' : '[object ' + objectName + ']';
+    return isSet(variable) && Object.prototype.toString.call(variable) === objectName;
+}
+
+function isArray(variable) {
+    return isObject(variable, 'Array');
+}
+
+function startWith(strSrc, strWith) {
+    if (isSet(strSrc)) {
+        return strSrc.toString().indexOf(strWith) == 0;
+    }
+    return false;
 }
 
 jQuery.fn.extend({
@@ -75,10 +604,9 @@ jQuery.fn.extend({
 });
 
 function NumberFormatHelper() {
-    var DEFAULT_NUMBER_FORMAT = 'point_comma';
     this.DEFAULT_NUMBER_OF_DECIMAL_POINTS = 2;
 
-    this.type = typeof SETTINGS_NUMBER_FORMAT === 'undefined' ? DEFAULT_NUMBER_FORMAT : SETTINGS_NUMBER_FORMAT;
+    this.type = KATNISS_SETTINGS.number_format;
     this.numberOfDecimalPoints = this.DEFAULT_NUMBER_OF_DECIMAL_POINTS;
 }
 NumberFormatHelper.prototype.modeInt = function (numberOfDecimalPoints) {
@@ -119,3 +647,206 @@ NumberFormatHelper.prototype.formatCommaSpace = function (number) {
     number = this.formatPointSpace(number);
     return number.replace('.', ',');
 };
+
+function KatnissApiMessages(messages) {
+    this.messages = isArray(messages) ? messages : (isString(messages) ? [messages] : []);
+}
+KatnissApiMessages.prototype.hasAny = function () {
+    return this.messages.length > 0;
+};
+KatnissApiMessages.prototype.all = function () {
+    return this.messages;
+};
+KatnissApiMessages.prototype.first = function () {
+    return this.hasAny() ? this.messages[0] : '';
+};
+function KatnissApi(isWebApi) {
+    this.REQUEST_TYPE_POST = 'post';
+    this.REQUEST_TYPE_GET = 'get';
+    this.REQUEST_TYPE_PUT = 'put';
+    this.REQUEST_TYPE_DELETE = 'delete';
+
+    this.isWebApi = isSet(isWebApi) && isWebApi === true;
+}
+KatnissApi.prototype.switchToAppApi = function () {
+    this.isWebApi = false;
+};
+KatnissApi.prototype.switchToWebApi = function () {
+    this.isWebApi = true;
+};
+KatnissApi.prototype.buildUrl = function (relativePath) {
+    var apiUrl = !this.isWebApi ? KATNISS_API_URL : KATNISS_WEB_API_URL;
+    return startWith(relativePath, apiUrl) ?
+        relativePath : apiUrl + '/' + relativePath;
+};
+KatnissApi.prototype.buildParams = function (params) {
+    if (isUnset(params)) params = {};
+    if (this.isWebApi) {
+        if (isObject(params, 'FormData')) {
+            params.append('_token', KATNISS_REQUEST_TOKEN);
+        }
+        else {
+            params._token = KATNISS_REQUEST_TOKEN;
+        }
+        return params;
+    }
+
+    if (isObject(params, 'FormData')) {
+        params.append('_app', JSON.stringify(KATNISS_APP));
+        params.append('_settings', JSON.stringify(KATNISS_SETTINGS));
+    }
+    else {
+        params._app = KATNISS_APP;
+        params._settings = KATNISS_SETTINGS;
+    }
+    return params;
+};
+KatnissApi.prototype.buildOptions = function (requestType, params, options) {
+    if (!isSet(options)) {
+        options = {};
+    }
+    options.type = requestType;
+    options.data = this.buildParams(params);
+    if (!isSet(options.dataType)) {
+        options.dataType = 'json';
+    }
+    if (isObject(params, 'FormData')) {
+        options.processData = false;
+        options.contentType = false;
+    }
+    return options;
+};
+KatnissApi.prototype.beforeRequest = function () {
+    if (this.isWebApi) startSessionTimeout();
+};
+KatnissApi.prototype.post = function (relativePath, params, done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.post(
+            this.buildUrl(relativePath),
+            this.buildParams(params)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.get = function (relativePath, params, done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.get(
+            this.buildUrl(relativePath),
+            this.buildParams(params)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.request = function (relativePath, requestType, params, options,
+                                         done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        jQuery.ajax(
+            this.buildUrl(relativePath),
+            this.buildOptions(requestType, params, options)
+        ),
+        done, fail, always
+    );
+};
+KatnissApi.prototype.promise = function (ajax, done, fail, always) {
+    var _this = this;
+    ajax.done(function (response) {
+        if (isSet(done)) {
+            done.call(
+                _this,
+                _this.isFailed(response),
+                _this.data(response),
+                _this.messages(response)
+            );
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        if (isSet(fail)) {
+            fail.call(_this, textStatus, errorThrown);
+        }
+    }).always(function () {
+        if (isSet(always)) {
+            always.call(_this);
+        }
+    })
+};
+KatnissApi.prototype.isFailed = function (response) {
+    return isSet(response._success) && response._success != true;
+};
+KatnissApi.prototype.data = function (response) {
+    return isSet(response._data) ? response._data : null;
+};
+KatnissApi.prototype.messages = function (response) {
+    return new KatnissApiMessages(response._messages);
+};
+
+function updateCsrfToken(csrfToken) {
+    KATNISS_REQUEST_TOKEN = csrfToken;
+    jQuery('input[type="hidden"][name="_token"]').val(csrfToken);
+}
+
+var _sessionTimeout = null;
+function startSessionTimeout() {
+    if (isSet(_sessionTimeout)) {
+        clearTimeout(_sessionTimeout);
+    }
+    _sessionTimeout = setTimeout(function () {
+        console.log('session end');
+        if (KATNISS_USER === false) {
+            var api = new KatnissApi(true);
+            api.get('user/csrf-token', null, function (failed, data, messages) {
+                if (!failed) {
+                    updateCsrfToken(data.csrf_token);
+                }
+            })
+        }
+        else {
+            x_lock();
+        }
+    }, KATNISS_SESSION_LIFETIME);
+}
+startSessionTimeout();
+
+var _zIndexModal = 1050;
+$(document).on('shown.bs.modal', '.modal', function (e) {
+    $(this).css('z-index', ++_zIndexModal);
+}).on('click', '.open-window', function (e) {
+    e.preventDefault();
+
+    var $this = $(this);
+    var data = $this.data();
+    var url = '';
+    var name = '';
+    var replace = true;
+    if (data.url) {
+        url = data.url;
+        delete data.url;
+    }
+    else {
+        if ($this.is('a')) {
+            url = $this.attr('href');
+        }
+        else if ($this.is('img')) {
+            url = $this.attr('src');
+        }
+    }
+    if (data.name) {
+        name = data.name;
+        delete data.name;
+    }
+    if (data.replace) {
+        replace = data.replace;
+        delete data.replace;
+    }
+    openWindow(url, name, data, replace);
+    return false;
+});
+
+function openWindow(url, name, specs, replace) {
+    var specsArr = [];
+    for (var key in specs) {
+        specsArr.push(key + '=' + specs[key]);
+    }
+    return window.open(url, name, specsArr.join(','), replace);
+}
