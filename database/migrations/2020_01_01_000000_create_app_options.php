@@ -21,7 +21,7 @@ class CreateAppOptions extends Migration
             $table->string('key')->unique();
             $table->string('data_type');
             $table->text('value')->nullable();
-            $table->string('registered_by');
+            $table->string('registered_by')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

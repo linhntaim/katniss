@@ -32,7 +32,8 @@ class WidgetController extends ViewController
         $placeholders = HomeThemeFacade::placeholders();
         asort($placeholders);
         $placeholderNames = array_keys($placeholders);
-        $themeWidgets = ThemeWidget::whereIn('placeholder', $placeholderNames)
+        $themeWidgets = ThemeWidget::checkPlaceholders($placeholderNames)
+            ->checkWidgets(array_keys($widgets))
             ->orderBy('order', 'asc')->orderBy('created_at', 'asc')->get();
         $themePlaceholders = [];
         foreach ($placeholderNames as $placeholderName) {

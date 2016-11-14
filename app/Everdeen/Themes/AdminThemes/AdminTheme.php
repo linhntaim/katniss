@@ -19,18 +19,6 @@ abstract class AdminTheme extends Theme
         parent::__construct(Theme::TYPE_ADMIN);
     }
 
-    public function register($is_auth = false)
-    {
-        $this->registerExtensions($is_auth);
-
-        parent::register($is_auth);
-    }
-
-    protected function registerExtensions($is_auth = false)
-    {
-        ExtensionsFacade::register();
-    }
-
     public function extensions()
     {
         return [];

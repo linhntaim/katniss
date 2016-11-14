@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
@@ -27,7 +28,6 @@ use Katniss\Everdeen\Themes\WidgetsFacade;
 use Katniss\Everdeen\Themes\ExtensionsFacade;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Illuminate\Support\Facades\Storage;
 
 #region Katniss Configuration
 /**
@@ -39,18 +39,53 @@ use Illuminate\Support\Facades\Storage;
  */
 function _k($key = null, $default = null)
 {
-    if (!empty($key)) {
-        $key = '.' . $key;
+    if (is_null($key)) {
+        return config('katniss');
     }
-    return config('katniss' . $key, $default);
+
+    if (is_array($key)) {
+        $keyTemp = [];
+        foreach ($key as $k => $v) {
+            $keyTemp['katniss.' . $k] = $v;
+        }
+        return config($keyTemp);
+    }
+
+    return config('katniss.' . $key, $default);
 }
 
-function _kExternalLink($key, $default = null)
+function _kExternalLink($key = null, $default = null)
 {
-    if (!empty($key)) {
-        $key = '.' . $key;
+    if (is_null($key)) {
+        return config('katniss.external_links');
     }
-    return config('katniss.external_links' . $key, $default);
+
+    if (is_array($key)) {
+        $keyTemp = [];
+        foreach ($key as $k => $v) {
+            $keyTemp['katniss.external_links.' . $k] = $v;
+        }
+        return config($keyTemp);
+    }
+
+    return config('katniss.external_links.' . $key, $default);
+}
+
+function _kWidgets($key = null, $default = null)
+{
+    if (is_null($key)) {
+        return config('katniss.widgets');
+    }
+
+    if (is_array($key)) {
+        $keyTemp = [];
+        foreach ($key as $k => $v) {
+            $keyTemp['katniss.widgets.' . $k] = $v;
+        }
+        return config($keyTemp);
+    }
+
+    return config('katniss.widgets.' . $key, $default);
 }
 
 #endregion
@@ -330,6 +365,10 @@ function notRootUrl($url)
     return $url != homeUrl() && $url != adminUrl();
 }
 
+function rootUrl() {
+    return url('');
+}
+
 function apiUrl($route = '', array $params = [], $version = 'v1')
 {
     return url('api/' . $version . '/' . embedParamsInRoute($route, $params));
@@ -421,9 +460,9 @@ function loadOptions()
     return AppOptionHelper::load();
 }
 
-function setOption($key, $value)
+function setOption($key, $value, $registeredBy = null)
 {
-    return AppOptionHelper::set($key, $value);
+    return AppOptionHelper::set($key, $value, $registeredBy);
 }
 
 function getOption($key, $default = '')

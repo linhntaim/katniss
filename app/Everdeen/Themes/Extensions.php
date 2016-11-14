@@ -22,6 +22,9 @@ class Extensions
 
     public function __construct()
     {
+    }
+
+    public function init() {
         $this->defines = array_merge(config('katniss.extensions'), HomeThemeFacade::extensions());
         $this->statics = config('katniss.static_extensions');
         $this->activated = array_unique(array_merge((array)getOption('activated_extensions', []), $this->staticExtensions()));

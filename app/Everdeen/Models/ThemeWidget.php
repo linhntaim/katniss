@@ -3,6 +3,7 @@
 namespace Katniss\Everdeen\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Katniss\Everdeen\Themes\Widget;
 
 class ThemeWidget extends Model
@@ -46,6 +47,11 @@ class ThemeWidget extends Model
         return $this->attributes['theme_name'];
     }
 
+    /**
+     * @param Builder $query
+     * @param string $placeholder
+     * @return Builder
+     */
     public function scopeForDisplay($query, $placeholder = '')
     {
         if (!empty($placeholder)) {
@@ -53,6 +59,28 @@ class ThemeWidget extends Model
         }
         $query->where('active', true);
 
+        return $query;
+    }
+
+    /**
+     * @param Builder $query
+     * @param array $placeholders
+     * @return Builder
+     */
+    public function scopeCheckPlaceholders($query, array $placeholders)
+    {
+        $query->whereIn('placeholder', $placeholders);
+        return $query;
+    }
+
+    /**
+     * @param Builder $query
+     * @param array $widgets
+     * @return Builder
+     */
+    public function scopeCheckWidgets($query, array $widgets)
+    {
+        $query->whereIn('widget_name', $widgets);
         return $query;
     }
 

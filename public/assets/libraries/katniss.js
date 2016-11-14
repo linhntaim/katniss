@@ -811,14 +811,21 @@ startSessionTimeout();
 var _zIndexModal = 1050;
 $(document).on('shown.bs.modal', '.modal', function (e) {
     $(this).css('z-index', ++_zIndexModal);
+}).on('click', '.go-url', function (e) {
+    e.preventDefault();
+    var url = $(this).attr('data-url');
+    if (url) {
+        window.location.href = url;
+    }
 }).on('click', '.open-window', function (e) {
     e.preventDefault();
 
     var $this = $(this);
-    var data = $this.data();
+    var data = $.extend($this.data());
     var url = '';
     var name = '';
     var replace = true;
+    var callback = null;
     if (data.url) {
         url = data.url;
         delete data.url;
@@ -839,7 +846,14 @@ $(document).on('shown.bs.modal', '.modal', function (e) {
         replace = data.replace;
         delete data.replace;
     }
-    openWindow(url, name, data, replace);
+    if (data.callback) {
+        callback = data.callback;
+        delete data.callback;
+    }
+    var w = openWindow(url, name, data, replace);
+    if (callback && typeof callback === 'string') {
+        window[callback](this, w);
+    }
     return false;
 });
 

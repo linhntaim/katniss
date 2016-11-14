@@ -15,6 +15,7 @@ class AppConfig
     const KEY_FORCE_LOCALE = 'x_force_locale';
     const KEY_FORCE_THEME = 'x_force_theme';
     const KEY_HTML_INPUTS = 'x_html_inputs';
+    const KEY_CALLBACK_REDIRECT_URL = 'x_callback_redirect_uri';
 
     const REGEX_YOUTUBE_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(youtube.com\/watch\?v=|youtube.com\/embed\/|youtu.be\/)(.+)$/';
 

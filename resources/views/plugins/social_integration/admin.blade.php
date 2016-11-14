@@ -31,6 +31,7 @@
             enableAlongCheckbox('#inputLinkedInShareEnable');
             enableAlongCheckbox('#inputGoogleEnable');
             enableAlongCheckbox('#inputGoogleShareEnable');
+            enableAlongCheckbox('#inputInstagramEnable');
         });
         {!! cdataClose() !!}
     </script>
@@ -61,7 +62,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookCommentEnable">
-                    <input id="inputFacebookCommentEnable" type="checkbox" name="facebook_comment_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookCommentEnable" type="checkbox" name="facebook_comment_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_comment_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_comment_enable') }}
                 </label>
@@ -92,7 +94,8 @@
             <div class="col-xs-12 col-md-4">
                 <div class="form-group">
                     <label for="inputFacebookCommentOrderBy">{{ trans('social_integration.facebook_comment_order_by') }}</label>
-                    <select id="inputFacebookCommentOrderBy" name="facebook_comment_order_by" class="form-control" data-enable-target="#inputFacebookCommentEnable">
+                    <select id="inputFacebookCommentOrderBy" name="facebook_comment_order_by" class="form-control"
+                            data-enable-target="#inputFacebookCommentEnable">
                         @foreach($facebook_comment_order_by_values as $facebook_comment_order_by_value)
                             <option value="{{ $facebook_comment_order_by_value }}"{{ $facebook_comment_order_by_value == $facebook_comment_order_by ? ' selected' : '' }}>
                                 {{ trans('social_integration.facebook_comment_order_by_'.$facebook_comment_order_by_value) }}
@@ -106,7 +109,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookLikeEnable">
-                    <input id="inputFacebookLikeEnable" type="checkbox" name="facebook_like_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookLikeEnable" type="checkbox" name="facebook_like_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_like_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_like_enable') }}
                 </label>
@@ -131,7 +135,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookShareEnable">
-                    <input id="inputFacebookShareEnable" type="checkbox" name="facebook_share_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookShareEnable" type="checkbox" name="facebook_share_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_share_enable') }}
                 </label>
@@ -156,7 +161,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookRecommendEnable">
-                    <input id="inputFacebookRecommendEnable" type="checkbox" name="facebook_recommend_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookRecommendEnable" type="checkbox" name="facebook_recommend_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_recommend_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_recommend_enable') }}
                 </label>
@@ -181,7 +187,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookSendEnable">
-                    <input id="inputFacebookSendEnable" type="checkbox" name="facebook_send_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookSendEnable" type="checkbox" name="facebook_send_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_send_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_send_enable') }}
                 </label>
@@ -191,7 +198,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputFacebookSaveEnable">
-                    <input id="inputFacebookSaveEnable" type="checkbox" name="facebook_save_enable" data-enable-target="#inputFacebookEnable"
+                    <input id="inputFacebookSaveEnable" type="checkbox" name="facebook_save_enable"
+                           data-enable-target="#inputFacebookEnable"
                            value="1"{{ $facebook_save_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.facebook_save_enable') }}
                 </label>
@@ -219,7 +227,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputTwitterShareEnable">
-                    <input id="inputTwitterShareEnable" type="checkbox" name="twitter_share_enable" data-enable-target="#inputTwitterEnable"
+                    <input id="inputTwitterShareEnable" type="checkbox" name="twitter_share_enable"
+                           data-enable-target="#inputTwitterEnable"
                            value="1"{{ $twitter_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.twitter_share_enable') }}
                 </label>
@@ -247,7 +256,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputLinkedInShareEnable">
-                    <input id="inputLinkedInShareEnable" type="checkbox" name="linkedin_share_enable" data-enable-target="#inputLinkedInEnable"
+                    <input id="inputLinkedInShareEnable" type="checkbox" name="linkedin_share_enable"
+                           data-enable-target="#inputLinkedInEnable"
                            value="1"{{ $linkedin_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.linkedin_share_enable') }}
                 </label>
@@ -290,7 +300,8 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputGoogleShareEnable">
-                    <input id="inputGoogleShareEnable" type="checkbox" name="google_share_enable" data-enable-target="#inputGoogleEnable"
+                    <input id="inputGoogleShareEnable" type="checkbox" name="google_share_enable"
+                           data-enable-target="#inputGoogleEnable"
                            value="1"{{ $google_share_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.google_share_enable') }}
                 </label>
@@ -329,6 +340,60 @@
                     <input id="inputGoogleShareButtonWidth" type="number" min="1"
                            name="google_share_button_width" value="{{ $google_share_button_width }}"
                            class="form-control" data-enable-target="#inputGoogleShareEnable">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box">
+    <div class="box-header">
+        <h3 class="box-title">
+            Instagram
+        </h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputInstagramEnable">
+                    <input id="inputInstagramEnable" type="checkbox" name="instagram_enable"
+                           value="1"{{ $instagram_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.instagram_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputInstagramClienId">{{ trans('social_integration.instagram_client_id') }}</label>
+                    <input id="inputInstagramClienId" type="text"
+                           name="instagram_client_id" value="{{ $instagram_client_id }}"
+                           class="form-control" data-enable-target="#inputInstagramEnable">
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputInstagramClienSecret">{{ trans('social_integration.instagram_client_secret') }}</label>
+                    <input id="inputInstagramClienSecret" type="text"
+                           name="instagram_client_secret" value="{{ $instagram_client_secret }}"
+                           class="form-control" data-enable-target="#inputInstagramEnable">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label for="inputInstagramAccessToken">{{ trans('social_integration.instagram_access_token') }}</label>
+                    <input id="inputInstagramAccessToken" type="text" class="form-control"
+                           name="instagram_access_token" value="{{ $instagram_access_token }}"
+                           data-enable-target="#inputInstagramEnable">
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <div class="form-group">
+                    <label class="wp hidden-sm hidden-xs">&nbsp;</label>
+                    <button type="button" class="btn btn-success go-url" data-url="{{ $instagram_redirect_authorize_url }}"
+                            data-enable-target="#inputInstagramEnable">{{ trans('form.action_generate') }}</button>
                 </div>
             </div>
         </div>

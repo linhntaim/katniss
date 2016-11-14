@@ -60,4 +60,8 @@ return [
     'google_share_button_annotation_bubble' => 'Bubble',
     'google_share_button_annotation_none' => 'None',
     'google_share_button_width' => 'Width',
+    'instagram_enable' => 'Instagram enable',
+    'instagram_client_id' => 'Client ID',
+    'instagram_client_secret' => 'Client secret',
+    'instagram_access_token' => 'Access token',
 ];

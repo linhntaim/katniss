@@ -45,7 +45,6 @@ return [
     'admin_except_extensions' => [
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::EXTENSION_NAME,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::EXTENSION_NAME,
-        Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::EXTENSION_NAME,
     ],
     'paths_use_admin_theme' => [
         'admin', 'auth', 'documents', 'password', 'me'

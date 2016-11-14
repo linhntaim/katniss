@@ -94,21 +94,11 @@ abstract class HomeTheme extends Theme
         return $this->commonPlugin($name, $render);
     }
 
-    public function register($is_auth = false)
-    {
-        $this->registerExtensions($is_auth);
-        $this->registerWidgets($is_auth);
-
-        parent::register($is_auth);
-    }
-
-    protected function registerExtensions($is_auth = false)
-    {
-        ExtensionsFacade::register();
-    }
-
     protected function registerWidgets($is_auth = false)
     {
+        parent::registerWidgets();
+
+        // Home theme need to register widgets for rendering
         WidgetsFacade::register();
     }
 

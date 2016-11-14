@@ -15,7 +15,7 @@ class ApiController extends KatnissController
 {
     use ApiResponseTrait;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request = null)
     {
         parent::__construct($request);
     }

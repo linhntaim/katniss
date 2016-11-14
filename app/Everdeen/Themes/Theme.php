@@ -316,6 +316,10 @@ abstract class Theme
 
     public function register($is_auth = false)
     {
+        // priority of registering: extension > widget > others
+        $this->registerExtensions($is_auth);
+        $this->registerWidgets($is_auth);
+
         enqueue_theme_header(Html5::metaName('generator', $this->generator), 'framework_version');
 
         $this->registerComposers($is_auth);
@@ -323,6 +327,17 @@ abstract class Theme
         $this->registerExtStyles($is_auth);
         $this->registerLibScripts($is_auth);
         $this->registerExtScripts($is_auth);
+    }
+
+    protected function registerExtensions($is_auth = false)
+    {
+        ExtensionsFacade::init();
+        ExtensionsFacade::register();
+    }
+
+    protected function registerWidgets($is_auth = false)
+    {
+        WidgetsFacade::init();
     }
 
     protected function registerComposers($is_auth = false)
@@ -343,7 +358,7 @@ abstract class Theme
 
     protected function registerExtScripts($is_auth = false)
     {
-        $userApp = UserApp::findOrFail(KATNISS_DEFAULT_APP);
+        $userApp = app('user_app');
         $this->extJsQueue->add('global-vars', [
             'KATNISS_THEME_PATH' => $this->asset(),
             'KATNISS_REQUEST_TOKEN' => csrf_token(),

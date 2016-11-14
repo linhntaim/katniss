@@ -27,6 +27,41 @@ class Extension
     /**
      * @var array
      */
+    private static $sharedData = [];
+
+    /**
+     * @return array|null
+     */
+    public static function getSharedData($extensionName)
+    {
+        if (isset(self::$sharedData[$extensionName])) {
+            return self::$sharedData[$extensionName];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $properties
+     */
+    public function makeSharedData(array $properties)
+    {
+        $data = new \stdClass();
+        foreach ($properties as $name => $value) {
+            if (is_int($name)) {
+                if (isset($this->{$value})) {
+                    $data->{$value} = $this->{$value};
+                }
+            } elseif (is_string($name)) {
+                $data->{$name} = $value;
+            }
+        }
+        self::$sharedData[$this::EXTENSION_NAME] = $data;
+    }
+
+    /**
+     * @var array
+     */
     protected $data;
 
     /**
@@ -159,7 +194,7 @@ class Extension
         if (!$this::EXTENSION_EDITABLE) abort(404);
 
         $constructing_data = array_merge($data, $localizedData);
-        if (setOption($this->EXTENSION_OPTION(), $constructing_data)) {
+        if (setOption($this->EXTENSION_OPTION(), $constructing_data, 'ext:' . $this->getName())) {
             return true;
         }
 
