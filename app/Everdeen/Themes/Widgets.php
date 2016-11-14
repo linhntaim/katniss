@@ -18,8 +18,12 @@ class Widgets
 
     public function __construct()
     {
-        $this->defines = array_merge(config('katniss.widgets'), HomeThemeFacade::widgets());
-        $this->widgets = ThemeWidget::forDisplay()->get();
+    }
+
+    public function init()
+    {
+        $this->defines = array_merge(_kWidgets(), HomeThemeFacade::widgets());
+        $this->widgets = ThemeWidget::checkWidgets(array_keys($this->defines))->forDisplay()->get();
     }
 
     public function display($placeholder, $before = '', $after = '', $default = '')

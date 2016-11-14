@@ -60,4 +60,8 @@ return [
     'google_share_button_annotation_bubble' => 'Số lượt chia sẻ hiển thị phía trên',
     'google_share_button_annotation_none' => 'Không hiển thị',
     'google_share_button_width' => 'Độ dài',
+    'instagram_enable' => 'Cho phép Instagram',
+    'instagram_client_id' => 'Mã số của ứng dụng',
+    'instagram_client_secret' => 'Khóa bí mật của ứng dụng',
+    'instagram_access_token' => 'Mã truy cập',
 ];

@@ -74,4 +74,5 @@ return [
     'action_share_more' => 'Chia sẻ',
     'action_start' => 'Bắt đầu',
     'action_go_to' => 'Đi đến',
+    'action_generate' => 'Khởi tạo',
 ];

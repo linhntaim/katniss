@@ -39,7 +39,6 @@ class Widget extends DefaultWidget
     {
         $links = empty($this->category_id) ? collect([]) : Category::findOrFail($this->category_id)->orderedLinks;
         return array_merge(parent::viewHomeParams(), [
-            'name' => $this->name,
             'links' => $links,
         ]);
     }

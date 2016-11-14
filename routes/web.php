@@ -15,6 +15,9 @@ Route::group([
     'prefix' => 'web-api',
     'namespace' => 'WebApi',
 ], function () {
+    Route::get('instagram/access-token', 'InstagramController@getAccessToken');
+    Route::get('instagram/authorize', 'InstagramController@getAuthorize');
+
     Route::get('user/csrf-token', 'UserController@getCsrfToken');
     Route::get('user/quick-login', 'UserController@getQuickLogin');
 });

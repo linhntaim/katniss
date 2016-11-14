@@ -202,6 +202,16 @@ Customization:
     - Localizing url gets wrong result when the url contains query or hash string.
     - Setting wrong locale when locale from browser is not similar to locale from path.
 
+#### larabros/elogram
+
+Current version: `1.2.2`.
+
+Latest version:
+
+[![Latest Version on Packagist][ico-version]](https://packagist.org/packages/larabros/elogram)
+
+For fetching data from Instagram API.
+
 #### almasaeed2010/AdminLTE
 
 [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
@@ -297,7 +307,7 @@ Sample Extensions:
     - Current: Google, MixPanel.
 - Social Integration:
     - Integrate website into social networks.
-    - Current: Facebook, Twitter, Google, LinkedIn.
+    - Current: Facebook, Twitter, Google, LinkedIn, Instagram.
 - Currency Exchange:
     - Allow user to configure the exchange rates to automatically convert to/from any currencies.
 
@@ -313,6 +323,9 @@ Sample Widgets:
     - Add HTML content to website.
 - Base Links:
     - Add collection of links to website.
+- Instagram Wall:
+    - Only available when Social Integration extension is activated and integration with Instagram is enabled.
+    - Display wall of images from Instagram user.
 
 ### Authentication
 

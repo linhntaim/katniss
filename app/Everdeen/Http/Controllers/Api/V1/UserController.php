@@ -10,11 +10,6 @@ use Katniss\Everdeen\Models\User;
 
 class UserController extends ApiController
 {
-    public function __construct(Request $request)
-    {
-        parent::__construct($request);
-    }
-
     public function postAvatarUsingCropperJs(Request $request, $id)
     {
         try {

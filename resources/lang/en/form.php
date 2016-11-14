@@ -74,4 +74,5 @@ return [
     'action_share_more' => 'Share more',
     'action_start' => 'Start',
     'action_go_to' => 'Go to',
+    'action_generate' => 'Generate',
 ];

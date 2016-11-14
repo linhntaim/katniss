@@ -47,7 +47,7 @@ class ExtensionController extends ViewController
     public function edit(Request $request, $name)
     {
         $extensionClass = ExtensionsFacade::extensionClass($name);
-        if (empty($extensionClass) || !class_exists($extensionClass)) {
+        if (empty($extensionClass) || !class_exists($extensionClass) || !isActivatedExtension($name)) {
             abort(404);
         }
         $extension = new $extensionClass();
@@ -110,7 +110,7 @@ class ExtensionController extends ViewController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && !in_array($name, $activatedExtensions)) {
             $activatedExtensions[] = $name;
-            setOption('activated_extensions', $activatedExtensions);
+            setOption('activated_extensions', $activatedExtensions, 'man:plugins');
         }
 
         $redirect_url = adminUrl('extensions');
@@ -128,7 +128,7 @@ class ExtensionController extends ViewController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && in_array($name, $activatedExtensions)) {
             $activatedExtensions = array_diff($activatedExtensions, [$name]);
-            setOption('activated_extensions', $activatedExtensions);
+            setOption('activated_extensions', $activatedExtensions, 'man:plugins');
         }
 
         $redirect_url = adminUrl('extensions');

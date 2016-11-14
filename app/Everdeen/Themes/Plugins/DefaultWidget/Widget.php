@@ -29,9 +29,17 @@ class Widget extends BaseWidget
         parent::__init();
 
         if (!empty($this->localizedData)) {
-            $this->name = empty($this->localizedData['name']) ? '' : $this->localizedData['name'];
-            $this->description = empty($this->localizedData['description']) ? '' : $this->localizedData['description'];
+            $this->name = defPr($this->localizedData['name'], '');
+            $this->description = defPr($this->localizedData['description'], '');
         }
+    }
+
+    public function viewHomeParams()
+    {
+        return array_merge(parent::viewHomeParams(), [
+            'name' => $this->name,
+            'description' => $this->description,
+        ]);
     }
 
     public function render()

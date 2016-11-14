@@ -8,8 +8,8 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\ExtraHtml;
 
-use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
 class Widget extends DefaultWidget
 {
@@ -17,7 +17,6 @@ class Widget extends DefaultWidget
     const WIDGET_DISPLAY_NAME = 'Extra HTML';
 
     public $content;
-    public $name;
 
     public function __init()
     {
@@ -25,7 +24,6 @@ class Widget extends DefaultWidget
 
         $this->content = '';
         if (!empty($this->localizedData)) {
-            $this->name = defPr($this->localizedData['name'], '');
             $this->content = defPr($this->localizedData['content'], '');
         }
     }
