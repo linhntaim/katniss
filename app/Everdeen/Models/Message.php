@@ -1,6 +1,6 @@
 <?php
 
-namespace Katniss\Models;
+namespace Katniss\Everdeen\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Katniss\Models;
+namespace Katniss\Everdeen\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Katniss\Models\Helpers\ORTC\PushClient;
+use Katniss\Everdeen\Utils\ORTC\PushClient;
 
 class Conversation extends Model
 {

@@ -6,7 +6,7 @@
  * Time: 03:50
  */
 
-namespace Katniss\Models\Helpers\ORTC;
+namespace Katniss\Everdeen\Utils\ORTC;
 
 
 class Realtime

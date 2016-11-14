@@ -3,8 +3,8 @@
 namespace Katniss\Listeners;
 
 use Katniss\Events\NotificationPushing;
-use Katniss\Models\Helpers\ORTC\PushClient;
-use Katniss\Models\UserNotification;
+use Katniss\Everdeen\Utils\ORTC\PushClient;
+use Katniss\Everdeen\Models\UserNotification;
 
 class NotificationPusher
 {

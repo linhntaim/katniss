@@ -6,7 +6,7 @@
  * Time: 01:03
  */
 
-namespace Katniss\Models\Helpers\ORTC;
+namespace Katniss\Everdeen\Utils\ORTC;
 
 
 class PushClient
