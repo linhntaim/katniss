@@ -23,18 +23,9 @@
                     self.children().each(function () {
                         items.push(jQuery(this).attr('data-item'));
                     });
-                    jQuery.post('{{ apiUrl('link-categories/{id}/update-order', ['id' => $category->id]) }}', {
-                        _token: '{{ csrf_token() }}',
+                    var api = new KatnissApi();
+                    api.post('link-categories/{{ $category->id }}/update-order', {
                         link_ids: items
-                    }).done(function (data) {
-                        if (data.success) {
-                            console.log('success');
-                        }
-                        else {
-                            console.log('fail');
-                        }
-                    }).fail(function () {
-                        console.log('fail');
                     });
                 }
             });
@@ -52,9 +43,6 @@
         });
         {!! cdataClose() !!}
     </script>
-@endsection
-@section('modals')
-    @include('admin_themes.admin_lte.master.common_modals')
 @endsection
 @section('page_content')
     <div class="row">

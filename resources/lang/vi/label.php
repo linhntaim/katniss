@@ -45,6 +45,7 @@ return [
     'email' => 'Địa chỉ thư điện tử',
     'password' => 'Mật khẩu',
     'password_retype' => 'Gõ lại mật khẩu',
+    'current_password' => 'Mật khẩu hiện tại',
     'description' => 'Mô tả',
     'short_description' => 'Mô tả ngắn',
     'slug' => 'Tên đường dẫn thân thiện',
@@ -53,6 +54,9 @@ return [
     'content' => 'Nội dung',
     'category_parent' => 'Chuyên mục cha',
     'picture' => 'Hình ảnh',
+    'picture_lc' => 'hình ảnh',
+    'image' => 'Hình ảnh',
+    'image_lc' => 'hình ảnh',
     'url' => 'Đường dẫn',
 
     'settings' => 'Thiết lập',
@@ -122,4 +126,6 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'conversation' => 'Cuộc hội thoại',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây.',
+
+    'max_upload_file_size' => 'Dung lượng tập tin tối đa cho phép tải lên: :size',
 ];

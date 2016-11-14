@@ -45,6 +45,7 @@ return [
     'email' => 'Email address',
     'password' => 'Password',
     'password_retype' => 'Retype password',
+    'current_password' => 'Current password',
     'description' => 'Description',
     'short_description' => 'Short description',
     'slug' => 'Slug',
@@ -53,6 +54,9 @@ return [
     'content' => 'Content',
     'category_parent' => 'Parent category',
     'picture' => 'Picture',
+    'picture_lc' => 'picture',
+    'image' => 'Image',
+    'image_lc' => 'image',
     'url' => 'URL',
 
     'settings' => 'Settings',
@@ -122,4 +126,6 @@ click the button below to get another welcome email from us.',
     'conversation' => 'Conversation',
 
     'no_widget' => 'No widget is placed here.',
+
+    'max_upload_file_size' => 'Maximum size of upload file: :size',
 ];

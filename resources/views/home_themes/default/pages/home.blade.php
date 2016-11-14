@@ -112,7 +112,7 @@
                     <p><strong>{{ trans('label.currency') }} &amp; {{ trans('label.number_format') }}</strong><br>{{ $price }}</p>
                     <p><strong>{{ trans('label.long_date_format') }} &amp; {{ trans('label.long_time_format') }}</strong><br>{{ $long_datetime }}</p>
                     <p><strong>{{ trans('label.short_date_format') }} &amp; {{ trans('label.short_time_format') }}</strong><br>{{ $short_datetime }}</p>
-                    <p><a href="{{ homeUrl('my-settings') }}">{{ trans('form.action_go_to') }} {{ trans('pages.my_settings_title') }}</a></p>
+                    <p><a href="{{ meUrl('settings') }}">{{ trans('form.action_go_to') }} {{ trans('pages.my_settings_title') }}</a></p>
                 </div>
             </div>
         </div>

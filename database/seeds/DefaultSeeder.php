@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Katniss\Models\Permission;
-use Katniss\Models\Role;
-use Katniss\Models\User;
-use Katniss\Models\Category;
-use Katniss\Models\Link;
-use Katniss\Models\Themes\ThemeWidget;
+use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Link;
+use Katniss\Everdeen\Models\Permission;
+use Katniss\Everdeen\Models\Role;
+use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Models\UserApp;
 
 class DefaultSeeder extends Seeder
 {
@@ -18,37 +19,38 @@ class DefaultSeeder extends Seeder
             'description' => 'Access admin pages'
         ]);
 
-        $owner_role = Role::create([
+        $owner_role = Role::create(array(
             'name' => 'owner',
             'display_name' => 'Owner',
             'description' => 'Owner of the system',
             'status' => Role::STATUS_HIDDEN,
-        ]);
+        ));
+
         $owner_role->attachPermission($admin_access_permission);
 
-        $admin_role = Role::create([
+        $admin_role = Role::create(array(
             'name' => 'admin',
             'display_name' => 'Administrator',
             'description' => 'Manage operation of the system and important modules'
-        ]);
+        ));
         $admin_role->attachPermission($admin_access_permission);
 
-        $tester_role = Role::create([
+        $tester_role = Role::create(array(
             'name' => 'tester',
             'display_name' => 'Tester',
             'description' => 'Tester of the system',
             'status' => Role::STATUS_HIDDEN,
-        ]);
+        ));
         $tester_role->attachPermission($admin_access_permission);
 
-        $user_role = Role::create([
+        $user_role = Role::create(array(
             'name' => 'user',
             'display_name' => 'User',
             'description' => 'Normal user'
-        ]);
+        ));
 
         // TODO: Add 1 administrator
-        $owner = User::create([
+        $owner = User::create(array(
             'display_name' => 'Owner',
             'name' => 'owner',
             'email' => 'owner@katniss.linhntaim.com',
@@ -57,10 +59,10 @@ class DefaultSeeder extends Seeder
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
             'active' => true
-        ]);
+        ));
         $owner->attachRole($owner_role);
 
-        $admin = User::create([
+        $admin = User::create(array(
             'display_name' => 'Administrator',
             'name' => 'admin',
             'email' => 'admin@katniss.linhntaim.com',
@@ -69,10 +71,17 @@ class DefaultSeeder extends Seeder
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
             'active' => true
-        ]);
+        ));
         $admin->attachRoles([$admin_role, $owner_role]);
 
-        $tester = User::create([
+        UserApp::create([
+            'user_id' => $admin->id,
+            'secret' => str_random(32),
+            'name' => 'Katniss Web',
+            'version' => 'v1',
+        ]);
+
+        $tester = User::create(array(
             'display_name' => 'Tester',
             'name' => 'tester',
             'email' => 'tester@katniss.linhntaim.com',
@@ -81,7 +90,7 @@ class DefaultSeeder extends Seeder
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
             'active' => true
-        ]);
+        ));
         $tester->attachRole($tester_role);
 
         $locales = ['en', 'vi'];

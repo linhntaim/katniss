@@ -26,9 +26,6 @@
         {!! cdataClose() !!}
     </script>
 @endsection
-@section('modals')
-    @include('admin_themes.admin_lte.master.common_modals')
-@endsection
 @section('page_content')
     <div class="row">
         <div class="col-xs-12">

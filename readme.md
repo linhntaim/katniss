@@ -20,13 +20,17 @@ Change some configuration as you want.
 
 ### PHP
 
-Require PHP >= `5.6`.
+Require PHP >= `5.6.4`.
+
+Current version: `7.0.9`.
 
 ### Database
 
 MySQL is recommended.
 
 Require MySQL >= `5.5`.
+
+Current version: `MariaDB 10.1.16`.
 
 Current database settings (in the `.env` file) of the framework require you to make those configuration in MySQL (`my.ini` or `my.cnf` file):
 
@@ -71,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: 5.2.39
+Current version: `5.3.21`.
 
 Latest version:
 
@@ -79,32 +83,21 @@ Latest version:
 
 Base framework.
 
-#### zizaco/entrust
-
-[ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
-
-Current version: 1.4.1
-
-Latest version:
-
-[![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
-
-To authorize users with roles and permissions
-
 Customization:
 
-- Middleware to authorize routes was created
-
-Why I don't use latest version?
-
-- Problem with enabled `Cache::tags` feature if we cache data through file or database. [Reference](https://laravel.com/docs/5.2/cache#cache-tags)
-- I don't have time to configure memcache server right now.
+- Database:
+    - Enable schema for MySQL database to support row format when creating tables.
+- Session:
+    - Extend database session handler for further purpose (currently session is based on this handler).
+    - Fix file session handler bugs may remove session of user when happening many concurrent AJAX requests.
+- Support:
+    - Extend Str class for new methods to operate string.
 
 #### barryvdh/laravel-debugbar
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: 2.2.2
+Current version: `2.3.0`.
 
 Latest version:
 
@@ -116,7 +109,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: 0.3.7
+Current version: `0.3.8`.
 
 Latest version:
 
@@ -128,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: 2.3.3
+Current version: `2.3.3`.
 
 Latest version:
 
@@ -140,15 +133,62 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: 2.0.18
+Current version: `2.0.19`.
+
+Latest version:
+
+[![Latest Stable Version](https://poser.pugx.org/laravel/socialite/v/stable.svg)](https://packagist.org/packages/laravel/socialite)
 
 For logging in & registering from social networks.
+
+Customization:
+
+- Change Facebook provider to get large avatar of authenticated user.
+
+#### mews/purifier
+
+[HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
+
+Current version: `2.0.6`.
+
+For filtering HTML content.
+
+#### dimsav/laravel-translatable
+
+[Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
+
+Current version: `6.0.1`.
+
+Latest version:
+
+[![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
+
+For multilingual models (Database Entities & App Models).
+
+#### zizaco/entrust
+
+[ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
+
+Current version: `1.7.0`.
+
+Latest version:
+
+[![Version](https://img.shields.io/packagist/v/Zizaco/entrust.svg)](https://packagist.org/packages/zizaco/entrust)
+
+To authorize users with roles and permissions.
+
+Customization:
+
+- Middleware to authorize routes was created.
+- Force not to use the method `Cache::tags` in workflow.
+    - If you plan to use the cache drivers different from file and database, you should remove this customization.
+    - See more at [Cache Tags](https://laravel.com/docs/5.3/cache#cache-tags).
 
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: 1.1.3
+Current version: `1.1.9`.
 
 Latest version:
 
@@ -156,31 +196,31 @@ Latest version:
 
 For localizing (esp. with URL).
 
-#### dimsav/laravel-translatable
+Customization:
 
-[Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
+- Fix some bugs:
+    - Localizing url gets wrong result when the url contains query or hash string.
+    - Setting wrong locale when locale from browser is not similar to locale from path.
 
-Current version: 5.6
+#### larabros/elogram
+
+Current version: `1.2.2`.
 
 Latest version:
 
-[![Latest Stable Version](http://img.shields.io/packagist/v/dimsav/laravel-translatable.svg)](https://packagist.org/packages/dimsav/laravel-translatable)
+[![Latest Version on Packagist][ico-version]](https://packagist.org/packages/larabros/elogram)
 
-For multilingual models (Database Entities & App Models)
-
-#### mews/purifier
-
-[HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
-
-Current version: 2.0.5
-
-For filtering HTML content.
+For fetching data from Instagram API.
 
 #### almasaeed2010/AdminLTE
 
 [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
-Current version: 2.3.2
+Current version: `2.3.2`.
+
+Latest version:
+
+![Bower version](https://img.shields.io/bower/v/adminlte.svg)
 
 For admin template.
 
@@ -188,11 +228,43 @@ For admin template.
 
 [Start Bootstrap - Scrolling Nav](https://github.com/IronSummitMedia/startbootstrap-scrolling-nav)
 
-Current version: 1.0.4
+Current version: `1.0.4`.
 
 For home template.
 
-### App Options:
+### API Definition
+
+Applications get data in JSON format by making requests to API urls.
+
+#### (App) API
+
+For data requesting from external applications (external requests).
+
+Requests have no any sessions & cookies for storing (stateless).
+
+An application which makes requests must be registered then gets its own secret key.
+
+Applications access data by providing their known secret keys in every sending requests.
+
+Request flow:
+
+- Request > API Middleware (`ApiMiddleware`) > API Controller > Response (JSON format).
+
+There's always an default application needed to register with `id = 1`:
+
+- See `database\seeds\DefaultSeeder.php`, line 77.
+
+#### Web API
+
+For data requesting from internal applications like AJAX requests, .. (internal requests).
+
+Requests share sessions & cookies between connections (stateful).
+
+Request flow:
+
+- Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Response (JSON format).
+
+### App Options
 
 To store/retrieve runtime application's options in database.
 
@@ -218,7 +290,7 @@ Home themes are easily extended with plugins.
     
 Sample Themes:
 
-- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav))
+- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav)).
 
 #### Plugins
     
@@ -228,16 +300,16 @@ Define extensions for adding extra functions/features to themes (or even the sys
 
 Sample Extensions:
 
-- Open Graph Tags 
-    - Add open graph tags into website
-- Analytic Services
-    - Add website analytics
-    - Current: Google, MixPanel
+- Open Graph Tags:
+    - Add open graph tags into website.
+- Analytic Services:
+    - Add website analytics.
+    - Current: Google, MixPanel.
 - Social Integration:
-    - Integrate website into social networks
-    - Current: Facebook, Twitter, Google, LinkedIn
+    - Integrate website into social networks.
+    - Current: Facebook, Twitter, Google, LinkedIn, Instagram.
 - Currency Exchange:
-    - Allow user to configure the exchange rates to automatically convert to/from any currencies
+    - Allow user to configure the exchange rates to automatically convert to/from any currencies.
 
 ##### Widget
 
@@ -247,24 +319,29 @@ Widgets in a placeholder are sortable; their orders can be changed.
 
 Sample Widgets:
 
-- Extra HTML
-    - Add HTML content to website
-- Base Links
-    - Add collection of links to website
+- Extra HTML:
+    - Add HTML content to website.
+- Base Links:
+    - Add collection of links to website.
+- Instagram Wall:
+    - Only available when Social Integration extension is activated and integration with Instagram is enabled.
+    - Display wall of images from Instagram user.
 
-### Authentication:
+### Authentication
 
 Functions/Features:
 
-- Registration
-- Activation
-- Login
-- Logout
-- Forgot/Reset Password
-- Register/Login using Accounts on Social Networks (Facebook, Google)
-- Email supported (for registering, resending activation & password resetting & password changed)
-    - Emails for registering & password changed are queued before sending
-    - Configure a queue listener or `php artisan queue:listen` for sending queued emails (see [Running The Queue Listener](http://laravel.com/docs/5.1/queues#running-the-queue-listener)) 
+- Registration.
+- Activation.
+- Login.
+- Logout.
+- Forgot/Reset Password.
+- Register/Login using Accounts on Social Networks (Facebook, Google).
+- Email supported (for registering, resending activation & password resetting & password changed):
+    - Emails for registering & password changed are queued before sending.
+    - Configure a queue worker or `php artisan queue:work` for sending queued emails (see [Running The Queue Worker](https://laravel.com/docs/5.3/queues#running-the-queue-worker)).
+- Lock screen supported, when user is idle while accessing admin page.
+- Update account information.
 
 ### Authorization
 
@@ -274,12 +351,21 @@ Mainly based on [zizaco/entrust](#zizacoentrust).
 
 Database seeding:
 
-- Access admin permission
-- Owner role (has permission of Accessing Admin)
-- Administrators role (has permission of Accessing Admin)
-- Tester role (has permission of Accessing Admin)
-- User role
-- 3 starting users (with default settings): owner (Owner role), admin (Owner & Administrator role), tester (Tester role)
+- Access admin permission.
+- Owner role (has permission of Accessing Admin).
+- Administrators role (has permission of Accessing Admin).
+- Tester role (has permission of Accessing Admin).
+- User role.
+- 3 starting users (with default settings): 
+    - Name: `owner`. 
+        - Password: `^KM$bB-W7:Z@8eG`.
+        - Role: `Owner`.
+    - Name: `admin`.
+        - Password: `123456`.
+        - Role: `Owner`, `Administrator`, 
+    - Name: `tester`.
+        - Password: `123456`.
+        - Role: `Tester`.
 
 Anonymous users will get the role of User after registering.
 
@@ -291,16 +377,16 @@ For anonymous users, settings are saved in cookie & session.
 
 For authenticated users, settings are saved in database & session & cookie.
 
-### File Manager:
+### File Manager
 
-To easily upload & manage files.
+For users to easily upload & manage files.
 
 Based on [barryvdh/laravel-elfinder](#barryvdhlaravel-elfinder).
 
 Ready for integrating with:
 
-- CKEditor
-- Input field
+- CKEditor.
+- Input field.
 
 ### Links
 

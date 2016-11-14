@@ -29,10 +29,14 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Katniss\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Katniss\Everdeen\Http\Middleware\ViewMiddleware::class,
         ],
 
         'api' => [
             'throttle:60,1',
+            'bindings',
+            \Katniss\Everdeen\Http\Middleware\ApiMiddleware::class,
         ],
     ];
 
@@ -44,16 +48,19 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Katniss\Http\Middleware\Authenticate::class,
+        'auth' => \Katniss\Everdeen\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \Katniss\Http\Middleware\RedirectIfAuthenticated::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \Katniss\Everdeen\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'katniss.api' => \Katniss\Http\Middleware\ApiMiddleware::class,
-        'katniss.view' => \Katniss\Http\Middleware\ViewMiddleware::class,
-        'entrust' => \Katniss\Http\Middleware\AuthorizationWithEntrust::class,
+        'entrust' => \Katniss\Everdeen\Http\Middleware\AuthorizationWithEntrust::class,
+        'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
+        'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
+        'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
         'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
-        'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeSessionRedirect' => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class
     ];
 }

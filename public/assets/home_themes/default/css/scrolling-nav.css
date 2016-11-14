@@ -14,12 +14,12 @@ html {
     height: 100%;
 }
 
-@media (min-width: 767px) {
+@media(min-width:767px) {
     .navbar {
         padding: 20px 0;
-        -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out;
-        -moz-transition: background .5s ease-in-out, padding .5s ease-in-out;
-        transition: background .5s ease-in-out, padding .5s ease-in-out;
+        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+        transition: background .5s ease-in-out,padding .5s ease-in-out;
     }
 
     .top-nav-collapse {
@@ -53,6 +53,13 @@ footer p {
     margin: 0;
 }
 
-.text-bold {
-    font-weight: 700;
+.widget-instagram-wall ul.media-list {
+}
+
+.widget-instagram-wall ul.media-list li.media-item {
+    float: left;
+}
+
+.widget-instagram-wall ul.media-list li.media-item img {
+    max-width: 100%;
 }

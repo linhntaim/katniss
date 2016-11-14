@@ -16,7 +16,7 @@
                 <h3 class="control-sidebar-heading">{{ trans('label.settings') }}</h3>
                 <ul class="control-sidebar-menu">
                     <li>
-                        <a href="{{ homeUrl('my-settings') }}">{{ trans('pages.my_settings_title') }}</a>
+                        <a href="{{ meUrl('settings') }}">{{ trans('pages.my_settings_title') }}</a>
                     </li>
                 </ul>
             </form>

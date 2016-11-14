@@ -7,7 +7,13 @@
  */
 
 return [
-    'my-settings'                                   => 'my-settings',
+    'me'                                            => 'me',
+    'me/settings'                                   => 'me/settings',
+    'me/account'                                    => 'me/account',
+    'me/documents'                                  => 'me/documents',
+    'me/documents/connector'                        => 'me/documents/connector',
+    'me/documents/for/ckeditor'                     => 'me/documents/for/ckeditor',
+    'me/documents/for/popup/{input_id}'             => 'me/documents/for/popup/{input_id}',
 
     'auth'                                          => 'auth',
     'auth/login'                                    => 'auth/login',
@@ -25,11 +31,6 @@ return [
     'password/email'                                => 'password/email',
     'password/reset'                                => 'password/reset',
     'password/reset/{token}'                        => 'password/reset/{token}',
-
-    'documents'                                     => 'documents',
-    'documents/connector'                           => 'documents/connector',
-    'documents/for/ckeditor'                        => 'documents/for/ckeditor',
-    'documents/for/popup/{input_id}'                => 'documents/for/popup/{input_id}',
 
     'admin'                                         => 'admin',
     'admin/my-documents'                            => 'admin/my-documents',

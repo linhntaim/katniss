@@ -16,25 +16,24 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "laravel/framework": "5.2.*",
-        "laravel/socialite": "^2.0",
-        "barryvdh/laravel-debugbar": "^2.1",
-        "barryvdh/laravel-elfinder": "^0.3.5",
+        "php": ">=5.6.4",
+        "laravel/framework": "5.3.*",
+        "barryvdh/laravel-debugbar": "^2.3",
+        "barryvdh/laravel-elfinder": "^0.3.8",
         "jenssegers/agent": "^2.3",
-        "mcamara/laravel-localization": "^1.1",
-        "dimsav/laravel-translatable": "^5.4",
+        "laravel/socialite": "^2.0",
         "mews/purifier": "^2.0",
-        "zizaco/entrust": "1.4.1",
-        "doctrine/dbal": "^2.5",
-        "almasaeed2010/AdminLTE": "^2.3"
+        "dimsav/laravel-translatable": "^6.0",
+        "zizaco/entrust": "^1.7",
+        "mcamara/laravel-localization": "^1.1",
+        "larabros/elogram": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~4.0",
-        "symfony/css-selector": "2.8.*|3.0.*",
-        "symfony/dom-crawler": "2.8.*|3.0.*"
+        "phpunit/phpunit": "~5.0",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*"
     },
     "autoload": {
         "classmap": [
@@ -44,7 +43,7 @@
             "Katniss\\": "app/"
         },
         "files": [
-            "app/helpers.php"
+            "app/Everdeen/helpers.php"
         ]
     },
     "autoload-dev": {
@@ -54,19 +53,17 @@
     },
     "scripts": {
         "post-root-package-install": [
-            "php -r \"copy('.env.example', '.env');\""
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "php artisan key:generate"
         ],
         "post-install-cmd": [
-            "php artisan clear-compiled",
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
             "php artisan optimize"
         ],
-        "pre-update-cmd": [
-            "php artisan clear-compiled"
-        ],
         "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "php artisan optimize"
         ]
     },
