@@ -204,11 +204,14 @@ Customization:
 
 #### larabros/elogram
 
+[elogram](https://github.com/larabros/elogram/)
+
 Current version: `1.2.2`.
 
 Latest version:
 
-[![Latest Version on Packagist][ico-version]](https://packagist.org/packages/larabros/elogram)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/larabros/elogram.svg?style=flat-square
+)](https://packagist.org/packages/larabros/elogram)
 
 For fetching data from Instagram API.
 

@@ -20,7 +20,7 @@ class InstagramWall extends DefaultWidget
 
     protected $username;
     protected $numOfColumns;
-    protected $numOfMedia;
+    protected $numOfItems;
 
     protected $shared;
 
@@ -30,7 +30,7 @@ class InstagramWall extends DefaultWidget
 
         $this->username = defPr($this->getProperty('username'), '');
         $this->numOfColumns = defPr($this->getProperty('num_of_columns'), 3);
-        $this->numOfMedia = defPr($this->getProperty('num_of_media'), 12);
+        $this->numOfItems = defPr($this->getProperty('num_of_items'), 12);
 
         $this->shared = Extension::getSharedData(SocialIntegrationExtension::EXTENSION_NAME);
     }
@@ -47,6 +47,7 @@ class InstagramWall extends DefaultWidget
     {
         return array_merge(parent::viewAdminParams(), [
             'username' => $this->username,
+            'num_of_items' => $this->numOfItems,
             'num_of_columns' => $this->numOfColumns,
         ]);
     }
@@ -60,7 +61,7 @@ class InstagramWall extends DefaultWidget
         $instagramMedia = [];
         if (!empty($instagramUser)) {
             $instagramUser = $instagramUser->get();
-            $instagramMedia = $client->users()->getMedia($instagramUser['id'], $this->numOfMedia)->get();
+            $instagramMedia = $client->users()->getMedia($instagramUser['id'], $this->numOfItems)->get();
         }
         return array_merge(parent::viewHomeParams(), [
             'instagram_media' => $instagramMedia,
@@ -77,7 +78,8 @@ class InstagramWall extends DefaultWidget
     {
         return array_merge(parent::fields(), [
             'username',
-            'num_of_columns'
+            'num_of_items',
+            'num_of_columns',
         ]);
     }
 
@@ -85,7 +87,8 @@ class InstagramWall extends DefaultWidget
     {
         return array_merge(parent::validationRules(), [
             'username' => 'required',
-            'num_of_columns' => 'required|integer',
+            'num_of_items' => 'required|integer|min:1|max:20',
+            'num_of_columns' => 'required|integer|min:1|max:6',
         ]);
     }
 }

@@ -9,8 +9,14 @@
         </div>
         <div class="col-xs-12 col-md-4">
             <div class="form-group">
+                <label for="inputNumOfItems">{{ trans('instagram_wall.num_of_items') }}</label>
+                <input id="inputNumOfItems" type="number" min="1" max="20" class="form-control" name="num_of_items" value="{{ $num_of_items }}">
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="form-group">
                 <label for="inputNumOfColumns">{{ trans('instagram_wall.num_of_columns') }}</label>
-                <input id="inputNumOfColumns" type="number" min="1" class="form-control" name="num_of_columns" value="{{ $num_of_columns }}">
+                <input id="inputNumOfColumns" type="number" min="1" max="6" class="form-control" name="num_of_columns" value="{{ $num_of_columns }}">
             </div>
         </div>
     </div>
