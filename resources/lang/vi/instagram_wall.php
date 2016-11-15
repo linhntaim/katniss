@@ -8,5 +8,6 @@
 
 return [
     'username' => 'Tên tài khoản',
+    'num_of_items' => 'Số lượng hình ảnh',
     'num_of_columns' => 'Số lượng cột',
 ];
