@@ -197,11 +197,11 @@
                             class="todo-list theme-widget-sortable{{ count($themeWidgets)>0 ? '' : ' theme-widget-empty' }}"
                             data-placeholder="{{ $placeholderName }}">
                             @foreach($themeWidgets as $themeWidget)
-                                <li data-widget="{{ $themeWidget->id }}">
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
+                                <li class="clearfix" data-widget="{{ $themeWidget->id }}">
+                                    <span class="handle">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
                                     <span class="text">{{ $widgets[$themeWidget->name] }}</span>
                                     @if($themeWidget->active)
                                         <span class="label label-success">{{ trans('label.status_activated') }}</span>
@@ -247,11 +247,11 @@
                             class="todo-list theme-widget-sortable{{ count($themeWidgets)>0 ? '' : ' theme-widget-empty' }}"
                             data-placeholder="{{ $placeholderName }}">
                             @foreach($themeWidgets as $themeWidget)
-                                <li data-widget="{{ $themeWidget->id }}">
-                            <span class="handle">
-                                <i class="fa fa-ellipsis-v"></i>
-                                <i class="fa fa-ellipsis-v"></i>
-                            </span>
+                                <li class="clearfix" data-widget="{{ $themeWidget->id }}">
+                                    <span class="handle">
+                                        <i class="fa fa-ellipsis-v"></i>
+                                        <i class="fa fa-ellipsis-v"></i>
+                                    </span>
                                     <span class="text">{{ $widgets[$themeWidget->name] }}</span>
                                     @if($themeWidget->active)
                                         <span class="label label-success">{{ trans('label.status_activated') }}</span>
