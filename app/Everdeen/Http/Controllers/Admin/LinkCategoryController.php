@@ -70,10 +70,10 @@ class LinkCategoryController extends ViewController
         $this->validateMultipleLocaleData($request, ['name', 'slug', 'description'], [
             'name' => 'required',
             'slug' => 'required|unique:category_translations,slug',
-        ], $data, $successes, $fails, $old);
+        ], $data, $successes, $fails);
 
         $error_redirect = redirect(adminUrl('link-categories/add'))
-            ->withInput($old);
+            ->withInput();
 
         if (count($successes) <= 0 && count($fails) > 0) {
             return $error_redirect->withErrors($fails[0]);
@@ -161,7 +161,7 @@ class LinkCategoryController extends ViewController
         $this->validateMultipleLocaleData($request, ['name', 'slug', 'description'], [
             'name' => 'required',
             'slug' => 'required|unique:category_translations,slug,' . $category->id . ',category_id',
-        ], $data, $successes, $fails, $old);
+        ], $data, $successes, $fails);
 
         if (count($successes) <= 0 && count($fails) > 0) {
             return $redirect->withErrors($fails[0]);

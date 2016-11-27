@@ -75,17 +75,17 @@
                                 <div class="form-group">
                                     <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
                                     <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
-                                           placeholder="{{ trans('label.name') }}" type="text" value="{{ old('name_'.$locale) }}">
+                                           placeholder="{{ trans('label.name') }}" type="text" value="{{ old('name.' . $locale) }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDescription{{ $locale }}">{{ trans('label.description') }}</label>
                                     <input class="form-control" id="inputDescription_{{ $locale }}" name="description[{{ $locale }}]"
-                                           placeholder="{{ trans('label.description') }}" type="text" value="{{ old('description_'.$locale) }}">
+                                           placeholder="{{ trans('label.description') }}" type="text" value="{{ old('description.' . $locale) }}">
                                 </div>
                                 <div class="form-group">
                                     <label class="required separated" for="inputUrl_{{ $locale }}">{{ trans('label.url') }}</label>
                                     <input class="form-control" id="inputUrl_{{ $locale }}" name="url[{{ $locale }}]"
-                                           placeholder="{{ trans('label.url') }}" type="text" value="{{ old('url_'.$locale) }}">
+                                           placeholder="{{ trans('label.url') }}" type="text" value="{{ old('url.' . $locale) }}">
                                 </div>
                             </div><!-- /.tab-pane -->
                         @endforeach

@@ -73,13 +73,10 @@ class LinkController extends ViewController
         $this->validateMultipleLocaleData($request, ['name', 'url', 'description'], [
             'name' => 'required',
             'url' => 'required', // no need to confirm link is an url, for trickly use
-        ], $data, $successes, $fails, $old);
+        ], $data, $successes, $fails);
 
         $error_redirect = redirect(adminUrl('links/add'))
-            ->withInput(array_merge([
-                'categories' => $categories,
-                'image' => $image,
-            ], $old));
+            ->withInput();
 
         if (count($successes) <= 0 && count($fails) > 0) {
             return $error_redirect->withErrors($fails[0]);
@@ -155,7 +152,7 @@ class LinkController extends ViewController
      *
      * @param  \Illuminate\Http\Request $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function update(Request $request)
     {
@@ -168,7 +165,7 @@ class LinkController extends ViewController
         $this->validateMultipleLocaleData($request, ['name', 'url', 'description'], [
             'name' => 'required',
             'url' => 'required',
-        ], $data, $successes, $fails, $old);
+        ], $data, $successes, $fails);
 
         if (count($successes) <= 0 && count($fails) > 0) {
             return $redirect->withErrors($fails[0]);

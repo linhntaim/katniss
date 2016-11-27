@@ -55,14 +55,13 @@ class KatnissController extends Controller
         return $htmlInputs;
     }
 
-    public function validateMultipleLocaleData(Request $request, array $fieldNames, array $rules, &$data, &$successes, &$fails, &$old, array $htmlInputs = [])
+    public function validateMultipleLocaleData(Request $request, array $fieldNames, array $rules, &$data, &$successes, &$fails, array $htmlInputs = [])
     {
         $emptyHtmlInputs = empty($htmlInputs);
         $allSupportedLocaleCodes = allSupportedLocaleCodes();
         $data = [];
         $successes = [];
         $fails = [];
-        $old = [];
 
         foreach ($fieldNames as $fieldName) {
             $input = $request->input($fieldName);
@@ -81,7 +80,6 @@ class KatnissController extends Controller
                     $value = clean($value, $htmlInputs[$fieldName]);
                 }
                 $data[$locale][$fieldName] = $value;
-                $old[$fieldName . '_' . $locale] = $value;
             }
         }
 

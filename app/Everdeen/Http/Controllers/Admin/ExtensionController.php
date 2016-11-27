@@ -89,7 +89,7 @@ class ExtensionController extends ViewController
         $translatable = $extension->isTranslatable();
         $localizedData = [];
         if ($translatable) {
-            $this->validateMultipleLocaleData($request, $extension->localizedFields(), $extension->localizedValidationRules(), $localizedData, $successes, $fails, $old);
+            $this->validateMultipleLocaleData($request, $extension->localizedFields(), $extension->localizedValidationRules(), $localizedData, $successes, $fails);
 
             if (count($successes) <= 0 && count($fails) > 0) {
                 return $redirect->withInput()->withErrors($fails[0]);

@@ -132,7 +132,7 @@ class WidgetController extends ViewController
         $translatable = $widget->isTranslatable();
         $localizedData = [];
         if ($translatable) {
-            $this->validateMultipleLocaleData($request, $widget->localizedFields(), $widget->localizedValidationRules(), $localizedData, $successes, $fails, $old);
+            $this->validateMultipleLocaleData($request, $widget->localizedFields(), $widget->localizedValidationRules(), $localizedData, $successes, $fails);
 
             if (count($successes) <= 0 && count($fails) > 0) {
                 return $redirect->withInput()->withErrors($fails[0]);
