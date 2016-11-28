@@ -10,8 +10,9 @@ namespace Katniss\Everdeen\Themes;
 
 use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Utils\AppConfig;
 
-abstract class Widget
+abstract class Widget extends Plugin
 {
     public static function doRender(ThemeWidget $themeWidget)
     {
@@ -36,43 +37,18 @@ abstract class Widget
         }
     }
 
-    const WIDGET_NAME = '';
-    const WIDGET_DISPLAY_NAME = '';
-    const WIDGET_DESCRIPTION = '';
-    const WIDGET_TRANSLATABLE = false;
-    const THEME_NAME = '';
-
-    /**
-     * @var array
-     */
-    protected $data;
-
-    /**
-     * @var array
-     */
-    protected $localizedData;
-
     /**
      * @var ThemeWidget
      */
     protected $themeWidget;
 
-    /**
-     * @var array
-     */
-    protected $params;
-
     public function __construct(array $data = [])
     {
-        $this->data = $data;
-        $this->params = [];
+        parent::__construct();
+
+        $this->fromDataConstruct($data);
 
         $this->__init();
-    }
-
-    public function isTranslatable()
-    {
-        return $this::WIDGET_TRANSLATABLE;
     }
 
     public function setId($id)
@@ -82,7 +58,7 @@ abstract class Widget
 
     public function getId()
     {
-        return empty($this->themeWidget) ? $this::WIDGET_NAME : $this->themeWidget->id;
+        return empty($this->themeWidget) ? $this::NAME : $this->themeWidget->id;
     }
 
     public function getHtmlId()
@@ -98,60 +74,10 @@ abstract class Widget
         $this->themeWidget = $themeWidget;
     }
 
-    public function getName()
-    {
-        return $this::WIDGET_NAME;
-    }
-
-    public function getDisplayName()
-    {
-        return $this::WIDGET_DISPLAY_NAME;
-    }
-
-    public function getDescription()
-    {
-        return $this::WIDGET_DESCRIPTION;
-    }
-
-    public function getTheme()
-    {
-        return $this::THEME_NAME;
-    }
-
-    public function getProperty($name, $locale = '')
-    {
-        if (empty($locale) || !$this::WIDGET_TRANSLATABLE) {
-            return !empty($this->data[$name]) ? $this->data[$name] :
-                (!empty($this->localizedData[$name]) ? $this->localizedData[$name] : '');
-        }
-
-        if (!isset($this->data[$locale])) return '';
-
-        return !empty($this->data[$locale][$name]) ? $this->data[$locale][$name] : '';
-    }
-
-    public function register()
-    {
-    }
-
-    protected function __init()
-    {
-        if ($this::WIDGET_TRANSLATABLE) {
-            $locale = currentLocaleCode();
-            $fallbackLocale = config('app.fallback_locale');
-
-            $this->localizedData = null;
-            if (!empty($this->data[$locale])) {
-                $this->localizedData = $this->data[$locale];
-            } elseif (!empty($this->data[$fallbackLocale])) {
-                $this->localizedData = $this->data[$fallbackLocale];
-            }
-        }
-    }
-
     public function viewAdmin()
     {
-        return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminWidget($this::WIDGET_NAME) : HomeThemeFacade::adminWidget($this::WIDGET_NAME);
+        return empty($this::THEME_NAME) ?
+            HomeThemeFacade::commonAdminWidget($this::NAME) : HomeThemeFacade::adminWidget($this::NAME);
     }
 
     public function viewAdminParams()
@@ -163,7 +89,8 @@ abstract class Widget
 
     public function viewHome()
     {
-        return empty($this::THEME_NAME) ? HomeThemeFacade::commonWidget($this::WIDGET_NAME) : HomeThemeFacade::widget($this::WIDGET_NAME);
+        return empty($this::THEME_NAME) ?
+            HomeThemeFacade::commonWidget($this::NAME) : HomeThemeFacade::widget($this::NAME);
     }
 
     public function viewHomeParams()
@@ -183,30 +110,6 @@ abstract class Widget
         return '';
     }
 
-    public function validationRules()
-    {
-        return [];
-    }
-
-    public function localizedValidationRules()
-    {
-        if (!$this::WIDGET_TRANSLATABLE) abort(404);
-
-        return [];
-    }
-
-    public function fields()
-    {
-        return [];
-    }
-
-    public function localizedFields()
-    {
-        if (!$this::WIDGET_TRANSLATABLE) abort(404);
-
-        return [];
-    }
-
     public function save($placeholder, array $data = [], array  $localizedData = [])
     {
         if (empty($this->themeWidget)) {
@@ -218,16 +121,16 @@ abstract class Widget
 
     public function create($placeholder, array $data = [], array $localizedData = [])
     {
-        if (!$this::WIDGET_TRANSLATABLE) {
+        if (!$this::TRANSLATABLE) {
             $localizedData = [];
         }
 
         $order = ThemeWidget::where('placeholder', $placeholder)->count() + 1;
         $this->themeWidget = ThemeWidget::create([
-            'widget_name' => $this::WIDGET_NAME,
+            'widget_name' => $this::NAME,
             'theme_name' => $this::THEME_NAME,
             'placeholder' => $placeholder,
-            'constructing_data' => json_encode(array_merge($data, $localizedData)),
+            'constructing_data' => $this->toDataConstructAsJson($data, $localizedData),
             'order' => $order,
         ]);
         return empty($this->themeWidget) ? [trans('error.database_insert')] : true;
@@ -235,7 +138,7 @@ abstract class Widget
 
     public function update(array $data = [], array $localizedData = [])
     {
-        $this->themeWidget->constructing_data = json_encode(array_merge($data, $localizedData));
+        $this->themeWidget->constructing_data = $this->toDataConstructAsJson($data, $localizedData);
         if ($this->themeWidget->save() === true) {
             return true;
         }

@@ -10,20 +10,8 @@ namespace Katniss\Everdeen\Themes;
 
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
-class Extension
+abstract class Extension extends Plugin
 {
-    const EXTENSION_NAME = '';
-    const EXTENSION_DISPLAY_NAME = '';
-    const EXTENSION_DESCRIPTION = '';
-    const EXTENSION_EDITABLE = false;
-    const EXTENSION_TRANSLATABLE = false;
-    const THEME_NAME = '';
-
-    public function EXTENSION_OPTION()
-    {
-        return 'extension_' . $this::EXTENSION_NAME;
-    }
-
     /**
      * @var array
      */
@@ -56,7 +44,7 @@ class Extension
                 $data->{$name} = $value;
             }
         }
-        self::$sharedData[$this::EXTENSION_NAME] = $data;
+        self::$sharedData[$this::NAME] = $data;
     }
 
     /**
@@ -72,129 +60,77 @@ class Extension
     /**
      * @var array
      */
-    protected $params;
+    protected $currentLocalizedData;
 
     public function __construct()
     {
-        if ($this::EXTENSION_EDITABLE) {
-            $this->data = (array)getOption($this->EXTENSION_OPTION(), []);
-            $this->params = [];
+        parent::__construct();
 
+        if ($this::EDITABLE) {
+            $this->fromDataConstruct((array)getOption($this->getOptionName(), []));
             $this->__init();
         }
     }
 
-    public function isEditable()
+    public function getOptionName()
     {
-        return $this::EXTENSION_EDITABLE;
-    }
-
-    public function isTranslatable()
-    {
-        return $this::EXTENSION_TRANSLATABLE;
-    }
-
-    public function getName()
-    {
-        return $this::EXTENSION_NAME;
-    }
-
-    public function getDisplayName()
-    {
-        return $this::EXTENSION_DISPLAY_NAME;
-    }
-
-    public function getDescription()
-    {
-        return $this::EXTENSION_DESCRIPTION;
-    }
-
-    public function getTheme()
-    {
-        return $this::THEME_NAME;
+        return 'extension_' . $this::NAME;
     }
 
     public function getProperty($name, $locale = '')
     {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
+        if (!$this::EDITABLE) abort(404);
 
-        if (empty($locale) || !$this::EXTENSION_TRANSLATABLE) {
-            return !empty($this->data[$name]) ? $this->data[$name] :
-                (!empty($this->localizedData[$name]) ? $this->localizedData[$name] : '');
-        }
-
-        if (!isset($this->data[$locale])) return '';
-
-        return !empty($this->data[$locale][$name]) ? $this->data[$locale][$name] : '';
-    }
-
-    public function register()
-    {
-    }
-
-    protected function __init()
-    {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
-
-        if ($this::EXTENSION_TRANSLATABLE) {
-            $locale = currentLocaleCode();
-            $fallbackLocale = config('app.fallback_locale');
-
-            $this->localizedData = null;
-            if (!empty($this->data[$locale])) {
-                $this->localizedData = $this->data[$locale];
-            } elseif (!empty($this->data[$fallbackLocale])) {
-                $this->localizedData = $this->data[$fallbackLocale];
-            }
-        }
+        return parent::getProperty($name, $locale);
     }
 
     public function viewAdmin()
     {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
+        if (!$this::EDITABLE) abort(404);
 
-        return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::EXTENSION_NAME) : HomeThemeFacade::adminExtension($this::EXTENSION_NAME);
+        return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::NAME) : HomeThemeFacade::adminExtension($this::NAME);
     }
 
     public function viewAdminParams()
     {
-        return [];
+        if (!$this::EDITABLE) abort(404);
+
+        return parent::viewAdminParams();
     }
 
     public function validationRules()
     {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
+        if (!$this::EDITABLE) abort(404);
 
-        return [];
+        return parent::validationRules();
     }
 
     public function localizedValidationRules()
     {
-        if (!$this::EXTENSION_EDITABLE || !$this::EXTENSION_TRANSLATABLE) abort(404);
+        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
 
-        return [];
+        return parent::localizedValidationRules();
     }
 
     public function fields()
     {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
+        if (!$this::EDITABLE) abort(404);
 
-        return [];
+        return parent::fields();
     }
 
     public function localizedFields()
     {
-        if (!$this::EXTENSION_EDITABLE || !$this::EXTENSION_TRANSLATABLE) abort(404);
+        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
 
-        return [];
+        return parent::localizedFields();
     }
 
     public function save(array $data = [], array $localizedData = [])
     {
-        if (!$this::EXTENSION_EDITABLE) abort(404);
+        if (!$this::EDITABLE) abort(404);
 
-        $constructing_data = array_merge($data, $localizedData);
-        if (setOption($this->EXTENSION_OPTION(), $constructing_data, 'ext:' . $this->getName())) {
+        if (setOption($this->getOptionName(), $this->toDataConstruct($data, $localizedData), 'ext:' . $this->getName())) {
             return true;
         }
 

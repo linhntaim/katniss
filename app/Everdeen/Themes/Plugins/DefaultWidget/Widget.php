@@ -12,9 +12,9 @@ use Katniss\Everdeen\Themes\Widget as BaseWidget;
 
 class Widget extends BaseWidget
 {
-    const WIDGET_NAME = 'default_widget';
-    const WIDGET_DISPLAY_NAME = 'Default Widget';
-    const WIDGET_TRANSLATABLE = true;
+    const NAME = 'default_widget';
+    const DISPLAY_NAME = 'Default Widget';
+    const TRANSLATABLE = true;
 
     public $name = '';
     public $description = '';
@@ -28,10 +28,8 @@ class Widget extends BaseWidget
     {
         parent::__init();
 
-        if (!empty($this->localizedData)) {
-            $this->name = defPr($this->localizedData['name'], '');
-            $this->description = defPr($this->localizedData['description'], '');
-        }
+        $this->name = $this->getProperty('name');
+        $this->description = $this->getProperty('description');
     }
 
     public function viewHomeParams()

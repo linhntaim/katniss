@@ -89,11 +89,13 @@ class ExtensionController extends ViewController
         $translatable = $extension->isTranslatable();
         $localizedData = [];
         if ($translatable) {
-            $this->validateMultipleLocaleData($request, $extension->localizedFields(), $extension->localizedValidationRules(), $localizedData, $successes, $fails, $old);
+            $validateRequest = $this->validateMultipleLocaleInputs($request, $extension->localizedValidationRules());
 
-            if (count($successes) <= 0 && count($fails) > 0) {
-                return $redirect->withInput()->withErrors($fails[0]);
+            if ($validateRequest->isFailed()) {
+                return $redirect->withInput()->withErrors($validateRequest->getFailed());
             }
+
+            $localizedData = $validateRequest->getLocalizedInputs();
         }
 
         $save = $extension->save($data, $localizedData);
@@ -110,7 +112,7 @@ class ExtensionController extends ViewController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && !in_array($name, $activatedExtensions)) {
             $activatedExtensions[] = $name;
-            setOption('activated_extensions', $activatedExtensions, 'man:plugins');
+            setOption('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
         $redirect_url = adminUrl('extensions');
@@ -128,7 +130,7 @@ class ExtensionController extends ViewController
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && in_array($name, $activatedExtensions)) {
             $activatedExtensions = array_diff($activatedExtensions, [$name]);
-            setOption('activated_extensions', $activatedExtensions, 'man:plugins');
+            setOption('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
         $redirect_url = adminUrl('extensions');

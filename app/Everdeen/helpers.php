@@ -252,6 +252,22 @@ function supportedLocalesAsOptions()
     return $options;
 }
 
+function supportedLocalesAsInputTabs()
+{
+    return array_merge([
+        AppConfig::INTERNATIONAL_LOCALE_CODE => [
+            'native' => trans('label.default'),
+        ]
+    ], allSupportedLocales());
+}
+
+function supportedLocaleCodesOfInputTabs()
+{
+    $locales = allSupportedLocaleCodes();
+    array_unshift($locales, AppConfig::INTERNATIONAL_LOCALE_CODE);
+    return $locales;
+}
+
 function currentLocaleCode($property = '')
 {
     if (empty($property)) {
@@ -365,7 +381,8 @@ function notRootUrl($url)
     return $url != homeUrl() && $url != adminUrl();
 }
 
-function rootUrl() {
+function rootUrl()
+{
     return url('');
 }
 
@@ -473,6 +490,21 @@ function getOption($key, $default = '')
 #endregion
 
 #region String
+function localeInputId($name, $locale)
+{
+    return $name . '_' . $locale;
+}
+
+function oldLocaleInput($name, $locale, $default = null)
+{
+    return old(AppConfig::KEY_LOCALE_INPUT . '.' . $locale . '.' . $name, $default);
+}
+
+function localeInputName($name, $locale)
+{
+    return AppConfig::KEY_LOCALE_INPUT . '[' . $locale . '][' . $name . ']';
+}
+
 /**
  * @param string $input
  * @param int $length
@@ -541,7 +573,7 @@ function toSlug($input, $append = '', $prepend = '')
  * @param array|string $needle
  * @return bool
  */
-function startWith($haystack, $needle)
+function beginsWith($haystack, $needle)
 {
     return Str::startsWith($haystack, $needle);
 }
@@ -677,9 +709,9 @@ function dirSeparator($path)
 function containBackDirectory($path)
 {
     return Str::startsWith('..\\', $path)
-    || Str::contains('\\..\\', $path)
-    || Str::startsWith('../', $path)
-    || Str::contains('/../', $path);
+        || Str::contains('\\..\\', $path)
+        || Str::startsWith('../', $path)
+        || Str::contains('/../', $path);
 }
 
 function concatDirectories()
@@ -726,6 +758,19 @@ function asMb($fileSize)
 #endregion
 
 #region Utilities
+function isEmptyArray($array)
+{
+    foreach ((array)$array as $item) {
+        if (is_array($item)) {
+            $empty = isEmptyArray($item);
+        } else {
+            $empty = empty($item);
+        }
+        if (!$empty) return false;
+    }
+    return true;
+}
+
 /**
  * @param string $password
  * @param User $user

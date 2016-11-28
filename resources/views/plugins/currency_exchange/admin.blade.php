@@ -27,19 +27,21 @@
     <div class="box-body form-horizontal">
         @foreach($currencies as $currencyCode => $currency)
             <div class="form-group">
-                <label for="inputExchange_{{ $currencyCode }}" class="col-sm-2 control-label">{{ $currency['name'] }}
+                <label for="inputExchange_{{ $currencyCode }}" class="col-sm-3 control-label">{{ $currency['name'] }}
                     ({{ $currency['symbol'] }})</label>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <input id="inputExchange_{{ $currencyCode }}" class="form-control" type="text"
                            name="exchange_rates[{{ $currencyCode }}]"
                            value="{{ toFormattedNumber($exchange_rates[$currencyCode]) }}"{{ $main_currency_code == $currencyCode ? ' disabled' : '' }}>
                 </div>
                 <div class="col-sm-6">
-                    @if($main_currency_code != $currencyCode)
-                        <em>({{ toFormattedNumber(2*$exchange_rates[$currencyCode]) }} {{ $currencyCode }} = {{ toFormattedCurrency(2*$exchange_rates[$currencyCode], $currencyCode) }})</em>
-                    @else
-                        {{ trans('currency_exchange.main_currency') }} (<em>{!! trans('currency_exchange.change_here', ['url' => meUrl('settings')]) !!})</em>
-                    @endif
+                    <div class="control-label pull-left">
+                        @if($main_currency_code != $currencyCode)
+                            <em>({{ toFormattedNumber(2*$exchange_rates[$currencyCode]) }} {{ $currencyCode }} = {{ toFormattedCurrency(2*$exchange_rates[$currencyCode], $currencyCode) }})</em>
+                        @else
+                            {{ trans('currency_exchange.main_currency') }} (<em>{!! trans('currency_exchange.change_here', ['url' => meUrl('settings')]) !!})</em>
+                        @endif
+                    </div>
                 </div>
             </div>
         @endforeach

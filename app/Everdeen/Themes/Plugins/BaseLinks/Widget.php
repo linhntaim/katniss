@@ -15,8 +15,8 @@ use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
 class Widget extends DefaultWidget
 {
-    const WIDGET_NAME = 'base_links';
-    const WIDGET_DISPLAY_NAME = 'Base Links';
+    const NAME = 'base_links';
+    const DISPLAY_NAME = 'Base Links';
 
     protected $category_id = '';
 
@@ -24,7 +24,7 @@ class Widget extends DefaultWidget
     {
         parent::__init();
 
-        $this->category_id = defPr($this->getProperty('category_id'), '');
+        $this->category_id = $this->getProperty('category_id');
     }
 
     public function viewAdminParams()
