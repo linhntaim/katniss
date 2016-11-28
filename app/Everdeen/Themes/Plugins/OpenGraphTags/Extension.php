@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Request;
  */
 class Extension extends BaseExtension
 {
-    const EXTENSION_NAME = 'open_graph_tags';
-    const EXTENSION_DISPLAY_NAME = 'Open Graph Tags';
-    const EXTENSION_DESCRIPTION = 'Set up Open Graph Tags';
+    const NAME = 'open_graph_tags';
+    const DISPLAY_NAME = 'Open Graph Tags';
+    const DESCRIPTION = 'Set up Open Graph Tags';
 
     protected $ogTitle;
     protected $ogType;
@@ -80,7 +80,7 @@ class Extension extends BaseExtension
      */
     protected function parseCollection(array $data)
     {
-        $output = '<!-- ' . $this::EXTENSION_DISPLAY_NAME . ' -->';
+        $output = '<!-- ' . $this::DISPLAY_NAME . ' -->';
         foreach ($data as $property => $item) {
             $output .= $this->parseItem($property, $item);
         }

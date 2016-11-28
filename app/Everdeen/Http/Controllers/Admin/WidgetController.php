@@ -113,16 +113,9 @@ class WidgetController extends ViewController
 
         $redirect = redirect(adminUrl('widgets/{id}/edit', ['id' => $themeWidget->id]));
 
-        $htmlInputs = $this->htmlInputs($request);
-        $emptyHtmlInputs = empty($htmlInputs);
-
         $data = [];
         foreach ($widget->fields() as $field) {
-            $value = $request->input($field, '');
-            if (!$emptyHtmlInputs && array_key_exists($field, $htmlInputs)) {
-                $value = clean($value, $htmlInputs[$field]);
-            }
-            $data[$field] = $value;
+            $data[$field] = $request->input($field, '');
         }
         $validator = Validator::make($data, $widget->validationRules());
         if ($validator->fails()) {
@@ -132,11 +125,13 @@ class WidgetController extends ViewController
         $translatable = $widget->isTranslatable();
         $localizedData = [];
         if ($translatable) {
-            $this->validateMultipleLocaleData($request, $widget->localizedFields(), $widget->localizedValidationRules(), $localizedData, $successes, $fails, $old);
+            $validateResult = $this->validateMultipleLocaleInputs($request, $widget->localizedValidationRules());
 
-            if (count($successes) <= 0 && count($fails) > 0) {
-                return $redirect->withInput()->withErrors($fails[0]);
+            if ($validateResult->isFailed()) {
+                return $redirect->withInput()->withErrors($validateResult->getFailed());
             }
+
+            $localizedData = $validateResult->getLocalizedInputs();
         }
 
         $save = $widget->update($data, $localizedData);

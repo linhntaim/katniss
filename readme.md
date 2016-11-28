@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.3.21`.
+Current version: `5.3.24`.
 
 Latest version:
 
@@ -133,7 +133,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: `2.0.19`.
+Current version: `2.0.20`.
 
 Latest version:
 

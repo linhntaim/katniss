@@ -40,13 +40,18 @@ class AppOptionHelper
     {
         if (!empty($key)) {
             $appOption = self::$app_options->where('key', $key)->first();
+            $shouldReload = false;
             if (empty($appOption)) {
                 $appOption = new AppOption();
                 $appOption->key = $key;
+                $shouldReload = true;
             }
             $appOption->value = $value;
             $appOption->registered_by = $registeredBy;
             $appOption->save();
+            if ($shouldReload) {
+                self::$app_options->push($appOption);
+            }
             return $appOption;
         }
 

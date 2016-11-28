@@ -128,4 +128,6 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây.',
 
     'max_upload_file_size' => 'Dung lượng tập tin tối đa cho phép tải lên: :size',
+
+    'default' => 'Mặc định',
 ];

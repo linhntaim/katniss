@@ -128,4 +128,6 @@ click the button below to get another welcome email from us.',
     'no_widget' => 'No widget is placed here.',
 
     'max_upload_file_size' => 'Maximum size of upload file: :size',
+
+    'default' => 'Default',
 ];

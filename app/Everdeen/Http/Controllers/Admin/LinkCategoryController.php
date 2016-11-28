@@ -55,7 +55,7 @@ class LinkCategoryController extends ViewController
         $this->theme->description(trans('pages.admin_link_categories_desc'));
 
         return $this->_add([
-            'categories' => Category::where('type', Category::LINK)->get()
+            'categories' => Category::where('type', Category::LINK)->get(),
         ]);
     }
 
@@ -67,16 +67,16 @@ class LinkCategoryController extends ViewController
      */
     public function store(Request $request)
     {
-        $this->validateMultipleLocaleData($request, ['name', 'slug', 'description'], [
+        $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required',
             'slug' => 'required|unique:category_translations,slug',
-        ], $data, $successes, $fails, $old);
+        ]);
 
         $error_redirect = redirect(adminUrl('link-categories/add'))
-            ->withInput($old);
+            ->withInput();
 
-        if (count($successes) <= 0 && count($fails) > 0) {
-            return $error_redirect->withErrors($fails[0]);
+        if ($validateResult->isFailed()) {
+            return $error_redirect->withErrors($validateResult->getFailed());
         }
 
         $parent_id = intval($request->input('parent'), 0);
@@ -89,20 +89,25 @@ class LinkCategoryController extends ViewController
             }
         }
 
-        $category = new Category();
-        $category->type = Category::LINK;
-        if ($parent_id != 0) {
-            $category->parent_id = $parent_id;
-        }
-        foreach ($successes as $locale) {
-            $transData = $data[$locale];
-            $trans = $category->translateOrNew($locale);
-            $trans->name = $transData['name'];
-            $trans->slug = $transData['slug'];
-            $trans->description = $transData['description'];
-        }
-        if ($category->save() === false) {
-            return $error_redirect->withErrors([trans('error.database_insert')]);
+        DB::beginTransaction();
+        try {
+            $category = new Category();
+            $category->type = Category::LINK;
+            if ($parent_id != 0) {
+                $category->parent_id = $parent_id;
+            }
+            foreach ($validateResult->getLocalizedInputs() as $locale => $transData) {
+                $trans = $category->translateOrNew($locale);
+                $trans->name = $transData['name'];
+                $trans->slug = $transData['slug'];
+                $trans->description = $transData['description'];
+            }
+            $category->save();
+
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+            return $error_redirect->withErrors([trans('error.database_insert') . ' (' . $ex->getMessage() . ')']);
         }
 
         return redirect(adminUrl('link-categories'));
@@ -158,13 +163,13 @@ class LinkCategoryController extends ViewController
 
         $redirect = redirect(adminUrl('link-categories/{id}/edit', ['id' => $category->id]));
 
-        $this->validateMultipleLocaleData($request, ['name', 'slug', 'description'], [
+        $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required',
             'slug' => 'required|unique:category_translations,slug,' . $category->id . ',category_id',
-        ], $data, $successes, $fails, $old);
+        ]);
 
-        if (count($successes) <= 0 && count($fails) > 0) {
-            return $redirect->withErrors($fails[0]);
+        if ($validateResult->isFailed()) {
+            return $redirect->withErrors($validateResult->getFailed());
         }
 
         $parent_id = intval($request->input('parent'), 0);
@@ -177,18 +182,35 @@ class LinkCategoryController extends ViewController
             }
         }
         $category->parent_id = $parent_id != 0 && $parent_id !== $category->parent_id ? $parent_id : null;
-        foreach ($successes as $locale) {
-            $transData = $data[$locale];
-            $trans = $category->translateOrNew($locale);
-            $trans->name = $transData['name'];
-            $trans->slug = $transData['slug'];
-            $trans->description = $transData['description'];
-        }
-        if ($category->save() === false) {
-            return $redirect->withErrors([trans('error.database_update')]);
+
+        DB::beginTransaction();
+        try {
+            $deletedLocales = [];
+            foreach (supportedLocaleCodesOfInputTabs() as $locale) {
+                if ($validateResult->has($locale)) {
+                    $transData = $validateResult->get($locale);
+                    $trans = $category->translateOrNew($locale);
+                    $trans->name = $transData['name'];
+                    $trans->slug = $transData['slug'];
+                    $trans->description = $transData['description'];
+                } elseif ($category->hasTranslation($locale)) {
+                    $deletedLocales[] = $locale;
+                }
+            }
+
+            $category->save();
+
+            if (!empty($deletedLocales)) {
+                $category->deleteTranslations($deletedLocales);
+            }
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            return $redirect->withErrors([trans('error.database_update') . ' (' . $ex->getMessage() . ')']);
         }
 
-        return redirect(adminUrl('link-categories'));
+        return $redirect;
     }
 
     /**
@@ -211,7 +233,6 @@ class LinkCategoryController extends ViewController
         }
 
         if ($category->links()->count() <= 0) {
-            $success = true;
             DB::beginTransaction();
             try {
                 Category::where('parent_id', $id)->update(['parent_id' => null]);
@@ -219,10 +240,11 @@ class LinkCategoryController extends ViewController
                 DB::commit();
             } catch (\Exception $ex) {
                 DB::rollBack();
-                $success = false;
+
+                return redirect($redirect_url)->withErrors([trans('error.database_delete') . ' (' . $ex->getMessage() . ')']);
             }
 
-            return $success ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+            return redirect($redirect_url);
         }
 
         return redirect($redirect_url)->withErrors([trans('error.category_not_empty')]);

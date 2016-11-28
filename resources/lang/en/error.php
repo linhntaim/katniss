@@ -21,4 +21,5 @@ return [
     '_is_not_author' => 'You are not the author of :object',
     '_cannot_delete' => 'Cannot delete due to: :reason',
     'category_not_empty' => 'Category is not empty',
+    'default_locale_inputs_must_be_set' => 'If you don\'t fill multiple locale form for all languages, please fill in default tab',
 ];

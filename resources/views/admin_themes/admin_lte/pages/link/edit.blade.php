@@ -87,42 +87,45 @@
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        @foreach(allSupportedLocales() as $locale => $properties)
+                        @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                             <li{!! $locale == $site_locale ? ' class="active"' : '' !!}>
-                                <a href="#tab_{{ $locale }}" data-toggle="tab">
+                                <a href="#{{ localeInputId('tab', $locale) }}" data-toggle="tab">
                                     {{ $properties['native'] }}
                                 </a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content">
-                        @foreach(allSupportedLocales() as $locale => $properties)
+                        @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                             <?php
                             $trans = $link->translate($locale);
                             $name = $trans ? $trans->name : '';
                             $description = $trans ? $trans->description : '';
                             $url = $trans ? $trans->url : '';
                             ?>
-                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
+                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
-                                    <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
-                                    <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
+                                    <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>
+                                    <input class="form-control" id="{{ localeInputId('inputName', $locale) }}"
+                                           name="{{ localeInputName('name', $locale) }}"
                                            placeholder="{{ trans('label.name') }}" type="text" value="{{ $name }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputDescription_{{ $locale }}">{{ trans('label.description') }}</label>
-                                    <input class="form-control" id="inputDescription_{{ $locale }}" name="description[{{ $locale }}]"
+                                    <label for="{{ localeInputId('inputDescription', $locale) }}">{{ trans('label.description') }}</label>
+                                    <input class="form-control" id="{{ localeInputId('inputDescription', $locale) }}"
+                                           name="{{ localeInputName('description', $locale) }}"
                                            placeholder="{{ trans('label.description') }}" type="text" value="{{ $description }}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="required separated" for="inputUrl_{{ $locale }}">
+                                    <label class="required separated" for="{{ localeInputId('inputUrl', $locale) }}">
                                         {{ trans('label.url') }}
                                         (<a class="open-window" href="{{ $url }}"
                                             data-name="_blank" data-width="800" data-height="600">
                                             <i class="fa fa-external-link"></i>
                                         </a>)
                                     </label>
-                                    <input class="form-control" id="inputUrl_{{ $locale }}" name="url[{{ $locale }}]"
+                                    <input class="form-control" id="{{ localeInputId('inputUrl', $locale) }}"
+                                           name="{{ localeInputName('url', $locale) }}"
                                            placeholder="{{ trans('label.url') }}" type="text" value="{{ $url }}">
                                 </div>
                             </div><!-- /.tab-pane -->

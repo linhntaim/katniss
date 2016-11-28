@@ -14,10 +14,10 @@ use Katniss\Everdeen\Themes\Extension as BaseExtension;
 
 class Extension extends BaseExtension
 {
-    const EXTENSION_NAME = 'analytic_services';
-    const EXTENSION_DISPLAY_NAME = 'Analytic Services';
-    const EXTENSION_DESCRIPTION = 'Set up Analytic Services';
-    const EXTENSION_EDITABLE = true;
+    const NAME = 'analytic_services';
+    const DISPLAY_NAME = 'Analytic Services';
+    const DESCRIPTION = 'Set up Analytic Services';
+    const EDITABLE = true;
 
     public $cacheEnable;
     public $gaEnable;
@@ -83,7 +83,7 @@ mixpanel.init(\'' . $this->mixPanelToken . '\');';
                 enqueue_theme_footer($this->mixPanelScript(), 'mix_panel_script');
             }
         } else {
-            enqueue_theme_footer(Html5::js(AssetHelper::jsUrl($this::EXTENSION_NAME)), $this::EXTENSION_NAME);
+            enqueue_theme_footer(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
             if ($this->gaEnable && $this->gaAsync) {
                 enqueue_theme_footer($this->gaJsAsync(), 'ga_js_async');
             }
@@ -101,7 +101,7 @@ mixpanel.init(\'' . $this->mixPanelToken . '\');';
                 $cache .= $this->rawMixPanelScript() . PHP_EOL;
             }
             if (!empty($cache)) {
-                AssetHelper::cacheJs($this::EXTENSION_NAME, $cache);
+                AssetHelper::cacheJs($this::NAME, $cache);
             }
         }
     }

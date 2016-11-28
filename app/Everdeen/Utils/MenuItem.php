@@ -103,7 +103,7 @@ class MenuItem
     {
         if ($this->href != null) {
             if (!$strict) {
-                if ($this->url == $match_url || (notRootUrl($this->url) && startWith($match_url, $this->url))) {
+                if ($this->url == $match_url || (notRootUrl($this->url) && beginsWith($match_url, $this->url))) {
                     $this->class .= ' ' . $extraClass;
                 }
             } else {
