@@ -15,8 +15,8 @@ use League\OAuth2\Client\Token\AccessToken;
 
 class InstagramWall extends DefaultWidget
 {
-    const WIDGET_NAME = 'instagram_wall';
-    const WIDGET_DISPLAY_NAME = 'Instagram Wall';
+    const NAME = 'instagram_wall';
+    const DISPLAY_NAME = 'Instagram Wall';
 
     protected $username;
     protected $numOfColumns;

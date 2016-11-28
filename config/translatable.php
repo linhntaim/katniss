@@ -62,7 +62,7 @@ return [
     | set it to false.
     |
     */
-    'fallback_locale' => env('APP_DEFAULT_FALLBACK_LOCALE', 'en'),
+    'fallback_locale' => \Katniss\Everdeen\Utils\AppConfig::INTERNATIONAL_LOCALE_CODE,
 
     /*
     |--------------------------------------------------------------------------

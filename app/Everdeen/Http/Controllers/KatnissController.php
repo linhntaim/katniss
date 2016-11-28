@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
+use Katniss\Everdeen\Utils\MultipleLocaleValidationResult;
 use Katniss\Http\Controllers\Controller;
 
 class KatnissController extends Controller
@@ -41,60 +42,40 @@ class KatnissController extends Controller
         });
     }
 
-    protected function htmlInputs(Request $request)
+    /**
+     * @param Request $request
+     * @param array $rules
+     * @param array $messages
+     * @param array $customAttributes
+     * @return MultipleLocaleValidationResult
+     */
+    public function validateMultipleLocaleInputs(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
-        $tmpHtmlInputs = $request->input(AppConfig::KEY_HTML_INPUTS, '');
-        $htmlInputs = [];
-        if (!empty($tmpHtmlInputs)) {
-            $tmpHtmlInputs = explode(',', $tmpHtmlInputs);
-            foreach ($tmpHtmlInputs as $tmpHtmlInput) {
-                $tmpHtmlInput = explode('|', $tmpHtmlInput);
-                $htmlInputs[$tmpHtmlInput[0]] = empty($tmpHtmlInput[1]) ? AppConfig::DEFAULT_HTML_CLEAN_SETTING : $tmpHtmlInput[1];
+        $result = new MultipleLocaleValidationResult();
+        $supportedLocaleCodes = supportedLocaleCodesOfInputTabs();
+        $localizedInputs = (array)$request->input(AppConfig::KEY_LOCALE_INPUT, []);
+        foreach ($localizedInputs as $locale => $inputs) {
+            if (!in_array($locale, $supportedLocaleCodes) || isEmptyArray($inputs)) {
+                continue;
             }
-        }
-        return $htmlInputs;
-    }
 
-    public function validateMultipleLocaleData(Request $request, array $fieldNames, array $rules, &$data, &$successes, &$fails, array $htmlInputs = [])
-    {
-        $emptyHtmlInputs = empty($htmlInputs);
-        $allSupportedLocaleCodes = allSupportedLocaleCodes();
-        $data = [];
-        $successes = [];
-        $fails = [];
-
-        foreach ($fieldNames as $fieldName) {
-            $input = $request->input($fieldName);
-            if (empty($input)) {
-                $input = $request->file($fieldName);
-            }
-            if (empty($input)) continue;
-            foreach ($input as $locale => $value) {
-                if (!in_array($locale, $allSupportedLocaleCodes)) {
-                    continue;
-                }
-                if (!isset($data[$locale])) {
-                    $data[$locale] = [];
-                }
-                if (!$emptyHtmlInputs && array_key_exists($fieldName, $htmlInputs)) {
-                    $value = clean($value, $htmlInputs[$fieldName]);
-                }
-                $data[$locale][$fieldName] = $value;
-            }
-        }
-
-        if (empty($rules)) {
-            $successes[] = array_keys($data);
-            return;
-        }
-        foreach ($data as $locale => $inputs) {
-            $validator = Validator::make($inputs, $rules);
+            $validator = Validator::make($inputs, $rules, $messages, $customAttributes);
             if ($validator->fails()) {
-                $fails[] = $validator;
+                $result->fails($validator);
             } else {
-                $successes[] = $locale;
+                $result->set($locale, $inputs);
             }
         }
+
+
+        $locales = $result->getLocales();
+        if (!in_array(AppConfig::INTERNATIONAL_LOCALE_CODE, $locales)) {
+            if (count($locales) != count(supportedLocaleCodesOfInputTabs()) - 1) {
+                $result->fails(trans('error.default_locale_inputs_must_be_set'));
+            }
+        }
+
+        return $result;
     }
 
     public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])

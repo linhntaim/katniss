@@ -19,22 +19,22 @@
         {!! cdataOpen() !!}
         jQuery(document).ready(function () {
             jQuery('.select2').select2();
-            jQuery('[name^="name"]').each(function () {
+            jQuery('.slug-from').each(function () {
                 var $this = jQuery(this);
-                $this.registerSlugTo($this.closest('.tab-pane').find('[name^="slug"]'));
+                $this.registerSlugTo($this.closest('.tab-pane').find('.slug'));
             });
             var $slug = jQuery('.slug');
             $slug.registerSlug();
             jQuery('form.check-slug').on('submit', function () {
-                var vals = [];
+                var slugs = [];
                 var unique = true;
                 $slug.each(function () {
-                    var val = $(this).val();
-                    if (vals.indexOf(val) != -1) {
+                    var slug = $(this).val();
+                    if (slugs.indexOf(slug) != -1) {
                         unique = false;
                     }
-                    else {
-                        vals.push(val);
+                    else if (slug.trim().length != 0) {
+                        slugs.push(slug);
                     }
                 });
                 if (!unique) {
@@ -104,37 +104,40 @@
 
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        @foreach(allSupportedLocales() as $locale => $properties)
+                        @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                             <li{!! $locale == $site_locale ? ' class="active"' : '' !!}>
-                                <a href="#tab_{{ $locale }}" data-toggle="tab">
+                                <a href="#{{ localeInputId('tab', $locale) }}" data-toggle="tab">
                                     {{ $properties['native'] }}
                                 </a>
                             </li>
                         @endforeach
                     </ul>
                     <div class="tab-content">
-                        @foreach(allSupportedLocales() as $locale => $properties)
+                        @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                             <?php
                             $trans = $category->translate($locale);
                             $name = $trans ? $trans->name : '';
                             $slug = $trans ? $trans->slug : '';
                             $description = $trans ? $trans->description : '';
                             ?>
-                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
+                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
-                                    <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
-                                    <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
-                                            placeholder="{{ trans('label.name') }}" type="text" value="{{ $name }}">
+                                    <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>
+                                    <input class="form-control slug-from" id="{{ localeInputId('inputName', $locale) }}"
+                                           name="{{ localeInputName('name', $locale) }}"
+                                           placeholder="{{ trans('label.name') }}" type="text" value="{{ $name }}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="required separated" for="inputSlug_{{ $locale }}">{{ trans('label.slug') }}</label>
-                                    <input class="form-control slug" id="inputSlug_{{ $locale }}" name="slug[{{ $locale }}]"
-                                            placeholder="{{ trans('label.slug') }}" type="text" value="{{ $slug }}">
+                                    <label class="required separated" for="{{ localeInputId('inputSlug', $locale) }}">{{ trans('label.slug') }}</label>
+                                    <input class="form-control slug" id="{{ localeInputId('inputSlug', $locale) }}"
+                                           name="{{ localeInputName('slug', $locale) }}"
+                                           placeholder="{{ trans('label.slug') }}" type="text" value="{{ $slug }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputDescription_{{ $locale }}">{{ trans('label.description') }}</label>
-                                    <textarea rows="5" class="form-control" id="inputDescription_{{ $locale }}" name="description[{{ $locale }}]"
-                                            placeholder="{{ trans('label.description') }}">{{ $description }}</textarea>
+                                    <label for="{{ localeInputId('inputDescription', $locale) }}">{{ trans('label.description') }}</label>
+                                    <textarea rows="5" class="form-control" id="{{ localeInputId('inputDescription', $locale) }}"
+                                              name="{{ localeInputName('description', $locale) }}"
+                                              placeholder="{{ trans('label.description') }}">{{ $description }}</textarea>
                                 </div>
                             </div><!-- /.tab-pane -->
                         @endforeach

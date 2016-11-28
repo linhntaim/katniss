@@ -61,31 +61,34 @@
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                       @foreach(allSupportedLocales() as $locale => $properties)
+                       @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                            <li{!! $locale == $site_locale ? ' class="active"' : '' !!}>
-                               <a href="#tab_{{ $locale }}" data-toggle="tab">
+                               <a href="#{{ localeInputId('tab', $locale) }}" data-toggle="tab">
                                    {{ $properties['native'] }}
                                </a>
                            </li>
                        @endforeach
                     </ul>
                     <div class="tab-content">
-                        @foreach(allSupportedLocales() as $locale => $properties)
-                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
+                        @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
+                            <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
-                                    <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
-                                    <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
-                                           placeholder="{{ trans('label.name') }}" type="text" value="{{ old('name.' . $locale) }}">
+                                    <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>
+                                    <input class="form-control" id="{{ localeInputId('inputName', $locale) }}"
+                                           name="{{ localeInputName('name', $locale) }}" type="text"
+                                           placeholder="{{ trans('label.name') }}" value="{{ oldLocaleInput('name', $locale) }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputDescription{{ $locale }}">{{ trans('label.description') }}</label>
-                                    <input class="form-control" id="inputDescription_{{ $locale }}" name="description[{{ $locale }}]"
-                                           placeholder="{{ trans('label.description') }}" type="text" value="{{ old('description.' . $locale) }}">
+                                    <label for="{{ localeInputId('inputDescription', $locale) }}">{{ trans('label.description') }}</label>
+                                    <input class="form-control" id="{{ localeInputId('inputDescription', $locale) }}"
+                                           name="{{ localeInputName('description', $locale) }}" type="text"
+                                           placeholder="{{ trans('label.description') }}" value="{{ oldLocaleInput('description', $locale) }}">
                                 </div>
                                 <div class="form-group">
-                                    <label class="required separated" for="inputUrl_{{ $locale }}">{{ trans('label.url') }}</label>
-                                    <input class="form-control" id="inputUrl_{{ $locale }}" name="url[{{ $locale }}]"
-                                           placeholder="{{ trans('label.url') }}" type="text" value="{{ old('url.' . $locale) }}">
+                                    <label class="required separated" for="{{ localeInputId('inputUrl', $locale) }}">{{ trans('label.url') }}</label>
+                                    <input class="form-control" id="{{ localeInputId('inputUrl', $locale) }}"
+                                           name="{{ localeInputName('url', $locale) }}" type="text"
+                                           placeholder="{{ trans('label.url') }}" value="{{ oldLocaleInput('url', $locale) }}">
                                 </div>
                             </div><!-- /.tab-pane -->
                         @endforeach

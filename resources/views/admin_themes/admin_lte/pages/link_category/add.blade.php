@@ -17,32 +17,36 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-                jQuery(document).ready(function () {
-                    jQuery('.select2').select2();
-                    jQuery('[name^="name"]').each(function () {
-                        var $this = jQuery(this);
-                        $this.registerSlugTo($this.closest('.tab-pane').find('[name^="slug"]'));
-                    });
-                    var $slug = jQuery('.slug');
-                    $slug.registerSlug();
-                    jQuery('form.check-slug').on('submit', function () {
-                        var vals = [];
-                        var unique = true;
-                        $slug.each(function () {
-                            var val = $(this).val();
-                            if (vals.indexOf(val) != -1) {
-                                unique = false;
-                            }
-                            else {
-                                vals.push(val);
-                            }
-                        });
-                        if (!unique) {
-                            x_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
-                            return false;
-                        }
-                    });
+        jQuery(document).ready(function () {
+            jQuery('.select2').select2();
+            jQuery('.slug-from').each(function () {
+                var $this = jQuery(this);
+                $this.registerSlugTo($this.closest('.tab-pane').find('.slug'));
+            });
+            var $slug = jQuery('.slug');
+            $slug.registerSlug();
+            jQuery('form.check-slug').on('submit', function () {
+                var slugs = [];
+                var unique = true;
+                $slug.each(function () {
+                    var slug = $(this).val();
+                    if (slugs.indexOf(slug) != -1) {
+                        unique = false;
+                    }
+                    else if (slug.trim().length != 0) {
+                        slugs.push(slug);
+                    }
                 });
+                if (!unique) {
+                    x_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
+                    return false;
+                }
+            });
+
+            jQuery('.set-first-child-active').each(function () {
+                $(this).children().first().addClass('active');
+            });
+        });
         {!! cdataClose() !!}
     </script>
 @endsection
@@ -80,31 +84,34 @@
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                    @foreach(allSupportedLocales() as $locale => $properties)
+                    @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                         <li{!! $locale == $site_locale ? ' class="active"' : '' !!}>
-                            <a href="#tab_{{ $locale }}" data-toggle="tab">
+                            <a href="#{{ localeInputId('tab', $locale) }}" data-toggle="tab">
                             {{ $properties['native'] }}
                             </a>
                         </li>
                     @endforeach
                     </ul>
                     <div class="tab-content">
-                    @foreach(allSupportedLocales() as $locale => $properties)
-                        <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
+                    @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
+                        <div class="tab-pane{!! $locale == $site_locale ? ' active' : '' !!}" id="{{ localeInputId('tab', $locale) }}">
                             <div class="form-group">
-                                <label class="required separated" for="inputName_{{ $locale }}">{{ trans('label.name') }}</label>
-                                <input class="form-control" id="inputName_{{ $locale }}" name="name[{{ $locale }}]"
-                                       placeholder="{{ trans('label.name') }}" type="text" value="{{ old('name.' . $locale) }}">
+                                <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>
+                                <input class="form-control slug-from" id="{{ localeInputId('inputName', $locale) }}"
+                                       name="{{ localeInputName('name', $locale) }}" type="text"
+                                       placeholder="{{ trans('label.name') }}" value="{{ oldLocaleInput('name', $locale) }}">
                             </div>
                             <div class="form-group">
-                                <label class="required separated" for="inputSlug_{{ $locale }}">{{ trans('label.slug') }}</label>
-                                <input class="form-control slug" id="inputSlug_{{ $locale }}" name="slug[{{ $locale }}]"
-                                       placeholder="{{ trans('label.slug') }}" type="text" value="{{ old('slug.' . $locale) }}">
+                                <label class="required separated" for="{{ localeInputId('inputSlug', $locale) }}">{{ trans('label.slug') }}</label>
+                                <input class="form-control slug" id="{{ localeInputId('inputSlug', $locale) }}"
+                                       name="{{ localeInputName('slug', $locale) }}"
+                                       placeholder="{{ trans('label.slug') }}" type="text" value="{{ oldLocaleInput('slug', $locale) }}">
                             </div>
                             <div class="form-group">
-                                <label for="inputDescription_{{ $locale }}">{{ trans('label.description') }}</label>
-                                <textarea rows="5" class="form-control" id="inputDescription_{{ $locale }}" name="description[{{ $locale }}]"
-                                       placeholder="{{ trans('label.description') }}">{{ old('description.' . $locale) }}</textarea>
+                                <label for="{{ localeInputId('inputDescription', $locale) }}">{{ trans('label.description') }}</label>
+                                <textarea rows="5" class="form-control" id="{{ localeInputId('inputDescription', $locale) }}"
+                                          name="{{ localeInputName('description', $locale) }}"
+                                          placeholder="{{ trans('label.description') }}">{{ oldLocaleInput('description', $locale) }}</textarea>
                             </div>
                         </div><!-- /.tab-pane -->
                     @endforeach

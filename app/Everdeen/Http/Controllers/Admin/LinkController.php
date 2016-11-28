@@ -70,16 +70,16 @@ class LinkController extends ViewController
         $categories = $request->input('categories', []);
         $image = $request->input('image', '');
 
-        $this->validateMultipleLocaleData($request, ['name', 'url', 'description'], [
+        $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required',
             'url' => 'required', // no need to confirm link is an url, for trickly use
-        ], $data, $successes, $fails);
+        ]);
 
         $error_redirect = redirect(adminUrl('links/add'))
             ->withInput();
 
-        if (count($successes) <= 0 && count($fails) > 0) {
-            return $error_redirect->withErrors($fails[0]);
+        if ($validateResult->isFailed()) {
+            return $error_redirect->withErrors($validateResult->getFailed());
         }
 
         $validator = Validator::make($request->all(), [
@@ -94,8 +94,7 @@ class LinkController extends ViewController
         try {
             $link = new Link();
             $link->image = $image;
-            foreach ($successes as $locale) {
-                $transData = $data[$locale];
+            foreach ($validateResult->getLocalizedInputs() as $locale => $transData) {
                 $trans = $link->translateOrNew($locale);
                 $trans->name = $transData['name'];
                 $trans->description = $transData['description'];
@@ -162,13 +161,13 @@ class LinkController extends ViewController
 
         $redirect = redirect(adminUrl('links/{id}/edit', ['id' => $link->id]));
 
-        $this->validateMultipleLocaleData($request, ['name', 'url', 'description'], [
+        $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required',
             'url' => 'required',
-        ], $data, $successes, $fails);
+        ]);
 
-        if (count($successes) <= 0 && count($fails) > 0) {
-            return $redirect->withErrors($fails[0]);
+        if ($validateResult->isFailed()) {
+            return $redirect->withErrors($validateResult->getFailed());
         }
 
         $validator = Validator::make($request->all(), [
@@ -182,13 +181,20 @@ class LinkController extends ViewController
         DB::beginTransaction();
         try {
             $link->image = $image;
-            foreach ($successes as $locale) {
-                $transData = $data[$locale];
-                $trans = $link->translateOrNew($locale);
-                $trans->name = $transData['name'];
-                $trans->description = $transData['description'];
-                $trans->url = $transData['url'];
+
+            $deletedLocales = [];
+            foreach (supportedLocaleCodesOfInputTabs() as $locale) {
+                if ($validateResult->has($locale)) {
+                    $transData = $validateResult->get($locale);
+                    $trans = $link->translateOrNew($locale);
+                    $trans->name = $transData['name'];
+                    $trans->description = $transData['description'];
+                    $trans->url = $transData['url'];
+                } elseif ($link->hasTranslation($locale)) {
+                    $deletedLocales[] = $locale;
+                }
             }
+
             $link->save();
             if (count($categories) > 0) {
                 $link->categories()->sync($categories);
@@ -196,10 +202,14 @@ class LinkController extends ViewController
                 $link->categories()->detach();
             }
 
+            if (!empty($deletedLocales)) {
+                $link->deleteTranslations($deletedLocales);
+            }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return $redirect->withErrors([trans('error.database_insert') . ' (' . $e->getMessage() . ')']);
+            return $redirect->withErrors([trans('error.database_update') . ' (' . $e->getMessage() . ')']);
         }
         return $redirect;
     }
@@ -208,7 +218,7 @@ class LinkController extends ViewController
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, $id)
     {
@@ -218,6 +228,8 @@ class LinkController extends ViewController
         if (!empty($rdr)) {
             $redirect_url = $rdr;
         }
-        return $link->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return $link->delete() === true ?
+            redirect($redirect_url)
+            : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
     }
 }

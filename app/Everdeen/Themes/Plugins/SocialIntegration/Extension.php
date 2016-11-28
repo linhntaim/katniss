@@ -15,10 +15,10 @@ use Katniss\Everdeen\Utils\InstagramHelper;
 
 class Extension extends BaseExtension
 {
-    const EXTENSION_NAME = 'social_integration';
-    const EXTENSION_DISPLAY_NAME = 'Social Integration';
-    const EXTENSION_DESCRIPTION = 'Integrate Social Functions into website';
-    const EXTENSION_EDITABLE = true;
+    const NAME = 'social_integration';
+    const DISPLAY_NAME = 'Social Integration';
+    const DESCRIPTION = 'Integrate Social Functions into website';
+    const EDITABLE = true;
 
     protected $facebookEnable;
     protected $facebookAppId;
