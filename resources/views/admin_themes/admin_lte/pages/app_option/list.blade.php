@@ -63,7 +63,8 @@
                                         {{ shorten($option->rawValue, $value_max_length) }}
                                     </td>
                                     <td>
-                                        <a class="delete" href="{{ $query->update('delete', $option->key)->toString() }}">
+                                        <a href="{{ adminUrl('app-options/{id}/edit', ['id'=> $option->id]) }}">{{ trans('form.action_edit') }}</a>
+                                        <a class="delete" href="{{ adminUrl('app-options/{id}/delete', ['id'=> $option->id])}}?{{ $rdr_param }}">
                                             {{ trans('form.action_delete') }}
                                         </a>
                                     </td>

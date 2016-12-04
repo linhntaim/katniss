@@ -80,8 +80,11 @@ Route::group([
             ], function () {
                 //App Options
                 Route::get(adminRoute('app-options'), 'AppOptionController@index');
-                Route::get(adminRoute('app-options/homepage'), 'AppOptionController@editHomepage');
-                Route::post(adminRoute('app-options/homepage'), 'AppOptionController@updateHomepage');
+                Route::get(adminRoute('app-options/{id}/edit'), 'AppOptionController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('app-options/update'), 'AppOptionController@update');
+                Route::get(adminRoute('app-options/{id}/delete'), 'AppOptionController@destroy')
+                    ->where('id', '[0-9]+');
                 //Extensions
                 Route::get(adminRoute('extensions'), 'ExtensionController@index');
                 Route::get(adminRoute('extensions/{name}/edit'), 'ExtensionController@edit');

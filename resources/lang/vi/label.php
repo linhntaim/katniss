@@ -110,6 +110,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'role_lc' => 'vai trò',
     'role' => 'Vai trò',
     'permission' => 'Quyền hạn',
+    'app_option' => 'Thiết lập',
+    'app_option_lc' => 'thiết lập',
     'widget' => 'Công cụ hiển thị',
     'theme_placeholder' => 'Vùng hiển thị',
     'file' => 'Tập tin',

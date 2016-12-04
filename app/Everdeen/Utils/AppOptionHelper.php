@@ -24,6 +24,15 @@ class AppOptionHelper
         return self::$app_options;
     }
 
+    /**
+     * @param int $id
+     * @return AppOption
+     */
+    public static function getById($id)
+    {
+        return self::$app_options->where('id', $id)->first();
+    }
+
     public static function get($key, $default = '')
     {
         if (!empty($key)) {
