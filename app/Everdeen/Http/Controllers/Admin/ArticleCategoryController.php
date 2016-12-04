@@ -128,6 +128,7 @@ class ArticleCategoryController extends ViewController
         return $this->_edit([
             'category' => $category,
             'categories' => $this->articleCategoryRepository->getAll(),
+            'error_rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -182,18 +183,14 @@ class ArticleCategoryController extends ViewController
     {
         $this->articleCategoryRepository->model($id);
 
-        $redirect_url = adminUrl('article-categories');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('article-categories'), $rdrUrl, $errorRdrUrl);
 
         try {
             $this->articleCategoryRepository->delete();
         } catch (KatnissException $ex) {
-            return redirect($redirect_url)->withErrors([$ex->getMessage()]);
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 }

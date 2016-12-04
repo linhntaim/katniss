@@ -21,5 +21,6 @@ return [
     '_is_not_author' => 'Bạn không phải là tác giả của :object',
     '_cannot_delete' => 'Không thể xoa vì: :reason',
     'category_not_empty' => 'Chuyên mục không trống',
+    'category_delete_default' => 'Không thể xóa bỏ chuyên mục mặc định',
     'default_locale_inputs_must_be_set' => 'Nếu bạn không nhập liệu cho tất cả các ngôn ngữ, hãy nhập dữ liệu ở phần thẻ Mặc định.',
 ];

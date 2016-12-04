@@ -99,6 +99,9 @@ class ViewMiddleware
         if ($request->has(AppConfig::KEY_REDIRECT_URL)) {
             session([AppConfig::KEY_REDIRECT_URL => $request->input(AppConfig::KEY_REDIRECT_URL)]);
         }
+        if ($request->has(AppConfig::KEY_REDIRECT_ON_ERROR_URL)) {
+            session([AppConfig::KEY_REDIRECT_ON_ERROR_URL => $request->input(AppConfig::KEY_REDIRECT_ON_ERROR_URL)]);
+        }
 
         $localeRedirect = $this->checkForceLocale($request);
         if ($localeRedirect !== false) {

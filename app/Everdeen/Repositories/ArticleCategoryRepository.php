@@ -12,6 +12,8 @@ namespace Katniss\Everdeen\Repositories;
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Themes\Extension;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Utils\AppConfig;
 
 class ArticleCategoryRepository extends ModelRepository
@@ -97,6 +99,10 @@ class ArticleCategoryRepository extends ModelRepository
         $category = $this->model();
         if ($category->articles()->count() > 0) {
             throw new KatnissException(trans('error.category_not_empty'));
+        }
+        $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
+        if ($category->id == $appSettings->defaultArticleCategory) {
+            throw new KatnissException(trans('error.category_delete_default'));
         }
 
         DB::beginTransaction();

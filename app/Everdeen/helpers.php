@@ -156,6 +156,11 @@ function rdrQueryParam($url)
     return AppConfig::KEY_REDIRECT_URL . '=' . urlencode($url);
 }
 
+function errorRdrQueryParam($url)
+{
+    return AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($url);
+}
+
 #endregion
 
 #region Locale

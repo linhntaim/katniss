@@ -169,7 +169,7 @@ class ArticleController extends ViewController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'required|exists:categories,id,type,' . Category::ARTICLE,
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::ARTICLE,
             'featured_image' => 'sometimes|url',
         ]);
         if ($validator->fails()) {
@@ -200,18 +200,14 @@ class ArticleController extends ViewController
     {
         $this->articleRepository->model($id);
 
-        $redirect_url = adminUrl('articles');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('articles'), $rdrUrl, $errorRdrUrl);
 
         try {
             $this->articleRepository->delete();
         } catch (KatnissException $ex) {
-            return redirect($redirect_url)->withErrors([$ex->getMessage()]);
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 }

@@ -85,10 +85,4 @@ class Theme extends HomeTheme
             // define widget here: widget name => widget class
         ];
     }
-
-    public function pageTemplates() {
-        return [
-            'contact' => 'Contact'
-        ];
-    }
 }

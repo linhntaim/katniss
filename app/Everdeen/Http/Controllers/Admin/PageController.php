@@ -188,18 +188,14 @@ class PageController extends ViewController
     {
         $this->pageRepository->model($id);
 
-        $redirect_url = adminUrl('pages');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('pages'), $rdrUrl, $errorRdrUrl);
 
         try {
             $this->pageRepository->delete();
         } catch (KatnissException $ex) {
-            return redirect($redirect_url)->withErrors([$ex->getMessage()]);
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 }

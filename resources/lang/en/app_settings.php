@@ -6,5 +6,8 @@
  * Time: 15:12
  */
 return [
+    'authentication' => 'Authentication',
     'register_enable' => 'Enable user registration',
+    'posts' => 'Posts',
+    'default_article_category' => 'Default article category',
 ];

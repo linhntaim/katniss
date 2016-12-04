@@ -18,10 +18,14 @@ abstract class Extension extends Plugin
     private static $sharedData = [];
 
     /**
-     * @return array|null
+     * @return \stdClass|null
      */
-    public static function getSharedData($extensionName)
+    public static function getSharedData($extensionName = null)
     {
+        if (empty($extensionName)) {
+            $extensionName = self::NAME;
+        }
+
         if (isset(self::$sharedData[$extensionName])) {
             return self::$sharedData[$extensionName];
         }

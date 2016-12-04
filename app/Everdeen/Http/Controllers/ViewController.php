@@ -4,6 +4,7 @@ namespace Katniss\Everdeen\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Utils\AppConfig;
 
 class ViewController extends KatnissController
 {
@@ -86,5 +87,18 @@ class ViewController extends KatnissController
     protected function _detail($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.detail'), $data, $mergeData);
+    }
+
+    protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
+    {
+        $errorRdrUrl = $rdrUrl = $url;
+        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
+        if (!empty($rdr)) {
+            $errorRdrUrl = $rdrUrl = $rdr;
+        }
+        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_ON_ERROR_URL, '');
+        if (!empty($rdr)) {
+            $errorRdrUrl = $rdr;
+        }
     }
 }
