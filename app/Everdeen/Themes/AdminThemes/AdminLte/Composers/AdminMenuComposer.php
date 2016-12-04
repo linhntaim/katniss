@@ -122,6 +122,24 @@ class AdminMenuComposer
                     adminUrl('links'),
                     trans('pages.admin_links_title'), 'li', '', '', '<i class="fa fa-external-link"></i> <span>', '</span>'
                 ));
+
+                //Links
+                $menu->addItem(new MenuItem( // add a menu header
+                    null,
+                    mb_strtoupper(trans('pages.admin_post_header')), 'li', 'header'
+                ));
+                $menu->addItem(new MenuItem( //add a menu item
+                    adminUrl('pages'),
+                    trans('pages.admin_pages_title'), 'li', '', '', '<i class="fa fa-file"></i> <span>', '</span>'
+                ));
+                $menu->addItem(new MenuItem( //add a menu item
+                    adminUrl('article-categories'),
+                    trans('pages.admin_article_categories_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
+                ));
+                $menu->addItem(new MenuItem( //add a menu item
+                    adminUrl('articles'),
+                    trans('pages.admin_articles_title'), 'li', '', '', '<i class="fa fa-align-justify"></i> <span>', '</span>'
+                ));
             }
         }
 

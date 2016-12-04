@@ -116,4 +116,12 @@ abstract class HomeTheme extends Theme
     {
         return [];
     }
+
+    public function pageTemplates() {
+        return [];
+    }
+
+    public function articleTemplates() {
+        return [];
+    }
 }

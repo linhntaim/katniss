@@ -20,5 +20,3 @@
         {!! cdataClose() !!}
     </script>
 @endsection
-
-<input type="hidden" name="{{ \Katniss\Everdeen\Utils\AppConfig::KEY_HTML_INPUTS }}" value="content">

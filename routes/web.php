@@ -144,6 +144,33 @@ Route::group([
                 Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')
                     ->where('id', '[0-9]+');
                 Route::post(adminRoute('links/update'), 'LinkController@update');
+                //Pages
+                Route::get(adminRoute('pages'), 'PageController@index');
+                Route::get(adminRoute('pages/{id}/delete'), 'PageController@destroy')
+                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('pages/add'), 'PageController@create');
+                Route::post(adminRoute('pages/add'), 'PageController@store');
+                Route::get(adminRoute('pages/{id}/edit'), 'PageController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('pages/update'), 'PageController@update');
+                //Article Categories
+                Route::get(adminRoute('article-categories'), 'ArticleCategoryController@index');
+                Route::get(adminRoute('article-categories/add'), 'ArticleCategoryController@create');
+                Route::post(adminRoute('article-categories/add'), 'ArticleCategoryController@store');
+                Route::get(adminRoute('article-categories/{id}/edit'), 'ArticleCategoryController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('article-categories/update'), 'ArticleCategoryController@update');
+                Route::get(adminRoute('article-categories/{id}/delete'), 'ArticleCategoryController@destroy')
+                    ->where('id', '[0-9]+');
+                //Articles
+                Route::get(adminRoute('articles'), 'ArticleController@index');
+                Route::get(adminRoute('articles/{id}/delete'), 'ArticleController@destroy')
+                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('articles/add'), 'ArticleController@create');
+                Route::post(adminRoute('articles/add'), 'ArticleController@store');
+                Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')
+                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('articles/update'), 'ArticleController@update');
             });
         });
         #endregion

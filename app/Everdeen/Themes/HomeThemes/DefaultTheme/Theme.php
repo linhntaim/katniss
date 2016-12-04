@@ -72,6 +72,13 @@ class Theme extends HomeTheme
         ];
     }
 
+    public function placeholders()
+    {
+        return [
+            'default_placeholder' => 'Default Placeholder'
+        ];
+    }
+
     public function widgets()
     {
         return [
@@ -79,10 +86,9 @@ class Theme extends HomeTheme
         ];
     }
 
-    public function placeholders()
-    {
+    public function pageTemplates() {
         return [
-            'default_placeholder' => 'Default Placeholder'
+            'contact' => 'Contact'
         ];
     }
 }

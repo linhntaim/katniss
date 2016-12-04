@@ -60,4 +60,11 @@ return [
     'admin_link_categories_desc' => 'Quản lý chuyên mục liên kết',
     'admin_links_title' => 'Liên kết',
     'admin_links_desc' => 'Quản lý liên kết',
+    'admin_post_header' => 'Bài viết',
+    'admin_pages_title' => 'Chuyên trang',
+    'admin_pages_desc' => 'Quản lý chuyên trang',
+    'admin_article_categories_title' => 'Chuyên mục chuyên đề',
+    'admin_article_categories_desc' => 'Quản lý chuyên mục chuyên đề',
+    'admin_articles_title' => 'Chuyên đề',
+    'admin_articles_desc' => 'Chuyên đề',
 ];

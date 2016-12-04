@@ -58,6 +58,8 @@ return [
     'image' => 'Hình ảnh',
     'image_lc' => 'hình ảnh',
     'url' => 'Đường dẫn',
+    'title' => 'Tiêu đề',
+    'post_template' => 'Mẫu giao diện',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -120,7 +122,11 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'category_lc' => 'chuyên mục',
     'link' => 'Liên kết',
     'link_lc' => 'liên kết',
-    
+    'article' => 'Chuyên đề',
+    'article_lc' => 'chuyên đề',
+    'page' => 'Trang',
+    'page_lc' => 'trang',
+
     'social_sharing' => 'Chia sẻ cho cộng đồng',
     'facebook_comment' => 'Bình luận trên Facebook',
     'example_widget' => 'Công cụ hiển thị',

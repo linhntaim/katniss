@@ -68,8 +68,8 @@ class LinkCategoryController extends ViewController
     public function store(Request $request)
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'required',
-            'slug' => 'required|unique:category_translations,slug',
+            'name' => 'required|max:255',
+            'slug' => 'required|max:255|unique:category_translations,slug',
         ]);
 
         $error_redirect = redirect(adminUrl('link-categories/add'))
@@ -164,8 +164,8 @@ class LinkCategoryController extends ViewController
         $redirect = redirect(adminUrl('link-categories/{id}/edit', ['id' => $category->id]));
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'required',
-            'slug' => 'required|unique:category_translations,slug,' . $category->id . ',category_id',
+            'name' => 'required|max:255',
+            'slug' => 'required|max:255|unique:category_translations,slug,' . $category->id . ',category_id',
         ]);
 
         if ($validateResult->isFailed()) {
