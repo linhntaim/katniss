@@ -255,7 +255,7 @@ Request flow:
 
 There's always an default application needed to register with `id = 1`:
 
-- See `database\seeds\DefaultSeeder.php`, line 77.
+- See `database\seeds\DefaultSeeder.php`, line 78.
 
 #### Web API
 
@@ -448,6 +448,6 @@ Pages and articles can have their own custom templates, depending on definition 
 
 - See [Template of Home Theme](#template).
 
-There's always a default category for articles. 
+There's always a default category needs to be set for articles. 
 
 - For seeding information, please see `database/seeds/DefaultSeeder.php`, line 97.
