@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Http\Controllers\Auth;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 
 class ForgotPasswordController extends ViewController
 {
@@ -38,13 +39,15 @@ class ForgotPasswordController extends ViewController
         $this->theme->title(trans('pages.account_password_reset_title'));
         $this->theme->description(trans('pages.account_password_reset_desc'));
 
-        return view($this->themePage('auth.password'));
+        return view($this->themePage('auth.password'), [
+            'app_settings' => AppSettingsExtension::getSharedViewData(),
+        ]);
     }
 
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function postEmail(Request $request)

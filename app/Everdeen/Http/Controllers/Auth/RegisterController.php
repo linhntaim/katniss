@@ -11,6 +11,7 @@ use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSocial;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Validator;
 
@@ -117,10 +118,17 @@ class RegisterController extends ViewController
      */
     public function showRegistrationForm()
     {
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            abort(404);
+        }
+
         $this->theme->title(trans('pages.account_register_title'));
         $this->theme->description(trans('pages.account_register_desc'));
 
-        return view($this->themePage('auth.register'), SocialIntegrationExtension::getSharedViewData());
+        return view($this->themePage('auth.register'), [
+            'social_integration' => SocialIntegrationExtension::getSharedViewData(),
+        ]);
     }
 
     /**
@@ -163,8 +171,12 @@ class RegisterController extends ViewController
      */
     public function showSocialRegistrationForm(Request $request)
     {
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            abort(404);
+        }
         $viewData = SocialIntegrationExtension::getSharedViewData();
-        if (!$viewData['social_login_enable']) {
+        if (empty($viewData) || !$viewData->social_login_enable) {
             abort(404);
         }
 
@@ -181,7 +193,7 @@ class RegisterController extends ViewController
     public function socialRegister(Request $request)
     {
         $viewData = SocialIntegrationExtension::getSharedViewData();
-        if (!$viewData['social_login_enable']) {
+        if (empty($viewData) || !$viewData->social_login_enable) {
             abort(404);
         }
 

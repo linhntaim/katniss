@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -70,7 +71,10 @@ class LoginController extends ViewController
         $this->theme->title(trans('pages.account_login_title'));
         $this->theme->description(trans('pages.account_login_desc'));
 
-        return view($this->themePage('auth.login'), SocialIntegrationExtension::getSharedViewData());
+        return view($this->themePage('auth.login'), [
+            'social_integration' => SocialIntegrationExtension::getSharedViewData(),
+            'app_settings' => AppSettingsExtension::getSharedViewData(),
+        ]);
     }
 
     /**
@@ -166,6 +170,12 @@ class LoginController extends ViewController
         if ($authUser = User::fromSocial($provider, $socialUser->id, $socialUser->email)->first()) {
             $this->guard()->login($authUser);
             return redirect($this->redirectPath());
+        }
+
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            return redirect($this->loginPath)
+                ->withErrors([trans('error.fail_social_get_info')]);
         }
 
         $userName = strtok($socialUser->email, '@');

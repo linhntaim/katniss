@@ -35,6 +35,8 @@
     </form>
     @include('admin_themes.admin_lte.pages.auth.social_auth_links')
     <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot_password') }}</a><br>
-    <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @if($app_settings->register_enable)
+        <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @endif
     <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection

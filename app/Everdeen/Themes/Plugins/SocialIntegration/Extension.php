@@ -23,11 +23,13 @@ class Extension extends BaseExtension
     public static function getSharedViewData()
     {
         $ext = Extension::getSharedData(self::NAME);
-        return [
-            'social_login_enable' => $ext->facebookLoginEnable || $ext->googleLoginEnable,
-            'facebook_login_enable' => $ext->facebookLoginEnable,
-            'google_login_enable' => $ext->googleLoginEnable,
-        ];
+        if(empty($ext)) return null;
+
+        $data = new \stdClass();
+        $data->social_login_enable = $ext->facebookLoginEnable || $ext->googleLoginEnable;
+        $data->facebook_login_enable = $ext->facebookLoginEnable;
+        $data->google_login_enable = $ext->googleLoginEnable;
+        return $data;
     }
 
     protected $facebookEnable;

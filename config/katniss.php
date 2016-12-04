@@ -34,12 +34,14 @@ return [
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
     ],
     'extensions' => [
+        Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME => Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::class,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
     ],
     'static_extensions' => [
+        Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
     ],
     'admin_except_extensions' => [

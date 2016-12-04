@@ -26,6 +26,8 @@
     </div>
 
     <a href="{{ homeUrl('auth/login') }}" class="text-center">{{ trans('label.remember_account') }}</a><br>
-    <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @if($app_settings->register_enable)
+        <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @endif
     <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection
