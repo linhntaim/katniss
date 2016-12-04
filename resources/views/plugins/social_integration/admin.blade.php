@@ -61,6 +61,17 @@
         <hr>
         <div class="form-group">
             <div class="checkbox icheck">
+                <label for="inputFacebookLoginEnable">
+                    <input id="inputFacebookLoginEnable" type="checkbox" name="facebook_login_enable"
+                           data-enable-target="#inputFacebookEnable"
+                           value="1"{{ $facebook_login_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.facebook_login_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
                 <label for="inputFacebookCommentEnable">
                     <input id="inputFacebookCommentEnable" type="checkbox" name="facebook_comment_enable"
                            data-enable-target="#inputFacebookEnable"
@@ -293,6 +304,17 @@
                     <input id="inputGoogleEnable" type="checkbox" name="google_enable"
                            value="1"{{ $google_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.google_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputGoogleLoginEnable">
+                    <input id="inputGoogleShareEnable" type="checkbox" name="google_login_enable"
+                           data-enable-target="#inputGoogleEnable"
+                           value="1"{{ $google_login_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.google_login_enable') }}
                 </label>
             </div>
         </div>

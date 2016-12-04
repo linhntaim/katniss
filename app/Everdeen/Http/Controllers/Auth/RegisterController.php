@@ -11,6 +11,7 @@ use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSocial;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Validator;
 
 class RegisterController extends ViewController
@@ -119,7 +120,7 @@ class RegisterController extends ViewController
         $this->theme->title(trans('pages.account_register_title'));
         $this->theme->description(trans('pages.account_register_desc'));
 
-        return view($this->themePage('auth.register'));
+        return view($this->themePage('auth.register'), SocialIntegrationExtension::getSharedViewData());
     }
 
     /**
@@ -162,6 +163,11 @@ class RegisterController extends ViewController
      */
     public function showSocialRegistrationForm(Request $request)
     {
+        $viewData = SocialIntegrationExtension::getSharedViewData();
+        if (!$viewData['social_login_enable']) {
+            abort(404);
+        }
+
         $this->theme->title(trans('pages.account_register_title'));
         $this->theme->description(trans('pages.account_register_desc'));
 
@@ -174,6 +180,11 @@ class RegisterController extends ViewController
      */
     public function socialRegister(Request $request)
     {
+        $viewData = SocialIntegrationExtension::getSharedViewData();
+        if (!$viewData['social_login_enable']) {
+            abort(404);
+        }
+
         $validator = $this->validator($request->all(), true);
 
         $errorRdr = redirect(homeUrl('auth/register/social'))->withInput();

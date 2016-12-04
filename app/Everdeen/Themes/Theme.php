@@ -88,7 +88,7 @@ abstract class Theme
         $this->description = appDescription();
         $this->applicationName = appName();
         $this->author = appAuthor() . ' (' . appEmail() . ')';
-        $this->generator = frameworkVersion();
+        $this->generator = appName() . ' ' . appVersion() . ' (' . frameworkVersion() . ')';
         $this->keywords = appKeywords();
     }
 

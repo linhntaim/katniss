@@ -1027,7 +1027,7 @@ function appVersion()
 
 function frameworkVersion()
 {
-    return 'Laravel ' . \Illuminate\Foundation\Application::VERSION;
+    return 'Laravel v' . \Illuminate\Foundation\Application::VERSION;
 }
 
 function appAuthor()

@@ -33,17 +33,7 @@
             </div><!-- /.col -->
         </div>
     </form>
-
-    <div class="social-auth-links text-center">
-        <p class="text-uppercase">- {{ trans('label.or') }} -</p>
-        <a href="{{ homeUrl('auth/social/{provider}', array('provider' => 'facebook')) }}" class="btn btn-block btn-social btn-facebook btn-flat">
-            <i class="fa fa-facebook"></i> {{ trans('label.sign_in_with_facebook') }}
-        </a>
-        <a href="{{ homeUrl('auth/social/{provider}', array('provider' => 'google')) }}" class="btn btn-block btn-social btn-google btn-flat">
-            <i class="fa fa-google-plus"></i> {{ trans('label.sign_in_with_google') }}
-        </a>
-    </div><!-- /.social-auth-links -->
-
+    @include('admin_themes.admin_lte.pages.auth.social_auth_links')
     <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot_password') }}</a><br>
     <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
     <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>

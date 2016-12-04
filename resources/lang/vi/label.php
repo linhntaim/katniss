@@ -98,7 +98,7 @@ tới thư điện tử của bạn. Hãy kiểm tra hòm thư (ở các hòm th
 hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi.',
     'account_activate_mail_resent' => 'Thư điện tử đã được gửi lại',
     'account_activate_mail_resend' => 'Gửi lại thư điện tử',
-    'remember_account' => 'Vẫn nhớ thôn tin đăng nhập của bạn?',
+    'remember_account' => 'Vẫn nhớ thông tin đăng nhập của bạn?',
     'account_password_reset_send_mail' => 'Gửi thông tin để thiết lập lại',
     'send_welcome_mail' => 'Gửi thư chào mừng',
     '_hi' => 'Chào, :name',

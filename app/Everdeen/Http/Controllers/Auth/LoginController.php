@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends ViewController
@@ -69,7 +70,7 @@ class LoginController extends ViewController
         $this->theme->title(trans('pages.account_login_title'));
         $this->theme->description(trans('pages.account_login_desc'));
 
-        return view($this->themePage('auth.login'));
+        return view($this->themePage('auth.login'), SocialIntegrationExtension::getSharedViewData());
     }
 
     /**
