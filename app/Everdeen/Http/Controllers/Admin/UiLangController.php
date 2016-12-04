@@ -3,11 +3,9 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
-use Katniss\Http\Requests;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Http\Controllers\ViewController;
 
 class UiLangController extends ViewController
 {

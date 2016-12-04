@@ -8,7 +8,6 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\PageRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\PaginationHelper;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 
@@ -21,14 +20,13 @@ class PageController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'page';
-
         $this->pageRepository = new PageRepository($request->input('id'));
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -51,7 +49,7 @@ class PageController extends ViewController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -120,7 +118,7 @@ class PageController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {

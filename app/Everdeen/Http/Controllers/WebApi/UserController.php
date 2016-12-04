@@ -8,7 +8,6 @@
 
 namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
-
 use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 

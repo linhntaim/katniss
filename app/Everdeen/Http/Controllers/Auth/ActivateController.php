@@ -3,7 +3,6 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Models\User;

@@ -3,14 +3,11 @@
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
 use Illuminate\Http\Request;
-
-use Katniss\Http\Requests;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Utils\Menu;
 use Katniss\Everdeen\Utils\MenuItem;
-use Katniss\Everdeen\Utils\NumberFormatHelper;
 
 class HomepageController extends ViewController
 {

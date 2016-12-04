@@ -2,8 +2,8 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Illuminate\Http\Request;
+use Katniss\Everdeen\Http\Controllers\ViewController;
 
 class DashboardController extends ViewController
 {

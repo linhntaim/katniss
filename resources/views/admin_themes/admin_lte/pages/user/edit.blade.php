@@ -45,7 +45,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-warning delete" href="{{ adminUrl('users/{id}/delete', ['id'=> $user->id])}}">
+                <a class="btn btn-warning delete" href="{{ adminUrl('users/{id}/delete', ['id'=> $user->id])}}?{{ $rdr_param }}">
                     {{ trans('form.action_delete') }}
                 </a>
                 <a class="btn btn-primary pull-right" href="{{ adminUrl('users/add') }}">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</a>

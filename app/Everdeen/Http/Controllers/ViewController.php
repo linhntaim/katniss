@@ -13,8 +13,14 @@ class ViewController extends KatnissController
      */
     protected $theme;
 
+    /**
+     * @var array
+     */
     protected $globalViewParams;
 
+    /**
+     * @var string
+     */
     protected $viewPath;
 
     public function __construct(Request $request = null)
@@ -59,31 +65,62 @@ class ViewController extends KatnissController
         return $this->theme->page($name);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _view($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath), $data, $mergeData);
     }
 
+    /**
+     * @param $view
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _any($view, $data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.' . $view), $data, $mergeData);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _list($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.list'), $data, $mergeData);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _add($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.add'), $data, $mergeData);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _edit($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.edit'), $data, $mergeData);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _detail($data = [], $mergeData = [])
     {
         return view($this->themePage($this->viewPath . '.detail'), $data, $mergeData);

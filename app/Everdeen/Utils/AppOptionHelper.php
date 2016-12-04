@@ -24,13 +24,23 @@ class AppOptionHelper
         return self::$app_options;
     }
 
+    public static function all()
+    {
+        return self::$app_options;
+    }
+
     /**
      * @param int $id
+     * @param bool $restrict
      * @return AppOption
      */
-    public static function getById($id)
+    public static function getById($id, $restrict = false)
     {
-        return self::$app_options->where('id', $id)->first();
+        $appOption = self::$app_options->where('id', $id)->first();
+        if ($restrict && empty($appOption)) {
+            abort(404);
+        }
+        return $appOption;
     }
 
     public static function get($key, $default = '')

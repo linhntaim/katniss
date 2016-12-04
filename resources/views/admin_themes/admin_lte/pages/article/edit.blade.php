@@ -73,7 +73,7 @@
             <input type="hidden" name="id" value="{{ $article->id }}">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('articles/{id}/delete', ['id'=> $article->id]) }}">
+                    <a class="btn btn-warning delete" href="{{ adminUrl('articles/{id}/delete', ['id'=> $article->id]) }}?{{ $rdr_param }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     <a class="btn btn-primary pull-right" href="{{ adminUrl('articles/add') }}">

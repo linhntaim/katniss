@@ -3,9 +3,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
-use Katniss\Http\Requests;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 
 class SettingsController extends ViewController

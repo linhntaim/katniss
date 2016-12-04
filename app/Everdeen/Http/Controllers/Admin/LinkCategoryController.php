@@ -2,36 +2,39 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Models\Category;
-use Katniss\Everdeen\Utils\AppConfig;
+use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 use Katniss\Everdeen\Utils\PaginationHelper;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 
 class LinkCategoryController extends ViewController
 {
+    protected $linkCategoryRepository;
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
 
         $this->viewPath = 'link_category';
+        $this->linkCategoryRepository = new LinkCategoryRepository($request->input('id'));
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
         $this->theme->title(trans('pages.admin_link_categories_title'));
         $this->theme->description(trans('pages.admin_link_categories_desc'));
 
-        $categories = Category::where('type', Category::LINK)->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        $categories = $this->linkCategoryRepository->getPaged();
 
         $query = new QueryStringBuilder([
             'page' => $categories->currentPage()
@@ -47,7 +50,7 @@ class LinkCategoryController extends ViewController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -55,7 +58,7 @@ class LinkCategoryController extends ViewController
         $this->theme->description(trans('pages.admin_link_categories_desc'));
 
         return $this->_add([
-            'categories' => Category::where('type', Category::LINK)->get(),
+            'categories' => $this->linkCategoryRepository->getAll(),
         ]);
     }
 
@@ -72,42 +75,27 @@ class LinkCategoryController extends ViewController
             'slug' => 'required|max:255|unique:category_translations,slug',
         ]);
 
-        $error_redirect = redirect(adminUrl('link-categories/add'))
+        $errorRedirect = redirect(adminUrl('link-categories/add'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
-            return $error_redirect->withErrors($validateResult->getFailed());
+            return $errorRedirect->withErrors($validateResult->getFailed());
         }
 
-        $parent_id = intval($request->input('parent'), 0);
-        if ($parent_id != 0) {
+        $parentId = intval($request->input('parent'), 0);
+        if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
                 'parent' => 'sometimes|exists:categories,id,type,' . Category::LINK,
             ]);
             if ($validator->fails()) {
-                return $error_redirect->withErrors($validator);
+                return $errorRedirect->withErrors($validator);
             }
         }
 
-        DB::beginTransaction();
         try {
-            $category = new Category();
-            $category->type = Category::LINK;
-            if ($parent_id != 0) {
-                $category->parent_id = $parent_id;
-            }
-            foreach ($validateResult->getLocalizedInputs() as $locale => $transData) {
-                $trans = $category->translateOrNew($locale);
-                $trans->name = $transData['name'];
-                $trans->slug = $transData['slug'];
-                $trans->description = $transData['description'];
-            }
-            $category->save();
-
-            DB::commit();
-        } catch (\Exception $ex) {
-            DB::rollBack();
-            return $error_redirect->withErrors([trans('error.database_insert') . ' (' . $ex->getMessage() . ')']);
+            $this->linkCategoryRepository->create($parentId, $validateResult->getLocalizedInputs());
+        } catch (KatnissException $ex) {
+            return $errorRedirect->withErrors([$ex->getMessage()]);
         }
 
         return redirect(adminUrl('link-categories'));
@@ -128,22 +116,19 @@ class LinkCategoryController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-
-        if ($category->type != Category::LINK) {
-            abort(404);
-        }
+        $category = $this->linkCategoryRepository->model($id);
 
         $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_edit')]);
         $this->theme->description(trans('pages.admin_link_categories_desc'));
 
         return $this->_edit([
             'category' => $category,
-            'categories' => Category::where('type', Category::LINK)->get(),
+            'categories' => $this->linkCategoryRepository->getAll(),
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -156,10 +141,7 @@ class LinkCategoryController extends ViewController
      */
     public function update(Request $request)
     {
-        $category = Category::findOrFail($request->input('id'));
-        if ($category->type != Category::LINK) {
-            abort(404);
-        }
+        $category = $this->linkCategoryRepository->model();
 
         $redirect = redirect(adminUrl('link-categories/{id}/edit', ['id' => $category->id]));
 
@@ -172,8 +154,8 @@ class LinkCategoryController extends ViewController
             return $redirect->withErrors($validateResult->getFailed());
         }
 
-        $parent_id = intval($request->input('parent'), 0);
-        if ($parent_id != 0) {
+        $parentId = intval($request->input('parent'), 0);
+        if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
                 'parent' => 'sometimes|exists:categories,id,type,' . Category::LINK
             ]);
@@ -181,33 +163,11 @@ class LinkCategoryController extends ViewController
                 return $redirect->withErrors($validator);
             }
         }
-        $category->parent_id = $parent_id != 0 && $parent_id !== $category->parent_id ? $parent_id : null;
 
-        DB::beginTransaction();
         try {
-            $deletedLocales = [];
-            foreach (supportedLocaleCodesOfInputTabs() as $locale) {
-                if ($validateResult->has($locale)) {
-                    $transData = $validateResult->get($locale);
-                    $trans = $category->translateOrNew($locale);
-                    $trans->name = $transData['name'];
-                    $trans->slug = $transData['slug'];
-                    $trans->description = $transData['description'];
-                } elseif ($category->hasTranslation($locale)) {
-                    $deletedLocales[] = $locale;
-                }
-            }
-
-            $category->save();
-
-            if (!empty($deletedLocales)) {
-                $category->deleteTranslations($deletedLocales);
-            }
-            DB::commit();
-        } catch (\Exception $ex) {
-            DB::rollBack();
-
-            return $redirect->withErrors([trans('error.database_update') . ' (' . $ex->getMessage() . ')']);
+            $this->linkCategoryRepository->update($parentId, $validateResult->getLocalizedInputs());
+        } catch (KatnissException $ex) {
+            return $redirect->withErrors([$ex->getMessage()]);
         }
 
         return $redirect;
@@ -221,38 +181,22 @@ class LinkCategoryController extends ViewController
      */
     public function destroy(Request $request, $id)
     {
-        $category = Category::where('type', Category::LINK)->where('id', $id)->firstOrFail();
-        if ($category->type != Category::LINK) {
-            abort(404);
+        $this->linkCategoryRepository->model($id);
+
+        $this->_rdrUrl($request, adminUrl('link-categories'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->linkCategoryRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        $redirect_url = adminUrl('link-categories');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
-
-        if ($category->links()->count() <= 0) {
-            DB::beginTransaction();
-            try {
-                Category::where('parent_id', $id)->update(['parent_id' => null]);
-                $category->delete();
-                DB::commit();
-            } catch (\Exception $ex) {
-                DB::rollBack();
-
-                return redirect($redirect_url)->withErrors([trans('error.database_delete') . ' (' . $ex->getMessage() . ')']);
-            }
-
-            return redirect($redirect_url);
-        }
-
-        return redirect($redirect_url)->withErrors([trans('error.category_not_empty')]);
+        return redirect($rdrUrl);
     }
 
     public function layoutSort(Request $request, $id)
     {
-        $category = Category::where('type', Category::LINK)->where('id', $id)->firstOrFail();
+        $category = $this->linkCategoryRepository->model($id);
 
         $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
         $this->theme->description(trans('pages.admin_link_categories_desc'));

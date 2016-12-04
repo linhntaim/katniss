@@ -2,12 +2,9 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Utils\DateTimeHelper;
-use Illuminate\Http\Request;
-
-use Katniss\Http\Requests;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentController extends ViewController
 {

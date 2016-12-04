@@ -76,7 +76,7 @@
                 var placeholder = $li.closest('.box').find('.box-title').text();
                 cloneModal.find('.clone-widget').text(widgetName);
                 cloneModal.find('.from-placeholder').text(placeholder);
-                cloneModal.find('[name="widget_id"]').val(widgetId);
+                cloneModal.find('[name="id"]').val(widgetId);
                 cloneModal.modal('show');
 
                 return false;
@@ -96,7 +96,7 @@
                 </div>
                 <form method="post" action="{{ adminUrl('widgets/clone') }}?{{ $rdr_param }}">
                     {{ csrf_field() }}
-                    <input type="hidden" name="widget_id" value="">
+                    <input type="hidden" name="id" value="">
                     <div id="clone-modal-content" class="modal-body">
                         <div class="form-group">
                             {{ trans('form.action_clone') }}

@@ -31,7 +31,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-warning delete" href="{{ adminUrl('app-options/{id}/delete', ['id'=> $app_option->id])}}">
+                <a class="btn btn-warning delete" href="{{ adminUrl('app-options/{id}/delete', ['id'=> $app_option->id])}}?{{ $rdr_param }}">
                     {{ trans('form.action_delete') }}
                 </a>
             </div>

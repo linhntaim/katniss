@@ -2,35 +2,38 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Models\AppOption;
+use Katniss\Everdeen\Repositories\AppOptionRepository;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\PaginationHelper;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Illuminate\Http\Request;
 
 class AppOptionController extends ViewController
 {
+    protected $appOptionRepository;
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
 
         $this->viewPath = 'app_option';
+        $this->appOptionRepository = new AppOptionRepository($request->input('id'));
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
         $this->theme->title(trans('pages.admin_app_options_title'));
         $this->theme->description(trans('pages.admin_app_options_desc'));
 
-        $options = AppOption::paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        $options = $this->appOptionRepository->getPaged();
         $query = new QueryStringBuilder([
             'page' => $options->currentPage(),
             'delete' => null,
@@ -48,20 +51,18 @@ class AppOptionController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {
-        $appOption = AppOptionHelper::getById($id);
-        if (empty($appOption)) {
-            abort(404);
-        }
+        $appOption = $this->appOptionRepository->model($id);
 
         $this->theme->title([trans('pages.admin_app_options_title'), trans('form.action_edit')]);
         $this->theme->description(trans('pages.admin_app_options_desc'));
 
         return $this->_edit([
             'app_option' => $appOption,
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -74,10 +75,8 @@ class AppOptionController extends ViewController
      */
     public function update(Request $request)
     {
-        $appOption = AppOptionHelper::getById($request->input('id'));
-        if (empty($appOption)) {
-            abort(404);
-        }
+        $appOption = $this->appOptionRepository->model();
+
         $validator = Validator::make($request->all(), [
             'raw_value' => 'required',
         ]);
@@ -88,8 +87,7 @@ class AppOptionController extends ViewController
             return $rdr->withErrors($validator);
         }
 
-        $appOption->rawValue = $request->input('raw_value');
-        $appOption->save();
+        $this->appOptionRepository->update($request->input('raw_value'));
 
         return $rdr;
     }
@@ -102,17 +100,16 @@ class AppOptionController extends ViewController
      */
     public function destroy(Request $request, $id)
     {
-        $appOption = AppOptionHelper::getById($id);
-        if (empty($appOption)) {
-            abort(404);
+        $this->appOptionRepository->model($id);
+
+        $this->_rdrUrl($request, adminUrl('app-options'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->appOptionRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        $redirect_url = adminUrl('app-options');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
-
-        return $appOption->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 }

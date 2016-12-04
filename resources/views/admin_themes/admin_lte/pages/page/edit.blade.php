@@ -68,7 +68,7 @@
             <input type="hidden" name="id" value="{{ $page->id }}">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('pages/{id}/delete', ['id'=> $page->id]) }}">
+                    <a class="btn btn-warning delete" href="{{ adminUrl('pages/{id}/delete', ['id'=> $page->id]) }}?{{ $rdr_param }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     <a class="btn btn-primary pull-right" href="{{ adminUrl('pages/add') }}">

@@ -10,7 +10,6 @@ use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\PaginationHelper;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 
@@ -23,14 +22,13 @@ class ArticleController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'article';
-
         $this->articleRepository = new ArticleRepository($request->input('id'));
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -53,7 +51,7 @@ class ArticleController extends ViewController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -101,9 +99,9 @@ class ArticleController extends ViewController
             $this->articleRepository->create(
                 $this->authUser->id,
                 $request->input('template', ''),
-                $request->input('categories', []),
                 $request->input('featured_image', ''),
-                $validateResult->getLocalizedInputs()
+                $validateResult->getLocalizedInputs(),
+                $request->input('categories', [])
             );
         } catch (KatnissException $ex) {
             return $error_redirect->withErrors([$ex->getMessage()]);
@@ -127,7 +125,7 @@ class ArticleController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {
@@ -180,9 +178,9 @@ class ArticleController extends ViewController
             $this->articleRepository->update(
                 $this->authUser->id,
                 $request->input('template', ''),
-                $request->input('categories', []),
                 $request->input('featured_image', ''),
-                $validateResult->getLocalizedInputs()
+                $validateResult->getLocalizedInputs(),
+                $request->input('categories', [])
             );
         } catch (KatnissException $ex) {
             return $redirect->withErrors([$ex->getMessage()]);

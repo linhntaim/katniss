@@ -3,17 +3,21 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Repositories\UserRepository;
 
 class AccountController extends ViewController
 {
+    protected $userRepository;
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
 
         $this->viewPath = 'my_account';
+        $this->userRepository = new UserRepository();
     }
 
     public function index()
@@ -26,6 +30,8 @@ class AccountController extends ViewController
 
     public function update(Request $request)
     {
+        $this->userRepository->model($this->authUser);
+
         $validator = Validator::make($request->all(), [
             'current_password' => 'required|password',
             'display_name' => 'required|max:255',
@@ -40,13 +46,18 @@ class AccountController extends ViewController
             return $redirect->withErrors($validator);
         }
 
-        $this->authUser->display_name = $request->input('display_name');
-        $this->authUser->email = $request->input('email');
-        $this->authUser->name = $request->input('name');
-        if ($request->has('password')) {
-            $this->authUser->password = bcrypt($request->input('password'));
+        try {
+            $this->userRepository->update(
+                $request->input('name'),
+                $request->input('display_name'),
+                $request->input('email'),
+                $request->input('password', ''),
+                null,
+                $this->globalViewParams
+            );
+        } catch (KatnissException $ex) {
+            return $redirect->withErrors([$ex->getMessage()]);
         }
-        $this->authUser->save();
 
         return $redirect->with('successes', [trans('error.success')]);
     }

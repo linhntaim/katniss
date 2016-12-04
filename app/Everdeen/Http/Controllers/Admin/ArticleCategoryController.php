@@ -8,7 +8,6 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
-use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 use Katniss\Everdeen\Utils\PaginationHelper;
 
@@ -27,7 +26,7 @@ class ArticleCategoryController extends ViewController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
@@ -50,7 +49,7 @@ class ArticleCategoryController extends ViewController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -116,7 +115,7 @@ class ArticleCategoryController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {
@@ -128,7 +127,7 @@ class ArticleCategoryController extends ViewController
         return $this->_edit([
             'category' => $category,
             'categories' => $this->articleCategoryRepository->getAll(),
-            'error_rdr_param' => errorRdrQueryParam($request->fullUrl()),
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

@@ -9,6 +9,8 @@
 namespace Katniss\Everdeen\Repositories;
 
 
+use Illuminate\Database\Eloquent\Model;
+
 abstract class ModelRepository
 {
     protected $model;
@@ -23,10 +25,14 @@ abstract class ModelRepository
     public function model($id = null)
     {
         if (!empty($id)) {
-            $this->model = $this->getById($id);
+            $this->model = $id instanceof Model ? $id : $this->getById($id);
         }
         return $this->model;
     }
 
     public abstract function getById($id);
+
+    public abstract function getPaged();
+
+    public abstract function getAll();
 }

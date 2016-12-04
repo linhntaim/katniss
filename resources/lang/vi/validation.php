@@ -81,6 +81,7 @@ return [
     'string'               => ':attribute có giá trị là chuỗi.',
     'timezone'             => ':attribute phải có giá trị là múi giờ hợp lệ.',
     'unique'               => ':attribute có giá trị đã tồn tại.',
+    'uploaded'             => ':attribute gặp lỗi khi tải lên.',
     'url'                  => ':attribute có giá trị với định dạng đường dẫn không hợp lệ.',
 
     /*
@@ -113,4 +114,5 @@ return [
 
     'attributes' => [],
 
+    'password' => 'Mật khẩu hiện tại không đúng',
 ];

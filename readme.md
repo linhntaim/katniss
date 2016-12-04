@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.3.24`.
+Current version: `5.3.26`.
 
 Latest version:
 
@@ -251,7 +251,7 @@ Applications access data by providing their known secret keys in every sending r
 
 Request flow:
 
-- Request > API Middleware (`ApiMiddleware`) > API Controller > Response (JSON format).
+- Request > API Middleware (`ApiMiddleware`) > API Controller > Repository > Model > Response (JSON format).
 
 There's always an default application needed to register with `id = 1`:
 
@@ -265,7 +265,7 @@ Requests share sessions & cookies between connections (stateful).
 
 Request flow:
 
-- Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Response (JSON format).
+- Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
 
 ### App Options
 
@@ -277,9 +277,17 @@ To store/retrieve runtime application's options in database.
 
 To organize templates into themes for easily developing/extending.
 
+Request flow:
+
+- Request > View Middleware (`ViewMiddleware`) > View Controller > Repository > Model > Theme View.
+
 ##### Admin Theme
 
 Themes for administration.
+
+Request flow:
+
+- Request > View Middleware (`ViewMiddleware`) > Admin Controller > Repository > Model > Admin Theme View.
 
 Sample Themes:
 
@@ -289,7 +297,11 @@ Sample Themes:
 
 Themes for business.
 
-Home themes are easily extended with plugins. 
+Home themes are easily extended with plugins.
+
+Request flow:
+
+- Request > View Middleware (`ViewMiddleware`) > Home Controller > Repository > Model > Home Theme View.
     
 Sample Themes:
 
@@ -301,9 +313,17 @@ Sample Themes:
 
 Define extensions for adding extra functions/features to themes (or even the system).
 
+Extensions can share its data to other components.
+
 Sample Extensions:
 
+- App Settings:
+    - Be always activated.
+    - Configure some app settings.
+        - Enable user registration.
+        - Set default category for Articles.
 - Open Graph Tags:
+    - Be always activated.
     - Add open graph tags into website.
 - Analytic Services:
     - Add website analytics.
@@ -311,6 +331,7 @@ Sample Extensions:
 - Social Integration:
     - Integrate website into social networks.
     - Current: Facebook, Twitter, Google, LinkedIn, Instagram.
+    - Log-in enable: Facebook, Google.
 - Currency Exchange:
     - Allow user to configure the exchange rates to automatically convert to/from any currencies.
 
@@ -319,6 +340,8 @@ Sample Extensions:
 Define widgets of content for inserting into placeholders of any theme.
 
 Widgets in a placeholder are sortable; their orders can be changed.
+
+To edit list of placeholders, please edit the method `placeholders` in the class of home theme.
 
 Sample Widgets:
 
@@ -329,17 +352,37 @@ Sample Widgets:
 - Instagram Wall:
     - Only available when Social Integration extension is activated and integration with Instagram is enabled.
     - Display wall of images from Instagram user.
+    
+#### Template
+
+##### Page
+
+Define custom templates for content of pages.
+
+As usual, we have a common template for displaying pages. This functionality helps us to replace this common template with other custom template for some specific pages.
+ 
+To edit list of custom templates, please edit the method `pageTemplates` in the class of home theme.
+
+##### Article
+
+Define custom templates for content of articles.
+
+As usual, we have a common template for displaying articles. This functionality helps us to replace this common template with other custom template for some specific articles.
+
+To edit list of custom templates, please edit the method `articleTemplates` in the class of home theme.
 
 ### Authentication
 
 Functions/Features:
 
 - Registration.
+    - Must go editing App Settings extension and enable user registration.
 - Activation.
 - Login.
 - Logout.
 - Forgot/Reset Password.
 - Register/Login using Accounts on Social Networks (Facebook, Google).
+    - Must enable Social Integration extension and enable log-in functionality.
 - Email supported (for registering, resending activation & password resetting & password changed):
     - Emails for registering & password changed are queued before sending.
     - Configure a queue worker or `php artisan queue:work` for sending queued emails (see [Running The Queue Worker](https://laravel.com/docs/5.3/queues#running-the-queue-worker)).
@@ -394,3 +437,17 @@ Ready for integrating with:
 ### Links
 
 Manage links and categories of links.
+
+Links in a category can be sorted.
+
+### Posts
+
+Manage pages and articles & categories of articles.
+
+Pages and articles can have their own custom templates, depending on definition of page & post templates of home themes.
+
+- See [Template of Home Theme](#template).
+
+There's always a default category for articles. 
+
+- For seeding information, please see `database/seeds/DefaultSeeder.php`, line 97.

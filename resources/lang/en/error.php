@@ -10,6 +10,7 @@ return [
     'database_insert' => 'Fails to insert into database',
     'database_update' => 'Fails to update database',
     'database_delete' => 'Fails to delete from database',
+    'application' => 'Fails to process',
     'fail_ajax' => 'Fails to request AJAX',
     'success' => 'Success!',
     'fail' => 'Fail!',

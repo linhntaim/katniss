@@ -2,12 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Themes\ExtensionsFacade;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Themes\ExtensionsFacade;
 
 class ExtensionController extends ViewController
 {
@@ -115,13 +113,9 @@ class ExtensionController extends ViewController
             setOption('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
-        $redirect_url = adminUrl('extensions');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('extensions'), $rdrUrl, $errorRdrUrl);
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 
     public function deactivate(Request $request, $name)
@@ -133,12 +127,8 @@ class ExtensionController extends ViewController
             setOption('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
-        $redirect_url = adminUrl('extensions');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('extensions'), $rdrUrl, $errorRdrUrl);
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 }

@@ -2,21 +2,25 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\AppConfig;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Themes\WidgetsFacade;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class WidgetController extends ViewController
 {
+    protected $widgetRepository;
+
     public function __construct(Request $request)
     {
         parent::__construct($request);
 
         $this->viewPath = 'widget';
+        $this->widgetRepository = new ThemeWidgetRepository($request->input('id'));
     }
 
     public function index(Request $request)
@@ -144,50 +148,51 @@ class WidgetController extends ViewController
 
     public function activate(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->updateActive();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
-        $themeWidget->active = true;
 
-        return $themeWidget->save() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 
     public function deactivate(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->updateActive(false);
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        $themeWidget->active = false;
-
-        return $themeWidget->save() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 
     public function destroy(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        return $themeWidget->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 
     public function copyTo(Request $request)
     {
-        $themeWidget = ThemeWidget::findOrFail($request->input('widget_id'));
-
         $validator = Validator::make($request->all(), [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
         ]);
@@ -197,14 +202,7 @@ class WidgetController extends ViewController
             return $redirect->withErrors($validator);
         }
 
-        ThemeWidget::create([
-            'widget_name' => $themeWidget->widget_name,
-            'theme_name' => $themeWidget->theme_name,
-            'placeholder' => $request->input('placeholder'),
-            'constructing_data' => $themeWidget->constructing_data,
-            'active' => $themeWidget->active,
-            'order' => ThemeWidget::where('placeholder', $request->input('placeholder'))->count() + 1,
-        ]);
+        $this->widgetRepository->duplicate($request->input('placeholder'));
 
         return $redirect;
     }
