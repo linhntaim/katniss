@@ -38,19 +38,27 @@ class MainMenuComposer
         ));
         $menu->addItem(new MenuItem(
             homeUrl('example/social-sharing'),
-            trans('label.social_sharing'), 'li', null
+            trans('example_theme.social_sharing'), 'li', null
         ));
         $menu->addItem(new MenuItem(
             homeUrl('example/facebook-comments'),
-            trans('label.facebook_comment'), 'li', null
+            trans('example_theme.facebook_comment'), 'li', null
         ));
         $menu->addItem(new MenuItem(
             homeUrl('example/widgets'),
-            trans('label.example_widget'), 'li', null
+            trans('example_theme.example_widget'), 'li', null
         ));
         $menu->addItem(new MenuItem(
             homeUrl('example/my-settings'),
             trans('pages.my_settings_title'), 'li', null
+        ));
+        $menu->addItem(new MenuItem(
+            homeUrl('example/pages'),
+            trans_choice('label.page', 2), 'li', null
+        ));
+        $menu->addItem(new MenuItem(
+            homeUrl('example/articles'),
+            trans_choice('label.article', 2), 'li', null
         ));
         $menu = content_filter('main_menu', $menu);
         $view->with('main_menu', $menu);

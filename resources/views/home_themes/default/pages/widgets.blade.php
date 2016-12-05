@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ trans('label.example_widget') }}</h1>
+                    <h1 class="text-uppercase">{{ trans('example_theme.example_widget') }}</h1>
                 </div>
             </div>
             <div class="row">

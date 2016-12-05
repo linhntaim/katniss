@@ -11,6 +11,10 @@ return [
     'example/facebook-comments'                     => 'example/facebook-comments',
     'example/widgets'                               => 'example/widgets',
     'example/my-settings'                           => 'example/my-settings',
+    'example/pages'                                 => 'example/pages',
+    'example/pages/{id}'                            => 'example/pages/{id}',
+    'example/articles'                              => 'example/articles',
+    'example/articles/{id}'                         => 'example/articles/{id}',
 
     'me'                                            => 'me',
     'me/settings'                                   => 'me/settings',

@@ -124,12 +124,8 @@ click the button below to get another welcome email from us.',
     'link_lc' => 'link|links',
     'article' => 'Article|Articles',
     'article_lc' => 'article|articles',
-    'page' => 'Page',
-    'page_lc' => 'page',
-
-    'social_sharing' => 'Social Sharing',
-    'facebook_comment' => 'Facebook Comments',
-    'example_widget' => 'Example Widgets',
+    'page' => 'Page|Pages',
+    'page_lc' => 'page|pages',
 
     'no_widget' => 'No widget is placed here.',
 

@@ -4,7 +4,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ trans('label.facebook_comment') }}</h1>
+                    <h1 class="text-uppercase">{{ trans('example_theme.facebook_comment') }}</h1>
                 </div>
             </div>
             <div class="row">

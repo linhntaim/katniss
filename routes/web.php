@@ -30,10 +30,16 @@ Route::group([
         'namespace' => 'Home',
     ], function () {
         Route::get('/', 'ExampleController@index');
-        Route::get('example/social-sharing', 'ExampleController@getSocialSharing');
-        Route::get('example/facebook-comments', 'ExampleController@getFacebookComments');
-        Route::get('example/widgets', 'ExampleController@getWidgets');
-        Route::get('example/my-settings', 'ExampleController@getMySettings');
+        Route::get(homeRoute('example/social-sharing'), 'ExampleController@getSocialSharing');
+        Route::get(homeRoute('example/facebook-comments'), 'ExampleController@getFacebookComments');
+        Route::get(homeRoute('example/widgets'), 'ExampleController@getWidgets');
+        Route::get(homeRoute('example/my-settings'), 'ExampleController@getMySettings');
+        Route::get(homeRoute('example/pages'), 'ExampleController@getPages');
+        Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')
+            ->where('id', '[0-9]+');
+        Route::get(homeRoute('example/articles'), 'ExampleController@getArticles');
+        Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')
+            ->where('id', '[0-9]+');
     });
 
 

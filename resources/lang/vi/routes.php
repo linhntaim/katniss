@@ -11,6 +11,10 @@ return [
     'example/facebook-comments'                     => 'vi-du/binh-luan-bang-facebook',
     'example/widgets'                               => 'vi-du/cong-cu-hien-thi',
     'example/my-settings'                           => 'vi-du/thiet-lap-cua-toi',
+    'example/pages'                                 => 'vi-du/chuyen-trang',
+    'example/pages/{id}'                            => 'vi-du/chuyen-trang/{id}',
+    'example/articles'                              => 'vi-du/chuyen-de',
+    'example/articles/{id}'                         => 'vi-du/chuyen-de/{id}',
 
     'me'                                            => 'ca-nhan-toi',
     'me/settings'                                   => 'ca-nhan-toi/thiet-lap',

@@ -17,9 +17,7 @@ abstract class ModelRepository
 
     public function __construct($id = null)
     {
-        if (!empty($id)) {
-            $this->model = $this->getById($id);
-        }
+        $this->model($id);
     }
 
     public function model($id = null)
