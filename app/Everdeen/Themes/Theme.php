@@ -8,11 +8,12 @@
 
 namespace Katniss\Everdeen\Themes;
 
+use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Utils\HtmlTag\Html5;
 use Katniss\Everdeen\Utils\SettingsFacade;
-use Katniss\Everdeen\Models\UserApp;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class Theme
 {
@@ -23,6 +24,9 @@ abstract class Theme
 
     public static $isAdmin = false;
 
+    /**
+     * @return Theme
+     */
     public static function byRequest()
     {
         $adminPaths = _k('paths_use_admin_theme');
@@ -35,6 +39,11 @@ abstract class Theme
             }
         }
         return app('home_theme');
+    }
+
+    public static function errorRequest(HttpException $exception)
+    {
+        return Theme::byRequest()->errorResponse($exception);
     }
 
     protected $name;
@@ -204,9 +213,19 @@ abstract class Theme
         return $this->viewPath . 'pages.' . $name;
     }
 
+    protected function errorPath($name = 'common')
+    {
+        return $this->viewPath . 'errors.' . $name;
+    }
+
     public function page($name)
     {
         return $this->pagePath($name);
+    }
+
+    public function error($name = 'common')
+    {
+        return $this->errorPath($name);
     }
 
     public function asset($file_path = '')
@@ -370,5 +389,20 @@ abstract class Theme
             'KATNISS_SESSION_LIFETIME' => sessionLifetime(),
             'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
+    }
+
+    protected function errorResponse(HttpException $exception) {
+        $status = $exception->getStatusCode();
+        $view = $this->error($status); // specific error
+        $existed = view()->exists($view);
+        if (!$existed) {
+            $view = $this->error(); // common error
+            $existed = view()->exists($view);
+        }
+        if ($existed) {
+            return response()->view($view, ['exception' => $exception], $status, $exception->getHeaders());
+        }
+
+        return false;
     }
 }
