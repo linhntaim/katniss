@@ -67,4 +67,7 @@ return [
     'admin_article_categories_desc' => 'Quản lý chuyên mục chuyên đề',
     'admin_articles_title' => 'Chuyên đề',
     'admin_articles_desc' => 'Chuyên đề',
+
+    'admin_error_title' => 'Lỗi :code',
+    'admin_error_desc' => 'Trang truy cập gặp lỗi :code',
 ];

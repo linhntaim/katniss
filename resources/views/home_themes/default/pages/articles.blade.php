@@ -4,25 +4,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ trans_choice('label.page', 2) }}</h1>
+                    <h1 class="text-uppercase">{{ trans_choice('label.article', 2) }}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('articles') !!}
+                    {!! placeholder('articles', null, null, trans('label.no_widget')) !!}
                 </div>
                 <div class="col-sm-9 text-left">
-                    @foreach($articles as $article)
-                        <div id="page-{{ $article->id }}">
-                            <h3>
-                                <a href="{{ homeUrl('example/pages/{id}', ['id' => $article->id]) }}">
-                                    {{ $article->title }}
-                                </a>
-                            </h3>
-                            <article>{!! htmlShorten($article->content) !!}</article>
-                        </div>
-                    @endforeach
-                    {{ $articles->links() }}
+                    @if($articles->count() > 0)
+                        @foreach($articles as $article)
+                            <div id="page-{{ $article->id }}">
+                                <h3>
+                                    <a href="{{ homeUrl('example/pages/{id}', ['id' => $article->id]) }}">
+                                        {{ $article->title }}
+                                    </a>
+                                </h3>
+                                <article>{!! htmlShorten($article->content) !!}</article>
+                            </div>
+                        @endforeach
+                        {{ $articles->links() }}
+                    @else
+                        {{ trans('label.list_empty') }}
+                    @endif
                 </div>
             </div>
         </div>

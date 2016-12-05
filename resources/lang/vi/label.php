@@ -128,7 +128,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'page' => 'Trang',
     'page_lc' => 'trang',
 
-    'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây.',
+    'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
     'max_upload_file_size' => 'Dung lượng tập tin tối đa cho phép tải lên: :size',
 

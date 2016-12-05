@@ -67,4 +67,7 @@ return [
     'admin_article_categories_desc' => 'Manage article categories',
     'admin_articles_title' => 'Articles',
     'admin_articles_desc' => 'Manage articles',
+
+    'admin_error_title' => ':code Error',
+    'admin_error_desc' => ':code Error Page',
 ];

@@ -4,12 +4,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ trans_choice('label.page', 2) }}</h1>
+                    <h1 class="text-uppercase">{{ trans_choice('label.article', 2) }}</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('articles') !!}
+                    {!! placeholder('articles', null, null, trans('label.no_widget')) !!}
                 </div>
                 <div class="col-sm-9 text-left">
                     <div id="page-{{ $article->id }}">

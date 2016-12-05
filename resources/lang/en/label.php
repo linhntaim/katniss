@@ -128,7 +128,7 @@ click the button below to get another welcome email from us.',
     'page' => 'Page|Pages',
     'page_lc' => 'page|pages',
 
-    'no_widget' => 'No widget is placed here.',
+    'no_widget' => 'No widget is placed here',
 
     'max_upload_file_size' => 'Maximum size of upload file: :size',
 

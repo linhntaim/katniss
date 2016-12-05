@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('pages') !!}
+                    {!! placeholder('pages', null, null, trans('label.no_widget')) !!}
                 </div>
                 <div class="col-sm-9 text-left">
                     <div id="page-{{ $page->id }}">
