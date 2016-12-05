@@ -21,7 +21,7 @@ class LinkController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'link';
-        $this->linkRepository = new LinkRepository($request->input('id'));
+        $this->linkRepository = new LinkRepository();
     }
 
     /**
@@ -39,7 +39,7 @@ class LinkController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $links->currentPage()
         ], adminUrl('links'));
-        return $this->_list([
+        return $this->_index([
             'links' => $links,
             'query' => $query,
             'page_helper' => new PaginationHelper($links->lastPage(), $links->currentPage(), $links->perPage()),
@@ -59,7 +59,7 @@ class LinkController extends ViewController
         $this->theme->title([trans('pages.admin_links_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_links_desc'));
 
-        return $this->_add([
+        return $this->_create([
             'categories' => $categoryRepository->getAll()
         ]);
     }
@@ -77,7 +77,7 @@ class LinkController extends ViewController
             'url' => 'required', // no need to confirm link is an url, for trickly use
         ]);
 
-        $error_redirect = redirect(adminUrl('links/add'))
+        $error_redirect = redirect(adminUrl('links/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -145,9 +145,9 @@ class LinkController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $link = $this->linkRepository->model();
+        $link = $this->linkRepository->model($id);
 
         $redirect = redirect(adminUrl('links/{id}/edit', ['id' => $link->id]));
 

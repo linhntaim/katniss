@@ -26,9 +26,11 @@ class ThemeWidgetRepository extends ModelRepository
         return ThemeWidget::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getAll()
+    public function getAll(array $availablePlaceholderNames = [], array $availableWidgetNames = [])
     {
-        return ThemeWidget::all();
+        return ThemeWidget::checkPlaceholders($availablePlaceholderNames)
+            ->checkWidgets($availableWidgetNames)
+            ->orderBy('order', 'asc')->orderBy('created_at', 'asc')->get();
     }
 
     public function create($widgetName, $themeName, $placeholder, $constructingData, $active)
@@ -63,6 +65,27 @@ class ThemeWidgetRepository extends ModelRepository
             $widget->save();
             return $widget;
         } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateSort($widgetIds, $placeholder)
+    {
+        DB::beginTransaction();
+        try {
+            $order = 0;
+            foreach ($widgetIds as $id) {
+                ThemeWidget::where('id', $id)->update([
+                    'placeholder' => $placeholder,
+                    'order' => ++$order,
+                ]);
+            }
+
+            DB::commit();
+            return true;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }

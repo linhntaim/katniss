@@ -14,7 +14,7 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
+        $(function () {
             var elfinderOptions = {
                 lang: '{{ $site_locale }}',
                 customData: {
@@ -45,7 +45,7 @@
             if (onlyMimes.trim() != '') {
                 elfinderOptions.onlyMimes = onlyMimes.split(',');
             }
-            jQuery('#elfinder').elfinder(elfinderOptions);
+            $('#elfinder').elfinder(elfinderOptions);
         });
         {!! cdataClose() !!}
     </script>

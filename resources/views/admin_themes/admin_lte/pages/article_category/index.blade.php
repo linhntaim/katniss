@@ -1,27 +1,17 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_link_categories_title'))
-@section('page_description', trans('pages.admin_link_categories_desc'))
+@section('page_title', trans('pages.admin_article_categories_title'))
+@section('page_description', trans('pages.admin_article_categories_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('link-categories') }}">{{ trans('pages.admin_link_categories_title') }}</a></li>
+        <li><a href="{{ adminUrl('article-categories') }}">{{ trans('pages.admin_article_categories_title') }}</a></li>
     </ol>
 @endsection
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function(){
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -30,7 +20,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-primary" href="{{ adminUrl('link-categories/add') }}">
+                <a class="btn btn-primary" href="{{ adminUrl('article-categories/create') }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
                 </a>
             </div>
@@ -53,7 +43,7 @@
                                     <th class="order-col-2">#</th>
                                     <th>{{ trans('label.name') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
-                                    <th>{{ trans_choice('label.link', 2) }}</th>
+                                    <th>{{ trans_choice('label.article', 2) }}</th>
                                     <th>{{ trans('label.category_parent') }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
@@ -74,16 +64,13 @@
                                         <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
-                                        <td>{{ $category->links()->count() }}</td>
+                                        <td>{{ $category->articles()->count() }}</td>
                                         <td>{{ empty($category->parent_id) ? '' : $category->parent->name }}</td>
                                         <td>
-                                            <a href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">
+                                            <a href="{{ adminUrl('article-categories/{id}/edit', ['id'=> $category->id]) }}">
                                                 {{ trans('form.action_edit') }}
                                             </a>
-                                            <a href="{{ adminUrl('link-categories/{id}/sort', ['id' => $category->id]) }}">
-                                                {{ trans('form.action_sort') }}
-                                            </a>
-                                            <a class="delete" href="{{ adminUrl('link-categories/{id}/delete', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                                            <a class="delete" href="{{ adminUrl('article-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
                                                 {{ trans('form.action_delete') }}
                                             </a>
                                         </td>

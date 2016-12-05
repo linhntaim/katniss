@@ -17,7 +17,7 @@ class RoleController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'role';
-        $this->roleRepository = new RoleRepository($request->input('id'));
+        $this->roleRepository = new RoleRepository();
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $roles->currentPage()
         ], adminUrl('user-roles'));
-        return $this->_list([
+        return $this->_index([
             'roles' => $roles,
             'query' => $query,
             'page_helper' => new PaginationHelper($roles->lastPage(), $roles->currentPage(), $roles->perPage())

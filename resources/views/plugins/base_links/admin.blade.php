@@ -8,8 +8,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
+        $(function () {
+            $('.select2').select2();
         });
         {!! cdataClose() !!}
     </script>

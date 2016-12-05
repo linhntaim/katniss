@@ -75,7 +75,7 @@ KatnissApi.prototype.beforeRequest = function () {
 KatnissApi.prototype.post = function (relativePath, params, done, fail, always) {
     this.beforeRequest();
     this.promise(
-        jQuery.post(
+        $.post(
             this.buildUrl(relativePath),
             this.buildParams(params)
         ),
@@ -85,7 +85,7 @@ KatnissApi.prototype.post = function (relativePath, params, done, fail, always) 
 KatnissApi.prototype.get = function (relativePath, params, done, fail, always) {
     this.beforeRequest();
     this.promise(
-        jQuery.get(
+        $.get(
             this.buildUrl(relativePath),
             this.buildParams(params)
         ),
@@ -96,7 +96,7 @@ KatnissApi.prototype.request = function (relativePath, requestType, params, opti
                                          done, fail, always) {
     this.beforeRequest();
     this.promise(
-        jQuery.ajax(
+        $.ajax(
             this.buildUrl(relativePath),
             this.buildOptions(requestType, params, options)
         ),

@@ -1,18 +1,21 @@
 @section('lib_styles')
     <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
 @endsection
 @section('lib_scripts')
     <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 @endsection
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('[type=checkbox]').iCheck({
+        $(function () {
+            $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional
             });
+            $('.select2').select2();
         });
         {!! cdataClose() !!}
     </script>
@@ -44,7 +47,7 @@
             <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="form-group">
                     <label for="inputDefaultArticleCategory">{{ trans('app_settings.default_article_category') }}</label>
-                    <select id="inputDefaultArticleCategory" class="form-control" name="default_article_category">
+                    <select id="inputDefaultArticleCategory" class="form-control select2" name="default_article_category" style="width: 100%">
                         @foreach ($article_categories as $category)
                             <option value="{{ $category->id }}"{{ $category->id == $default_article_category ? ' selected' : '' }}>
                                 {{ $category->name }}

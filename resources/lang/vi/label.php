@@ -60,6 +60,7 @@ return [
     'url' => 'Đường dẫn',
     'title' => 'Tiêu đề',
     'post_template' => 'Mẫu giao diện',
+    'author' => 'Tác giả',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

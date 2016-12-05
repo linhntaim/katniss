@@ -20,15 +20,15 @@
     @include('file_manager.open_documents_script')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
-            jQuery('.slug-from').each(function () {
-                var $this = jQuery(this);
+        $(function () {
+            $('.select2').select2();
+            $('.slug-from').each(function () {
+                var $this = $(this);
                 $this.registerSlugTo($this.closest('.tab-pane').find('.slug'));
             });
-            var $slug = jQuery('.slug');
+            var $slug = $('.slug');
             $slug.registerSlug();
-            jQuery('form.check-slug').on('submit', function () {
+            $('form.check-slug').on('submit', function () {
                 var slugs = [];
                 var unique = true;
                 $slug.each(function () {
@@ -41,11 +41,11 @@
                     }
                 });
                 if (!unique) {
-                    x_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
+                    x_modal_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
                     return false;
                 }
             });
-            jQuery('.ck-editor').ckeditor({
+            $('.ck-editor').ckeditor({
                 language: '{{ $site_locale }}',
                 filebrowserBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}',
                 filebrowserFlashBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=flash',
@@ -54,29 +54,22 @@
                 filebrowserImageBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=images',
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-                var $this = jQuery(this);
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-                return false;
-            });
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
-    <div class="row">
-        <form method="post" action="{{ adminUrl('articles/update') }}">
-            {!! csrf_field() !!}
-            <input type="hidden" name="id" value="{{ $article->id }}">
+    <form method="post" action="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
+        <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('articles/{id}/delete', ['id'=> $article->id]) }}?{{ $rdr_param }}">
+                    <a class="btn btn-warning delete" href="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}?{{ $rdr_param }}">
                         {{ trans('form.action_delete') }}
                     </a>
-                    <a class="btn btn-primary pull-right" href="{{ adminUrl('articles/add') }}">
+                    <a class="btn btn-primary pull-right" href="{{ adminUrl('articles/create') }}">
                         {{ trans('form.action_add') }} {{ trans_choice('label.article', 1) }}
                     </a>
                 </div>
@@ -190,6 +183,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection

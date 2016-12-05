@@ -17,15 +17,15 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
-            jQuery('.slug-from').each(function () {
-                var $this = jQuery(this);
+        $(function () {
+            $('.select2').select2();
+            $('.slug-from').each(function () {
+                var $this = $(this);
                 $this.registerSlugTo($this.closest('.tab-pane').find('.slug'));
             });
-            var $slug = jQuery('.slug');
+            var $slug = $('.slug');
             $slug.registerSlug();
-            jQuery('form.check-slug').on('submit', function () {
+            $('form.check-slug').on('submit', function () {
                 var slugs = [];
                 var unique = true;
                 $slug.each(function () {
@@ -38,37 +38,27 @@
                     }
                 });
                 if (!unique) {
-                    x_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
+                    x_modal_alert('{{ trans('validation.unique', ['attribute' => 'slug']) }}');
                     return false;
                 }
             });
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
-    <div class="row">
-        <form class="check-slug" method="post" action="{{ adminUrl('article-categories/update')}}">
-            {!! csrf_field() !!}
-            <input type="hidden" name="id" value="{{ $category->id }}">
+    <form class="check-slug" method="post" action="{{ adminUrl('article-categories/{id}', ['id'=> $category->id])}}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
+        <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
                     <a class="btn btn-warning delete"
-                       href="{{ adminUrl('article-categories/{id}/delete', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                       href="{{ adminUrl('article-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
                         {{ trans('form.action_delete') }}
                     </a>
-                    <a class="btn btn-primary pull-right" href="{{ adminUrl('article-categories/add') }}">
+                    <a class="btn btn-primary pull-right" href="{{ adminUrl('article-categories/create') }}">
                         {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
                     </a>
                 </div>
@@ -149,6 +139,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection

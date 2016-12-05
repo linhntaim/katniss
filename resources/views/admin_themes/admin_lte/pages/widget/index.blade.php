@@ -24,10 +24,10 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
+        $(function () {
+            $('.select2').select2();
 
-            jQuery('.theme-widget-sortable').sortable({
+            $('.theme-widget-sortable').sortable({
                 placeholder: 'sort-highlight',
                 handle: '.handle',
                 forcePlaceholderSize: true,
@@ -53,20 +53,12 @@
                 }
             });
 
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
+            x_modal_put($('a.activate'), '{{ trans('form.action_activate') }}', '{{ trans('label.wanna_activate', ['name' => '']) }}');
+            x_modal_put($('a.deactivate'), '{{ trans('form.action_deactivate') }}', '{{ trans('label.wanna_deactivate', ['name' => '']) }}');
 
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
-
-            var cloneModal = jQuery('#clone-modal');
-            jQuery('a.clone').off('click').on('click', function (e) {
+            var cloneModal = $('#clone-modal');
+            $('a.clone').off('click').on('click', function (e) {
                 e.preventDefault();
 
                 var $this = $(this);
@@ -90,11 +82,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <h4 class="modal-title" id="clone-modal-title">{{ trans('form.action_clone') }}</h4>
                 </div>
-                <form method="post" action="{{ adminUrl('widgets/clone') }}?{{ $rdr_param }}">
+                <form method="post" action="{{ adminUrl('widgets') }}?duplicate=1&amp;{{ $rdr_param }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="id" value="">
                     <div id="clone-modal-content" class="modal-body">
@@ -107,8 +100,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputClonePlaceHolder">{{ trans_choice('label.theme_placeholder', 1) }}</label>
-                            <select id="inputClonePlaceHolder" class="form-control select2" name="placeholder" required
-                                    style="width: 100%">
+                            <select id="inputClonePlaceHolder" class="form-control select2" name="placeholder" required style="width: 100%">
                                 @foreach($placeholders as $name => $display_name)
                                     <option value="{{ $name }}">{{ $display_name }}</option>
                                 @endforeach
@@ -116,10 +108,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="clone-modal-button" type="submit"
-                                class="btn btn-danger">{{ trans('form.action_confirm') }}</button>
-                        <button type="button" class="btn btn-default"
-                                data-dismiss="modal">{{ trans('form.action_cancel') }}</button>
+                        <button id="clone-modal-button" type="submit" class="btn btn-danger">
+                            {{ trans('form.action_confirm') }}
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            {{ trans('form.action_cancel') }}
+                        </button>
                     </div>
                 </form>
             </div>
@@ -138,13 +132,12 @@
             @endif
             <div class="box box-primary">
                 <div class="box-body">
-                    <form method="post">
-                        {!! csrf_field() !!}
+                    <form method="post" action="{{ adminUrl('widgets') }}">
+                        {{ csrf_field() }}
                         <div class="row">
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label for="inputWidget">{{ trans_choice('label.widget', 1) }}</label>
-                                <select id="inputWidget" class="form-control select2" name="widget" required
-                                        style="width: 100%">
+                                <select id="inputWidget" class="form-control select2" name="widget" required style="width: 100%">
                                     @foreach($widgets as $name => $display_name)
                                         <option value="{{ $name }}">{{ $display_name }}</option>
                                     @endforeach
@@ -152,8 +145,7 @@
                             </div>
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label for="inputPlaceHolder">{{ trans_choice('label.theme_placeholder', 1) }}</label>
-                                <select id="inputPlaceHolder" class="form-control select2" name="placeholder" required
-                                        style="width: 100%">
+                                <select id="inputPlaceHolder" class="form-control select2" name="placeholder" required style="width: 100%">
                                     @foreach($placeholders as $name => $display_name)
                                         <option value="{{ $name }}">{{ $display_name }}</option>
                                     @endforeach
@@ -162,8 +154,7 @@
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label class="hidden-xs">&nbsp;</label>
                                 <div>
-                                    <button type="submit"
-                                            class="btn btn-primary">{{ trans('form.action_add') }}</button>
+                                    <button type="submit" class="btn btn-primary">{{ trans('form.action_add') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -212,15 +203,15 @@
                                         <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
                                         |
                                         @if($themeWidget->active)
-                                            <a href="{{ adminUrl('widgets/{id}/deactivate', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                            <a class="deactivate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
                                             |
                                         @else
-                                            <a href="{{ adminUrl('widgets/{id}/activate', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
                                             |
                                         @endif
                                         <a class="clone" href="#">{{ trans('form.action_clone') }}</a> |
                                         <a class="delete"
-                                           href="{{ adminUrl('widgets/{id}/delete', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
+                                           href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
                                     </div>
                                 </li>
                             @endforeach
@@ -262,15 +253,15 @@
                                         <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
                                         |
                                         @if($themeWidget->active)
-                                            <a href="{{ adminUrl('widgets/{id}/deactivate', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                            <a class="deactivate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
                                             |
                                         @else
-                                            <a href="{{ adminUrl('widgets/{id}/activate', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
                                             |
                                         @endif
                                         <a class="clone" href="#">{{ trans('form.action_clone') }}</a> |
                                         <a class="delete"
-                                           href="{{ adminUrl('widgets/{id}/delete', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
+                                           href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
                                     </div>
                                 </li>
                             @endforeach

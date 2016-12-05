@@ -60,6 +60,7 @@ return [
     'url' => 'URL',
     'title' => 'Title',
     'post_template' => 'Template',
+    'author' => 'Author',
 
     'settings' => 'Settings',
     'country' => 'Country',

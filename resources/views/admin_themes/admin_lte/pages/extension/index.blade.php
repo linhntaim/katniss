@@ -10,17 +10,9 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function(){
-            jQuery('a.activate').off('click').on('click', function (e) {
-                e.preventDefault();
-                x_href_confirm(jQuery(this).attr('href'), '{{ trans('form.action_activate') }}', '{{ trans('label.wanna_activate', ['name' => '']) }}');
-                return false;
-            });
-            jQuery('a.deactivate').off('click').on('click', function (e) {
-                e.preventDefault();
-                x_href_confirm(jQuery(this).attr('href'), '{{ trans('form.action_deactivate') }}', '{{ trans('label.wanna_deactivate', ['name' => '']) }}');
-                return false;
-            });
+        $(function () {
+            x_modal_put($('a.activate'), '{{ trans('form.action_activate') }}', '{{ trans('label.wanna_activate', ['name' => '']) }}');
+            x_modal_put($('a.deactivate'), '{{ trans('form.action_deactivate') }}', '{{ trans('label.wanna_deactivate', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -88,10 +80,10 @@
                                                 <a href="{{ adminUrl('extensions/{name}/edit', ['name' => $extension['name']]) }}">{{ trans('form.action_edit') }}</a>
                                             @endif
                                             @if(!$extension['static'])
-                                                <a class="deactivate" href="{{ adminUrl('extensions/{name}/deactivate', ['name'=> $extension['name']]) }}?{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                                <a class="deactivate" href="{{ adminUrl('extensions/{name}', ['name'=> $extension['name']]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
                                             @endif
                                         @else
-                                            <a class="activate" href="{{ adminUrl('extensions/{name}/activate', ['name' => $extension['name']]) }}?{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ adminUrl('extensions/{name}', ['name' => $extension['name']]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
                                         @endif
                                     </td>
                                 </tr>

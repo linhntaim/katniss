@@ -24,20 +24,10 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-                jQuery(document).ready(function () {
-                    jQuery('.select2').select2();
-                    jQuery('a.delete').off('click').on('click', function (e) {
-                        e.preventDefault();
-
-                        var $this = $(this);
-
-                        x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                            window.location.href = $this.attr('href');
-                        });
-
-                        return false;
-                    });
-                });
+        $(function () {
+            $('.select2').select2();
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
+        });
         {!! cdataClose() !!}
     </script>
 @endsection
@@ -45,10 +35,10 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-warning delete" href="{{ adminUrl('users/{id}/delete', ['id'=> $user->id])}}?{{ $rdr_param }}">
+                <a class="btn btn-warning delete" href="{{ adminUrl('users/{id}', ['id'=> $user->id])}}?{{ $rdr_param }}">
                     {{ trans('form.action_delete') }}
                 </a>
-                <a class="btn btn-primary pull-right" href="{{ adminUrl('users/add') }}">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</a>
+                <a class="btn btn-primary pull-right" href="{{ adminUrl('users/create') }}">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</a>
             </div>
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -56,9 +46,9 @@
                         {{ trans('form.action_edit') }} {{ trans_choice('label.user_lc', 1) }} - <em>{{ $user->display_name }} ({{ $user->name }})</em>
                     </h3>
                 </div>
-                <form action="{{ adminUrl('users/update') }}" method="post">
-                    {!! csrf_field() !!}
-                    <input type="hidden" name="id" value="{{ $user->id }}">
+                <form method="post" action="{{ adminUrl('users/{id}', ['id'=> $user->id]) }}">
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
                     <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -94,8 +84,10 @@
                     </div>
                     <div class="box-footer">
                         <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
-                        <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                        <a role="button" class="btn btn-default pull-right" href="{{ adminUrl('users') }}">{{ trans('form.action_cancel') }}</a>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
+                            <a role="button" class="btn btn-warning pull-right" href="{{ adminUrl('users') }}">{{ trans('form.action_cancel') }}</a>
+                        </div>
                     </div>
                 </form>
                 <!-- /.box-body -->

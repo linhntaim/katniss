@@ -20,7 +20,7 @@ class DocumentController extends ViewController
         $this->theme->title(trans('pages.my_documents_title'));
         $this->theme->description(trans('pages.my_documents_desc'));
 
-        return $this->_list([
+        return $this->_index([
             'dateFormat' => DateTimeHelper::shortDateFormat(),
             'timeFormat' => DateTimeHelper::shortTimeFormat(),
         ]);

@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Category;
 
@@ -21,6 +22,8 @@ class LinkCategoryRepository extends CategoryRepository
     public function updateSort($linkIds)
     {
         $category = $this->model();
+
+        DB::beginTransaction();
         try {
             $order = 0;
             $category_links = $category->links();
@@ -28,8 +31,11 @@ class LinkCategoryRepository extends CategoryRepository
                 ++$order;
                 $category_links->updateExistingPivot($linkId, ['order' => $order]);
             }
+            DB::commit();
             return true;
         } catch (\Exception $ex) {
+            DB::rollBack();
+
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }

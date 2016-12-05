@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Utils\AppConfig;
@@ -149,6 +150,11 @@ function wizardKey($name = '')
 function isValidWizardKey($key, $name = '')
 {
     return Hash::check($name . appKey(), $key);
+}
+
+function methodParam($method)
+{
+    return '_method=' . $method;
 }
 
 function rdrQueryParam($url)

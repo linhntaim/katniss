@@ -23,7 +23,7 @@ class UserController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'user';
-        $this->userRepository = new UserRepository($request->input('id'));
+        $this->userRepository = new UserRepository();
     }
 
     /**
@@ -40,7 +40,7 @@ class UserController extends ViewController
         $users_query = new QueryStringBuilder([
             'page' => $users->currentPage()
         ], adminUrl('users'));
-        return $this->_list([
+        return $this->_index([
             'users' => $users,
             'users_query' => $users_query,
             'page_helper' => new PaginationHelper($users->lastPage(), $users->currentPage(), $users->perPage()),
@@ -60,7 +60,7 @@ class UserController extends ViewController
         $this->theme->title([trans('pages.admin_users_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_users_desc'));
 
-        return $this->_add([
+        return $this->_create([
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
@@ -87,7 +87,7 @@ class UserController extends ViewController
     {
         $validator = $this->validator($request->all());
 
-        $errorRdr = redirect(adminUrl('users/add'))->withInput();
+        $errorRdr = redirect(adminUrl('users/create'))->withInput();
 
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
@@ -152,9 +152,9 @@ class UserController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $user = $this->userRepository->model();
+        $user = $this->userRepository->model($id);
 
         $rdr = redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
 

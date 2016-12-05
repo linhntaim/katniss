@@ -15,7 +15,7 @@ class UserController extends ApiController
     {
         parent::__construct($request);
 
-        $this->userRepository = new UserRepository($request->input('id'));
+        $this->userRepository = new UserRepository();
     }
 
     public function postAvatarUsingCropperJs(Request $request, $id)

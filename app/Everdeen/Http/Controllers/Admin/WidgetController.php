@@ -8,7 +8,6 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Themes\WidgetsFacade;
 
 class WidgetController extends ViewController
@@ -20,7 +19,7 @@ class WidgetController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'widget';
-        $this->widgetRepository = new ThemeWidgetRepository($request->input('id'));
+        $this->widgetRepository = new ThemeWidgetRepository();
     }
 
     public function index(Request $request)
@@ -36,9 +35,7 @@ class WidgetController extends ViewController
         $placeholders = HomeThemeFacade::placeholders();
         asort($placeholders);
         $placeholderNames = array_keys($placeholders);
-        $themeWidgets = ThemeWidget::checkPlaceholders($placeholderNames)
-            ->checkWidgets(array_keys($widgets))
-            ->orderBy('order', 'asc')->orderBy('created_at', 'asc')->get();
+        $themeWidgets = $this->widgetRepository->getAll($placeholderNames, array_keys($widgets));
         $themePlaceholders = [];
         foreach ($placeholderNames as $placeholderName) {
             $themePlaceholders[$placeholderName] = [];
@@ -51,7 +48,7 @@ class WidgetController extends ViewController
         $this->theme->title(trans('pages.admin_widgets_title'));
         $this->theme->description(trans('pages.admin_widgets_desc'));
 
-        return $this->_list([
+        return $this->_index([
             'widgets' => $widgets,
             'placeholders' => $placeholders,
             'placeholderNames' => $placeholderNames,
@@ -60,8 +57,12 @@ class WidgetController extends ViewController
         ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        if ($request->has('duplicate')) {
+            return $this->duplicate($request);
+        }
+
         $validator = Validator::make($request->all(), [
             'widget' => 'required|in:' . implode(',', array_keys(WidgetsFacade::all())),
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
@@ -83,9 +84,28 @@ class WidgetController extends ViewController
         return $redirect;
     }
 
+    protected function duplicate(Request $request)
+    {
+        $this->widgetRepository->model($request->input('id'));
+
+        $validator = Validator::make($request->all(), [
+            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
+        ]);
+
+        $redirect = redirect(adminUrl('widgets'));
+        if ($validator->fails()) {
+            return $redirect->withErrors($validator);
+        }
+
+        $this->widgetRepository->duplicate($request->input('placeholder'));
+
+        return $redirect;
+    }
+
     public function edit(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $themeWidget = $this->widgetRepository->model($id);
+
         $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
         if (empty($widgetClass) || !class_exists($widgetClass)) {
             abort(404);
@@ -101,12 +121,22 @@ class WidgetController extends ViewController
             'widget' => $widget,
             'themeWidget' => $themeWidget,
             'widget_view' => $widget->viewAdmin(),
+            'rdr_param' => rdrQueryParam($request->fullUrl()),
+            'error_rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ], $widget->viewAdminParams()));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($request->input('id'));
+        if ($request->has('activate')) {
+            return $this->activate($request, $id);
+        }
+        if ($request->has('deactivate')) {
+            return $this->deactivate($request, $id);
+        }
+
+        $themeWidget = $this->widgetRepository->model($id);
+
         $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
         if (empty($widgetClass) || !class_exists($widgetClass)) {
             abort(404);
@@ -146,7 +176,7 @@ class WidgetController extends ViewController
         return $redirect;
     }
 
-    public function activate(Request $request, $id)
+    protected function activate(Request $request, $id)
     {
         $this->widgetRepository->model($id);
 
@@ -161,7 +191,7 @@ class WidgetController extends ViewController
         return redirect($rdrUrl);
     }
 
-    public function deactivate(Request $request, $id)
+    protected function deactivate(Request $request, $id)
     {
         $this->widgetRepository->model($id);
 
@@ -189,21 +219,5 @@ class WidgetController extends ViewController
         }
 
         return redirect($rdrUrl);
-    }
-
-    public function copyTo(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
-        ]);
-
-        $redirect = redirect(adminUrl('widgets'));
-        if ($validator->fails()) {
-            return $redirect->withErrors($validator);
-        }
-
-        $this->widgetRepository->duplicate($request->input('placeholder'));
-
-        return $redirect;
     }
 }

@@ -20,8 +20,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function() {
-            jQuery('#elfinder').elfinder({
+        $(function () {
+            $('#elfinder').elfinder({
                 lang: '{{ $site_locale }}',
                 customData: {
                     _token: '{{ csrf_token() }}'

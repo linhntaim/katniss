@@ -35,16 +35,14 @@ Route::group([
         Route::get(homeRoute('example/widgets'), 'ExampleController@getWidgets');
         Route::get(homeRoute('example/my-settings'), 'ExampleController@getMySettings');
         Route::get(homeRoute('example/pages'), 'ExampleController@getPages');
-        Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')
-            ->where('id', '[0-9]+');
+        Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')->where('id', '[0-9]+');
         Route::get(homeRoute('example/articles'), 'ExampleController@getArticles');
-        Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')
-            ->where('id', '[0-9]+');
+        Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')->where('id', '[0-9]+');
     });
 
 
     Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');
-    Route::post(homeRoute('me/settings'), 'Admin\SettingsController@update');
+    Route::put(homeRoute('me/settings'), 'Admin\SettingsController@update');
 
     Route::group([
         'namespace' => 'Auth',
@@ -62,8 +60,7 @@ Route::group([
         Route::get(homeRoute('auth/register/social'), 'RegisterController@showSocialRegistrationForm');
         Route::post(homeRoute('auth/register/social'), 'RegisterController@socialRegister');
 
-        Route::get(homeRoute('auth/activate/{id}/{activation_code}'), 'ActivateController@getActivation')
-            ->where('id', '[0-9]+');
+        Route::get(homeRoute('auth/activate/{id}/{activation_code}'), 'ActivateController@getActivation')->where('id', '[0-9]+');
         Route::get(homeRoute('auth/inactive'), 'ActivateController@getInactive');
         Route::post(homeRoute('auth/inactive'), 'ActivateController@postInactive');
 
@@ -77,7 +74,7 @@ Route::group([
         'middleware' => 'auth'
     ], function () {
         Route::get(homeRoute('me/account'), 'Admin\AccountController@index');
-        Route::post(homeRoute('me/account'), 'Admin\AccountController@update');
+        Route::put(homeRoute('me/account'), 'Admin\AccountController@update');
         // document
         Route::any(homeRoute('me/documents/connector'), 'DocumentController@getConnector');
         Route::any(homeRoute('me/documents/for/ckeditor'), 'DocumentController@forCkeditor');
@@ -96,97 +93,69 @@ Route::group([
             ], function () {
                 //App Options
                 Route::get(adminRoute('app-options'), 'AppOptionController@index');
-                Route::get(adminRoute('app-options/{id}/edit'), 'AppOptionController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('app-options/update'), 'AppOptionController@update');
-                Route::get(adminRoute('app-options/{id}/delete'), 'AppOptionController@destroy')
-                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('app-options/{id}/edit'), 'AppOptionController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('app-options/{id}'), 'AppOptionController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('app-options/{id}'), 'AppOptionController@destroy')->where('id', '[0-9]+');
                 //Extensions
                 Route::get(adminRoute('extensions'), 'ExtensionController@index');
                 Route::get(adminRoute('extensions/{name}/edit'), 'ExtensionController@edit');
-                Route::post(adminRoute('extensions/update'), 'ExtensionController@update');
-                Route::get(adminRoute('extensions/{name}/deactivate'), 'ExtensionController@deactivate');
-                Route::get(adminRoute('extensions/{name}/activate'), 'ExtensionController@activate');
+                Route::put(adminRoute('extensions/{name}'), 'ExtensionController@update');
                 //Widgets
                 Route::get(adminRoute('widgets'), 'WidgetController@index');
-                Route::post(adminRoute('widgets'), 'WidgetController@create');
-                Route::get(adminRoute('widgets/{id}/edit'), 'WidgetController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('widgets/update'), 'WidgetController@update');
-                Route::get(adminRoute('widgets/{id}/deactivate'), 'WidgetController@deactivate')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('widgets/{id}/activate'), 'WidgetController@activate')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('widgets/{id}/delete'), 'WidgetController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('widgets/clone'), 'WidgetController@copyTo')
-                    ->where('id', '[0-9]+');
+                Route::post(adminRoute('widgets'), 'WidgetController@store');
+                Route::get(adminRoute('widgets/{id}/edit'), 'WidgetController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('widgets/{id}'), 'WidgetController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('widgets/{id}'), 'WidgetController@destroy')->where('id', '[0-9]+');
                 //Langs
                 Route::get(adminRoute('ui-lang/php'), 'UiLangController@editPhp');
-                Route::post(adminRoute('ui-lang/php'), 'UiLangController@updatePhp');
+                Route::put(adminRoute('ui-lang/php'), 'UiLangController@updatePhp');
                 Route::get(adminRoute('ui-lang/email'), 'UiLangController@editEmail');
-                Route::post(adminRoute('ui-lang/email'), 'UiLangController@updateEmail');
+                Route::put(adminRoute('ui-lang/email'), 'UiLangController@updateEmail');
                 //Roles
                 Route::get(adminRoute('user-roles'), 'RoleController@index');
                 //Users
                 Route::get(adminRoute('users'), 'UserController@index');
-                Route::get(adminRoute('users/add'), 'UserController@create');
-                Route::post(adminRoute('users/add'), 'UserController@store');
-                Route::get(adminRoute('users/{id}/edit'), 'UserController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('users/update'), 'UserController@update');
-                Route::get(adminRoute('users/{id}/delete'), 'UserController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('users/verifying-certificates'), 'UserController@listVerifyingCertificates');
-                Route::get(adminRoute('users/verifying-certificates/{id}/verify'), 'UserController@verifyCertificate')
-                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('users/create'), 'UserController@create');
+                Route::post(adminRoute('users'), 'UserController@store');
+                Route::get(adminRoute('users/{id}/edit'), 'UserController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('users/{id}'), 'UserController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('users/{id}'), 'UserController@destroy')->where('id', '[0-9]+');
                 //Link Categories
                 Route::get(adminRoute('link-categories'), 'LinkCategoryController@index');
-                Route::get(adminRoute('link-categories/add'), 'LinkCategoryController@create');
-                Route::post(adminRoute('link-categories/add'), 'LinkCategoryController@store');
-                Route::get(adminRoute('link-categories/{id}/edit'), 'LinkCategoryController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('link-categories/update'), 'LinkCategoryController@update');
-                Route::get(adminRoute('link-categories/{id}/delete'), 'LinkCategoryController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('link-categories/{id}/sort'), 'LinkCategoryController@layoutSort')
-                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('link-categories/create'), 'LinkCategoryController@create');
+                Route::post(adminRoute('link-categories'), 'LinkCategoryController@store');
+                Route::get(adminRoute('link-categories/{id}/edit'), 'LinkCategoryController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('link-categories/{id}'), 'LinkCategoryController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('link-categories/{id}'), 'LinkCategoryController@destroy')->where('id', '[0-9]+');
+                Route::get(adminRoute('link-categories/{id}/sort'), 'LinkCategoryController@sort')->where('id', '[0-9]+');
                 //Links
                 Route::get(adminRoute('links'), 'LinkController@index');
-                Route::get(adminRoute('links/{id}/delete'), 'LinkController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('links/add'), 'LinkController@create');
-                Route::post(adminRoute('links/add'), 'LinkController@store');
-                Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('links/update'), 'LinkController@update');
+                Route::get(adminRoute('links/create'), 'LinkController@create');
+                Route::post(adminRoute('links'), 'LinkController@store');
+                Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('links/{id}'), 'LinkController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('links/{id}'), 'LinkController@destroy')->where('id', '[0-9]+');
                 //Pages
                 Route::get(adminRoute('pages'), 'PageController@index');
-                Route::get(adminRoute('pages/{id}/delete'), 'PageController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('pages/add'), 'PageController@create');
-                Route::post(adminRoute('pages/add'), 'PageController@store');
-                Route::get(adminRoute('pages/{id}/edit'), 'PageController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('pages/update'), 'PageController@update');
+                Route::get(adminRoute('pages/create'), 'PageController@create');
+                Route::post(adminRoute('pages'), 'PageController@store');
+                Route::get(adminRoute('pages/{id}/edit'), 'PageController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('pages/{id}'), 'PageController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('pages/{id}'), 'PageController@destroy')->where('id', '[0-9]+');
                 //Article Categories
                 Route::get(adminRoute('article-categories'), 'ArticleCategoryController@index');
-                Route::get(adminRoute('article-categories/add'), 'ArticleCategoryController@create');
-                Route::post(adminRoute('article-categories/add'), 'ArticleCategoryController@store');
-                Route::get(adminRoute('article-categories/{id}/edit'), 'ArticleCategoryController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('article-categories/update'), 'ArticleCategoryController@update');
-                Route::get(adminRoute('article-categories/{id}/delete'), 'ArticleCategoryController@destroy')
-                    ->where('id', '[0-9]+');
+                Route::get(adminRoute('article-categories/create'), 'ArticleCategoryController@create');
+                Route::post(adminRoute('article-categories'), 'ArticleCategoryController@store');
+                Route::get(adminRoute('article-categories/{id}/edit'), 'ArticleCategoryController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('article-categories/{id}'), 'ArticleCategoryController@update');
+                Route::delete(adminRoute('article-categories/{id}'), 'ArticleCategoryController@destroy')->where('id', '[0-9]+');
                 //Articles
                 Route::get(adminRoute('articles'), 'ArticleController@index');
-                Route::get(adminRoute('articles/{id}/delete'), 'ArticleController@destroy')
-                    ->where('id', '[0-9]+');
-                Route::get(adminRoute('articles/add'), 'ArticleController@create');
-                Route::post(adminRoute('articles/add'), 'ArticleController@store');
-                Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')
-                    ->where('id', '[0-9]+');
-                Route::post(adminRoute('articles/update'), 'ArticleController@update');
+                Route::get(adminRoute('articles/create'), 'ArticleController@create');
+                Route::post(adminRoute('articles'), 'ArticleController@store');
+                Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('articles/{id}'), 'ArticleController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('articles/{id}'), 'ArticleController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

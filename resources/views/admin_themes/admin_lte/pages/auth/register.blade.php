@@ -9,8 +9,8 @@
             @endforeach
         </div>
     @endif
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ homeUrl('auth/register') }}">
+        {{ csrf_field() }}
         <input type="hidden" name="url_avatar" value="{{ appDefaultUserProfilePicture() }}">
         <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="{{ trans('label.full_name') }}" name="display_name" required value="{{ old('display_name') }}">

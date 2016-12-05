@@ -151,6 +151,9 @@ class UserRepository extends ModelRepository
     {
         $user = $this->model();
 
+        if ($user->id == authUser()->id) {
+            throw new KatnissException(trans('error._cannot_delete', ['reason' => trans('error.is_current_user')]));
+        }
         if ($user->hasRole('owner')) {
             throw new KatnissException(trans('error._cannot_delete', ['reason' => trans('error.is_role_owner')]));
         }

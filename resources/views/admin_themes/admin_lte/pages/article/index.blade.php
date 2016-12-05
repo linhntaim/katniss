@@ -1,27 +1,17 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_article_categories_title'))
-@section('page_description', trans('pages.admin_article_categories_desc'))
+@section('page_title', trans('pages.admin_articles_title'))
+@section('page_description', trans('pages.admin_articles_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('article-categories') }}">{{ trans('pages.admin_article_categories_title') }}</a></li>
+        <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
     </ol>
 @endsection
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function(){
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -30,59 +20,49 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-primary" href="{{ adminUrl('article-categories/add') }}">
-                    {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
+                <a class="btn btn-primary" href="{{ adminUrl('articles/create') }}">
+                    {{ trans('form.action_add') }} {{ trans_choice('label.article_lc', 1) }}
                 </a>
             </div>
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <p>{{ $error }}</p>
-                    @endforeach
-                </div>
-            @endif
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.category_lc', 2)]) }}</h3>
+                    <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.article_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
-                @if($categories->count()>0)
+                @if($articles->count()>0)
                     <div class="box-body">
                         <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>
-                                    <th>{{ trans('label.name') }}</th>
+                                    <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
-                                    <th>{{ trans_choice('label.article', 2) }}</th>
-                                    <th>{{ trans('label.category_parent') }}</th>
+                                    <th>{{ trans_choice('label.category', 2) }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th class="order-col-2">#</th>
-                                    <th>{{ trans('label.name') }}</th>
+                                    <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
-                                    <th>{{ trans_choice('label.link', 2) }}</th>
-                                    <th>{{ trans('label.category_parent') }}</th>
+                                    <th>{{ trans_choice('label.category', 2) }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                @foreach($categories as $category)
+                                @foreach($articles as $article)
                                     <tr>
                                         <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
-                                        <td>{{ $category->name }}</td>
-                                        <td>{{ $category->slug }}</td>
-                                        <td>{{ $category->articles()->count() }}</td>
-                                        <td>{{ empty($category->parent_id) ? '' : $category->parent->name }}</td>
+                                        <td>{{ $article->title }}</td>
+                                        <td>{{ $article->slug }}</td>
+                                        <td>{{ $article->categories->implode('name', ', ') }}</td>
                                         <td>
-                                            <a href="{{ adminUrl('article-categories/{id}/edit', ['id'=> $category->id]) }}">
-                                                {{ trans('form.action_edit') }}
-                                            </a>
-                                            <a class="delete" href="{{ adminUrl('article-categories/{id}/delete', ['id'=> $category->id]) }}?{{ $rdr_param }}">
-                                                {{ trans('form.action_delete') }}
-                                            </a>
+                                              <a href="{{ adminUrl('articles/{id}/edit', ['id'=> $article->id]) }}">
+                                                  {{ trans('form.action_edit') }}
+                                              </a>
+                                              <a class="delete" href="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}?{{ $rdr_param }}">
+                                                  {{ trans('form.action_delete') }}
+                                              </a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -117,6 +97,9 @@
                     </div>
                 @endif
             </div>
+            <!-- /.box -->
         </div>
+        <!-- /.col -->
     </div>
+    <!-- /.row -->
 @endsection

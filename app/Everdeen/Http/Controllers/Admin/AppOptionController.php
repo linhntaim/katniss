@@ -20,7 +20,7 @@ class AppOptionController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'app_option';
-        $this->appOptionRepository = new AppOptionRepository($request->input('id'));
+        $this->appOptionRepository = new AppOptionRepository();
     }
 
     /**
@@ -38,7 +38,7 @@ class AppOptionController extends ViewController
             'page' => $options->currentPage(),
             'delete' => null,
         ], adminUrl('app-options'));
-        return $this->_list([
+        return $this->_index([
             'options' => $options,
             'query' => $query,
             'page_helper' => new PaginationHelper($options->lastPage(), $options->currentPage(), $options->perPage()),
@@ -73,9 +73,9 @@ class AppOptionController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $appOption = $this->appOptionRepository->model();
+        $appOption = $this->appOptionRepository->model($id);
 
         $validator = Validator::make($request->all(), [
             'raw_value' => 'required',

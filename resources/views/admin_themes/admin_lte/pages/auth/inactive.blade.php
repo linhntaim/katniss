@@ -2,8 +2,8 @@
 @section('auth_type','register')
 @section('box_message', trans('label.account_activate_not'))
 @section('auth_form')
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ homeUrl('password/email') }}">
+        {{ csrf_field() }}
         <div class="row">
             <div class="col-xs-2">
             </div><!-- /.col -->

@@ -1,20 +1,29 @@
 /**
  * Created by Nguyen Tuan Linh on 2016-12-05.
  */
-$(function() {
+function openWindow(url, name, specs, replace) {
+    var specsArr = [];
+    for (var key in specs) {
+        specsArr.push(key + '=' + specs[key]);
+    }
+    return window.open(url, name, specsArr.join(','), replace);
+}
+
+function quickForm(action, data, method) {
+    if (typeof method === 'undefined') method = 'post';
+    $form = $('<form action="' + action + '" method="' + method + '"></form>');
+    for (var name in data) {
+        $form.append('<input type="hidden" name="' + name + '" value="' + data[name] + '">');
+    }
+    return $form;
+}
+
+$(function () {
     // fix stacked modals
     var _zIndexModal = 1050;
     $(document).on('shown.bs.modal', '.modal', function (e) {
         $(this).css('z-index', ++_zIndexModal);
     });
-
-    function openWindow(url, name, specs, replace) {
-        var specsArr = [];
-        for (var key in specs) {
-            specsArr.push(key + '=' + specs[key]);
-        }
-        return window.open(url, name, specsArr.join(','), replace);
-    }
 
     $(document).on('click', '.go-url', function (e) {
         e.preventDefault();

@@ -21,7 +21,7 @@ class LinkCategoryController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'link_category';
-        $this->linkCategoryRepository = new LinkCategoryRepository($request->input('id'));
+        $this->linkCategoryRepository = new LinkCategoryRepository();
     }
 
     /**
@@ -39,7 +39,7 @@ class LinkCategoryController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $categories->currentPage()
         ], adminUrl('link-categories'));
-        return $this->_list([
+        return $this->_index([
             'categories' => $categories,
             'query' => $query,
             'page_helper' => new PaginationHelper($categories->lastPage(), $categories->currentPage(), $categories->perPage()),
@@ -57,7 +57,7 @@ class LinkCategoryController extends ViewController
         $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_link_categories_desc'));
 
-        return $this->_add([
+        return $this->_create([
             'categories' => $this->linkCategoryRepository->getAll(),
         ]);
     }
@@ -75,7 +75,7 @@ class LinkCategoryController extends ViewController
             'slug' => 'required|max:255|unique:category_translations,slug',
         ]);
 
-        $errorRedirect = redirect(adminUrl('link-categories/add'))
+        $errorRedirect = redirect(adminUrl('link-categories/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -139,9 +139,9 @@ class LinkCategoryController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $category = $this->linkCategoryRepository->model();
+        $category = $this->linkCategoryRepository->model($id);
 
         $redirect = redirect(adminUrl('link-categories/{id}/edit', ['id' => $category->id]));
 
@@ -194,7 +194,7 @@ class LinkCategoryController extends ViewController
         return redirect($rdrUrl);
     }
 
-    public function layoutSort(Request $request, $id)
+    public function sort(Request $request, $id)
     {
         $category = $this->linkCategoryRepository->model($id);
 
@@ -204,6 +204,7 @@ class LinkCategoryController extends ViewController
         return $this->_any('sort', [
             'category' => $category,
             'links' => $category->orderedLinks,
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 }

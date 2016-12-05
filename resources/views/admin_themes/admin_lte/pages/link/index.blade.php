@@ -1,27 +1,17 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_pages_title'))
-@section('page_description', trans('pages.admin_pages_desc'))
+@section('page_title', trans('pages.admin_links_title'))
+@section('page_description', trans('pages.admin_links_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('pages') }}">{{ trans('pages.admin_pages_title') }}</a></li>
+        <li><a href="{{ adminUrl('links') }}">{{ trans('pages.admin_links_title') }}</a></li>
     </ol>
 @endsection
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function(){
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -30,44 +20,63 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-primary" href="{{ adminUrl('pages/add') }}">
-                    {{ trans('form.action_add') }} {{ trans_choice('label.page_lc', 1) }}
+                <a class="btn btn-primary" href="{{ adminUrl('links/create') }}">
+                    {{ trans('form.action_add') }} {{ trans_choice('label.link_lc', 1) }}
                 </a>
             </div>
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.page_lc', 2)]) }}</h3>
+                    <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.link_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
-            @if($pages->count()>0)
+            @if($links->count()>0)
                 <div class="box-body">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th class="order-col-2">#</th>
-                                <th>{{ trans('label.title') }}</th>
-                                <th>{{ trans('label.slug') }}</th>
+                                <th>{{ trans('label.name') }}</th>
+                                <th>{{ trans('label.url') }}</th>
+                                <th>{{ trans('label.picture') }}</th>
+                                <th>{{ trans_choice('label.category', 2) }}</th>
                                 <th>{{ trans('form.action') }}</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th class="order-col-2">#</th>
-                                <th>{{ trans('label.title') }}</th>
-                                <th>{{ trans('label.slug') }}</th>
+                                <th>{{ trans('label.name') }}</th>
+                                <th>{{ trans('label.url') }}</th>
+                                <th>{{ trans('label.picture') }}</th>
+                                <th>{{ trans_choice('label.category', 2) }}</th>
                                 <th>{{ trans('form.action') }}</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                            @foreach($pages as $page)
+                            @foreach($links as $link)
                                 <tr>
                                     <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
-                                    <td>{{ $page->title }}</td>
-                                    <td>{{ $page->slug }}</td>
+                                    <td>{{ $link->name }}</td>
                                     <td>
-                                          <a href="{{ adminUrl('pages/{id}/edit', ['id'=> $page->id]) }}">
+                                        <a class="open-window" href="{{ $link->url }}"
+                                           data-name="_blank" data-width="800" data-height="600">
+                                            <i class="fa fa-external-link"></i>
+                                        </a> &nbsp;
+                                        {{ $link->url }}
+                                    </td>
+                                    <td>
+                                        @if(!empty($link->image))
+                                            <a class="open-window" href="{{ $link->image }}"
+                                                data-name="_blank" data-width="800" data-height="600">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td>{{ $link->categories->implode('name', ', ') }}</td>
+                                    <td>
+                                          <a href="{{ adminUrl('links/{id}/edit', ['id'=> $link->id]) }}">
                                               {{ trans('form.action_edit') }}
                                           </a>
-                                          <a class="delete" href="{{ adminUrl('pages/{id}/delete', ['id'=> $page->id]) }}?{{ $rdr_param }}">
+                                          <a class="delete" href="{{ adminUrl('links/{id}', ['id'=> $link->id]) }}?{{ $rdr_param }}">
                                               {{ trans('form.action_delete') }}
                                           </a>
                                     </td>

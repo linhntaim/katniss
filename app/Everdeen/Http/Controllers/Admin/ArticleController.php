@@ -22,7 +22,7 @@ class ArticleController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'article';
-        $this->articleRepository = new ArticleRepository($request->input('id'));
+        $this->articleRepository = new ArticleRepository();
     }
 
     /**
@@ -40,7 +40,7 @@ class ArticleController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $articles->currentPage()
         ], adminUrl('articles'));
-        return $this->_list([
+        return $this->_index([
             'articles' => $articles,
             'query' => $query,
             'page_helper' => new PaginationHelper($articles->lastPage(), $articles->currentPage(), $articles->perPage()),
@@ -60,8 +60,8 @@ class ArticleController extends ViewController
         $this->theme->title([trans('pages.admin_articles_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_articles_desc'));
 
-        return $this->_add([
-            'categories' => $articleCategoryRepository->getAll(),
+        return $this->_create([
+            'categories' => $articleCategoryRepository->getExceptDefault(),
             'templates' => HomeThemeFacade::articleTemplates(),
         ]);
     }
@@ -80,7 +80,7 @@ class ArticleController extends ViewController
             'description' => 'sometimes|max:255',
         ]);
 
-        $error_redirect = redirect(adminUrl('articles/add'))
+        $error_redirect = redirect(adminUrl('articles/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -138,8 +138,9 @@ class ArticleController extends ViewController
         return $this->_edit([
             'article' => $article,
             'article_categories' => $article->categories,
-            'categories' => $articleCategoryRepository->getAll(),
+            'categories' => $articleCategoryRepository->getExceptDefault(),
             'templates' => HomeThemeFacade::articleTemplates(),
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -150,9 +151,9 @@ class ArticleController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $page = $this->articleRepository->model();
+        $page = $this->articleRepository->model($id);
 
         $redirect = redirect(adminUrl('articles/{id}/edit', ['id' => $page->id]));
 

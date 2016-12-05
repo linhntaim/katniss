@@ -17,6 +17,7 @@ return [
     'fail_account_activate' => 'Your account activation gets failed.',
     '_success_account_activate' => 'Thank you. Your account is now activated. Go to <a href=":url">your starting page</a>.',
     'fail_social_get_info' => 'Fails to get information from social network.',
+    'is_current_user' => 'You are this current user',
     'is_role_owner' => 'This user is owner of the system',
     'is_not_author' => 'You are not the author',
     '_is_not_author' => 'You are not the author of :object',

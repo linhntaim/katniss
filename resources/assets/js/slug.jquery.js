@@ -1,12 +1,12 @@
 /**
  * Created by Nguyen Tuan Linh on 2016-12-05.
  */
-jQuery.fn.extend({
+$.fn.extend({
     registerSlugTo: function ($tos) {
         return this.on('keyup', function () {
-            var slugTo = slug(jQuery(this).val(), {lower: true});
+            var slugTo = slug($(this).val(), {lower: true});
             $tos.each(function () {
-                var $to = jQuery(this);
+                var $to = $(this);
                 if ($to.is('span')) {
                     $to.text(slugTo);
                 }
@@ -21,7 +21,7 @@ jQuery.fn.extend({
         if (typeof $clones !== 'undefined') {
             $this.on('keyup', function () {
                 $clones.each(function () {
-                    var $clone = jQuery(this);
+                    var $clone = $(this);
                     if ($clone.is('span')) {
                         $clone.text($this.val());
                     }

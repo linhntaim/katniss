@@ -4,12 +4,22 @@ namespace Katniss\Everdeen\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Models\ThemeWidget;
 
 class WidgetController extends ApiController
 {
+    protected $widgetRepository;
+
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+
+        $this->widgetRepository = new ThemeWidgetRepository();
+    }
+
     public function updateOrder(Request $request)
     {
         if (!$this->validate($request, [
@@ -20,12 +30,10 @@ class WidgetController extends ApiController
             return $this->responseFail($this->getValidationErrors());
         }
 
-        $order = 0;
-        foreach ($request->input('widget_ids') as $id) {
-            ThemeWidget::where('id', $id)->update([
-                'placeholder' => $request->input('placeholder'),
-                'order' => ++$order,
-            ]);
+        try {
+            $this->widgetRepository->updateSort($request->input('widget_ids'), $request->input('placeholder'));
+        } catch (KatnissException $ex) {
+            $this->responseFail($ex->getMessage());
         }
 
         return $this->responseSuccess();

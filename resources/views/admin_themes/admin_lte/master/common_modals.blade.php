@@ -54,7 +54,7 @@
                         <div class="lockscreen-image">
                             <img src="{{ isAuth() ? $auth_user->url_avatar : asset('avatar.png') }}" alt="User Image">
                         </div>
-                        <form class="lockscreen-credentials" method="post">
+                        <form class="lockscreen-credentials" method="post" action="{{ apiUrl('user/quick-login') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="id" value="{{ isAuth() ? $auth_user->id : '' }}">
                             <div class="input-group">
@@ -87,8 +87,8 @@
 </div>
 <script>
     {!! cdataOpen() !!}
-    function x_confirm(title, content, callback) {
-        var confirmModal = jQuery('#x-confirm-modal');
+    function x_modal_confirm(title, content, callback) {
+        var confirmModal = $('#x-confirm-modal');
         confirmModal.find('#x-confirm-modal-title').html(title);
         confirmModal.find('#x-confirm-modal-content').html(content);
         confirmModal.find('#x-confirm-modal-button').on('click', function () {
@@ -104,44 +104,82 @@
             confirmModal.off('hide.bs.modal');
         });
     }
-    function x_href_confirm(href, title, content) {
-        x_confirm(title, content, function () {
-            window.location.href = href;
+
+    function x_modal_location(title, content, url) {
+        x_modal_confirm(title, content, function () {
+            window.location.href = url;
         });
     }
 
-    function x_alert(content) {
-        var alertModal = jQuery('#x-alert-modal');
-        alertModal.find('#x-alert-modal-content').html(content);
-        alertModal.modal('show');
+    function x_modal_url($element, title, content) {
+        $element.off('click').on('click', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            x_modal_location(title, content, $this.is('a') ? $this.attr('href') : $this.attr('data-url'))
+        });
     }
 
-    function x_lock() {
-        var lockModal = jQuery('#x-lock-modal');
-        lockModal.modal({backdrop: 'static'}).modal('show');
+    function x_modal_form(title, content, action, method) {
+        var data = {
+            _token: KATNISS_REQUEST_TOKEN
+        };
+        if (method != 'post' && method != 'get') {
+            data._method = method;
+        }
+        if (method != 'get') method = 'post';
+        x_modal_confirm(title, content, function () {
+            quickForm(action, data, method).submit();
+        });
     }
 
-    jQuery(document).ready(function () {
-        var jLockId = jQuery('.lockscreen-credentials input[name="id"]');
-        var jLockPassword = jQuery('.lockscreen-credentials input[name="password"]');
-        var jLockImage = jQuery('.lockscreen-image > img');
-        jQuery('.lockscreen-credentials button').off('click').on('click', function (e) {
+    function x_modal_delete($element, title, content) {
+        $element.off('click').on('click', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            x_modal_form(title, content, $this.is('a') ? $this.attr('href') : $this.attr('data-delete'), 'delete');
+        });
+    }
+
+    function x_modal_put($element, title, content) {
+        $element.off('click').on('click', function (e) {
+            e.preventDefault();
+            var $this = $(this);
+            x_modal_form(title, content, $this.is('a') ? $this.attr('href') : $this.attr('data-put'), 'put');
+        });
+    }
+
+    function x_modal_alert(content) {
+        var $alertModal = $('#x-alert-modal');
+        $alertModal.find('#x-alert-modal-content').html(content);
+        $alertModal.modal('show');
+    }
+
+    function x_modal_lock() {
+        var $lockModal = $('#x-lock-modal');
+        $lockModal.modal({backdrop: 'static'}).modal('show');
+    }
+
+    $(function () {
+        var $lockId = $('.lockscreen-credentials input[name="id"]');
+        var $lockPassword = $('.lockscreen-credentials input[name="password"]');
+        var $lockImage = $('.lockscreen-image > img');
+        $('.lockscreen-credentials button').off('click').on('click', function (e) {
             e.preventDefault();
             var api = new KatnissApi(true);
             api.get('user/quick-login', {
-                id: jLockId.val(),
-                password: jLockPassword.val()
+                id: $lockId.val(),
+                password: $lockPassword.val()
             }, function (failed, data, messages) {
                 if (!failed) {
                     KATNISS_USER = data.user;
                     updateCsrfToken(data.csrf_token);
-                    jLockId.val(KATNISS_USER.id);
-                    jLockPassword.val('');
-                    jLockImage.attr('src', KATNISS_USER.url_avatar);
-                    jQuery('#x-lock-modal').modal('hide');
+                    $lockId.val(KATNISS_USER.id);
+                    $lockPassword.val('');
+                    $lockImage.attr('src', KATNISS_USER.url_avatar);
+                    $('#x-lock-modal').modal('hide');
                 }
                 else {
-                    x_alert(messages.first());
+                    x_modal_alert(messages.first());
                 }
             });
             return false;

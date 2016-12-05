@@ -20,7 +20,7 @@ class PageController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'page';
-        $this->pageRepository = new PageRepository($request->input('id'));
+        $this->pageRepository = new PageRepository();
     }
 
     /**
@@ -38,7 +38,7 @@ class PageController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $pages->currentPage()
         ], adminUrl('pages'));
-        return $this->_list([
+        return $this->_index([
             'pages' => $pages,
             'query' => $query,
             'page_helper' => new PaginationHelper($pages->lastPage(), $pages->currentPage(), $pages->perPage()),
@@ -56,7 +56,7 @@ class PageController extends ViewController
         $this->theme->title([trans('pages.admin_pages_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_pages_desc'));
 
-        return $this->_add([
+        return $this->_create([
             'templates' => HomeThemeFacade::pageTemplates(),
         ]);
     }
@@ -75,7 +75,7 @@ class PageController extends ViewController
             'description' => 'sometimes|max:255',
         ]);
 
-        $error_redirect = redirect(adminUrl('pages/add'))
+        $error_redirect = redirect(adminUrl('pages/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -130,6 +130,7 @@ class PageController extends ViewController
         return $this->_edit([
             'page' => $page,
             'templates' => HomeThemeFacade::pageTemplates(),
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -140,9 +141,9 @@ class PageController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $page = $this->pageRepository->model();
+        $page = $this->pageRepository->model($id);
 
         $redirect = redirect(adminUrl('pages/{id}/edit', ['id' => $page->id]));
 

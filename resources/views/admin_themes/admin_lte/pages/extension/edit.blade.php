@@ -9,10 +9,10 @@
     </ol>
 @endsection
 @section('page_content')
-    <div class="row">
-        <form method="post" action="{{ adminUrl('extensions/update') }}">
-            {!! csrf_field() !!}
-            <input type="hidden" name="extension" value="{{ $extension->getName() }}">
+    <form method="post" action="{{ adminUrl('extensions/{name}', ['name' => $extension->getName()]) }}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
+        <div class="row">
             <div class="col-xs-12">
                 <h4 class="box-title">{{ trans('form.action_edit') }} {{ $extension->getDisplayName() }}</h4>
                 @if (count($errors) > 0)
@@ -33,6 +33,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection

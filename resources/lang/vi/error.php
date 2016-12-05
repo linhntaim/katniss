@@ -17,6 +17,7 @@ return [
     'fail_account_activate' => 'Kích hoạt tài khoản thất bại.',
     '_success_account_activate' => 'Cảm ơn. Tài khoản của bạn đã được kích hoạt. Hãy bắt đầu <a href=":url">tại đây</a>.',
     'fail_social_get_info' => 'Lỗi không thể truy cập thông tin từ mạng xã hội.',
+    'is_current_user' => 'Bạn đang là người dùng hiện tại',
     'is_role_owner' => 'Người dùng này là người sở hữu hệ thống',
     'is_not_author' => 'Bạn không phải là tác giả',
     '_is_not_author' => 'Bạn không phải là tác giả của :object',

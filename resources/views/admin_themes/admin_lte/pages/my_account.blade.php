@@ -10,7 +10,7 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
+        $(function () {
             new CropImageModal($('body'), 1, 'user/{{ $auth_user->id }}/avatar/cropper-js');
         });
         {!! cdataClose() !!}
@@ -21,8 +21,9 @@
 @endsection
 @section('auth_form')
     @include('messages_after_action')
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ meUrl('account') }}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
         <div class="form-group img-edit-wrapper">
             <img id="profile-user-img" class="profile-user-img img-responsive img-circle"
                  alt="{{ $auth_user->name }}" src="{{ $auth_user->url_avatar }}">

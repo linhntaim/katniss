@@ -21,6 +21,12 @@ class ArticleCategoryRepository extends CategoryRepository
         parent::__construct(Category::ARTICLE, $id);
     }
 
+    public function getExceptDefault()
+    {
+        $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
+        return Category::where('type', $this->type)->where('id', '<>', $appSettings->defaultArticleCategory)->get();
+    }
+
     public function delete()
     {
         $category = $this->model();

@@ -91,9 +91,9 @@ class ViewController extends KatnissController
      * @param array $mergeData
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function _list($data = [], $mergeData = [])
+    protected function _index($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.list'), $data, $mergeData);
+        return view($this->themePage($this->viewPath . '.index'), $data, $mergeData);
     }
 
     /**
@@ -101,9 +101,9 @@ class ViewController extends KatnissController
      * @param array $mergeData
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function _add($data = [], $mergeData = [])
+    protected function _create($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.add'), $data, $mergeData);
+        return view($this->themePage($this->viewPath . '.create'), $data, $mergeData);
     }
 
     /**
@@ -121,9 +121,9 @@ class ViewController extends KatnissController
      * @param array $mergeData
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function _detail($data = [], $mergeData = [])
+    protected function _show($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.detail'), $data, $mergeData);
+        return view($this->themePage($this->viewPath . '.show'), $data, $mergeData);
     }
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)

@@ -18,16 +18,16 @@
     @include('file_manager.open_documents_script')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
+        $(function () {
+            $('.select2').select2();
         });
         {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
-    <div class="row">
-        <form method="post">
-            {!! csrf_field() !!}
+    <form method="post" action="{{ adminUrl('links') }}">
+        {{ csrf_field() }}
+        <div class="row">
             <div class="col-xs-12">
                 <h4 class="box-title">{{ trans('form.action_add') }} {{ trans_choice('label.link_lc', 1) }}</h4>
                 @if (count($errors) > 0)
@@ -101,6 +101,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection

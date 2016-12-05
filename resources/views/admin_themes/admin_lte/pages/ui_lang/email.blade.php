@@ -9,7 +9,5 @@
     </ol>
 @endsection
 @section('page_content')
-    <div class="row">
-        @include('admin_themes.admin_lte.pages.ui_lang.file')
-    </div>
+    @include('admin_themes.admin_lte.pages.ui_lang.file', ['form_action' => adminUrl('ui-lang/email')])
 @endsection

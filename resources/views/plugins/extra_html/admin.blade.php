@@ -6,8 +6,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.ck-editor').ckeditor({
+        $(function () {
+            $('.ck-editor').ckeditor({
                 language: '{{ $site_locale }}',
                 filebrowserBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}',
                 filebrowserFlashBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=flash',

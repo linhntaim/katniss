@@ -26,14 +26,14 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-                jQuery(document).ready(function () {
-                    jQuery('.select2').select2();
-                    jQuery('[type=checkbox]').iCheck({
-                        checkboxClass: 'icheckbox_square-blue',
-                        radioClass: 'iradio_square-blue',
-                        increaseArea: '20%' // optional
-                    });
-                });
+        $(function () {
+            $('.select2').select2();
+            $('[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+        });
         {!! cdataClose() !!}
     </script>
 @endsection
@@ -44,8 +44,8 @@
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</h3>
             </div>
-            <form method="post">
-                {!! csrf_field() !!}
+            <form method="post" action="{{ adminUrl('users') }}">
+                {{ csrf_field() }}
                 <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">

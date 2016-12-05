@@ -11,17 +11,17 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.sortable').sortable({
+        $(function () {
+            $('.sortable').sortable({
                 placeholder: 'sort-highlight',
                 handle: '.handle',
                 forcePlaceholderSize: true,
                 zIndex: 999999,
                 update: function (e, ui) {
                     var items = [];
-                    var self = jQuery(this);
+                    var self = $(this);
                     self.children().each(function () {
-                        items.push(jQuery(this).attr('data-item'));
+                        items.push($(this).attr('data-item'));
                     });
                     var api = new KatnissApi();
                     api.post('link-categories/{{ $category->id }}/update-order', {
@@ -29,17 +29,8 @@
                     });
                 }
             });
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
 
-                var $this = $(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -48,13 +39,13 @@
     <div class="row">
         <div class="col-md-6">
             <div class="margin-bottom">
-                <a role="button" class="btn btn-warning delete" href="{{ adminUrl('link-categories/{id}/delete', ['id'=> $category->id]) }}">
+                <a role="button" class="btn btn-warning delete" href="{{ adminUrl('link-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
                     {{ trans('form.action_delete') }}
                 </a>
                 <a role="button" class="btn btn-primary" href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">
                     {{ trans('form.action_edit') }}
                 </a>
-                <a role="button" class="btn btn-primary pull-right" href="{{ adminUrl('link-categories/add') }}">
+                <a role="button" class="btn btn-primary pull-right" href="{{ adminUrl('link-categories/create') }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
                 </a>
             </div>
@@ -63,6 +54,13 @@
                     <h3 class="box-title">{{ trans('form.action_sort') }} {{ trans_choice('label.category_lc', 1) }} - <em>{{ $category->name }}</em></h3>
                 </div>
                 <div class="box-body">
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <p>{{ $error }}</p>
+                            @endforeach
+                        </div>
+                    @endif
                     @if($links->count()>0)
                         <ul class="todo-list sortable" data-category="{{ $category->id }}">
                             @foreach($links as $link)

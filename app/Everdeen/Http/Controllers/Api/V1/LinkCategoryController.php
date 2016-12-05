@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
-use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 
 class LinkCategoryController extends ApiController
@@ -17,7 +16,7 @@ class LinkCategoryController extends ApiController
     {
         parent::__construct($request);
 
-        $this->linkCategoryRepository = new LinkCategoryRepository($request->input('id'));
+        $this->linkCategoryRepository = new LinkCategoryRepository();
     }
 
     public function updateOrder(Request $request, $id)

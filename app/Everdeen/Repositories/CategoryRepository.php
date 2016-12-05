@@ -102,6 +102,7 @@ abstract class CategoryRepository extends ByTypeRepository
         try {
             Category::where('parent_id', $category->id)->update(['parent_id' => null]);
             $category->delete();
+            DB::commit();
             return true;
         } catch (\Exception $ex) {
             DB::rollBack();

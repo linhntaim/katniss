@@ -20,7 +20,7 @@ class ArticleCategoryController extends ViewController
         parent::__construct($request);
 
         $this->viewPath = 'article_category';
-        $this->articleCategoryRepository = new ArticleCategoryRepository($request->input('id'));
+        $this->articleCategoryRepository = new ArticleCategoryRepository();
     }
 
     /**
@@ -38,7 +38,7 @@ class ArticleCategoryController extends ViewController
         $query = new QueryStringBuilder([
             'page' => $categories->currentPage()
         ], adminUrl('article-categories'));
-        return $this->_list([
+        return $this->_index([
             'categories' => $categories,
             'query' => $query,
             'page_helper' => new PaginationHelper($categories->lastPage(), $categories->currentPage(), $categories->perPage()),
@@ -56,7 +56,7 @@ class ArticleCategoryController extends ViewController
         $this->theme->title([trans('pages.admin_article_categories_title'), trans('form.action_add')]);
         $this->theme->description(trans('pages.admin_article_categories_desc'));
 
-        return $this->_add([
+        return $this->_create([
             'categories' => $this->articleCategoryRepository->getAll(),
         ]);
     }
@@ -74,7 +74,7 @@ class ArticleCategoryController extends ViewController
             'slug' => 'required|unique:category_translations,slug',
         ]);
 
-        $errorRedirect = redirect(adminUrl('article-categories/add'))
+        $errorRedirect = redirect(adminUrl('article-categories/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -138,9 +138,9 @@ class ArticleCategoryController extends ViewController
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $category = $this->articleCategoryRepository->model();
+        $category = $this->articleCategoryRepository->model($id);
 
         $redirect = redirect(adminUrl('article-categories/{id}/edit', ['id' => $category->id]));
 

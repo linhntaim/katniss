@@ -11,18 +11,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = $(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -31,7 +21,8 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-warning delete" href="{{ adminUrl('app-options/{id}/delete', ['id'=> $app_option->id])}}?{{ $rdr_param }}">
+                <a class="btn btn-warning delete"
+                   href="{{ adminUrl('app-options/{id}', ['id'=> $app_option->id])}}?{{ $rdr_param }}">
                     {{ trans('form.action_delete') }}
                 </a>
             </div>
@@ -41,9 +32,9 @@
                         {{ trans('form.action_edit') }} {{ trans_choice('label.app_option_lc', 1) }} - <em>{{ $app_option->key }}</em>
                     </h3>
                 </div>
-                <form action="{{ adminUrl('app-options/update') }}" method="post">
-                    {!! csrf_field() !!}
-                    <input type="hidden" name="id" value="{{ $app_option->id }}">
+                <form method="post" action="{{ adminUrl('app-options/{id}', ['id' => $app_option->id]) }}">
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
                     <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">

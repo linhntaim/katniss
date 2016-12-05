@@ -32,7 +32,7 @@ class CreatePosts extends Migration
             $table->bigInteger('post_id')->unsigned();
             $table->string('locale')->index();
             $table->string('title');
-            $table->string('slug')->index();
+            $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->longText('content');
 

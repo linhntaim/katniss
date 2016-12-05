@@ -12,7 +12,8 @@ namespace Katniss\Everdeen\Repositories;
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Post;
-use Katniss\Everdeen\Utils\AppConfig;
+use Katniss\Everdeen\Themes\Extension;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 
 class ArticleRepository extends PostRepository
 {
@@ -42,6 +43,9 @@ class ArticleRepository extends PostRepository
 
             if (count($categories) > 0) {
                 $article->categories()->attach($categories);
+            } else {
+                $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
+                $article->categories()->attach([$appSettings->defaultArticleCategory]);
             }
 
             DB::commit();
@@ -79,7 +83,8 @@ class ArticleRepository extends PostRepository
             if (count($categories) > 0) {
                 $article->categories()->sync($categories);
             } else {
-                $article->categories()->detach();
+                $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
+                $article->categories()->sync([$appSettings->defaultArticleCategory]);
             }
 
             $article->save();

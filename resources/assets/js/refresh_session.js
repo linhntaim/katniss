@@ -1,12 +1,12 @@
 /**
  * Created by Nguyen Tuan Linh on 2016-12-05.
  */
-$(function() {
+$(function () {
     var _sessionTimeout = null;
 
     function updateCsrfToken(csrfToken) {
         KATNISS_REQUEST_TOKEN = csrfToken;
-        jQuery('input[type="hidden"][name="_token"]').val(csrfToken);
+        $('input[type="hidden"][name="_token"]').val(csrfToken);
     }
 
     function startSessionTimeout() {
@@ -24,7 +24,7 @@ $(function() {
                 })
             }
             else {
-                x_lock();
+                x_modal_lock();
             }
         }, KATNISS_SESSION_LIFETIME);
     }

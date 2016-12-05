@@ -8,12 +8,12 @@
     <script>
         {!! cdataOpen() !!}
         function enableAlongCheckbox(id) {
-            jQuery(id).on('ifChanged', function () {
-                jQuery('[data-enable-target="' + id + '"]').prop('disabled', !jQuery(this).is(':checked'));
+            $(id).on('ifChanged', function () {
+                $('[data-enable-target="' + id + '"]').prop('disabled', !$(this).is(':checked'));
             }).trigger('ifChanged');
         }
-        jQuery(document).ready(function () {
-            jQuery('[type=checkbox]').iCheck({
+        $(function () {
+            $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional

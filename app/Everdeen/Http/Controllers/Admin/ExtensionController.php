@@ -36,7 +36,7 @@ class ExtensionController extends ViewController
             ];
         }
 
-        return $this->_list([
+        return $this->_index([
             'extensions' => $extensions,
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
@@ -62,9 +62,16 @@ class ExtensionController extends ViewController
         ], $extension->viewAdminParams()));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $name)
     {
-        $extensionClass = ExtensionsFacade::extensionClass($request->input('extension'));
+        if($request->has('activate')) {
+            return $this->activate($request, $name);
+        }
+        if($request->has('deactivate')) {
+            return $this->deactivate($request, $name);
+        }
+
+        $extensionClass = ExtensionsFacade::extensionClass($name);
         if (empty($extensionClass) || !class_exists($extensionClass)) {
             abort(404);
         }
@@ -104,7 +111,7 @@ class ExtensionController extends ViewController
         return $redirect;
     }
 
-    public function activate(Request $request, $name)
+    protected function activate(Request $request, $name)
     {
         $extensionClasses = array_keys(ExtensionsFacade::all());
         $activatedExtensions = activatedExtensions();
@@ -118,7 +125,7 @@ class ExtensionController extends ViewController
         return redirect($rdrUrl);
     }
 
-    public function deactivate(Request $request, $name)
+    protected function deactivate(Request $request, $name)
     {
         $extensionClasses = array_keys(ExtensionsFacade::all());
         $activatedExtensions = activatedExtensions();

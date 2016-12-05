@@ -8,11 +8,11 @@
         );
     }
     function processSelectedFile(file_url, input_id) {
-        jQuery('#' + input_id).val(file_url);
+        $('#' + input_id).val(file_url);
     }
-    jQuery(document).ready(function () {
-        jQuery('.image-from-documents').on('click', function () {
-            openMyDocuments(jQuery(this).attr('id'), 'images');
+    $(function () {
+        $('.image-from-documents').on('click', function () {
+            openMyDocuments($(this).attr('id'), 'images');
         });
     });
     {!! cdataClose() !!}

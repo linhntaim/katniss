@@ -10,18 +10,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function(){
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
@@ -64,7 +54,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ adminUrl('app-options/{id}/edit', ['id'=> $option->id]) }}">{{ trans('form.action_edit') }}</a>
-                                        <a class="delete" href="{{ adminUrl('app-options/{id}/delete', ['id'=> $option->id])}}?{{ $rdr_param }}">
+                                        <a class="delete" href="{{ adminUrl('app-options/{id}', ['id'=> $option->id])}}?{{ $rdr_param }}">
                                             {{ trans('form.action_delete') }}
                                         </a>
                                     </td>
