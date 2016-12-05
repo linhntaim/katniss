@@ -124,4 +124,11 @@ abstract class HomeTheme extends Theme
     public function articleTemplates() {
         return [];
     }
+
+    protected function registerExtScripts($is_auth = false)
+    {
+        parent::registerExtScripts($is_auth);
+
+        $this->extJsQueue->add('global-app-script', libraryAsset('katniss.home.js'));
+    }
 }

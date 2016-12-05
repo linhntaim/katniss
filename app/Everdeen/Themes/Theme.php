@@ -370,6 +370,5 @@ abstract class Theme
             'KATNISS_SESSION_LIFETIME' => sessionLifetime(),
             'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
-        $this->extJsQueue->add('global-app-script', libraryAsset('katniss.js'));
     }
 }
