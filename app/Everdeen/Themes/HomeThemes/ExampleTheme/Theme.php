@@ -6,7 +6,7 @@
  * Time: 02:53
  */
 
-namespace Katniss\Everdeen\Themes\HomeThemes\DefaultTheme;
+namespace Katniss\Everdeen\Themes\HomeThemes\ExampleTheme;
 
 
 use Katniss\Everdeen\Themes\CssQueue;

@@ -26,7 +26,17 @@ Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
 ], function () {
-    Route::get('/', 'Home\HomepageController@index');
+    Route::group([
+        'namespace' => 'Home',
+    ], function () {
+        Route::get('/', 'ExampleController@index');
+        Route::get('example/social-sharing', 'ExampleController@getSocialSharing');
+        Route::get('example/facebook-comments', 'ExampleController@getFacebookComments');
+        Route::get('example/widgets', 'ExampleController@getWidgets');
+        Route::get('example/my-settings', 'ExampleController@getMySettings');
+    });
+
+
     Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');
     Route::post(homeRoute('me/settings'), 'Admin\SettingsController@update');
 

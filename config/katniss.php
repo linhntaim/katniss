@@ -22,12 +22,12 @@ return [
     'idle_switching_time' => 120, // seconds
 
     'admin_theme' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
-    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME,
+    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME,
     'admin_themes' => [
         Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
     'home_themes' => [
-        Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::class,
+        Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::class,
     ],
     'widgets' => [
         Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::class,

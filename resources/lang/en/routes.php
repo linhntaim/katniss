@@ -7,6 +7,11 @@
  */
 
 return [
+    'example/social-sharing'                        => 'example/social-sharing',
+    'example/facebook-comments'                     => 'example/facebook-comments',
+    'example/widgets'                               => 'example/widgets',
+    'example/my-settings'                           => 'example/my-settings',
+
     'me'                                            => 'me',
     'me/settings'                                   => 'me/settings',
     'me/account'                                    => 'me/account',

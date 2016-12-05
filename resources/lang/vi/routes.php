@@ -7,6 +7,11 @@
  */
 
 return [
+    'example/social-sharing'                        => 'vi-du/chia-se-len-mang-xa-hoi',
+    'example/facebook-comments'                     => 'vi-du/binh-luan-bang-facebook',
+    'example/widgets'                               => 'vi-du/cong-cu-hien-thi',
+    'example/my-settings'                           => 'vi-du/thiet-lap-cua-toi',
+
     'me'                                            => 'ca-nhan-toi',
     'me/settings'                                   => 'ca-nhan-toi/thiet-lap',
     'me/account'                                    => 'ca-nhan-toi/tai-khoan',

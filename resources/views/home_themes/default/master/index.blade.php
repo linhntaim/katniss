@@ -32,7 +32,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">{{ $site_name }}</a>
+            <a class="navbar-brand page-scroll" href="{{ homeUrl() }}">{{ $site_name }}</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -43,32 +43,6 @@
     </div>
     <!-- /.container -->
 </nav>
-<section id="intro" class="odd-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="text-uppercase">{{ $site_name }}</h1>
-                @if(!$is_auth)
-                    <p>
-                        <a href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a>
-                    </p>
-                @else
-                    <p>
-                        {{ trans('label._hi', ['name' => $auth_user->display_name]) }}
-                    </p>
-                    @if($auth_user->can('access-admin'))
-                        <p>
-                            <a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a>
-                        </p>
-                    @endif
-                    <p>
-                        <a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a>
-                    </p>
-                @endif
-            </div>
-        </div>
-    </div>
-</section>
 @yield('extra_sections')
 <footer>
     <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
