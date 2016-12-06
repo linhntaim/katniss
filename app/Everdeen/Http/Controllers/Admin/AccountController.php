@@ -2,19 +2,19 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\UserRepository;
 
 class AccountController extends ViewController
 {
     protected $userRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'my_account';
         $this->userRepository = new UserRepository();
@@ -22,8 +22,8 @@ class AccountController extends ViewController
 
     public function index()
     {
-        $this->theme->title(trans('pages.my_account_title'));
-        $this->theme->description(trans('pages.my_account_desc'));
+        $this->_title(trans('pages.my_account_title'));
+        $this->_description(trans('pages.my_account_desc'));
 
         return $this->_view();
     }
@@ -51,9 +51,7 @@ class AccountController extends ViewController
                 $request->input('name'),
                 $request->input('display_name'),
                 $request->input('email'),
-                $request->input('password', ''),
-                null,
-                $this->globalViewParams
+                $request->input('password', '')
             );
         } catch (KatnissException $ex) {
             return $redirect->withErrors([$ex->getMessage()]);

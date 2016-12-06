@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Repositories\LinkRepository;
@@ -16,9 +16,9 @@ class LinkController extends ViewController
 {
     protected $linkRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'link';
         $this->linkRepository = new LinkRepository();
@@ -31,8 +31,8 @@ class LinkController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_links_title'));
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $this->_title(trans('pages.admin_links_title'));
+        $this->_description(trans('pages.admin_links_desc'));
 
         $links = $this->linkRepository->getPaged();
 
@@ -56,8 +56,8 @@ class LinkController extends ViewController
     {
         $categoryRepository = new LinkCategoryRepository();
 
-        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $this->_title([trans('pages.admin_links_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_links_desc'));
 
         return $this->_create([
             'categories' => $categoryRepository->getAll()
@@ -67,7 +67,7 @@ class LinkController extends ViewController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -127,8 +127,8 @@ class LinkController extends ViewController
         $link = $this->linkRepository->model($id);
         $categoryRepository = new LinkCategoryRepository();
 
-        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_links_desc'));
 
         return $this->_edit([
             'link' => $link,
@@ -141,7 +141,7 @@ class LinkController extends ViewController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */

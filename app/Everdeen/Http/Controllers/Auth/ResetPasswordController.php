@@ -3,9 +3,9 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Events\UserPasswordChanged;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -32,10 +32,11 @@ class ResetPasswordController extends ViewController
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
+        $this->viewPath = 'auth';
         $this->subject = '[' . appName() . '] ' . trans('pages.account_password_reset_title');
         $this->redirectTo = homePath('auth/inactive');
 
@@ -48,10 +49,10 @@ class ResetPasswordController extends ViewController
             throw new NotFoundHttpException();
         }
 
-        $this->theme->title(trans('pages.account_password_reset_title'));
-        $this->theme->description(trans('pages.account_password_reset_desc'));
+        $this->_title(trans('pages.account_password_reset_title'));
+        $this->_description(trans('pages.account_password_reset_desc'));
 
-        return view($this->themePage('auth.reset'))->with([
+        return $this->_any('reset')->with([
             'token' => $token,
             'email' => $request->email,
         ]);
@@ -60,7 +61,7 @@ class ResetPasswordController extends ViewController
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function postReset(Request $request)
@@ -71,8 +72,8 @@ class ResetPasswordController extends ViewController
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
-     * @param  string  $password
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword $user
+     * @param  string $password
      * @return void
      */
     protected function resetPassword($user, $password)

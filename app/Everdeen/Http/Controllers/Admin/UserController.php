@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
@@ -13,14 +13,13 @@ use Katniss\Everdeen\Utils\PaginationHelper;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 use Katniss\Everdeen\Models\Role;
 
-
 class UserController extends ViewController
 {
     protected $userRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'user';
         $this->userRepository = new UserRepository();
@@ -33,8 +32,8 @@ class UserController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_users_title'));
-        $this->theme->description(trans('pages.admin_users_desc'));
+        $this->_title(trans('pages.admin_users_title'));
+        $this->_description(trans('pages.admin_users_desc'));
 
         $users = $this->userRepository->getPaged();
         $users_query = new QueryStringBuilder([
@@ -57,8 +56,8 @@ class UserController extends ViewController
     {
         $roleRepository = new RoleRepository();
 
-        $this->theme->title([trans('pages.admin_users_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_users_desc'));
+        $this->_title([trans('pages.admin_users_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_users_desc'));
 
         return $this->_create([
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
@@ -100,8 +99,7 @@ class UserController extends ViewController
                 $request->input('email'),
                 $request->input('password'),
                 $request->input('roles'),
-                $request->has('send_welcomed_mail'),
-                $this->globalViewParams
+                $request->has('send_welcomed_mail')
             );
         } catch (KatnissException $ex) {
             return $errorRdr->withErrors([$ex->getMessage()]);
@@ -132,8 +130,8 @@ class UserController extends ViewController
         $user = $this->userRepository->model($id);
         $roleRepository = new RoleRepository();
 
-        $this->theme->title([trans('pages.admin_users_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_users_desc'));
+        $this->_title([trans('pages.admin_users_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_users_desc'));
 
         return $this->_edit([
             'user' => $user,
@@ -173,8 +171,7 @@ class UserController extends ViewController
                 $request->input('display_name'),
                 $request->input('email'),
                 $request->input('password', ''),
-                $request->input('roles'),
-                $this->globalViewParams
+                $request->input('roles')
             );
         } catch (KatnissException $ex) {
             return $rdr->withErrors([$ex->getMessage()]);

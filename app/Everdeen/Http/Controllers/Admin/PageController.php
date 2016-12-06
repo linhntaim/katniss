@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\PageRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\PaginationHelper;
@@ -15,9 +15,9 @@ class PageController extends ViewController
 {
     private $pageRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'page';
         $this->pageRepository = new PageRepository();
@@ -30,8 +30,8 @@ class PageController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_pages_title'));
-        $this->theme->description(trans('pages.admin_pages_desc'));
+        $this->_title(trans('pages.admin_pages_title'));
+        $this->_description(trans('pages.admin_pages_desc'));
 
         $pages = $this->pageRepository->getPaged();
 
@@ -53,8 +53,8 @@ class PageController extends ViewController
      */
     public function create()
     {
-        $this->theme->title([trans('pages.admin_pages_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_pages_desc'));
+        $this->_title([trans('pages.admin_pages_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_pages_desc'));
 
         return $this->_create([
             'templates' => HomeThemeFacade::pageTemplates(),
@@ -64,7 +64,7 @@ class PageController extends ViewController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -124,8 +124,8 @@ class PageController extends ViewController
     {
         $page = $this->pageRepository->model($id);
 
-        $this->theme->title([trans('pages.admin_pages_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_pages_desc'));
+        $this->_title([trans('pages.admin_pages_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_pages_desc'));
 
         return $this->_edit([
             'page' => $page,
@@ -137,7 +137,7 @@ class PageController extends ViewController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */

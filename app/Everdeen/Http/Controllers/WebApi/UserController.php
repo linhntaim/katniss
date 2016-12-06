@@ -8,14 +8,14 @@
 
 namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
+use Katniss\Everdeen\Http\Request;
 
 class UserController extends WebApiController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
     }
 
     public function getCsrfToken()
@@ -27,7 +27,7 @@ class UserController extends WebApiController
 
     public function getQuickLogin(Request $request)
     {
-        if (!$this->validate($request, [
+        if (!$this->customValidate($request, [
             'id' => 'required',
             'password' => 'required',
         ])

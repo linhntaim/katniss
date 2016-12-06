@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Utils\AppOptionHelper;
 
 abstract class Extension extends Plugin
 {
@@ -71,7 +72,7 @@ abstract class Extension extends Plugin
         parent::__construct();
 
         if ($this::EDITABLE) {
-            $this->fromDataConstruct((array)getOption($this->getOptionName(), []));
+            $this->fromDataConstruct((array)AppOptionHelper::get($this->getOptionName(), []));
             $this->__init();
         }
     }
@@ -134,7 +135,7 @@ abstract class Extension extends Plugin
     {
         if (!$this::EDITABLE) abort(404);
 
-        if (setOption($this->getOptionName(), $this->toDataConstruct($data, $localizedData), 'ext:' . $this->getName())) {
+        if (AppOptionHelper::set($this->getOptionName(), $this->toDataConstruct($data, $localizedData), 'ext:' . $this->getName())) {
             return true;
         }
 

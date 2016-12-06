@@ -7,6 +7,9 @@
  */
 
 return [
+    'errors/{code}'                                 => 'errors/{code}',
+    'admin/errors/{code}'                           => 'admin/errors/{code}',
+
     'example/social-sharing'                        => 'example/social-sharing',
     'example/facebook-comments'                     => 'example/facebook-comments',
     'example/widgets'                               => 'example/widgets',

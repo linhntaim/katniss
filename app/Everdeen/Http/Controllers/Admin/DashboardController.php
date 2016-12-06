@@ -2,14 +2,14 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 
 class DashboardController extends ViewController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'dashboard';
     }
@@ -20,8 +20,8 @@ class DashboardController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_dashboard_title'));
-        $this->theme->description(trans('pages.admin_dashboard_desc'));
+        $this->_title(trans('pages.admin_dashboard_title'));
+        $this->_description(trans('pages.admin_dashboard_desc'));
 
         return $this->_view();
     }

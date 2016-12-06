@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Themes\WidgetsFacade;
@@ -14,9 +14,9 @@ class WidgetController extends ViewController
 {
     protected $widgetRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'widget';
         $this->widgetRepository = new ThemeWidgetRepository();
@@ -45,8 +45,8 @@ class WidgetController extends ViewController
             $themePlaceholders[$placeholderName][] = $themeWidget;
         }
 
-        $this->theme->title(trans('pages.admin_widgets_title'));
-        $this->theme->description(trans('pages.admin_widgets_desc'));
+        $this->_title(trans('pages.admin_widgets_title'));
+        $this->_description(trans('pages.admin_widgets_desc'));
 
         return $this->_index([
             'widgets' => $widgets,
@@ -114,8 +114,8 @@ class WidgetController extends ViewController
         $widget = new $widgetClass($params);
         $widget->setThemeWidget($themeWidget);
 
-        $this->theme->title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_widgets_desc'));
+        $this->_title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_widgets_desc'));
 
         return $this->_edit(array_merge([
             'widget' => $widget,

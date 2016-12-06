@@ -23,37 +23,28 @@ abstract class Theme
     const TYPE_HOME = 'home_themes';
 
     public static $isAdmin = false;
+    public static $onWebApi = false;
 
     /**
      * @return Theme
      */
     public static function byRequest()
     {
-        $adminPaths = _k('paths_use_admin_theme');
-        $request = request();
-        foreach ($adminPaths as $adminPath) {
-            $adminPath = homePath($adminPath);
-            if ($request->is($adminPath, $adminPath . '/*')) {
-                self::$isAdmin = true;
-                return app('admin_theme');
-            }
+        $checkPath = checkPath();
+        if ($checkPath->api) {
+            return null;
         }
-        return app('home_theme');
-    }
-
-    public static function errorRequest(HttpException $exception)
-    {
-        return Theme::byRequest()->errorResponse($exception);
+        self::$onWebApi = $checkPath->webApi;
+        self::$isAdmin = $checkPath->admin;
+        $theme = self::$isAdmin ? app('admin_theme') : app('home_theme');
+        $theme->register(isAuth());
+        return $theme;
     }
 
     protected $name;
-
     protected $view;
-
     protected $type;
-
     protected $viewPath;
-
     protected $assetPath;
 
     protected $titleRoot;
@@ -63,6 +54,8 @@ abstract class Theme
     protected $author;
     protected $generator;
     protected $keywords;
+
+    protected $viewParams;
 
     /**
      * @var TextQueue
@@ -86,12 +79,6 @@ abstract class Theme
         $this->type = $type;
         $this->viewPath = empty($type) ? $this->view . '.' : $this->type . '.' . $this->view . '.';
         $this->assetPath = empty($type) ? 'assets/' . $this->view . '/' : 'assets/' . $this->type . '/' . $this->view . '/';
-        $this->header = new TextQueue();
-        $this->footer = new TextQueue();
-        $this->libJsQueue = new JsQueue();
-        $this->extJsQueue = new JsQueue();
-        $this->libCssQueue = new CssQueue();
-        $this->extCssQueue = new CssQueue();
         $this->titleRoot = appName();
         $this->title = appName();
         $this->description = appDescription();
@@ -99,8 +86,74 @@ abstract class Theme
         $this->author = appAuthor() . ' (' . appEmail() . ')';
         $this->generator = appName() . ' ' . appVersion() . ' (' . frameworkVersion() . ')';
         $this->keywords = appKeywords();
+        $this->viewParams = [];
+        $this->header = new TextQueue();
+        $this->footer = new TextQueue();
+        $this->libJsQueue = new JsQueue();
+        $this->extJsQueue = new JsQueue();
+        $this->libCssQueue = new CssQueue();
+        $this->extCssQueue = new CssQueue();
     }
 
+    protected function masterPath($name)
+    {
+        return $this->viewPath . 'master.' . $name;
+    }
+
+    protected function pagePath($name)
+    {
+        return $this->viewPath . 'pages.' . $name;
+    }
+
+    protected function errorPath($name = 'common')
+    {
+        return $this->viewPath . 'errors.' . $name;
+    }
+
+    public function page($name)
+    {
+        return $this->pagePath($name);
+    }
+
+    public function error($name = 'common')
+    {
+        return $this->errorPath($name);
+    }
+
+    public function asset($file_path = '')
+    {
+        return asset($this->assetPath . $file_path);
+    }
+
+    public function imageAsset($file_path)
+    {
+        return $this->asset('img/' . $file_path);
+    }
+
+    public function cssAsset($file_path)
+    {
+        return $this->asset('css/' . $file_path);
+    }
+
+    public function jsAsset($file_path)
+    {
+        return $this->asset('js/' . $file_path);
+    }
+
+    public function pluginAsset($file_path)
+    {
+        return $this->asset('plugins/' . $file_path);
+    }
+
+    public function libAsset($file_path = '')
+    {
+        return self::libraryAsset($file_path);
+    }
+
+    static function libraryAsset($file_path = '')
+    {
+        return asset('assets/libraries/' . $file_path);
+    }
 
     /**
      * @param string $author
@@ -203,64 +256,16 @@ abstract class Theme
         return $this->keywords;
     }
 
-    protected function masterPath($name)
+    /**
+     * @param array|null $params
+     * @return array
+     */
+    public function viewParams($params = null)
     {
-        return $this->viewPath . 'master.' . $name;
-    }
-
-    protected function pagePath($name)
-    {
-        return $this->viewPath . 'pages.' . $name;
-    }
-
-    protected function errorPath($name = 'common')
-    {
-        return $this->viewPath . 'errors.' . $name;
-    }
-
-    public function page($name)
-    {
-        return $this->pagePath($name);
-    }
-
-    public function error($name = 'common')
-    {
-        return $this->errorPath($name);
-    }
-
-    public function asset($file_path = '')
-    {
-        return asset($this->assetPath . $file_path);
-    }
-
-    public function imageAsset($file_path)
-    {
-        return $this->asset('img/' . $file_path);
-    }
-
-    public function cssAsset($file_path)
-    {
-        return $this->asset('css/' . $file_path);
-    }
-
-    public function jsAsset($file_path)
-    {
-        return $this->asset('js/' . $file_path);
-    }
-
-    public function pluginAsset($file_path)
-    {
-        return $this->asset('plugins/' . $file_path);
-    }
-
-    public function libAsset($file_path = '')
-    {
-        return self::libraryAsset($file_path);
-    }
-
-    static function libraryAsset($file_path = '')
-    {
-        return asset('assets/libraries/' . $file_path);
+        if ($params != null) {
+            $this->viewParams = $params;
+        }
+        return $this->viewParams;
     }
 
     /**
@@ -389,20 +394,5 @@ abstract class Theme
             'KATNISS_SESSION_LIFETIME' => sessionLifetime(),
             'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
-    }
-
-    protected function errorResponse(HttpException $exception) {
-        $status = $exception->getStatusCode();
-        $view = $this->error($status); // specific error
-        $existed = view()->exists($view);
-        if (!$existed) {
-            $view = $this->error(); // common error
-            $existed = view()->exists($view);
-        }
-        if ($existed) {
-            return response()->view($view, ['exception' => $exception], $status, $exception->getHeaders());
-        }
-
-        return false;
     }
 }

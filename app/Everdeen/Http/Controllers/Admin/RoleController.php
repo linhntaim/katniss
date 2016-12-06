@@ -2,7 +2,6 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
@@ -12,9 +11,9 @@ class RoleController extends ViewController
 {
     protected $roleRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'role';
         $this->roleRepository = new RoleRepository();
@@ -27,8 +26,8 @@ class RoleController extends ViewController
      */
     public function index()
     {
-        $this->theme->title(trans('pages.admin_roles_title'));
-        $this->theme->description(trans('pages.admin_roles_desc'));
+        $this->_title(trans('pages.admin_roles_title'));
+        $this->_description(trans('pages.admin_roles_desc'));
 
         $roles = $this->roleRepository->getPaged();
         $query = new QueryStringBuilder([

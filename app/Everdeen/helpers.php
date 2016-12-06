@@ -295,6 +295,41 @@ function currentFullLocaleCode($separator = '_')
 #endregion
 
 #region Generate URL
+function checkPath($request = null)
+{
+    if (empty($request)) {
+        $request = request();
+    }
+
+    $return = new stdClass();
+    $return->api = false;
+    $return->webApi = false;
+    $return->admin = false;
+    $return->home = false;
+
+    $apiPath = 'api'; // can be changed
+    if ($request->is($apiPath, $apiPath . '/*')) {
+        $return->api = true;
+        return $return;
+    }
+    $webApiPath = 'web-api'; // can be changed
+
+    $return->webApi = $request->is($webApiPath, $webApiPath . '/*');
+
+    $adminPaths = _k('paths_use_admin_theme');
+    foreach ($adminPaths as $adminPath) {
+        $adminPath = !$return->webApi ? homePath($adminPath) : $webApiPath . '/' . $adminPath;
+        if ($request->is($adminPath, $adminPath . '/*')) {
+            $return->admin = true;
+            break;
+        }
+    }
+
+    $return->home = !$return->admin;
+
+    return $return;
+}
+
 function transRoute($route)
 {
     return LaravelLocalization::transRoute('routes.' . $route);

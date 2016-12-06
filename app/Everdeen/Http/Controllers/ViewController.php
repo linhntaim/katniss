@@ -2,67 +2,69 @@
 
 namespace Katniss\Everdeen\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
 
 class ViewController extends KatnissController
 {
     /**
-     * @var \Katniss\Everdeen\Themes\Theme
-     */
-    protected $theme;
-
-    /**
-     * @var array
-     */
-    protected $globalViewParams;
-
-    /**
      * @var string
      */
     protected $viewPath;
 
-    public function __construct(Request $request = null)
+    #region Theme
+    /**
+     * Get global view params
+     *
+     * @return array
+     */
+    protected function _params()
     {
-        parent::__construct($request);
-
-        $this->middleware(function (Request $request, $next) {
-            $session = $request->session();
-
-            $this->theme = Theme::byRequest();
-            $this->theme->register($this->isAuth);
-            $this->globalViewParams = [
-                'site_locale' => $this->localeCode,
-                'site_version' => appVersion(),
-                'site_name' => appName(),
-                'site_logo' => appLogo(),
-                'site_keywords' => appKeywords(),
-                'site_short_name' => appShortName(),
-                'site_description' => appDescription(),
-                'site_author' => appAuthor(),
-                'site_email' => appEmail(),
-                'site_domain' => appDomain(),
-                'site_home_url' => homeUrl(),
-                'is_auth' => $this->isAuth,
-                'auth_user' => $this->authUser,
-                'session_id' => $session->getId(),
-                'successes' => $session->has('successes') ?
-                    collect((array)$session->get('successes')) : collect([]),
-                'info' => $session->has('info') ?
-                    collect((array)$session->get('info')) : collect([]),
-                'max_upload_file_size' => maxUploadFileSize()
-            ];
-            foreach ($this->globalViewParams as $key => $value) {
-                view()->share($key, $value);
-            }
-            return $next($request);
-        });
+        return $this->currentRequest->theme()->viewParams();
     }
 
-    protected function themePage($name)
+    protected function _title($title, $use_root = true, $separator = '&raquo;')
     {
-        return $this->theme->page($name);
+        return $this->currentRequest->theme()->title($title, $use_root, $separator);
+    }
+
+    protected function _description($description = '')
+    {
+        return $this->currentRequest->theme()->description($description);
+    }
+
+    protected function _error($name)
+    {
+        return $this->currentRequest->theme()->error($name);
+    }
+
+    protected function _errorExists($view)
+    {
+        return view()->exists($this->_error($view));
+    }
+
+    protected function _err($code, $view, $data = [], $headers = [])
+    {
+        return $this->_e($code, $this->_error($view), $data, $headers);
+    }
+
+    protected function _e($code, $view, $data = [], $headers = [])
+    {
+        return response()->view($view, $data, $code, $headers);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    protected function _page($name)
+    {
+        return $this->currentRequest->theme()->page($name);
+    }
+
+    protected function _pageExists($view)
+    {
+        return view()->exists($this->_page($this->viewPath . '.' . $view));
     }
 
     /**
@@ -72,7 +74,7 @@ class ViewController extends KatnissController
      */
     protected function _view($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath), $data, $mergeData);
+        return view($this->_page($this->viewPath), $data, $mergeData);
     }
 
     /**
@@ -83,7 +85,7 @@ class ViewController extends KatnissController
      */
     protected function _any($view, $data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.' . $view), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.' . $view), $data, $mergeData);
     }
 
     /**
@@ -93,7 +95,7 @@ class ViewController extends KatnissController
      */
     protected function _index($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.index'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.index'), $data, $mergeData);
     }
 
     /**
@@ -103,7 +105,7 @@ class ViewController extends KatnissController
      */
     protected function _create($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.create'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.create'), $data, $mergeData);
     }
 
     /**
@@ -113,7 +115,7 @@ class ViewController extends KatnissController
      */
     protected function _edit($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.edit'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.edit'), $data, $mergeData);
     }
 
     /**
@@ -123,8 +125,10 @@ class ViewController extends KatnissController
      */
     protected function _show($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.show'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.show'), $data, $mergeData);
     }
+
+    #endregion
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
     {
@@ -137,5 +141,25 @@ class ViewController extends KatnissController
         if (!empty($rdr)) {
             $errorRdrUrl = $rdr;
         }
+    }
+
+    public function error(Request $request, $code)
+    {
+        $params = $request->all();
+        $headers = [];
+        if (isset($params['headers'])) {
+            $headers = (array)$params['headers'];
+            unset($params['headers']);
+        }
+        if ($this->_errorExists($code)) {
+            return $this->_err($code, $code, $params, $headers);
+        } elseif ($this->_errorExists('common')) {
+            return $this->_err($code, 'common', $params, $headers);
+        } elseif (view()->exists('errors.' . $code)) {
+            return $this->_e($code, 'errors' . $code, $params, $headers);
+        } elseif (view()->exists('errors.common')) {
+            return $this->_e($code, 'errors.common', $params, $headers);
+        }
+        return '';
     }
 }

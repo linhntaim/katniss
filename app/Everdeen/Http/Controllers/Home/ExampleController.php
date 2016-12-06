@@ -2,14 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\ArticleRepository;
 use Katniss\Everdeen\Repositories\PageRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
-use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
-use Katniss\Everdeen\Utils\Menu;
-use Katniss\Everdeen\Utils\MenuItem;
 
 class ExampleController extends ViewController
 {
@@ -53,8 +49,8 @@ class ExampleController extends ViewController
 
     public function getPages()
     {
-        $this->theme->title(trans_choice('label.page', 2));
-        $this->theme->description(trans_choice('label.page', 2));
+        $this->_title(trans_choice('label.page', 2));
+        $this->_description(trans_choice('label.page', 2));
 
         $pageRepository = new PageRepository();
         $pages = $pageRepository->getPaged();
@@ -68,8 +64,8 @@ class ExampleController extends ViewController
         $pageRepository = new PageRepository();
         $page = $pageRepository->model($id);
 
-        $this->theme->title([trans_choice('label.page', 1), $page->title]);
-        $this->theme->description(htmlShorten($page->content));
+        $this->_title([trans_choice('label.page', 1), $page->title]);
+        $this->_description(htmlShorten($page->content));
 
         return $this->_any('page', [
             'page' => $page,
@@ -78,8 +74,8 @@ class ExampleController extends ViewController
 
     public function getArticles()
     {
-        $this->theme->title(trans_choice('label.article', 2));
-        $this->theme->description(trans_choice('label.article', 2));
+        $this->_title(trans_choice('label.article', 2));
+        $this->_description(trans_choice('label.article', 2));
 
         $articleRepository = new ArticleRepository();
         $articles = $articleRepository->getPaged();
@@ -93,8 +89,8 @@ class ExampleController extends ViewController
         $articleRepository = new ArticleRepository();
         $article = $articleRepository->model($id);
 
-        $this->theme->title([trans_choice('label.page', 1), $article->title]);
-        $this->theme->description(htmlShorten($article->content));
+        $this->_title([trans_choice('label.page', 1), $article->title]);
+        $this->_description(htmlShorten($article->content));
 
         return $this->_any('article', [
             'article' => $article,

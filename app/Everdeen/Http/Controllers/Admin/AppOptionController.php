@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\AppOptionRepository;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\PaginationHelper;
@@ -15,9 +15,9 @@ class AppOptionController extends ViewController
 {
     protected $appOptionRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'app_option';
         $this->appOptionRepository = new AppOptionRepository();
@@ -30,8 +30,8 @@ class AppOptionController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_app_options_title'));
-        $this->theme->description(trans('pages.admin_app_options_desc'));
+        $this->_title(trans('pages.admin_app_options_title'));
+        $this->_description(trans('pages.admin_app_options_desc'));
 
         $options = $this->appOptionRepository->getPaged();
         $query = new QueryStringBuilder([
@@ -57,8 +57,8 @@ class AppOptionController extends ViewController
     {
         $appOption = $this->appOptionRepository->model($id);
 
-        $this->theme->title([trans('pages.admin_app_options_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_app_options_desc'));
+        $this->_title([trans('pages.admin_app_options_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_app_options_desc'));
 
         return $this->_edit([
             'app_option' => $appOption,

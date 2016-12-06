@@ -7,6 +7,9 @@
  */
 
 return [
+    'errors/{code}'                                 => 'ma-loi/{code}',
+    'admin/errors/{code}'                           => 'quan-tri/ma-loi/{code}',
+
     'example/social-sharing'                        => 'vi-du/chia-se-len-mang-xa-hoi',
     'example/facebook-comments'                     => 'vi-du/binh-luan-bang-facebook',
     'example/widgets'                               => 'vi-du/cong-cu-hien-thi',

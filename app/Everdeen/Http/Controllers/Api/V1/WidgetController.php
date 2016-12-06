@@ -2,10 +2,9 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
@@ -13,16 +12,16 @@ class WidgetController extends ApiController
 {
     protected $widgetRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->widgetRepository = new ThemeWidgetRepository();
     }
 
     public function updateOrder(Request $request)
     {
-        if (!$this->validate($request, [
+        if (!$this->customValidate($request, [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
             'widget_ids' => 'required|array|exists:theme_widgets,id',
         ])

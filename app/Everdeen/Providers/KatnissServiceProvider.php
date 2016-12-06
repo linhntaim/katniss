@@ -62,6 +62,18 @@ class KatnissServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->alias('request', \Katniss\Everdeen\Http\Request::class);
+
+        $this->app->bind('db.connection.mysql', MySqlConnection::class);
+
+        $this->app->singleton('Laravel\Socialite\Contracts\Factory', function ($app) {
+            return new SocialiteManager($app);
+        });
+
+        $this->app['laravellocalization'] = $this->app->share(function () {
+            return new LaravelLocalization();
+        });
+
         $this->app['home_theme'] = $this->app->share(function () {
             $homeThemeName = config('katniss.home_theme');
             $homeTheme = config('katniss.home_themes.' . $homeThemeName);
@@ -84,16 +96,6 @@ class KatnissServiceProvider extends ServiceProvider
 
         $this->app['settings'] = $this->app->share(function () {
             return new Settings();
-        });
-
-        $this->app->bind('db.connection.mysql', MySqlConnection::class);
-
-        $this->app->singleton('Laravel\Socialite\Contracts\Factory', function ($app) {
-            return new SocialiteManager($app);
-        });
-
-        $this->app['laravellocalization'] = $this->app->share(function () {
-            return new LaravelLocalization();
         });
 
         $this->app['user_app'] = $this->app->share(function () {

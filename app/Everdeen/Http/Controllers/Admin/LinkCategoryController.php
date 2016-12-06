@@ -2,23 +2,22 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
 use Katniss\Everdeen\Utils\PaginationHelper;
 
-
 class LinkCategoryController extends ViewController
 {
     protected $linkCategoryRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'link_category';
         $this->linkCategoryRepository = new LinkCategoryRepository();
@@ -31,8 +30,8 @@ class LinkCategoryController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_link_categories_title'));
-        $this->theme->description(trans('pages.admin_link_categories_desc'));
+        $this->_title(trans('pages.admin_link_categories_title'));
+        $this->_description(trans('pages.admin_link_categories_desc'));
 
         $categories = $this->linkCategoryRepository->getPaged();
 
@@ -54,8 +53,8 @@ class LinkCategoryController extends ViewController
      */
     public function create()
     {
-        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_link_categories_desc'));
 
         return $this->_create([
             'categories' => $this->linkCategoryRepository->getAll(),
@@ -65,7 +64,7 @@ class LinkCategoryController extends ViewController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
@@ -122,8 +121,8 @@ class LinkCategoryController extends ViewController
     {
         $category = $this->linkCategoryRepository->model($id);
 
-        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_link_categories_desc'));
 
         return $this->_edit([
             'category' => $category,
@@ -135,7 +134,7 @@ class LinkCategoryController extends ViewController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
@@ -198,8 +197,8 @@ class LinkCategoryController extends ViewController
     {
         $category = $this->linkCategoryRepository->model($id);
 
-        $this->theme->title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
-        $this->theme->description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
+        $this->_description(trans('pages.admin_link_categories_desc'));
 
         return $this->_any('sort', [
             'category' => $category,

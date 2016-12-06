@@ -2,19 +2,18 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 
 class LinkCategoryController extends ApiController
 {
     protected $linkCategoryRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->linkCategoryRepository = new LinkCategoryRepository();
     }
@@ -23,7 +22,7 @@ class LinkCategoryController extends ApiController
     {
         $this->linkCategoryRepository->model($id);
 
-        if (!$this->validate($request, [
+        if (!$this->customValidate($request, [
             'link_ids' => 'required|array|exists:links,id',
         ])
         ) {

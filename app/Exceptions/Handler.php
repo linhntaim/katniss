@@ -5,8 +5,11 @@ namespace Katniss\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Http\Request;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -40,7 +43,7 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  \Exception $exception
      * @return \Illuminate\Http\Response
      */
@@ -49,20 +52,72 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
+    #region Extending functionality
+    /**
+     * Override
+     *
+     * @param Exception $e
+     * @return Exception|NotFoundHttpException
+     */
+    protected function prepareException(Exception $e)
+    {
+        $e = parent::prepareException($e);
+        if ($e instanceof MethodNotAllowedHttpException) {
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+        }
+
+        return $e;
+    }
+
+    /**
+     * Override
+     *
+     * @param HttpException $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     protected function renderHttpException(HttpException $e)
     {
-        $response = Theme::errorRequest($e);
-        if ($response !== false) {
-            return $response;
+        // firstly, try to render error by theme
+        $checkPath = checkPath();
+        if ($checkPath->admin || $checkPath->home) {
+            $response = $this->renderHttpExceptionByTheme($e);
+            if (!empty($response->getContent())) {
+                return $response;
+            }
         }
 
         return parent::renderHttpException($e);
     }
 
     /**
+     * Get response of error by theme's rendering
+     *
+     * @param HttpException $e
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderHttpExceptionByTheme(HttpException $e)
+    {
+        $kernel = app()->make('Illuminate\Contracts\Http\Kernel');
+        $request = SymfonyRequest::create(
+            adminUrl('errors/{code}', ['code' => $e->getStatusCode()]),
+            'GET',
+            [
+                'message' => $e->getMessage(),
+                'headers' => $e->getHeaders(),
+            ],
+            request()->cookies->all()
+        );
+        $request = Request::createFromBase($request);
+        $response = $kernel->handle($request);
+        $kernel->terminate($request, $response);
+        return $response;
+    }
+    #endregion
+
+    /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  \Illuminate\Auth\AuthenticationException $exception
      * @return \Illuminate\Http\Response
      */

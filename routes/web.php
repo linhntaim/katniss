@@ -26,6 +26,9 @@ Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
 ], function () {
+    Route::get(homeRoute('errors/{code}'), 'ViewController@error');
+    Route::get(adminRoute('errors/{code}'), 'ViewController@error');
+
     Route::group([
         'namespace' => 'Home',
     ], function () {

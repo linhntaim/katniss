@@ -35,7 +35,7 @@ class UserRepository extends ModelRepository
         return User::all();
     }
 
-    public function create($name, $displayName, $email, $password, array $roles = null, $sendWelcomeMail = false, array $globalViewParams = [])
+    public function create($name, $displayName, $email, $password, array $roles = null, $sendWelcomeMail = false)
     {
         DB::beginTransaction();
         try {
@@ -55,7 +55,7 @@ class UserRepository extends ModelRepository
             }
 
             if ($sendWelcomeMail) {
-                event(new UserAfterRegistered($user, array_merge($globalViewParams, [
+                event(new UserAfterRegistered($user, array_merge(request()->theme()->viewParams(), [
                     MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                     MailHelper::EMAIL_TO => $email,
                     MailHelper::EMAIL_TO_NAME => $displayName,
@@ -74,7 +74,7 @@ class UserRepository extends ModelRepository
         }
     }
 
-    public function update($name, $displayName, $email, $password, array $roles = null, array $globalViewParams = [])
+    public function update($name, $displayName, $email, $password, array $roles = null)
     {
         $user = $this->model();
         DB::beginTransaction();
@@ -100,7 +100,7 @@ class UserRepository extends ModelRepository
 
             if ($passwordChanged) {
                 event(new UserPasswordChanged($user, $password,
-                    array_merge($globalViewParams, [
+                    array_merge(request()->theme()->viewParams(), [
                         MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,

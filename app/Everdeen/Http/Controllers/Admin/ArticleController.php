@@ -2,10 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
@@ -17,9 +17,9 @@ class ArticleController extends ViewController
 {
     private $articleRepository;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'article';
         $this->articleRepository = new ArticleRepository();
@@ -32,8 +32,8 @@ class ArticleController extends ViewController
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_articles_title'));
-        $this->theme->description(trans('pages.admin_articles_desc'));
+        $this->_title(trans('pages.admin_articles_title'));
+        $this->_description(trans('pages.admin_articles_desc'));
 
         $articles = $this->articleRepository->getPaged();
 
@@ -57,8 +57,8 @@ class ArticleController extends ViewController
     {
         $articleCategoryRepository = new ArticleCategoryRepository();
 
-        $this->theme->title([trans('pages.admin_articles_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_articles_desc'));
+        $this->_title([trans('pages.admin_articles_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_articles_desc'));
 
         return $this->_create([
             'categories' => $articleCategoryRepository->getExceptDefault(),
@@ -69,7 +69,7 @@ class ArticleController extends ViewController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -132,8 +132,8 @@ class ArticleController extends ViewController
         $article = $this->articleRepository->model($id);
         $articleCategoryRepository = new ArticleCategoryRepository();
 
-        $this->theme->title([trans('pages.admin_articles_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_articles_desc'));
+        $this->_title([trans('pages.admin_articles_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_articles_desc'));
 
         return $this->_edit([
             'article' => $article,
@@ -147,7 +147,7 @@ class ArticleController extends ViewController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
