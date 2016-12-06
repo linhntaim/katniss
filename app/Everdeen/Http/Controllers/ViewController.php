@@ -146,10 +146,14 @@ class ViewController extends KatnissController
     public function error(Request $request, $code)
     {
         $params = $request->all();
+        $params['code'] = $code;
         $headers = [];
         if (isset($params['headers'])) {
             $headers = (array)$params['headers'];
             unset($params['headers']);
+        }
+        if (!isset($params['message'])) {
+            $params['message'] = trans('error.unknown');
         }
         if ($this->_errorExists($code)) {
             return $this->_err($code, $code, $params, $headers);

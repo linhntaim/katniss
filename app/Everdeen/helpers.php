@@ -302,6 +302,7 @@ function checkPath($request = null)
     }
 
     $return = new stdClass();
+    $return->locale = in_array($request->segment(1), allSupportedLocaleCodes());
     $return->api = false;
     $return->webApi = false;
     $return->admin = false;

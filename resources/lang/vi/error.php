@@ -6,6 +6,7 @@
  * Time: 13:52
  */
 return [
+    'unknown' => 'Không xác định',
     'token_mismatch' => 'Yêu cầu của bạn không được đáp ứng. Hãy thử lại.',
     'database_insert' => 'Lỗi thêm mới dữ liệu vào CSDL.',
     'database_update' => 'Lỗi cập nhật dữ liệu trong CSDL.',

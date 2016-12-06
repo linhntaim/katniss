@@ -6,6 +6,7 @@
  * Time: 13:52
  */
 return [
+    'unknown' => 'Unknown',
     'token_mismatch' => 'Your request is not recognized by the system. Try again.',
     'database_insert' => 'Fails to insert into database',
     'database_update' => 'Fails to update database',

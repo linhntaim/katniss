@@ -13,20 +13,17 @@ use Mcamara\LaravelLocalization\LaravelLocalization as BaseLaravelLocalization;
 
 class LaravelLocalization extends BaseLaravelLocalization
 {
-    public function setLocale( $locale = null )
+    public function setLocale($locale = null)
     {
-        if ( empty( $locale ) || !is_string($locale) )
-        {
+        if (empty($locale) || !is_string($locale)) {
             // If the locale has not been passed through the function
             // it tries to get it from the first segment of the url
             $locale = $this->request->segment(1);
         }
 
-        if ( !empty( $this->supportedLocales[ $locale ] ) )
-        {
+        if (!empty($this->supportedLocales[$locale])) {
             $this->currentLocale = $locale;
-        } else
-        {
+        } else {
             // if the first segment/locale passed is not valid
             // the system would ask which locale have to take
             // it could be taken by the browser
@@ -36,28 +33,20 @@ class LaravelLocalization extends BaseLaravelLocalization
 
             // if we reached this point and hideDefaultLocaleInURL is true
             // we have to assume we are routing to a defaultLocale route.
-            if ( $this->hideDefaultLocaleInURL() )
-            {
+            if ($this->hideDefaultLocaleInURL()) {
                 $this->currentLocale = $this->defaultLocale;
             }
             // but if hideDefaultLocaleInURL is false, we have
             // to retrieve it from the browser...
-            else
-            {
+            else {
                 $this->currentLocale = $this->getCurrentLocale();
 
                 // linhnt.aim@outlook.com
-                $path = $this->request->path();
-                $matchedLocale = false;
-                foreach (trans()->get('routes', [], $this->currentLocale) as $name => $trans) { // lang of default locale
-                    $nameRegex = '/^' . str_replace('/', '\\/', preg_replace('/\{[^\}]+\}/', '(.*)', $trans)) . '$/';
-                    if (preg_match($nameRegex, $path, $matches)) {
-                        $matchedLocale = true;
-                        break;
-                    }
-                }
-                if (!$matchedLocale) {
+                if (!$this->matchLocaleRoute()) {
                     $this->currentLocale = $this->defaultLocale;
+                    if (!$this->matchLocaleRoute()) {
+                        // don't know what to do here
+                    }
                 }
                 // end fixed // if no fixed, delete
             }
@@ -67,33 +56,42 @@ class LaravelLocalization extends BaseLaravelLocalization
 
         // Regional locale such as de_DE, so formatLocalized works in Carbon
         $regional = $this->getCurrentLocaleRegional();
-        if($regional)
-            setlocale(LC_TIME, $regional.'.utf8');
+        if ($regional)
+            setlocale(LC_TIME, $regional . '.utf8');
 
         return $locale;
     }
 
-    public function getLocalizedURL( $locale = null, $url = null, $attributes = array() )
+    protected function matchLocaleRoute()
     {
-        if ( $locale === null )
-        {
+        $path = $this->request->path();
+        $matchedLocale = false;
+        foreach (trans()->get('routes', [], $this->currentLocale) as $name => $trans) { // lang of default locale
+            $nameRegex = '/^' . str_replace('/', '\\/', preg_replace('/\{[^\}]+\}/', '(.*)', $trans)) . '$/';
+            if (preg_match($nameRegex, $path, $matches)) {
+                $matchedLocale = true;
+                break;
+            }
+        }
+        return $matchedLocale;
+    }
+
+    public function getLocalizedURL($locale = null, $url = null, $attributes = array())
+    {
+        if ($locale === null) {
             $locale = $this->getCurrentLocale();
         }
 
-        if ( !$this->checkLocaleInSupportedLocales($locale) )
-        {
+        if (!$this->checkLocaleInSupportedLocales($locale)) {
             throw new UnsupportedLocaleException('Locale \'' . $locale . '\' is not in the list of supported locales.');
         }
 
-        if ( empty( $attributes ) )
-        {
+        if (empty($attributes)) {
             $attributes = $this->extractAttributes($url);
         }
 
-        if ( empty( $url ) )
-        {
-            if ( !empty( $this->routeName ) )
-            {
+        if (empty($url)) {
+            if (!empty($this->routeName)) {
                 return $this->getURLFromRouteNameTranslated($locale, $this->routeName, $attributes);
             }
 
@@ -147,55 +145,46 @@ class LaravelLocalization extends BaseLaravelLocalization
         $parsed_url = parse_url($url);
         $url_locale = $this->getDefaultLocale();
 
-        if ( !$parsed_url || empty( $parsed_url[ 'path' ] ) )
-        {
-            $path = $parsed_url[ 'path' ] = "";
-        } else
-        {
-            $parsed_url[ 'path' ] = str_replace($base_path, '', '/' . ltrim($parsed_url[ 'path' ], '/'));
-            $path = $parsed_url[ 'path' ];
-            foreach ( $this->getSupportedLocales() as $localeCode => $lang )
-            {
-                $parsed_url[ 'path' ] = preg_replace('%^/?' . $localeCode . '/%', '$1', $parsed_url[ 'path' ]);
-                if ( $parsed_url[ 'path' ] !== $path )
-                {
+        if (!$parsed_url || empty($parsed_url['path'])) {
+            $path = $parsed_url['path'] = "";
+        } else {
+            $parsed_url['path'] = str_replace($base_path, '', '/' . ltrim($parsed_url['path'], '/'));
+            $path = $parsed_url['path'];
+            foreach ($this->getSupportedLocales() as $localeCode => $lang) {
+                $parsed_url['path'] = preg_replace('%^/?' . $localeCode . '/%', '$1', $parsed_url['path']);
+                if ($parsed_url['path'] !== $path) {
                     $url_locale = $localeCode;
                     break;
                 }
 
-                $parsed_url[ 'path' ] = preg_replace('%^/?' . $localeCode . '$%', '$1', $parsed_url[ 'path' ]);
-                if ( $parsed_url[ 'path' ] !== $path )
-                {
+                $parsed_url['path'] = preg_replace('%^/?' . $localeCode . '$%', '$1', $parsed_url['path']);
+                if ($parsed_url['path'] !== $path) {
                     $url_locale = $localeCode;
                     break;
                 }
             }
         }
 
-        $parsed_url[ 'path' ] = ltrim($parsed_url[ 'path' ], '/');
+        $parsed_url['path'] = ltrim($parsed_url['path'], '/');
 
-        if ( $translatedRoute = $this->findTranslatedRouteByPath($parsed_url[ 'path' ], $url_locale) )
-        {
+        if ($translatedRoute = $this->findTranslatedRouteByPath($parsed_url['path'], $url_locale)) {
             return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
         }
 
-        if ( !empty( $locale ) && ( $locale != $this->defaultLocale || !$this->hideDefaultLocaleInURL() ) )
-        {
-            $parsed_url[ 'path' ] = $locale . '/' . ltrim($parsed_url[ 'path' ], '/');
+        if (!empty($locale) && ($locale != $this->defaultLocale || !$this->hideDefaultLocaleInURL())) {
+            $parsed_url['path'] = $locale . '/' . ltrim($parsed_url['path'], '/');
         }
-        $parsed_url[ 'path' ] = ltrim(ltrim($base_path, '/') . '/' . $parsed_url[ 'path' ], '/');
+        $parsed_url['path'] = ltrim(ltrim($base_path, '/') . '/' . $parsed_url['path'], '/');
 
         //Make sure that the pass path is returned with a leading slash only if it come in with one.
-        if ( starts_with($path, '/') === true )
-        {
-            $parsed_url[ 'path' ] = '/' . $parsed_url[ 'path' ];
+        if (starts_with($path, '/') === true) {
+            $parsed_url['path'] = '/' . $parsed_url['path'];
         }
-        $parsed_url[ 'path' ] = rtrim($parsed_url[ 'path' ], '/');
+        $parsed_url['path'] = rtrim($parsed_url['path'], '/');
 
         $url = $this->unparseUrl($parsed_url);
 
-        if ( $this->checkUrl($url) )
-        {
+        if ($this->checkUrl($url)) {
             return $url;
         }
 

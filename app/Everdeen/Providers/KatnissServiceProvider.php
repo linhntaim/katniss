@@ -50,7 +50,7 @@ class KatnissServiceProvider extends ServiceProvider
             define('KATNISS_EMPTY_STRING', '');
         }
 
-        if (!defined('KATNISS_DEFAULT_APP_ID')) {
+        if (!defined('KATNISS_DEFAULT_APP')) {
             define('KATNISS_DEFAULT_APP', 1);
         }
     }

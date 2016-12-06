@@ -5,6 +5,7 @@ namespace Katniss\Exceptions;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Routing\RouteCollection;
 use Katniss\Everdeen\Http\Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -79,8 +80,8 @@ class Handler extends ExceptionHandler
     {
         // firstly, try to render error by theme
         $checkPath = checkPath();
-        if ($checkPath->admin || $checkPath->home) {
-            $response = $this->renderHttpExceptionByTheme($e);
+        if (!$checkPath->api && !$checkPath->webApi && $checkPath->locale) {
+            $response = $this->renderHttpExceptionByTheme($e, $checkPath->admin);
             if (!empty($response->getContent())) {
                 return $response;
             }
@@ -93,13 +94,16 @@ class Handler extends ExceptionHandler
      * Get response of error by theme's rendering
      *
      * @param HttpException $e
+     * @param bool $isAdmin
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderHttpExceptionByTheme(HttpException $e)
+    protected function renderHttpExceptionByTheme(HttpException $e, $isAdmin = false)
     {
-        $kernel = app()->make('Illuminate\Contracts\Http\Kernel');
+        $requestPath = $isAdmin ? adminUrl('errors/{code}', ['code' => $e->getStatusCode()])
+            : homeUrl('errors/{code}', ['code' => $e->getStatusCode()]);
+        $kernel = app()->make(\Illuminate\Contracts\Http\Kernel::class);
         $request = SymfonyRequest::create(
-            adminUrl('errors/{code}', ['code' => $e->getStatusCode()]),
+            $requestPath,
             'GET',
             [
                 'message' => $e->getMessage(),
