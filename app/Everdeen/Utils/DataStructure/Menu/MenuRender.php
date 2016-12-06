@@ -17,6 +17,7 @@ class MenuRender
 {
     public $wrapTag = 'ul';
     public $wrapClass = '';
+    public $wrapId = '';
     public $childrenWrapTag = 'ul';
     public $childrenWrapClass = '';
     public $itemTag = 'li';
@@ -54,6 +55,11 @@ class MenuRender
         return !empty($classes) ? ' class="' . $classes . '"' : '';
     }
 
+    protected function renderId($id)
+    {
+        return !empty($id) ? ' id="' . $id . '"' : '';
+    }
+
     public function render(Menu $menu)
     {
         $hierarchy = new Hierarchy();
@@ -71,9 +77,10 @@ class MenuRender
                     }
                 }
                 $itemClass = $this->renderClass($this->itemClass, $object->property('item_class'), $activeClass);
+                $itemId = $this->renderId($object->property('item_id'));
                 return Str::format(
-                    '<{0}{1}>{2}{3}</{0}>',
-                    $this->itemTag, $itemClass, $this->renderUrl($object), $renderedHierarchyChildren
+                    '<{0}{1}{2}>{3}{4}</{0}>',
+                    $this->itemTag, $itemId, $itemClass, $this->renderUrl($object), $renderedHierarchyChildren
                 );
             },
             function (array $renderedHierarchyChildren) {
@@ -94,8 +101,9 @@ class MenuRender
                 }
                 $renderedHierarchyItems = implode('', $renderedHierarchyItems);
                 return Str::format(
-                    '<{0}{1}>{2}</{0}>',
+                    '<{0}{1}{2}>{3}</{0}>',
                     $this->wrapTag,
+                    $this->renderId($this->wrapId),
                     $this->renderClass($this->wrapClass),
                     $renderedHierarchyItems
                 );
