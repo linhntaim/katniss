@@ -65,7 +65,7 @@
                     </div>
                     <div class="box-footer clearfix">
                         <ul class="pagination pagination-sm no-margin pull-right">
-                            <li class="first">
+                            <li class="first{{ $page_helper->atFirst ? ' disabled':'' }}">
                                 <a href="{{ $query->update('page', $page_helper->first)->toString() }}">&laquo;</a>
                             </li>
                             <li class="prev{{ $page_helper->atFirst ? ' disabled':'' }}">
@@ -79,7 +79,7 @@
                             <li class="next{{ $page_helper->atLast ? ' disabled':'' }}">
                                 <a href="{{ $query->update('page', $page_helper->next)->toString() }}">&rsaquo;</a>
                             </li>
-                            <li class="last">
+                            <li class="last{{ $page_helper->atLast ? ' disabled':'' }}">
                                 <a href="{{ $query->update('page', $page_helper->last)->toString() }}">&raquo;</a>
                             </li>
                         </ul>
