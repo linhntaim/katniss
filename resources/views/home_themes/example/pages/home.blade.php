@@ -1,4 +1,4 @@
-@extends('home_themes.default.master.index')
+@extends('home_themes.example.master.index')
 @section('extra_sections')
     <section id="intro" class="odd-section">
         <div class="container">

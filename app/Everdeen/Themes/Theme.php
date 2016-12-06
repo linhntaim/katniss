@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 abstract class Theme
 {
     const NAME = '';
+    const DISPLAY_NAME = '';
     const VIEW = '';
     const TYPE_ADMIN = 'admin_themes';
     const TYPE_HOME = 'home_themes';
