@@ -97,4 +97,16 @@ class ExampleController extends ViewController
             'article_categories' => $article->categories,
         ]);
     }
+
+    public function getCategoryArticles($id)
+    {
+        $this->_title(trans_choice('label.article', 2));
+        $this->_description(trans_choice('label.article', 2));
+
+        $articleRepository = new ArticleRepository();
+        $articles = $articleRepository->getPagedByCategory($id);
+        return $this->_any('articles', [
+            'articles' => $articles,
+        ]);
+    }
 }

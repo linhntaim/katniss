@@ -41,7 +41,7 @@ Route::group([
         Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')->where('id', '[0-9]+');
         Route::get(homeRoute('example/articles'), 'ExampleController@getArticles');
         Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')->where('id', '[0-9]+');
-        Route::get(homeRoute('example/article-categories/{id}'), 'ExampleController@getArticleCategory')->where('id', '[0-9]+');
+        Route::get(homeRoute('example/article-categories/{id}'), 'ExampleController@getCategoryArticles')->where('id', '[0-9]+');
     });
 
 

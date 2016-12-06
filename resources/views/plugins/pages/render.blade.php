@@ -1,5 +1,5 @@
-@if($categories->count()>0)
-    <div id="{{ $html_id }}" class="widget-article-categories">
+@if($pages->count()>0)
+    <div id="{{ $html_id }}" class="widget-pages">
         <div class="panel panel-default" data-toggle="panel-collapse" data-open="true">
             @if(!empty($name))
                 <div class="panel-heading panel-collapse-trigger">
@@ -8,10 +8,10 @@
             @endif
             <div class="panel-body list-group">
                 <ul class="list-group list-group-menu">
-                    @foreach($categories as $category)
+                    @foreach($pages as $page)
                         <li class="list-group-item">
-                            <a href="{{ homeUrl('example/article-categories/{id}', ['id' => $category->id]) }}">
-                                {{ $category->name }}
+                            <a href="{{ homeUrl('example/pages/{id}', ['id' => $page->id]) }}">
+                                {{ $page->title }}
                             </a>
                         </li>
                     @endforeach

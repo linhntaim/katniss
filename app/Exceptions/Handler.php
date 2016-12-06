@@ -3,9 +3,9 @@
 namespace Katniss\Exceptions;
 
 use Exception;
+use ReflectionException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Routing\RouteCollection;
 use Katniss\Everdeen\Http\Request;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -63,7 +63,8 @@ class Handler extends ExceptionHandler
     protected function prepareException(Exception $e)
     {
         $e = parent::prepareException($e);
-        if ($e instanceof MethodNotAllowedHttpException) {
+        if ($e instanceof MethodNotAllowedHttpException
+        || $e instanceof ReflectionException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 

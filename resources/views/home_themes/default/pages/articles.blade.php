@@ -14,9 +14,9 @@
                 <div class="col-sm-9 text-left">
                     @if($articles->count() > 0)
                         @foreach($articles as $article)
-                            <div id="page-{{ $article->id }}">
+                            <div id="article-{{ $article->id }}">
                                 <h3>
-                                    <a href="{{ homeUrl('example/pages/{id}', ['id' => $article->id]) }}">
+                                    <a href="{{ homeUrl('example/articles/{id}', ['id' => $article->id]) }}">
                                         {{ $article->title }}
                                     </a>
                                 </h3>

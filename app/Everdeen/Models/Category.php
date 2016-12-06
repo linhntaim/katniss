@@ -40,7 +40,7 @@ class Category extends Model
         return $this->links()->orderBy('order', 'asc')->get();
     }
 
-    public function articles()
+    public function posts()
     {
         return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
     }
