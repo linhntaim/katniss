@@ -15,7 +15,8 @@ use Katniss\Everdeen\Themes\JsQueue;
 
 class Theme extends AdminTheme
 {
-    const NAME = 'AdminLte';
+    const NAME = 'admin_lte';
+    const DISPLAY_NAME = 'AdminLte';
     const VIEW = 'admin_lte';
 
     public function __construct()
