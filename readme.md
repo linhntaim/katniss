@@ -305,7 +305,7 @@ Request flow:
     
 Sample Themes:
 
-- Default Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav)).
+- Example Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav)).
 
 #### Plugins
     
@@ -352,6 +352,10 @@ Sample Widgets:
 - Instagram Wall:
     - Only available when Social Integration extension is activated and integration with Instagram is enabled.
     - Display wall of images from Instagram user.
+- Pages:
+    - Show list of available pages.
+- Article Categories:
+    - Show list of categories of articles.
     
 #### Template
 
