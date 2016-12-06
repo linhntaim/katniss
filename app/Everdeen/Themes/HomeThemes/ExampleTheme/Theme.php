@@ -15,8 +15,9 @@ use Katniss\Everdeen\Themes\JsQueue;
 
 class Theme extends HomeTheme
 {
-    const NAME = 'Default';
-    const VIEW = 'default';
+    const NAME = 'example';
+    const DISPLAY_NAME = 'Example';
+    const VIEW = 'example';
 
     public function __construct()
     {
