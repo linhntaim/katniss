@@ -18,6 +18,7 @@ return [
     'example/pages/{id}'                            => 'example/pages/{id}',
     'example/articles'                              => 'example/articles',
     'example/articles/{id}'                         => 'example/articles/{id}',
+    'example/article-categories/{id}'               => 'example/article-categories/{id}',
 
     'me'                                            => 'me',
     'me/settings'                                   => 'me/settings',

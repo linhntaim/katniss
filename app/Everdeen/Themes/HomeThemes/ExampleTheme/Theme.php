@@ -75,7 +75,9 @@ class Theme extends HomeTheme
     public function placeholders()
     {
         return [
-            'default_placeholder' => 'Default Placeholder'
+            'default_placeholder' => 'Default Placeholder',
+            'pages' => 'Sidebar Pages',
+            'articles' => 'Sidebar Articles',
         ];
     }
 

@@ -9,8 +9,6 @@
 namespace Katniss\Everdeen\Themes\Plugins\BaseLinks;
 
 use Katniss\Everdeen\Models\Category;
-
-;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
 class Widget extends DefaultWidget

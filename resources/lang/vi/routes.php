@@ -18,6 +18,7 @@ return [
     'example/pages/{id}'                            => 'vi-du/chuyen-trang/{id}',
     'example/articles'                              => 'vi-du/chuyen-de',
     'example/articles/{id}'                         => 'vi-du/chuyen-de/{id}',
+    'example/article-categories/{id}'               => 'vi-du/chuyen-muc-chuyen-de/{id}',
 
     'me'                                            => 'ca-nhan-toi',
     'me/settings'                                   => 'ca-nhan-toi/thiet-lap',
