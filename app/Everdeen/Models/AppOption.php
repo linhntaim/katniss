@@ -27,6 +27,11 @@ class AppOption extends Model
         return $this->attributes['value'];
     }
 
+    public function setRawValueAttribute($value)
+    {
+        $this->attributes['value'] = trim($value);
+    }
+
     public function setValueAttribute($value)
     {
         $value = escapeObject($value, $type);

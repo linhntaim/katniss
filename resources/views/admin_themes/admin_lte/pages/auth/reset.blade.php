@@ -10,7 +10,7 @@
         </div>
     @endif
     <form method="post" action="{{ homeUrl('password/reset') }}">
-        {!! csrf_field() !!}
+        {{ csrf_field() }}
         <input type="hidden" name="token" value="{{ $token }}">
         <div class="form-group has-feedback">
             <input type="email" class="form-control" placeholder="{{ trans('label.email') }}" name="email" required value="{{ old('email') }}">

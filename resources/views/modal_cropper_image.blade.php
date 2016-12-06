@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form class="cropper-image-form" enctype="multipart/form-data" method="post">
-                {!! csrf_field() !!}
+                {{ csrf_field() }}
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title" id="cropper-image-modal-label">{{ trans('form.action_choose') }} {{ trans('label.image_lc') }}</h4>

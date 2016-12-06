@@ -24,7 +24,7 @@
             }
         }
 
-        jQuery(document).ready(function () {
+        $(function () {
             var funcNum = urlParam('CKEditorFuncNum');
             var elfinderOptions = {
                 lang: '{{ $site_locale }}',
@@ -56,7 +56,7 @@
             if (onlyMimes.trim() != '') {
                 elfinderOptions.onlyMimes = onlyMimes.split(',');
             }
-            jQuery('#elfinder').elfinder(elfinderOptions);
+            $('#elfinder').elfinder(elfinderOptions);
         });
         {!! cdataClose() !!}
     </script>

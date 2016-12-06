@@ -2,17 +2,17 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Utils\MailHelper;
 
 class ActivateController extends ViewController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
+
+        $this->viewPath = 'auth';
     }
 
     public function getInactive()
@@ -21,10 +21,10 @@ class ActivateController extends ViewController
             return redirect(redirectUrlAfterLogin($this->authUser));
         }
 
-        $this->theme->title(trans('pages.account_inactive_title'));
-        $this->theme->description(trans('pages.account_inactive_desc'));
+        $this->_title(trans('pages.account_inactive_title'));
+        $this->_description(trans('pages.account_inactive_desc'));
 
-        return view($this->themePage('auth.inactive'), ['resend' => false]);
+        return $this->_any('inactive', ['resend' => false]);
     }
 
     public function postInactive()
@@ -47,12 +47,12 @@ class ActivateController extends ViewController
                     'activation_code' => $this->authUser->activation_code
                 ]
             ),
-        ], $this->globalViewParams));
+        ], $this->_params()));
 
-        $this->theme->title(trans('pages.account_inactive_title'));
-        $this->theme->description(trans('pages.account_inactive_title'));
+        $this->_title(trans('pages.account_inactive_title'));
+        $this->_description(trans('pages.account_inactive_title'));
 
-        return view($this->themePage('auth.inactive'), ['resend' => true]);
+        return $this->_any('inactive', ['resend' => true]);
     }
 
     public function getActivation($id, $activation_code)
@@ -67,10 +67,10 @@ class ActivateController extends ViewController
             $user->save();
         }
 
-        $this->theme->title(trans('pages.account_activate_title'));
-        $this->theme->description(trans('pages.account_activate_title'));
+        $this->_title(trans('pages.account_activate_title'));
+        $this->_description(trans('pages.account_activate_title'));
 
-        return view($this->themePage('auth.activate'), [
+        return $this->_any('activate', [
             'active' => $active,
             'url' => $this->isAuth ? redirectUrlAfterLogin($this->authUser) : homeUrl('auth/login'),
         ]);

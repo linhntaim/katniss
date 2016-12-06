@@ -9,8 +9,8 @@
             @endforeach
         </div>
     @endif
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ homeUrl('auth/login') }}">
+        {{ csrf_field() }}
         <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="{{ trans('label.email') }} {{ trans('label.or_lc') }} {{ trans('label.user_name') }}" required name="account" value="{{ old('account') }}">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -33,18 +33,10 @@
             </div><!-- /.col -->
         </div>
     </form>
-
-    <div class="social-auth-links text-center">
-        <p class="text-uppercase">- {{ trans('label.or') }} -</p>
-        <a href="{{ homeUrl('auth/social/{provider}', array('provider' => 'facebook')) }}" class="btn btn-block btn-social btn-facebook btn-flat">
-            <i class="fa fa-facebook"></i> {{ trans('label.sign_in_with_facebook') }}
-        </a>
-        <a href="{{ homeUrl('auth/social/{provider}', array('provider' => 'google')) }}" class="btn btn-block btn-social btn-google btn-flat">
-            <i class="fa fa-google-plus"></i> {{ trans('label.sign_in_with_google') }}
-        </a>
-    </div><!-- /.social-auth-links -->
-
+    @include('admin_themes.admin_lte.pages.auth.social_auth_links')
     <a href="{{ homeUrl('password/email') }}" class="text-center">{{ trans('label.forgot_password') }}</a><br>
-    <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @if($app_settings->register_enable)
+        <a href="{{ homeUrl('auth/register') }}" class="text-center">{{ trans('label.register_membership') }}</a><br>
+    @endif
     <a href="{{ homeUrl() }}" class="text-center">{{ trans('label.back_to_homepage') }}</a>
 @endsection

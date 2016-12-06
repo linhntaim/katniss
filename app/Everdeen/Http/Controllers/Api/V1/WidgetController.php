@@ -2,17 +2,26 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
-
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Models\ThemeWidget;
 
 class WidgetController extends ApiController
 {
+    protected $widgetRepository;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->widgetRepository = new ThemeWidgetRepository();
+    }
+
     public function updateOrder(Request $request)
     {
-        if (!$this->validate($request, [
+        if (!$this->customValidate($request, [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
             'widget_ids' => 'required|array|exists:theme_widgets,id',
         ])
@@ -20,12 +29,10 @@ class WidgetController extends ApiController
             return $this->responseFail($this->getValidationErrors());
         }
 
-        $order = 0;
-        foreach ($request->input('widget_ids') as $id) {
-            ThemeWidget::where('id', $id)->update([
-                'placeholder' => $request->input('placeholder'),
-                'order' => ++$order,
-            ]);
+        try {
+            $this->widgetRepository->updateSort($request->input('widget_ids'), $request->input('placeholder'));
+        } catch (KatnissException $ex) {
+            $this->responseFail($ex->getMessage());
         }
 
         return $this->responseSuccess();

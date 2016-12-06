@@ -10,7 +10,7 @@ namespace Katniss\Everdeen\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\Settings;
 use Katniss\Everdeen\Utils\SettingsFacade;
@@ -88,7 +88,7 @@ class ViewMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  \Closure $next
      * @return mixed
      */
@@ -99,11 +99,16 @@ class ViewMiddleware
         if ($request->has(AppConfig::KEY_REDIRECT_URL)) {
             session([AppConfig::KEY_REDIRECT_URL => $request->input(AppConfig::KEY_REDIRECT_URL)]);
         }
+        if ($request->has(AppConfig::KEY_REDIRECT_ON_ERROR_URL)) {
+            session([AppConfig::KEY_REDIRECT_ON_ERROR_URL => $request->input(AppConfig::KEY_REDIRECT_ON_ERROR_URL)]);
+        }
 
         $localeRedirect = $this->checkForceLocale($request);
         if ($localeRedirect !== false) {
             return $localeRedirect;
         }
+
+        $request->theme(); // register theme
 
         return SettingsFacade::storeCookie($next($request));
     }

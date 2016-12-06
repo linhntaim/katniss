@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Utils;
 
 
-use Illuminate\Http\Request;
+use Katniss\Everdeen\Http\Request;
 use Illuminate\Session\Store;
 
 class Settings

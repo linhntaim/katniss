@@ -2,41 +2,44 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
-use Katniss\Everdeen\Models\Link;
-use Illuminate\Http\Request;
-use Katniss\Everdeen\Utils\AppConfig;
+use Katniss\Everdeen\Repositories\LinkCategoryRepository;
+use Katniss\Everdeen\Repositories\LinkRepository;
 use Katniss\Everdeen\Utils\PaginationHelper;
 use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class LinkController extends ViewController
 {
-    public function __construct(Request $request)
+    protected $linkRepository;
+
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'link';
+        $this->linkRepository = new LinkRepository();
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_links_title'));
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $this->_title(trans('pages.admin_links_title'));
+        $this->_description(trans('pages.admin_links_desc'));
 
-        $links = Link::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        $links = $this->linkRepository->getPaged();
 
         $query = new QueryStringBuilder([
             'page' => $links->currentPage()
         ], adminUrl('links'));
-        return $this->_list([
+        return $this->_index([
             'links' => $links,
             'query' => $query,
             'page_helper' => new PaginationHelper($links->lastPage(), $links->currentPage(), $links->perPage()),
@@ -47,35 +50,34 @@ class LinkController extends ViewController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
-        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_add')]);
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $categoryRepository = new LinkCategoryRepository();
 
-        return $this->_add([
-            'categories' => Category::where('type', Category::LINK)->get()
+        $this->_title([trans('pages.admin_links_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_links_desc'));
+
+        return $this->_create([
+            'categories' => $categoryRepository->getAll()
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $categories = $request->input('categories', []);
-        $image = $request->input('image', '');
-
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required',
             'url' => 'required', // no need to confirm link is an url, for trickly use
         ]);
 
-        $error_redirect = redirect(adminUrl('links/add'))
+        $error_redirect = redirect(adminUrl('links/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -90,26 +92,14 @@ class LinkController extends ViewController
             return $error_redirect->withErrors($validator);
         }
 
-        DB::beginTransaction();
         try {
-            $link = new Link();
-            $link->image = $image;
-            foreach ($validateResult->getLocalizedInputs() as $locale => $transData) {
-                $trans = $link->translateOrNew($locale);
-                $trans->name = $transData['name'];
-                $trans->description = $transData['description'];
-                $trans->url = $transData['url'];
-            }
-            $link->save();
-            if (count($categories) > 0) {
-                $link->categories()->attach($categories);
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            return $error_redirect->withErrors([trans('error.database_insert') . ' (' . $e->getMessage() . ')']);
+            $this->linkRepository->create(
+                $request->input('image', ''),
+                $request->input('categories', []),
+                $validateResult->getLocalizedInputs()
+            );
+        } catch (KatnissException $ex) {
+            return $error_redirect->withErrors([$ex->getMessage()]);
         }
 
         return redirect(adminUrl('links'));
@@ -130,34 +120,34 @@ class LinkController extends ViewController
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Request $request, $id)
     {
-        $link = Link::findOrFail($id);
+        $link = $this->linkRepository->model($id);
+        $categoryRepository = new LinkCategoryRepository();
 
-        $this->theme->title([trans('pages.admin_links_title'), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_links_desc'));
+        $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_links_desc'));
 
         return $this->_edit([
             'link' => $link,
             'link_categories' => $link->categories,
-            'categories' => Category::where('type', Category::LINK)->get(),
+            'categories' => $categoryRepository->getAll(),
+            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  int $id
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $link = Link::findOrFail($request->input('id'));
-        $categories = $request->input('categories', []);
-        $image = $request->input('image', '');
+        $link = $this->linkRepository->model($id);
 
         $redirect = redirect(adminUrl('links/{id}/edit', ['id' => $link->id]));
 
@@ -178,38 +168,14 @@ class LinkController extends ViewController
             return $redirect->withErrors($validator);
         }
 
-        DB::beginTransaction();
         try {
-            $link->image = $image;
-
-            $deletedLocales = [];
-            foreach (supportedLocaleCodesOfInputTabs() as $locale) {
-                if ($validateResult->has($locale)) {
-                    $transData = $validateResult->get($locale);
-                    $trans = $link->translateOrNew($locale);
-                    $trans->name = $transData['name'];
-                    $trans->description = $transData['description'];
-                    $trans->url = $transData['url'];
-                } elseif ($link->hasTranslation($locale)) {
-                    $deletedLocales[] = $locale;
-                }
-            }
-
-            $link->save();
-            if (count($categories) > 0) {
-                $link->categories()->sync($categories);
-            } else {
-                $link->categories()->detach();
-            }
-
-            if (!empty($deletedLocales)) {
-                $link->deleteTranslations($deletedLocales);
-            }
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $redirect->withErrors([trans('error.database_update') . ' (' . $e->getMessage() . ')']);
+            $this->linkRepository->update(
+                $request->input('image', ''),
+                $request->input('categories', []),
+                $validateResult->getLocalizedInputs()
+            );
+        } catch (KatnissException $ex) {
+            return $redirect->withErrors([$ex->getMessage()]);
         }
         return $redirect;
     }
@@ -222,14 +188,14 @@ class LinkController extends ViewController
      */
     public function destroy(Request $request, $id)
     {
-        $link = Link::findOrFail($id);
-        $redirect_url = adminUrl('links');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->linkRepository->model($id);
+        $this->_rdrUrl($request, adminUrl('links'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->linkRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
-        return $link->delete() === true ?
-            redirect($redirect_url)
-            : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 }

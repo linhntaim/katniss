@@ -17,7 +17,7 @@ class AuthorizationWithEntrust
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Katniss\Everdeen\Http\Request $request
      * @param \Closure $next
      * @param null $roles
      * @param null $permissions

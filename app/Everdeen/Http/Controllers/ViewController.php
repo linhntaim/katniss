@@ -2,89 +2,144 @@
 
 namespace Katniss\Everdeen\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Utils\AppConfig;
 
 class ViewController extends KatnissController
 {
     /**
-     * @var \Katniss\Everdeen\Themes\Theme
+     * @var string
      */
-    protected $theme;
-
-    protected $globalViewParams;
-
     protected $viewPath;
 
-    public function __construct(Request $request = null)
+    #region Theme
+    /**
+     * Get global view params
+     *
+     * @return array
+     */
+    protected function _params()
     {
-        parent::__construct($request);
-
-        $this->middleware(function (Request $request, $next) {
-            $session = $request->session();
-
-            $this->theme = Theme::byRequest();
-            $this->theme->register($this->isAuth);
-            $this->globalViewParams = [
-                'site_locale' => $this->localeCode,
-                'site_version' => appVersion(),
-                'site_name' => appName(),
-                'site_logo' => appLogo(),
-                'site_keywords' => appKeywords(),
-                'site_short_name' => appShortName(),
-                'site_description' => appDescription(),
-                'site_author' => appAuthor(),
-                'site_email' => appEmail(),
-                'site_domain' => appDomain(),
-                'site_home_url' => homeUrl(),
-                'is_auth' => $this->isAuth,
-                'auth_user' => $this->authUser,
-                'session_id' => $session->getId(),
-                'successes' => $session->has('successes') ?
-                    collect((array)$session->get('successes')) : collect([]),
-                'info' => $session->has('info') ?
-                    collect((array)$session->get('info')) : collect([]),
-                'max_upload_file_size' => maxUploadFileSize()
-            ];
-            foreach ($this->globalViewParams as $key => $value) {
-                view()->share($key, $value);
-            }
-            return $next($request);
-        });
+        return $this->currentRequest->theme()->viewParams();
     }
 
-    protected function themePage($name)
+    protected function _title($title, $use_root = true, $separator = '&raquo;')
     {
-        return $this->theme->page($name);
+        return $this->currentRequest->theme()->title($title, $use_root, $separator);
     }
 
+    protected function _description($description = '')
+    {
+        return $this->currentRequest->theme()->description($description);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    protected function _page($name)
+    {
+        return $this->currentRequest->theme()->page($name);
+    }
+
+    protected function _pageExists($view)
+    {
+        return view()->exists($this->_page($this->viewPath . '.' . $view));
+    }
+
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _view($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath), $data, $mergeData);
+        return view($this->_page($this->viewPath), $data, $mergeData);
     }
 
+    /**
+     * @param $view
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _any($view, $data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.' . $view), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.' . $view), $data, $mergeData);
     }
 
-    protected function _list($data = [], $mergeData = [])
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    protected function _index($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.list'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.index'), $data, $mergeData);
     }
 
-    protected function _add($data = [], $mergeData = [])
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    protected function _create($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.add'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.create'), $data, $mergeData);
     }
 
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     protected function _edit($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.edit'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.edit'), $data, $mergeData);
     }
 
-    protected function _detail($data = [], $mergeData = [])
+    /**
+     * @param array $data
+     * @param array $mergeData
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    protected function _show($data = [], $mergeData = [])
     {
-        return view($this->themePage($this->viewPath . '.detail'), $data, $mergeData);
+        return view($this->_page($this->viewPath . '.show'), $data, $mergeData);
+    }
+
+    #endregion
+
+    protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
+    {
+        $errorRdrUrl = $rdrUrl = $url;
+        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
+        if (!empty($rdr)) {
+            $errorRdrUrl = $rdrUrl = $rdr;
+        }
+        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_ON_ERROR_URL, '');
+        if (!empty($rdr)) {
+            $errorRdrUrl = $rdr;
+        }
+    }
+
+    public function error(Request $request, $code)
+    {
+        $params = $request->all();
+        $params['code'] = $code;
+        $headers = [];
+        if (isset($params['headers'])) {
+            $headers = (array)$params['headers'];
+            unset($params['headers']);
+        }
+        if (!isset($params['message'])) {
+            $params['message'] = trans('error.unknown');
+        }
+
+        $view = $request->theme()->resolveErrorView($code, $params['original_path']);
+        if ($view !== false) {
+            return response()->view($view, $params, $code, $headers);
+        }
+        return '';
     }
 }

@@ -12,7 +12,9 @@
             </ul>
         </div>
         <div class="tab-pane" id="control-sidebar-settings-tab">
-            <form method="post">
+            <form method="post" action="{{ adminUrl() }}">
+                {{ csrf_field() }}
+                {{ method_field('put') }}
                 <h3 class="control-sidebar-heading">{{ trans('label.settings') }}</h3>
                 <ul class="control-sidebar-menu">
                     <li>

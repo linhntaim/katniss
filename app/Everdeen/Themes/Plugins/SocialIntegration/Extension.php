@@ -20,8 +20,21 @@ class Extension extends BaseExtension
     const DESCRIPTION = 'Integrate Social Functions into website';
     const EDITABLE = true;
 
+    public static function getSharedViewData()
+    {
+        $ext = Extension::getSharedData(self::NAME);
+        if(empty($ext)) return null;
+
+        $data = new \stdClass();
+        $data->social_login_enable = $ext->facebookLoginEnable || $ext->googleLoginEnable;
+        $data->facebook_login_enable = $ext->facebookLoginEnable;
+        $data->google_login_enable = $ext->googleLoginEnable;
+        return $data;
+    }
+
     protected $facebookEnable;
     protected $facebookAppId;
+    protected $facebookLoginEnable;
     protected $facebookCommentEnable;
     protected $facebookCommentColorScheme;
     protected $facebookCommentColorSchemeValues = [
@@ -71,6 +84,7 @@ class Extension extends BaseExtension
     ];
 
     protected $googleEnable;
+    protected $googleLoginEnable;
     protected $googleShareEnable;
     protected $googleShareButtonSize;
     protected $googleShareButtonSizeValues = [
@@ -98,6 +112,7 @@ class Extension extends BaseExtension
 
         $this->facebookEnable = $this->getProperty('facebook_enable') == 1;
         $this->facebookAppId = defPr($this->getProperty('facebook_app_id'), config('services.facebook.client_id'));
+        $this->facebookLoginEnable = $this->getProperty('facebook_login_enable') == 1;
         $this->facebookCommentEnable = $this->getProperty('facebook_comment_enable') == 1;
         $this->facebookCommentColorScheme = defPr($this->getProperty('facebook_comment_color_scheme'), 'light');
         $this->facebookCommentNumPosts = defPr($this->getProperty('facebook_comment_num_posts'), 10);
@@ -122,6 +137,7 @@ class Extension extends BaseExtension
         $this->linkedInShareCountMode = defPr($this->getProperty('linkedin_share_count_mode'), 'horizontal');
 
         $this->googleEnable = $this->getProperty('google_enable') == 1;
+        $this->googleLoginEnable = $this->getProperty('google_login_enable') == 1;
         $this->googleShareEnable = $this->getProperty('google_share_enable') == 1;
         $this->googleShareButtonSize = defPr($this->getProperty('google_share_button_size'), 'medium');
         $this->googleShareButtonAnnotation = defPr($this->getProperty('google_share_button_annotation'), 'bubble');
@@ -137,6 +153,9 @@ class Extension extends BaseExtension
         }
 
         $this->makeSharedData([
+            'facebookLoginEnable',
+            'facebookCommentEnable',
+            'googleLoginEnable',
             'instagramClientId',
             'instagramClientSecret',
             'instagramAccessToken',
@@ -150,6 +169,7 @@ class Extension extends BaseExtension
         return array_merge(parent::viewAdminParams(), [
             'facebook_enable' => $this->facebookEnable,
             'facebook_app_id' => $this->facebookAppId,
+            'facebook_login_enable' => $this->facebookLoginEnable,
             'facebook_comment_enable' => $this->facebookCommentEnable,
             'facebook_comment_color_scheme' => $this->facebookCommentColorScheme,
             'facebook_comment_color_scheme_values' => $this->facebookCommentColorSchemeValues,
@@ -174,6 +194,7 @@ class Extension extends BaseExtension
             'linkedin_share_count_mode' => $this->linkedInShareCountMode,
             'linkedin_share_count_mode_values' => $this->linkedInShareCountModeValues,
             'google_enable' => $this->googleEnable,
+            'google_login_enable' => $this->googleLoginEnable,
             'google_share_enable' => $this->googleShareEnable,
             'google_share_button_size' => $this->googleShareButtonSize,
             'google_share_button_size_values' => $this->googleShareButtonSizeValues,
@@ -227,7 +248,6 @@ class Extension extends BaseExtension
             }));
 
             if ($this->facebookCommentEnable) {
-                view()->share('facebook_comment', true);
                 $color_scheme = $this->facebookCommentColorScheme;
                 $num_posts = $this->facebookCommentNumPosts;
                 $order_by = $this->facebookCommentOrderBy;
@@ -318,6 +338,7 @@ class Extension extends BaseExtension
         return array_merge(parent::fields(), [
             'facebook_enable',
             'facebook_app_id',
+            'facebook_login_enable',
             'facebook_comment_enable',
             'facebook_comment_color_scheme',
             'facebook_comment_num_posts',
@@ -336,6 +357,7 @@ class Extension extends BaseExtension
             'linkedin_share_enable',
             'linkedin_share_count_mode',
             'google_enable',
+            'google_login_enable',
             'google_share_enable',
             'google_share_button_size',
             'google_share_button_annotation',
@@ -352,6 +374,7 @@ class Extension extends BaseExtension
         return array_merge(parent::validationRules(), [
             'facebook_enable' => 'sometimes|in:1',
             'facebook_app_id' => 'required_if:facebook_enable,1',
+            'facebook_login_enable' => 'sometimes|in:1',
             'facebook_comment_enable' => 'sometimes|in:1',
             'facebook_comment_color_scheme' => 'required_if:facebook_comment_enable,1|in:' . implode(',', $this->facebookCommentColorSchemeValues),
             'facebook_comment_num_posts' => 'required_if:facebook_comment_enable,1|min:1',
@@ -370,6 +393,7 @@ class Extension extends BaseExtension
             'linkedin_share_enable' => 'sometimes|in:1',
             'linkedin_share_count_mode' => 'required_if:linkedin_share_enable,1|in:' . implode(',', $this->linkedInShareCountModeValues),
             'google_enable' => 'sometimes|in:1',
+            'google_login_enable' => 'sometimes|in:1',
             'google_share_enable' => 'sometimes|in:1',
             'google_share_button_size' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonSizeValues),
             'google_share_button_annotation' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonAnnotationValues),

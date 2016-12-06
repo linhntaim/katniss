@@ -2,21 +2,24 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Models\ThemeWidget;
-use Katniss\Everdeen\Themes\WidgetsFacade;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
+use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\WidgetsFacade;
 
 class WidgetController extends ViewController
 {
-    public function __construct(Request $request)
+    protected $widgetRepository;
+
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'widget';
+        $this->widgetRepository = new ThemeWidgetRepository();
     }
 
     public function index(Request $request)
@@ -32,9 +35,7 @@ class WidgetController extends ViewController
         $placeholders = HomeThemeFacade::placeholders();
         asort($placeholders);
         $placeholderNames = array_keys($placeholders);
-        $themeWidgets = ThemeWidget::checkPlaceholders($placeholderNames)
-            ->checkWidgets(array_keys($widgets))
-            ->orderBy('order', 'asc')->orderBy('created_at', 'asc')->get();
+        $themeWidgets = $this->widgetRepository->getAll($placeholderNames, array_keys($widgets));
         $themePlaceholders = [];
         foreach ($placeholderNames as $placeholderName) {
             $themePlaceholders[$placeholderName] = [];
@@ -44,10 +45,10 @@ class WidgetController extends ViewController
             $themePlaceholders[$placeholderName][] = $themeWidget;
         }
 
-        $this->theme->title(trans('pages.admin_widgets_title'));
-        $this->theme->description(trans('pages.admin_widgets_desc'));
+        $this->_title(trans('pages.admin_widgets_title'));
+        $this->_description(trans('pages.admin_widgets_desc'));
 
-        return $this->_list([
+        return $this->_index([
             'widgets' => $widgets,
             'placeholders' => $placeholders,
             'placeholderNames' => $placeholderNames,
@@ -56,8 +57,12 @@ class WidgetController extends ViewController
         ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        if ($request->has('duplicate')) {
+            return $this->duplicate($request);
+        }
+
         $validator = Validator::make($request->all(), [
             'widget' => 'required|in:' . implode(',', array_keys(WidgetsFacade::all())),
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
@@ -79,9 +84,28 @@ class WidgetController extends ViewController
         return $redirect;
     }
 
+    protected function duplicate(Request $request)
+    {
+        $this->widgetRepository->model($request->input('id'));
+
+        $validator = Validator::make($request->all(), [
+            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
+        ]);
+
+        $redirect = redirect(adminUrl('widgets'));
+        if ($validator->fails()) {
+            return $redirect->withErrors($validator);
+        }
+
+        $this->widgetRepository->duplicate($request->input('placeholder'));
+
+        return $redirect;
+    }
+
     public function edit(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $themeWidget = $this->widgetRepository->model($id);
+
         $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
         if (empty($widgetClass) || !class_exists($widgetClass)) {
             abort(404);
@@ -90,19 +114,29 @@ class WidgetController extends ViewController
         $widget = new $widgetClass($params);
         $widget->setThemeWidget($themeWidget);
 
-        $this->theme->title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
-        $this->theme->description(trans('pages.admin_widgets_desc'));
+        $this->_title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_widgets_desc'));
 
         return $this->_edit(array_merge([
             'widget' => $widget,
             'themeWidget' => $themeWidget,
             'widget_view' => $widget->viewAdmin(),
+            'rdr_param' => rdrQueryParam($request->fullUrl()),
+            'error_rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ], $widget->viewAdminParams()));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($request->input('id'));
+        if ($request->has('activate')) {
+            return $this->activate($request, $id);
+        }
+        if ($request->has('deactivate')) {
+            return $this->deactivate($request, $id);
+        }
+
+        $themeWidget = $this->widgetRepository->model($id);
+
         $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
         if (empty($widgetClass) || !class_exists($widgetClass)) {
             abort(404);
@@ -142,70 +176,48 @@ class WidgetController extends ViewController
         return $redirect;
     }
 
-    public function activate(Request $request, $id)
+    protected function activate(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->updateActive();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
-        $themeWidget->active = true;
 
-        return $themeWidget->save() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 
-    public function deactivate(Request $request, $id)
+    protected function deactivate(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->updateActive(false);
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        $themeWidget->active = false;
-
-        return $themeWidget->save() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
+        return redirect($rdrUrl);
     }
 
     public function destroy(Request $request, $id)
     {
-        $themeWidget = ThemeWidget::findOrFail($id);
+        $this->widgetRepository->model($id);
 
-        $redirect_url = adminUrl('widgets');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
+        $this->_rdrUrl($request, adminUrl('widgets'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->widgetRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
 
-        return $themeWidget->delete() === true ? redirect($redirect_url) : redirect($redirect_url)->withErrors([trans('error.database_delete')]);
-    }
-
-    public function copyTo(Request $request)
-    {
-        $themeWidget = ThemeWidget::findOrFail($request->input('widget_id'));
-
-        $validator = Validator::make($request->all(), [
-            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
-        ]);
-
-        $redirect = redirect(adminUrl('widgets'));
-        if ($validator->fails()) {
-            return $redirect->withErrors($validator);
-        }
-
-        ThemeWidget::create([
-            'widget_name' => $themeWidget->widget_name,
-            'theme_name' => $themeWidget->theme_name,
-            'placeholder' => $request->input('placeholder'),
-            'constructing_data' => $themeWidget->constructing_data,
-            'active' => $themeWidget->active,
-            'order' => ThemeWidget::where('placeholder', $request->input('placeholder'))->count() + 1,
-        ]);
-
-        return $redirect;
+        return redirect($rdrUrl);
     }
 }

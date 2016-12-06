@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Katniss\Everdeen\Models\AppOption;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Models\Link;
 use Katniss\Everdeen\Models\Permission;
@@ -95,6 +96,36 @@ class DefaultSeeder extends Seeder
 
         $locales = ['en', 'vi'];
         $category = new Category();
+        $category->type = Category::ARTICLE;
+        $data = [
+            'en' => [
+                'name' => 'Uncategorized',
+                'slug' => 'uncategorized',
+                'description' => 'For uncategorized articles',
+            ],
+            'vi' => [
+                'name' => 'Chuyên mục chung',
+                'slug' => 'chuyen-muc-chung',
+                'description' => 'Chứa các chuyên đề không có chuyên mục',
+            ]
+        ];
+        foreach ($locales as $locale) {
+            $transData = $data[$locale];
+            $trans = $category->translateOrNew($locale);
+            $trans->name = $transData['name'];
+            $trans->slug = $transData['slug'];
+            $trans->description = $transData['description'];
+        }
+        $category->save();
+        AppOption::create([
+            'key' => 'extension_app_settings',
+            'rawValue' => '{"register_enable":"1","default_article_category":"' . $category->id . '"}',
+            'data_type' => 'array',
+            'registered_by' => 'ext:app_settings',
+        ]);
+
+        $locales = ['en', 'vi'];
+        $category = new Category();
         $category->type = Category::LINK;
         $data = [
             'en' => [
@@ -154,7 +185,6 @@ class DefaultSeeder extends Seeder
                 ]
             ]
         ];
-
         foreach ($data as $item) {
             $link = new Link();
             foreach ($locales as $locale) {
@@ -167,6 +197,7 @@ class DefaultSeeder extends Seeder
             $link->save();
             $link->categories()->attach($category->id);
         }
+
         ThemeWidget::create([
             'widget_name' => 'base_links',
             'theme_name' => '',

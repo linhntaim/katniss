@@ -3,9 +3,11 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends ViewController
@@ -38,10 +40,11 @@ class LoginController extends ViewController
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
+        $this->viewPath = 'auth';
         $this->redirectTo = homePath('auth/inactive');
         $this->loginPath = homePath('auth/login');
         $this->socialRegisterPath = homePath('auth/register/social');
@@ -66,10 +69,13 @@ class LoginController extends ViewController
      */
     public function showLoginForm()
     {
-        $this->theme->title(trans('pages.account_login_title'));
-        $this->theme->description(trans('pages.account_login_desc'));
+        $this->_title(trans('pages.account_login_title'));
+        $this->_description(trans('pages.account_login_desc'));
 
-        return view($this->themePage('auth.login'));
+        return $this->_any('login', [
+            'social_integration' => SocialIntegrationExtension::getSharedViewData(),
+            'app_settings' => AppSettingsExtension::getSharedViewData(),
+        ]);
     }
 
     /**
@@ -80,7 +86,7 @@ class LoginController extends ViewController
      */
     public function login(Request $request)
     {
-        if(!$this->validateLogin($request)) {
+        if (!$this->validateLogin($request)) {
             return redirect($this->loginPath)
                 ->withInput($request->only($this->username(), 'remember'))
                 ->withErrors($this->getValidationErrors());
@@ -125,12 +131,12 @@ class LoginController extends ViewController
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return boolean
      */
     protected function validateLogin(Request $request)
     {
-        return $this->validate($request, [
+        return $this->customValidate($request, [
             $this->username() => 'required', 'password' => 'required',
         ]);
     }
@@ -165,6 +171,12 @@ class LoginController extends ViewController
         if ($authUser = User::fromSocial($provider, $socialUser->id, $socialUser->email)->first()) {
             $this->guard()->login($authUser);
             return redirect($this->redirectPath());
+        }
+
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            return redirect($this->loginPath)
+                ->withErrors([trans('error.fail_social_get_info')]);
         }
 
         $userName = strtok($socialUser->email, '@');

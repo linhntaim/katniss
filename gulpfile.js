@@ -13,7 +13,25 @@ require('laravel-elixir-vue-2');
  |
  */
 
-elixir((mix) => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+elixir(function(mix) {
+    mix.scripts([
+        'helpers.js',
+        'class.number_format_helper.js',
+        'class.katniss_api.js',
+        'refresh_session.js',
+        'gui.jquery.js'
+    ], 'public/assets/libraries/katniss.home.js');
+
+    mix.scripts([
+        'helpers.js',
+        'slug.js',
+        'slug.jquery.js',
+        'class.number_format_helper.js',
+        'class.katniss_api.js',
+        'refresh_session.js',
+        'gui.jquery.js'
+    ], 'public/assets/libraries/katniss.admin.js');
+
+    mix.styles('modal_cropper_image.css', 'public/assets/libraries/modal_cropper_image.css');
+    mix.scripts('modal_cropper_image.js', 'public/assets/libraries/modal_cropper_image.js');
 });

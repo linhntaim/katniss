@@ -58,6 +58,9 @@ return [
     'image' => 'Hình ảnh',
     'image_lc' => 'hình ảnh',
     'url' => 'Đường dẫn',
+    'title' => 'Tiêu đề',
+    'post_template' => 'Mẫu giao diện',
+    'author' => 'Tác giả',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -98,7 +101,7 @@ tới thư điện tử của bạn. Hãy kiểm tra hòm thư (ở các hòm th
 hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi.',
     'account_activate_mail_resent' => 'Thư điện tử đã được gửi lại',
     'account_activate_mail_resend' => 'Gửi lại thư điện tử',
-    'remember_account' => 'Vẫn nhớ thôn tin đăng nhập của bạn?',
+    'remember_account' => 'Vẫn nhớ thông tin đăng nhập của bạn?',
     'account_password_reset_send_mail' => 'Gửi thông tin để thiết lập lại',
     'send_welcome_mail' => 'Gửi thư chào mừng',
     '_hi' => 'Chào, :name',
@@ -110,6 +113,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'role_lc' => 'vai trò',
     'role' => 'Vai trò',
     'permission' => 'Quyền hạn',
+    'app_option' => 'Thiết lập',
+    'app_option_lc' => 'thiết lập',
     'widget' => 'Công cụ hiển thị',
     'theme_placeholder' => 'Vùng hiển thị',
     'file' => 'Tập tin',
@@ -118,12 +123,12 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'category_lc' => 'chuyên mục',
     'link' => 'Liên kết',
     'link_lc' => 'liên kết',
-    
-    'social_sharing' => 'Chia sẻ cho cộng đồng',
-    'facebook_comment' => 'Bình luận trên Facebook',
-    'example_widget' => 'Công cụ hiển thị',
+    'article' => 'Chuyên đề',
+    'article_lc' => 'chuyên đề',
+    'page' => 'Trang',
+    'page_lc' => 'trang',
 
-    'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây.',
+    'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
     'max_upload_file_size' => 'Dung lượng tập tin tối đa cho phép tải lên: :size',
 
