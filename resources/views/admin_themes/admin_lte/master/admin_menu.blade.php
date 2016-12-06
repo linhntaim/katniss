@@ -45,8 +45,6 @@
 </header>
 <aside class="main-sidebar">
     <section class="sidebar">
-        <ul class="sidebar-menu">
-            {!! $admin_menu !!}
-        </ul>
+        {{ $admin_menu }}
     </section>
 </aside>

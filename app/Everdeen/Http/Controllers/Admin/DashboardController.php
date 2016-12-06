@@ -3,7 +3,6 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Http\Request;
 
 class DashboardController extends ViewController
 {
@@ -14,11 +13,7 @@ class DashboardController extends ViewController
         $this->viewPath = 'dashboard';
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index(Request $request)
+    public function index()
     {
         $this->_title(trans('pages.admin_dashboard_title'));
         $this->_description(trans('pages.admin_dashboard_desc'));

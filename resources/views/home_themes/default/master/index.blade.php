@@ -37,7 +37,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
-            {!! $main_menu->render() !!}
+            {{ $main_menu }}
         </div>
         <!-- /.navbar-collapse -->
     </div>
