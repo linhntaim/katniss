@@ -395,4 +395,23 @@ abstract class Theme
             'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
     }
+
+    public function resolveErrorView($code, $originalPath = null)
+    {
+        $viewInstance = view();
+        $view = $this->error($code);
+        if (!$viewInstance->exists($view)) {
+            $view = $this->error('common');
+            if (!$viewInstance->exists($view)) {
+                $view = 'errors.' . $code;
+                if (!$viewInstance->exists($view)) {
+                    $view = 'errors.common';
+                    if (!$viewInstance->exists($view)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return $view;
+    }
 }

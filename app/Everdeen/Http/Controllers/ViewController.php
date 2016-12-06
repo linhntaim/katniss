@@ -33,26 +33,6 @@ class ViewController extends KatnissController
         return $this->currentRequest->theme()->description($description);
     }
 
-    protected function _error($name)
-    {
-        return $this->currentRequest->theme()->error($name);
-    }
-
-    protected function _errorExists($view)
-    {
-        return view()->exists($this->_error($view));
-    }
-
-    protected function _err($code, $view, $data = [], $headers = [])
-    {
-        return $this->_e($code, $this->_error($view), $data, $headers);
-    }
-
-    protected function _e($code, $view, $data = [], $headers = [])
-    {
-        return response()->view($view, $data, $code, $headers);
-    }
-
     /**
      * @param string $name
      * @return string
@@ -155,14 +135,10 @@ class ViewController extends KatnissController
         if (!isset($params['message'])) {
             $params['message'] = trans('error.unknown');
         }
-        if ($this->_errorExists($code)) {
-            return $this->_err($code, $code, $params, $headers);
-        } elseif ($this->_errorExists('common')) {
-            return $this->_err($code, 'common', $params, $headers);
-        } elseif (view()->exists('errors.' . $code)) {
-            return $this->_e($code, 'errors' . $code, $params, $headers);
-        } elseif (view()->exists('errors.common')) {
-            return $this->_e($code, 'errors.common', $params, $headers);
+
+        $view = $request->theme()->resolveErrorView($code, $params['original_path']);
+        if ($view !== false) {
+            return response()->view($view, $params, $code, $headers);
         }
         return '';
     }

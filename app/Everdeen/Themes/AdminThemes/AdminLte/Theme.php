@@ -65,4 +65,25 @@ class Theme extends AdminTheme
 
         parent::registerExtScripts($is_auth);
     }
+
+    public function resolveErrorView($code, $originalPath = null)
+    {
+        $onAuthPath = beginsWith($originalPath, homePath('auth')) || beginsWith($originalPath, homePath('me'));
+
+        $viewInstance = view();
+        $view = $this->error($onAuthPath ? 'auth.' . $code : $code);
+        if (!$viewInstance->exists($view)) {
+            $view = $this->error($onAuthPath ? 'auth.common' : 'common');
+            if (!$viewInstance->exists($view)) {
+                $view = 'errors.' . $code;
+                if (!$viewInstance->exists($view)) {
+                    $view = 'errors.common';
+                    if (!$viewInstance->exists($view)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return $view;
+    }
 }

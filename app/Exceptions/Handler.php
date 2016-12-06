@@ -108,6 +108,7 @@ class Handler extends ExceptionHandler
             [
                 'message' => $e->getMessage(),
                 'headers' => $e->getHeaders(),
+                'original_path' => request()->path(),
             ],
             request()->cookies->all()
         );
