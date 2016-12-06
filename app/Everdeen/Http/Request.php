@@ -33,7 +33,7 @@ class Request extends BaseRequest
     {
         $this->theme = Theme::byRequest(); // register theme
         $viewParams = [
-            'site_locale' => $this->localeCode,
+            'site_locale' => currentLocaleCode(),
             'site_version' => appVersion(),
             'site_name' => appName(),
             'site_logo' => appLogo(),
