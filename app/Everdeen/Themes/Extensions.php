@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Utils\AppOptionHelper;
 
 class Extensions
 {
@@ -24,10 +25,13 @@ class Extensions
     {
     }
 
-    public function init() {
+    public function init()
+    {
         $this->defines = array_merge(config('katniss.extensions'), HomeThemeFacade::extensions());
         $this->statics = config('katniss.static_extensions');
-        $this->activated = array_unique(array_merge((array)getOption('activated_extensions', []), $this->staticExtensions()));
+        $this->activated = array_unique(
+            array_merge((array)AppOptionHelper::get('activated_extensions', []), $this->staticExtensions())
+        );
         $this->adminExcepts = config('katniss.admin_except_extensions');
     }
 

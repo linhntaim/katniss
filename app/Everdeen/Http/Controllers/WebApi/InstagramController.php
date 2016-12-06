@@ -8,16 +8,12 @@
 
 namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
-
-use Illuminate\Http\Request;
-use Katniss\Everdeen\Http\Controllers\ApiController;
 use Katniss\Everdeen\Http\Controllers\CallbackTrait;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\Extension;
 use Katniss\Everdeen\Themes\Theme;
-use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\InstagramHelper;
-use Larabros\Elogram\Client;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 
 class InstagramController extends WebApiController
@@ -37,9 +33,8 @@ class InstagramController extends WebApiController
             }
         }
 
-        $theme = Theme::byRequest();
-        $theme->register($this->isAuth);
-        $shared = Extension::getSharedData(SocialIntegrationExtension::EXTENSION_NAME);
+        Theme::byRequest(); // register theme
+        $shared = Extension::getSharedData(SocialIntegrationExtension::NAME);
 
         $client = new \GuzzleHttp\Client();
         $response = $client->post(InstagramHelper::getAccessTokenUrl(), [

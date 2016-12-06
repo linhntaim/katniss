@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Http\Controllers;
 
 
-use Illuminate\Http\Request;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
 
 trait CallbackTrait

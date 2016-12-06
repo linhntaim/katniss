@@ -8,12 +8,12 @@
     <script>
         {!! cdataOpen() !!}
         function enableAlongCheckbox(id) {
-            jQuery(id).on('ifChanged', function () {
-                jQuery('[data-enable-target="' + id + '"]').prop('disabled', !jQuery(this).is(':checked'));
+            $(id).on('ifChanged', function () {
+                $('[data-enable-target="' + id + '"]').prop('disabled', !$(this).is(':checked'));
             }).trigger('ifChanged');
         }
-        jQuery(document).ready(function () {
-            jQuery('[type=checkbox]').iCheck({
+        $(function () {
+            $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue',
                 increaseArea: '20%' // optional
@@ -57,6 +57,17 @@
             <label for="inputFacebookAppId">Facebook App ID</label>
             <input id="inputFacebookAppId" type="text" class="form-control" name="facebook_app_id"
                    value="{{ $facebook_app_id }}" data-enable-target="#inputFacebookEnable">
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputFacebookLoginEnable">
+                    <input id="inputFacebookLoginEnable" type="checkbox" name="facebook_login_enable"
+                           data-enable-target="#inputFacebookEnable"
+                           value="1"{{ $facebook_login_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.facebook_login_enable') }}
+                </label>
+            </div>
         </div>
         <hr>
         <div class="form-group">
@@ -293,6 +304,17 @@
                     <input id="inputGoogleEnable" type="checkbox" name="google_enable"
                            value="1"{{ $google_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.google_enable') }}
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputGoogleLoginEnable">
+                    <input id="inputGoogleShareEnable" type="checkbox" name="google_login_enable"
+                           data-enable-target="#inputGoogleEnable"
+                           value="1"{{ $google_login_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('social_integration.google_login_enable') }}
                 </label>
             </div>
         </div>

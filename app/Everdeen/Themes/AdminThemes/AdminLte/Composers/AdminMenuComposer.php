@@ -8,12 +8,10 @@
 
 namespace Katniss\Everdeen\Themes\AdminThemes\AdminLte\Composers;
 
-use Illuminate\Support\Facades\Auth;
-use Katniss\Everdeen\Utils\Menu;
-use Katniss\Everdeen\Utils\MenuItem;
 use Illuminate\Contracts\View\View;
-
-;
+use Illuminate\Support\HtmlString;
+use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
+use Katniss\Everdeen\Utils\DataStructure\Menu\MenuRender;
 
 class AdminMenuComposer
 {
@@ -35,109 +33,164 @@ class AdminMenuComposer
      */
     public function compose(View $view)
     {
+        $view->with('admin_menu', $this->getMenuRender($this->getMenu()))
+            ->with('notification_menu', $this->getNotificationMenuRender($this->getNotificationMenu()));
+    }
+
+    protected function getNotificationMenuRender(Menu $menu)
+    {
+        $menuRender = new MenuRender();
+        $menuRender->wrapClass = 'menu';
+        $menuRender->wrapId = 'notification-holder';
+        return new HtmlString($menuRender->render($menu));
+    }
+
+    protected function getNotificationMenu()
+    {
+        $menu = new Menu();
+        $notifications = [];
+        foreach ($notifications as $notification) {
+            $menu->add(
+                $notification->url,
+                $notification->message,
+                '<h4>', '</h4><p><small><i class="fa fa-clock-o"></i> <span class="time-ago" title="' . $notification->timeTz . '">' . $notification->time . '</span></small></p>',
+                $notification->read ? 'read' : 'unread', '', 'notification-' . $notification->id
+            );
+        }
+        $menu = content_filter('notification_menu', $menu);
+        return $menu;
+    }
+
+
+    protected function getMenuRender(Menu $menu)
+    {
+        $menuRender = new MenuRender();
+        $menuRender->wrapClass = 'sidebar-menu';
+        $menuRender->childrenWrapClass = 'treeview-menu';
+        return new HtmlString($menuRender->render($menu));
+    }
+
+    protected function getMenu()
+    {
         $currentUrl = currentUrl();
-        $menu = new Menu('ul', 'sidebar-menu', $currentUrl);
-
         $user = authUser();
-
+        $menu = new Menu($currentUrl);
         if ($user->can('access-admin')) {
             // Dashboard
-            $menu->addItem(new MenuItem( // add a menu item
+            $menu->add( // add a menu item
                 adminUrl(),
-                trans('pages.admin_dashboard_title'), 'li', '', '', '<i class="fa fa-dashboard"></i> <span>', '</span>'
-            ));
+                trans('pages.admin_dashboard_title'), '<i class="fa fa-dashboard"></i> <span>', '</span>'
+            );
             // My Account
-            $menu->addItem(new MenuItem( // add a menu item
+            $menu->add( // add a menu item
                 meUrl('account'),
-                trans('pages.my_account_title'), 'li', '', '', '<i class="fa fa-user"></i> <span>', '</span>'
-            ));
+                trans('pages.my_account_title'), '<i class="fa fa-user"></i> <span>', '</span>'
+            );
             // My Settings
-            $menu->addItem(new MenuItem( // add a menu item
+            $menu->add( // add a menu item
                 meUrl('settings'),
-                trans('pages.my_settings_title'), 'li', '', '', '<i class="fa fa-cog"></i> <span>', '</span>'
-            ));
+                trans('pages.my_settings_title'), '<i class="fa fa-cog"></i> <span>', '</span>'
+            );
             // File Manager
-            $menu->addItem(new MenuItem( // add a menu item
+            $menu->add( // add a menu item
                 adminUrl('my-documents'),
-                trans('pages.my_documents_title'), 'li', '', '', '<i class="fa fa-file"></i> <span>', '</span>'
-            ));
+                trans('pages.my_documents_title'), '<i class="fa fa-file"></i> <span>', '</span>'
+            );
 
 
             if ($user->hasRole('admin')) {
                 // System Settings
-                $menu->addItem(new MenuItem( // add a menu header
+                $menu->add( // add a menu header
                     null,
-                    mb_strtoupper(trans('pages.admin_system_settings_title')), 'li', 'header'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
+                    mb_strtoupper(trans('pages.admin_system_settings_title')),
+                    '', '', 'header'
+                );
+                $menu->add( // add a menu item
                     adminUrl('user-roles'),
-                    trans('pages.admin_roles_title'), 'li', '', '', '<i class="fa fa-unlock"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
+                    trans('pages.admin_roles_title'), '<i class="fa fa-unlock"></i> <span>', '</span>'
+                );
+                $menu->add( // add a menu item
                     adminUrl('users'),
-                    trans('pages.admin_users_title'), 'li', '', '', '<i class="fa fa-user"></i> <span>', '</span>'
-                ));
+                    trans('pages.admin_users_title'),
+                    '<i class="fa fa-user"></i> <span>', '</span>'
+                );
                 // Theme Settings
-                $menu->addItem(new MenuItem( // add a menu header
+                $menu->add( // add a menu header
                     null,
-                    mb_strtoupper(trans('pages.admin_theme_settings_title')), 'li', 'header'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
+                    mb_strtoupper(trans('pages.admin_theme_settings_title')), '', '', 'header'
+                );
+                $menu->add( // add a menu item
                     adminUrl('app-options'),
-                    trans('pages.admin_app_options_title'), 'li', '', '', '<i class="fa fa-cogs"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
+                    trans('pages.admin_app_options_title'),
+                    '<i class="fa fa-cogs"></i> <span>', '</span>'
+                );
+                $menu->add( // add a menu item
                     adminUrl('extensions'),
-                    trans('pages.admin_extensions_title'), 'li', '', '', '<i class="fa fa-cubes"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem( // add a menu item
+                    trans('pages.admin_extensions_title'),
+                    '<i class="fa fa-cubes"></i> <span>', '</span>'
+                );
+                $menu->add( // add a menu item
                     adminUrl('widgets'),
-                    trans('pages.admin_widgets_title'), 'li', '', '', '<i class="fa fa-square-o"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem(  // add an example menu item which have sub menu
+                    trans('pages.admin_widgets_title'),
+                    '<i class="fa fa-square-o"></i> <span>', '</span>'
+                );
+                $menu->add(  // add an example menu item which have sub menu
                     '#',
-                    trans('pages.admin_ui_lang_title'), 'li', 'treeview', '', '<i class="fa fa-newspaper-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>'
-                ));
-                $sub_menu = new Menu('ul', 'treeview-menu', $currentUrl);
-                $sub_menu->addItem(new MenuItem( // add a menu item
+                    trans('pages.admin_ui_lang_title'),
+                    '<i class="fa fa-newspaper-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu($currentUrl);
+                $subMenu->add( // add a menu item
                     adminUrl('ui-lang/php'),
-                    trans('pages.admin_ui_lang_php_title'), 'li', '', '', '<i class="fa fa-file-code-o"></i> <span>', '</span>'
-                ));
-                $sub_menu->addItem(new MenuItem( // add a menu item
+                    trans('pages.admin_ui_lang_php_title'), '<i class="fa fa-file-code-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( // add a menu item
                     adminUrl('ui-lang/email'),
-                    trans('pages.admin_ui_lang_email_title'), 'li', '', '', '<i class="fa fa-file-text-o"></i> <span>', '</span>'
-                ));
-                $menu->last()->setChildMenu($sub_menu);
+                    trans('pages.admin_ui_lang_email_title'), '<i class="fa fa-file-text-o"></i> <span>', '</span>'
+                );
+                $menu->addSubMenu($subMenu);
 
                 //Links
-                $menu->addItem(new MenuItem( // add a menu header
+                $menu->add( // add a menu header
                     null,
-                    mb_strtoupper(trans('pages.admin_link_header')), 'li', 'header'
-                ));
-                $menu->addItem(new MenuItem( //add a menu item
+                    mb_strtoupper(trans('pages.admin_link_header')),
+                    '', '', 'header'
+                );
+                $menu->add( //add a menu item
                     adminUrl('link-categories'),
-                    trans('pages.admin_link_categories_title'), 'li', '', '', '<i class="fa fa-table"></i> <span>', '</span>'
-                ));
-                $menu->addItem(new MenuItem( //add a menu item
+                    trans('pages.admin_link_categories_title'),
+                    '<i class="fa fa-table"></i> <span>', '</span>'
+                );
+                $menu->add( //add a menu item
                     adminUrl('links'),
-                    trans('pages.admin_links_title'), 'li', '', '', '<i class="fa fa-external-link"></i> <span>', '</span>'
-                ));
+                    trans('pages.admin_links_title'),
+                    '<i class="fa fa-external-link"></i> <span>', '</span>'
+                );
+
+                //Links
+                $menu->add( // add a menu header
+                    null,
+                    mb_strtoupper(trans('pages.admin_post_header')),
+                    '', '', 'header'
+                );
+                $menu->add( //add a menu item
+                    adminUrl('pages'),
+                    trans('pages.admin_pages_title'),
+                    '<i class="fa fa-file"></i> <span>', '</span>'
+                );
+                $menu->add( //add a menu item
+                    adminUrl('article-categories'),
+                    trans('pages.admin_article_categories_title'),
+                    '<i class="fa fa-table"></i> <span>', '</span>'
+                );
+                $menu->add( //add a menu item
+                    adminUrl('articles'),
+                    trans('pages.admin_articles_title'),
+                    '<i class="fa fa-align-justify"></i> <span>', '</span>'
+                );
             }
         }
-
-        $notification_menu = new Menu('ul', 'menu', '', 'notification-holder');
-        $notifications = $user->notifications()->orderBy('created_at', 'desc')->take(10)->get();
-        foreach ($notifications as $notification) {
-            $notification_menu->addItem(new MenuItem(
-                $notification->url,
-                $notification->message,
-                'li', $notification->read ? 'read' : 'unread', '', '<h4>',
-                '</h4><p><small><i class="fa fa-clock-o"></i> <span class="time-ago" title="' . $notification->timeTz . '">' . $notification->time . '</span></small></p>',
-                'notification-' . $notification->id
-            ));
-        }
-
-        $view->with('admin_menu', $menu->render())
-            ->with('notification_menu', $notification_menu->render());
+        $menu = content_filter('admin_menu', $menu);
+        return $menu;
     }
 }

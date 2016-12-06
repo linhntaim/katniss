@@ -10,8 +10,8 @@
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
+        $(function () {
+            $('.select2').select2();
         });
         {!! cdataClose() !!}
     </script>
@@ -24,8 +24,9 @@
             @endforeach
         </div>
     @endif
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ meUrl('settings') }}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
         <div class="form-group">
             <label for="inputCountry">{{ trans('label.country') }}:</label>
             <select id="inputCountry" class="select2" name="country" style="width: 100%;">

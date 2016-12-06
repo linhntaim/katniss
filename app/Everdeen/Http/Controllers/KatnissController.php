@@ -2,8 +2,8 @@
 
 namespace Katniss\Everdeen\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\MultipleLocaleValidationResult;
@@ -14,29 +14,38 @@ class KatnissController extends Controller
     /**
      * @var boolean
      */
-    public $isAuth;
+    protected $isAuth;
 
     /**
      * @var \Katniss\Everdeen\Models\User
      */
-    public $authUser;
+    protected $authUser;
 
     /**
      * @var string
      */
-    public $localeCode;
+    protected $localeCode;
 
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     protected $validationErrors;
 
-    public function __construct(Request $request = null)
-    {
-        $this->middleware(function (Request $request, $next) {
-            AppOptionHelper::load();
+    /**
+     * @var Request
+     */
+    protected $currentRequest;
 
+    public function __construct()
+    {
+        AppOptionHelper::load();
+        $this->validationErrors = collect([]);
+
+        $this->middleware(function (Request $request, $next) {
             $this->localeCode = currentLocaleCode();
             $this->isAuth = isAuth();
             $this->authUser = authUser();
-            $this->validationErrors = collect([]);
+            $this->currentRequest = $request;
 
             return $next($request);
         });
@@ -78,7 +87,7 @@ class KatnissController extends Controller
         return $result;
     }
 
-    public function validate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
+    public function customValidate(Request $request, array $rules, array $messages = [], array $customAttributes = [])
     {
         $this->validationErrors = collect([]);
         $validator = $this->getValidationFactory()->make($request->all(), $rules, $messages, $customAttributes);

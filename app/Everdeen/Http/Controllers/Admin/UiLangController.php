@@ -2,18 +2,16 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
-use Katniss\Http\Requests;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 
 class UiLangController extends ViewController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'ui_lang';
     }
@@ -44,8 +42,8 @@ class UiLangController extends ViewController
             }
         }
 
-        $this->theme->title(trans('pages.admin_ui_lang_php_title'));
-        $this->theme->description(trans('pages.admin_ui_lang_php_desc'));
+        $this->_title(trans('pages.admin_ui_lang_php_title'));
+        $this->_description(trans('pages.admin_ui_lang_php_desc'));
 
         return $this->_any('php', [
             'file_locale' => $file_locale,
@@ -106,8 +104,8 @@ class UiLangController extends ViewController
             }
         }
 
-        $this->theme->title(trans('pages.admin_ui_lang_email_title'));
-        $this->theme->description(trans('pages.admin_ui_lang_email_desc'));
+        $this->_title(trans('pages.admin_ui_lang_email_title'));
+        $this->_description(trans('pages.admin_ui_lang_email_desc'));
 
         return $this->_any('email', [
             'file_locale' => $file_locale,

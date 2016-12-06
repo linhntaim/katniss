@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\SettingsFacade;
 use Katniss\Everdeen\Models\UserApp;
@@ -47,7 +47,7 @@ class ApiMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @param  \Closure $next
      * @return mixed
      */

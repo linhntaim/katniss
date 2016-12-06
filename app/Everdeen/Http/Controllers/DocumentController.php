@@ -2,10 +2,9 @@
 
 namespace Katniss\Everdeen\Http\Controllers;
 
-use Katniss\Everdeen\Utils\DateTimeHelper;
 use Barryvdh\Elfinder\Connector;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class DocumentController extends ViewController
 {
@@ -38,8 +37,8 @@ class DocumentController extends ViewController
 
     public function forCkeditor(Request $request)
     {
-        $this->theme->title(trans('pages.my_documents_title'));
-        $this->theme->title(trans('pages.my_documents_desc'));
+        $this->_title(trans('pages.my_documents_title'));
+        $this->_description(trans('pages.my_documents_desc'));
 
         $customType = $request->input('custom_type', '');
         $onlyMimes = $this->onlyMimes($customType);
@@ -54,8 +53,8 @@ class DocumentController extends ViewController
 
     public function forPopup(Request $request, $input_id)
     {
-        $this->theme->title(trans('pages.my_documents_title'));
-        $this->theme->title(trans('pages.my_documents_desc'));
+        $this->_title(trans('pages.my_documents_title'));
+        $this->_description(trans('pages.my_documents_desc'));
 
         $customType = $request->input('custom_type', '');
         $onlyMimes = $this->onlyMimes($customType);

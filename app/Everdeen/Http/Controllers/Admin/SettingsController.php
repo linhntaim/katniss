@@ -2,25 +2,23 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
-use Katniss\Http\Requests;
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 
 class SettingsController extends ViewController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'my_settings';
     }
 
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.my_settings_title'));
-        $this->theme->description(trans('pages.my_settings_desc'));
+        $this->_title(trans('pages.my_settings_title'));
+        $this->_description(trans('pages.my_settings_desc'));
 
         return $this->_view([
             'settings' => app('settings'),

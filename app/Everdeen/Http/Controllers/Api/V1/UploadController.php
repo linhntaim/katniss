@@ -2,8 +2,8 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
 use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\Storage\StorePhotoByCropperJs;
 
 class UploadController extends ApiController

@@ -9,8 +9,8 @@
             @endforeach
         </div>
     @endif
-    <form method="post">
-        {!! csrf_field() !!}
+    <form method="post" action="{{ homeUrl('auth/register/social') }}">
+        {{ csrf_field() }}
         <input type="hidden" name="provider" value="{{ old('provider') }}">
         <input type="hidden" name="provider_id" value="{{ old('provider_id') }}">
         <input type="hidden" name="url_avatar" value="{{ old('url_avatar') }}">

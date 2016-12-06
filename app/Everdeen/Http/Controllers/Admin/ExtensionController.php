@@ -2,26 +2,25 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Themes\ExtensionsFacade;
-use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Validator;
+use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\ExtensionsFacade;
+use Katniss\Everdeen\Utils\AppOptionHelper;
 
 class ExtensionController extends ViewController
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
         $this->viewPath = 'extension';
     }
 
     public function index(Request $request)
     {
-        $this->theme->title(trans('pages.admin_extensions_title'));
-        $this->theme->description(trans('pages.admin_extensions_desc'));
+        $this->_title(trans('pages.admin_extensions_title'));
+        $this->_description(trans('pages.admin_extensions_desc'));
 
         $extensionClasses = ExtensionsFacade::all();
         $extensions = [];
@@ -38,7 +37,7 @@ class ExtensionController extends ViewController
             ];
         }
 
-        return $this->_list([
+        return $this->_index([
             'extensions' => $extensions,
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
@@ -55,8 +54,8 @@ class ExtensionController extends ViewController
             abort(404);
         }
 
-        $this->theme->title([trans('pages.admin_extensions_title'), $extension->getDisplayName(), trans('form.action_edit')]);
-        $this->theme->description($extension->getDescription());
+        $this->_title([trans('pages.admin_extensions_title'), $extension->getDisplayName(), trans('form.action_edit')]);
+        $this->_description($extension->getDescription());
 
         return $this->_edit(array_merge([
             'extension' => $extension,
@@ -64,9 +63,16 @@ class ExtensionController extends ViewController
         ], $extension->viewAdminParams()));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $name)
     {
-        $extensionClass = ExtensionsFacade::extensionClass($request->input('extension'));
+        if ($request->has('activate')) {
+            return $this->activate($request, $name);
+        }
+        if ($request->has('deactivate')) {
+            return $this->deactivate($request, $name);
+        }
+
+        $extensionClass = ExtensionsFacade::extensionClass($name);
         if (empty($extensionClass) || !class_exists($extensionClass)) {
             abort(404);
         }
@@ -106,39 +112,31 @@ class ExtensionController extends ViewController
         return $redirect;
     }
 
-    public function activate(Request $request, $name)
+    protected function activate(Request $request, $name)
     {
         $extensionClasses = array_keys(ExtensionsFacade::all());
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && !in_array($name, $activatedExtensions)) {
             $activatedExtensions[] = $name;
-            setOption('activated_extensions', $activatedExtensions, 'man:extensions');
+            AppOptionHelper::set('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
-        $redirect_url = adminUrl('extensions');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('extensions'), $rdrUrl, $errorRdrUrl);
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 
-    public function deactivate(Request $request, $name)
+    protected function deactivate(Request $request, $name)
     {
         $extensionClasses = array_keys(ExtensionsFacade::all());
         $activatedExtensions = activatedExtensions();
         if (in_array($name, $extensionClasses) && in_array($name, $activatedExtensions)) {
             $activatedExtensions = array_diff($activatedExtensions, [$name]);
-            setOption('activated_extensions', $activatedExtensions, 'man:extensions');
+            AppOptionHelper::set('activated_extensions', $activatedExtensions, 'man:extensions');
         }
 
-        $redirect_url = adminUrl('extensions');
-        $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
-        if (!empty($rdr)) {
-            $redirect_url = $rdr;
-        }
+        $this->_rdrUrl($request, adminUrl('extensions'), $rdrUrl, $errorRdrUrl);
 
-        return redirect($redirect_url);
+        return redirect($rdrUrl);
     }
 }

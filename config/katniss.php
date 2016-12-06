@@ -22,24 +22,28 @@ return [
     'idle_switching_time' => 120, // seconds
 
     'admin_theme' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
-    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME,
+    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME,
     'admin_themes' => [
         Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
     'home_themes' => [
-        Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\DefaultTheme\Theme::class,
+        Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::class,
     ],
     'widgets' => [
         Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::class,
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
     ],
     'extensions' => [
+        Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME => Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::class,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
     ],
     'static_extensions' => [
+        Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
     ],
     'admin_except_extensions' => [

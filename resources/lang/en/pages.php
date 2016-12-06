@@ -60,4 +60,14 @@ return [
     'admin_link_categories_desc' => 'Manage link categories',
     'admin_links_title' => 'Links',
     'admin_links_desc' => 'Manage links',
+    'admin_post_header' => 'Posts',
+    'admin_pages_title' => 'Pages',
+    'admin_pages_desc' => 'Manage pages',
+    'admin_article_categories_title' => 'Article Categories',
+    'admin_article_categories_desc' => 'Manage article categories',
+    'admin_articles_title' => 'Articles',
+    'admin_articles_desc' => 'Manage articles',
+
+    'admin_error_title' => ':code Error',
+    'admin_error_desc' => ':code Error Page',
 ];

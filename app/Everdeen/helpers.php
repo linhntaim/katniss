@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Utils\AppConfig;
@@ -151,9 +152,19 @@ function isValidWizardKey($key, $name = '')
     return Hash::check($name . appKey(), $key);
 }
 
+function methodParam($method)
+{
+    return '_method=' . $method;
+}
+
 function rdrQueryParam($url)
 {
     return AppConfig::KEY_REDIRECT_URL . '=' . urlencode($url);
+}
+
+function errorRdrQueryParam($url)
+{
+    return AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($url);
 }
 
 #endregion
@@ -284,6 +295,42 @@ function currentFullLocaleCode($separator = '_')
 #endregion
 
 #region Generate URL
+function checkPath($request = null)
+{
+    if (empty($request)) {
+        $request = request();
+    }
+
+    $return = new stdClass();
+    $return->locale = in_array($request->segment(1), allSupportedLocaleCodes());
+    $return->api = false;
+    $return->webApi = false;
+    $return->admin = false;
+    $return->home = false;
+
+    $apiPath = 'api'; // can be changed
+    if ($request->is($apiPath, $apiPath . '/*')) {
+        $return->api = true;
+        return $return;
+    }
+    $webApiPath = 'web-api'; // can be changed
+
+    $return->webApi = $request->is($webApiPath, $webApiPath . '/*');
+
+    $adminPaths = _k('paths_use_admin_theme');
+    foreach ($adminPaths as $adminPath) {
+        $adminPath = !$return->webApi ? homePath($adminPath) : $webApiPath . '/' . $adminPath;
+        if ($request->is($adminPath, $adminPath . '/*')) {
+            $return->admin = true;
+            break;
+        }
+    }
+
+    $return->home = !$return->admin;
+
+    return $return;
+}
+
 function transRoute($route)
 {
     return LaravelLocalization::transRoute('routes.' . $route);
@@ -1026,7 +1073,7 @@ function appVersion()
 
 function frameworkVersion()
 {
-    return 'Laravel ' . \Illuminate\Foundation\Application::VERSION;
+    return 'Laravel v' . \Illuminate\Foundation\Application::VERSION;
 }
 
 function appAuthor()

@@ -3,15 +3,17 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Events\UserAfterRegistered;
 use Katniss\Everdeen\Http\Controllers\ViewController;
-use Katniss\Everdeen\Utils\MailHelper;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSocial;
-use Validator;
+use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
+use Katniss\Everdeen\Utils\MailHelper;
 
 class RegisterController extends ViewController
 {
@@ -40,10 +42,11 @@ class RegisterController extends ViewController
      *
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
-        parent::__construct($request);
+        parent::__construct();
 
+        $this->viewPath = 'auth';
         $this->redirectTo = homePath('auth/inactive');
 
         $this->middleware('guest');
@@ -116,16 +119,23 @@ class RegisterController extends ViewController
      */
     public function showRegistrationForm()
     {
-        $this->theme->title(trans('pages.account_register_title'));
-        $this->theme->description(trans('pages.account_register_desc'));
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            abort(404);
+        }
 
-        return view($this->themePage('auth.register'));
+        $this->_title(trans('pages.account_register_title'));
+        $this->_description(trans('pages.account_register_desc'));
+
+        return $this->_any('register', [
+            'social_integration' => SocialIntegrationExtension::getSharedViewData(),
+        ]);
     }
 
     /**
      * Handle a registration request for the application.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Katniss\Everdeen\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request)
@@ -141,7 +151,7 @@ class RegisterController extends ViewController
         $storedUser = $this->create($request->all());
         if ($storedUser) {
             event(new UserAfterRegistered($storedUser, $request->input('password'), false,
-                array_merge($this->globalViewParams, [
+                array_merge($this->_params(), [
                     MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                     MailHelper::EMAIL_TO => $storedUser->email,
                     MailHelper::EMAIL_TO_NAME => $storedUser->display_name,
@@ -162,10 +172,19 @@ class RegisterController extends ViewController
      */
     public function showSocialRegistrationForm(Request $request)
     {
-        $this->theme->title(trans('pages.account_register_title'));
-        $this->theme->description(trans('pages.account_register_desc'));
+        $viewData = AppSettingsExtension::getSharedViewData();
+        if (!$viewData->register_enable) {
+            abort(404);
+        }
+        $viewData = SocialIntegrationExtension::getSharedViewData();
+        if (empty($viewData) || !$viewData->social_login_enable) {
+            abort(404);
+        }
 
-        return view($this->themePage('auth.register_social'));
+        $this->_title(trans('pages.account_register_title'));
+        $this->_description(trans('pages.account_register_desc'));
+
+        return $this->_any('register_social');
     }
 
     /**
@@ -174,6 +193,11 @@ class RegisterController extends ViewController
      */
     public function socialRegister(Request $request)
     {
+        $viewData = SocialIntegrationExtension::getSharedViewData();
+        if (empty($viewData) || !$viewData->social_login_enable) {
+            abort(404);
+        }
+
         $validator = $this->validator($request->all(), true);
 
         $errorRdr = redirect(homeUrl('auth/register/social'))->withInput();
@@ -185,7 +209,7 @@ class RegisterController extends ViewController
         $storedUser = $this->create($request->all(), true);
         if ($storedUser) {
             event(new UserAfterRegistered($storedUser, $request->input('password'), true,
-                array_merge($this->globalViewParams, [
+                array_merge($this->_params(), [
                     MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                     MailHelper::EMAIL_TO => $storedUser->email,
                     MailHelper::EMAIL_TO_NAME => $storedUser->display_name,

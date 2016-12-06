@@ -94,6 +94,60 @@ return [
             'HTML.SafeIframe' => true,
             'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/|www.dailymotion.com/embed/video/)%',
         ],
+        'page' => [ // + iframe + style
+            'Attr.EnableID' => true,
+            'HTML.Allowed' => 'address,a[href|rel|rev|name|target],abbr,acronym,b,big,blockquote[cite],br,caption[align],
+                cite,code,col[align|charoff|span|valign|width],colgroup[align|charoff|span|valign|width],del,dd,dfn,
+                div[align],dl,dt,em,font[color|face|size],h1[align],h2[align],h3[align],h4[align],h5[align],h6[align],
+                hr[align|noshade|size|width],i,iframe[width|height|src],img[alt|align|border|height|hspace|longdesc|vspace|src|width],
+                ins[cite],kbd,li[value],menu,p[align],pre[width],q[cite],s,samp,span,small,strike,strong,sub,sup,
+                table[align|bgcolor|border|cellpadding|cellspacing|rules|summary|width],tbody[align|charoff|valign],
+                td[abbr|align|bgcolor|charoff|colspan|height|nowrap|rowspan|scope|valign|width],tfoot[align|charoff|valign],
+                th[abbr|align|bgcolor|charoff|colspan|height|nowrap|rowspan|scope|valign|width],thead[align|charoff|valign],
+                tr[align|bgcolor|charoff|valign],tt,u,ul[type],ol[start|type],var,
+                *[style],*[id],*[class],*[dir],*[lang],*[xml:lang],*[title]',
+            'CSS.AllowedProperties' => 'text-align,margin,color,float,' .
+                'border,background,background-color,border-bottom,border-bottom-color,' .
+                'border-bottom-style,border-bottom-width,border-collapse,border-color,border-left,' .
+                'border-left-color,border-left-style,border-left-width,border-right,border-right-color,' .
+                'border-right-style,border-right-width,border-spacing,border-style,border-top,' .
+                'border-top-color,border-top-style,border-top-width,border-width,caption-side,' .
+                'clear,font,font-family,font-size,font-style,' .
+                'font-variant,font-weight,height,letter-spacing,line-height,margin-bottom,' .
+                'margin-left,margin-right,margin-top,padding,padding-bottom,' .
+                'padding-left,padding-right,padding-top,text-decoration,text-indent,vertical-align,width',
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty' => true,
+            'HTML.SafeIframe' => true,
+            'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/|www.dailymotion.com/embed/video/)%',
+        ],
+        'blog' => [ // + iframe + style
+            'Attr.EnableID' => true,
+            'HTML.Allowed' => 'address,a[href|rel|rev|name|target],abbr,acronym,b,big,blockquote[cite],br,caption[align],
+                cite,code,col[align|charoff|span|valign|width],colgroup[align|charoff|span|valign|width],del,dd,dfn,
+                div[align],dl,dt,em,font[color|face|size],h1[align],h2[align],h3[align],h4[align],h5[align],h6[align],
+                hr[align|noshade|size|width],i,iframe[width|height|src],img[alt|align|border|height|hspace|longdesc|vspace|src|width],
+                ins[cite],kbd,li[value],menu,p[align],pre[width],q[cite],s,samp,span,small,strike,strong,sub,sup,
+                table[align|bgcolor|border|cellpadding|cellspacing|rules|summary|width],tbody[align|charoff|valign],
+                td[abbr|align|bgcolor|charoff|colspan|height|nowrap|rowspan|scope|valign|width],tfoot[align|charoff|valign],
+                th[abbr|align|bgcolor|charoff|colspan|height|nowrap|rowspan|scope|valign|width],thead[align|charoff|valign],
+                tr[align|bgcolor|charoff|valign],tt,u,ul[type],ol[start|type],var,
+                *[style],*[id],*[class],*[dir],*[lang],*[xml:lang],*[title]',
+            'CSS.AllowedProperties' => 'text-align,margin,color,float,' .
+                'border,background,background-color,border-bottom,border-bottom-color,' .
+                'border-bottom-style,border-bottom-width,border-collapse,border-color,border-left,' .
+                'border-left-color,border-left-style,border-left-width,border-right,border-right-color,' .
+                'border-right-style,border-right-width,border-spacing,border-style,border-top,' .
+                'border-top-color,border-top-style,border-top-width,border-width,caption-side,' .
+                'clear,font,font-family,font-size,font-style,' .
+                'font-variant,font-weight,height,letter-spacing,line-height,margin-bottom,' .
+                'margin-left,margin-right,margin-top,padding,padding-bottom,' .
+                'padding-left,padding-right,padding-top,text-decoration,text-indent,vertical-align,width',
+            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.RemoveEmpty' => true,
+            'HTML.SafeIframe' => true,
+            'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/|www.dailymotion.com/embed/video/)%',
+        ],
     ],
 
 ];

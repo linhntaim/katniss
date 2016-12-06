@@ -9,6 +9,7 @@ class Category extends Model
 {
     const UNKNOWN = 0;
     const LINK = 1;
+    const ARTICLE = 2;
 
     use Translatable;
     public $useTranslationFallback = true;
@@ -37,5 +38,10 @@ class Category extends Model
     public function getOrderedLinksAttribute()
     {
         return $this->links()->orderBy('order', 'asc')->get();
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
     }
 }

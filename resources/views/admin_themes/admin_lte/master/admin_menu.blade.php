@@ -16,7 +16,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            {!! $notification_menu !!}
+                            {{ $notification_menu }}
                         </li>
                         <li class="footer">
                             <a href="{{ homeUrl('notification') }}">
@@ -61,8 +61,6 @@
 </header>
 <aside class="main-sidebar">
     <section class="sidebar">
-        <ul class="sidebar-menu">
-            {!! $admin_menu !!}
-        </ul>
+        {{ $admin_menu }}
     </section>
 </aside>

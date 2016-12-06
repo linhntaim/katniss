@@ -18,35 +18,24 @@
     @include('file_manager.open_documents_script')
     <script>
         {!! cdataOpen() !!}
-        jQuery(document).ready(function () {
-            jQuery('.select2').select2();
-
-            jQuery('a.delete').off('click').on('click', function (e) {
-                e.preventDefault();
-
-                var $this = jQuery(this);
-
-                x_confirm('{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}', function () {
-                    window.location.href = $this.attr('href');
-                });
-
-                return false;
-            });
+        $(function () {
+            $('.select2').select2();
+            x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
         {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
-    <div class="row">
-        <form method="post" action="{{ adminUrl('links/update') }}">
-            {!! csrf_field() !!}
-            <input type="hidden" name="id" value="{{ $link->id }}">
+    <form method="post" action="{{ adminUrl('links/{id}', ['id'=> $link->id]) }}">
+        {{ csrf_field() }}
+        {{ method_field('put') }}
+        <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('links/{id}/delete', ['id'=> $link->id]) }}">
+                    <a class="btn btn-warning delete" href="{{ adminUrl('links/{id}', ['id'=> $link->id]) }}?{{ $rdr_param }}">
                         {{ trans('form.action_delete') }}
                     </a>
-                    <a class="btn btn-primary pull-right" href="{{ adminUrl('links/add') }}">
+                    <a class="btn btn-primary pull-right" href="{{ adminUrl('links/create') }}">
                         {{ trans('form.action_add') }} {{ trans_choice('label.link', 1) }}
                     </a>
                 </div>
@@ -119,10 +108,12 @@
                                 <div class="form-group">
                                     <label class="required separated" for="{{ localeInputId('inputUrl', $locale) }}">
                                         {{ trans('label.url') }}
-                                        (<a class="open-window" href="{{ $url }}"
-                                            data-name="_blank" data-width="800" data-height="600">
-                                            <i class="fa fa-external-link"></i>
-                                        </a>)
+                                        @if(!empty($url))
+                                            (<a class="open-window" href="{{ $url }}"
+                                                data-name="_blank" data-width="800" data-height="600">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>)
+                                        @endif
                                     </label>
                                     <input class="form-control" id="{{ localeInputId('inputUrl', $locale) }}"
                                            name="{{ localeInputName('url', $locale) }}"
@@ -140,6 +131,6 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 @endsection
