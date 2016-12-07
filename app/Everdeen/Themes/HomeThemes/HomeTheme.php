@@ -117,12 +117,30 @@ abstract class HomeTheme extends Theme
         return [];
     }
 
-    public function pageTemplates() {
+    public function pageTemplates()
+    {
         return [];
     }
 
-    public function articleTemplates() {
+    public function pageTemplateView($pageTemplateName, $default = 'page.show')
+    {
+        if (!empty($pageTemplateName) && view()->exists($this->page($pageTemplateName))) {
+            return $pageTemplateName;
+        }
+        return $default;
+    }
+
+    public function articleTemplates()
+    {
         return [];
+    }
+
+    public function articleTemplateView($articleTemplateName, $default = 'article.show')
+    {
+        if (!empty($articleTemplateName) && view()->exists($this->page($articleTemplateName))) {
+            return $articleTemplateName;
+        }
+        return $default;
     }
 
     protected function registerExtScripts($is_auth = false)

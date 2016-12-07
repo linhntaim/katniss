@@ -8,7 +8,11 @@
     <li><a href="#">{{ trans('form.action_edit') }}</a></li>
 </ol>
 @endsection
+@section('lib_styles')
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+@endsection
 @section('lib_scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
     <script src="{{ libraryAsset('ckeditor-4.5.5/ckeditor.js') }}"></script>
     <script src="{{ libraryAsset('ckeditor-4.5.5/adapters/jquery.js') }}"></script>
 @endsection
@@ -17,6 +21,7 @@
     <script>
         {!! cdataOpen() !!}
         $(function () {
+            $('.select2').select2();
             $('.slug-from').each(function () {
                 var $this = $(this);
                 $this.registerSlugTo($this.closest('.tab-pane').find('.slug'));
@@ -81,7 +86,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4">
                             <div class="form-group">
                                 <label for="inputTemplate">{{ trans('label.post_template') }}</label>
-                                <select id="inputTemplate" class="form-control" name="template" style="width: 100%;"
+                                <select id="inputTemplate" class="form-control select2" name="template" style="width: 100%;"
                                         data-placeholder="{{ trans('form.action_select') }} {{ trans('label.post_template') }}">
                                     <option value="0">[{{ trans('label.not_set') }}]</option>
                                     @foreach($templates as $templateValue => $templateText)

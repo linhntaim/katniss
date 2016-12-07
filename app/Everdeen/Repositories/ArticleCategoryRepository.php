@@ -30,7 +30,7 @@ class ArticleCategoryRepository extends CategoryRepository
     public function delete()
     {
         $category = $this->model();
-        if ($category->articles()->count() > 0) {
+        if ($category->posts()->count() > 0) {
             throw new KatnissException(trans('error.category_not_empty'));
         }
         $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);

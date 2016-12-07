@@ -64,7 +64,7 @@
                                         <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
-                                        <td>{{ $category->articles()->count() }}</td>
+                                        <td>{{ $category->posts()->count() }}</td>
                                         <td>{{ empty($category->parent_id) ? '' : $category->parent->name }}</td>
                                         <td>
                                             <a href="{{ adminUrl('article-categories/{id}/edit', ['id'=> $category->id]) }}">
