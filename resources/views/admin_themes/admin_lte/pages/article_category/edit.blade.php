@@ -48,14 +48,14 @@
     </script>
 @endsection
 @section('page_content')
-    <form class="check-slug" method="post" action="{{ adminUrl('article-categories/{id}', ['id'=> $category->id])}}">
+    <form class="check-slug" method="post" action="{{ adminUrl('article-categories/{id}', ['id'=> $category->id]) }}">
         {{ csrf_field() }}
         {{ method_field('put') }}
         <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
                     <a class="btn btn-warning delete"
-                       href="{{ adminUrl('article-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                       href="{{ addErrorUrl(adminUrl('article-categories/{id}', ['id'=> $category->id])) }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     <a class="btn btn-primary pull-right" href="{{ adminUrl('article-categories/create') }}">

@@ -4,6 +4,7 @@ namespace Katniss\Everdeen\Http\Controllers;
 
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\AppConfig;
+use Katniss\Everdeen\Utils\DataStructure\Pagination\PaginationRender;
 
 class ViewController extends KatnissController
 {
@@ -11,6 +12,16 @@ class ViewController extends KatnissController
      * @var string
      */
     protected $viewPath;
+
+    protected $paginationRender;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->viewPath = '';
+        $this->paginationRender = new PaginationRender();
+    }
 
     #region Theme
     /**

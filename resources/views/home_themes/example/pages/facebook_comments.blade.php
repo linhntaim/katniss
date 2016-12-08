@@ -11,7 +11,7 @@
                 <div class="col-xs-1 col-sm-2 col-md-3"></div>
                 <div class="col-xs-10 col-sm-8 col-md-6">
                     <p>{{ isActivatedExtension('social_integration') ? trans('social_integration.ext_activated') : trans('social_integration.ext_not_activated') }}</p>
-                    {!! content_place('facebook_comment', [currentUrl()]) !!}
+                    {!! contentPlace('facebook_comments', [currentUrl()]) !!}
                 </div>
                 <div class="col-xs-1 col-sm-2 col-md-3"></div>
             </div>

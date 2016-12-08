@@ -16,9 +16,9 @@ use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\DateTimeHelper;
-use Katniss\Everdeen\Utils\ExtraActions\Hook;
-use Katniss\Everdeen\Utils\ExtraActions\ContentFilter;
-use Katniss\Everdeen\Utils\ExtraActions\ContentPlace;
+use Katniss\Everdeen\Utils\ExtraActions\ActionHook;
+use Katniss\Everdeen\Utils\ExtraActions\ActionContentFilter;
+use Katniss\Everdeen\Utils\ExtraActions\ActionContentPlace;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
 use Katniss\Everdeen\Models\User;
@@ -155,16 +155,6 @@ function isValidWizardKey($key, $name = '')
 function methodParam($method)
 {
     return '_method=' . $method;
-}
-
-function rdrQueryParam($url)
-{
-    return AppConfig::KEY_REDIRECT_URL . '=' . urlencode($url);
-}
-
-function errorRdrQueryParam($url)
-{
-    return AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($url);
 }
 
 #endregion
@@ -441,6 +431,28 @@ function apiUrl($route = '', array $params = [], $version = 'v1')
 function webApiUrl($route = '', array $params = [])
 {
     return url('web-api/' . embedParamsInRoute($route, $params));
+}
+
+function addRdrUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
+{
+    if (empty($rdrUrl)) {
+        $rdrUrl = request()->fullUrl();
+    }
+    $rdrParam = AppConfig::KEY_REDIRECT_URL . '=' . urlencode($rdrUrl);
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
+}
+
+function addErrorUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
+{
+    if (empty($rdrUrl)) {
+        $rdrUrl = request()->fullUrl();
+    }
+    $rdrParam = AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($rdrUrl);
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
 }
 
 function redirectUrlAfterLogin(User $user)
@@ -836,23 +848,42 @@ function isMatchedUserPassword($password, User $user = null)
  * @param $id
  * @param CallableObject $callableObject
  */
-function add_action($id, CallableObject $callableObject)
+function addAction($id, CallableObject $callableObject, $name, $strict = true)
 {
-    Hook::add($id, $callableObject);
+    ActionHook::add($id, $callableObject, $name, $strict);
 }
 
-function do_action($id, array $params = [])
+function hasAction($id, $name) {
+    return ActionHook::has($id, $name);
+}
+
+
+function removeAction($id, $name) {
+    return ActionHook::remove($id, $name);
+}
+
+function doAction($id, array $params = [])
 {
-    return Hook::activate($id, $params);
+    return ActionHook::activate($id, $params);
 }
 
 /**
  * @param $id
  * @param CallableObject $callableObject
+ * @param string $name
  */
-function add_filter($id, CallableObject $callableObject)
+function addFilter($id, CallableObject $callableObject, $name, $strict = true)
 {
-    ContentFilter::add($id, $callableObject);
+    ActionContentFilter::add($id, $callableObject, $name, $strict);
+}
+
+function hasFilter($id, $name) {
+    return ActionContentFilter::has($id, $name);
+}
+
+
+function removeFilter($id, $name) {
+    return ActionContentFilter::remove($id, $name);
 }
 
 /**
@@ -860,27 +891,36 @@ function add_filter($id, CallableObject $callableObject)
  * @param string|mixed $content
  * @return mixed
  */
-function content_filter($id, $content, array $params = [])
+function contentFilter($id, $content, array $params = [])
 {
-    return ContentFilter::flush($id, $content, $params);
+    return ActionContentFilter::flush($id, $content, $params);
 }
 
 /**
  * @param $id
  * @param CallableObject $callableObject
  */
-function add_place($id, CallableObject $callableObject)
+function addPlace($id, CallableObject $callableObject, $name, $strict = true)
 {
-    ContentPlace::add($id, $callableObject);
+    ActionContentPlace::add($id, $callableObject, $name, $strict);
+}
+
+function hasPlace($id, $name) {
+    return ActionContentPlace::has($id, $name);
+}
+
+
+function removePlace($id, $name) {
+    return ActionContentPlace::remove($id, $name);
 }
 
 /**
  * @param string $id
  * @return string
  */
-function content_place($id, array $params = [])
+function contentPlace($id, array $params = [])
 {
-    return ContentPlace::flush($id, $params);
+    return ActionContentPlace::flush($id, $params);
 }
 
 #endregion
@@ -925,83 +965,83 @@ function isStaticExtension($extension)
     return ExtensionsFacade::isStatic($extension);
 }
 
-function theme_title($titles = '', $use_root = true, $separator = '&raquo;')
+function themeTitle($titles = '', $use_root = true, $separator = '&raquo;')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::title($titles, $use_root, $separator)
         : HomeThemeFacade::title($titles, $use_root, $separator);
 }
 
-function theme_description($description = '')
+function themeDescription($description = '')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::description($description)
         : HomeThemeFacade::description($description);
 }
 
-function theme_author($author = '')
+function themeAuthor($author = '')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::author($author)
         : HomeThemeFacade::author($author);
 }
 
-function theme_application_name($applicationName = '')
+function themeApplicationName($applicationName = '')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::applicationName($applicationName)
         : HomeThemeFacade::applicationName($applicationName);
 }
 
-function theme_generator($generator = '')
+function themeGenerator($generator = '')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::generator($generator)
         : HomeThemeFacade::generator($generator);
 }
 
-function theme_keywords($keywords = '')
+function themeKeywords($keywords = '')
 {
-    return in_admin() ?
+    return inAdmin() ?
         AdminThemeFacade::keywords($keywords)
         : HomeThemeFacade::keywords($keywords);
 }
 
-function lib_styles()
+function libStyles()
 {
-    return in_admin() ? AdminThemeFacade::getLibCss() : HomeThemeFacade::getLibCss();
+    return inAdmin() ? AdminThemeFacade::getLibCss() : HomeThemeFacade::getLibCss();
 }
 
-function ext_styles()
+function extStyles()
 {
-    return in_admin() ? AdminThemeFacade::getExtCss() : HomeThemeFacade::getExtCss();
+    return inAdmin() ? AdminThemeFacade::getExtCss() : HomeThemeFacade::getExtCss();
 }
 
-function lib_scripts()
+function libScripts()
 {
-    return in_admin() ? AdminThemeFacade::getLibJs() : HomeThemeFacade::getLibJs();
+    return inAdmin() ? AdminThemeFacade::getLibJs() : HomeThemeFacade::getLibJs();
 }
 
-function ext_scripts()
+function extScripts()
 {
-    return in_admin() ? AdminThemeFacade::getExtJs() : HomeThemeFacade::getExtJs();
+    return inAdmin() ? AdminThemeFacade::getExtJs() : HomeThemeFacade::getExtJs();
 }
 
 /**
  * @param string|CallableObject $output
  * @param string|integer|null $key
  */
-function enqueue_theme_header($output, $key = null)
+function enqueueThemeHeader($output, $key = null)
 {
     return HomeThemeFacade::addHeader($output, $key);
 }
 
-function dequeue_theme_header($key)
+function dequeueThemeHeader($key)
 {
     return HomeThemeFacade::removeHeader($key);
 }
 
-function theme_header()
+function themeHeader()
 {
     return HomeThemeFacade::getHeader();
 }
@@ -1010,22 +1050,22 @@ function theme_header()
  * @param string|CallableObject $output
  * @param string|integer|null $key
  */
-function enqueue_theme_footer($output, $key = null)
+function enqueueThemeFooter($output, $key = null)
 {
     return HomeThemeFacade::addFooter($output, $key);
 }
 
-function dequeue_theme_footer($key)
+function dequeueThemeFooter($key)
 {
     return HomeThemeFacade::removeFooter($key);
 }
 
-function theme_footer()
+function themeFooter()
 {
     return HomeThemeFacade::getFooter();
 }
 
-function in_admin()
+function inAdmin()
 {
     return Theme::$isAdmin;
 }

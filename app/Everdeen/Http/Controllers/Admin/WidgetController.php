@@ -53,7 +53,6 @@ class WidgetController extends ViewController
             'placeholders' => $placeholders,
             'placeholderNames' => $placeholderNames,
             'themePlaceholders' => $themePlaceholders,
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -121,8 +120,6 @@ class WidgetController extends ViewController
             'widget' => $widget,
             'themeWidget' => $themeWidget,
             'widget_view' => $widget->viewAdmin(),
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
-            'error_rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ], $widget->viewAdminParams()));
     }
 

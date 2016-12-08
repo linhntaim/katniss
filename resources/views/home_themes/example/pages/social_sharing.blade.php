@@ -11,7 +11,7 @@
                 <div class="col-lg-12">
                     <p>{{ isActivatedExtension('social_integration') ? trans('social_integration.ext_activated') : trans('social_integration.ext_not_activated') }}</p>
                     <p>
-                        {!! content_place('sharing_buttons', [currentUrl()]) !!}
+                        {!! contentPlace('sharing_buttons', [currentUrl()]) !!}
                     </p>
                 </div>
             </div>

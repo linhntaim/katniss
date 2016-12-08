@@ -22,7 +22,7 @@
         <div class="col-xs-12">
             <div class="margin-bottom">
                 <a class="btn btn-warning delete"
-                   href="{{ adminUrl('app-options/{id}', ['id'=> $app_option->id])}}?{{ $rdr_param }}">
+                   href="{{ addErrorUrl(adminUrl('app-options/{id}', ['id'=> $app_option->id])) }}">
                     {{ trans('form.action_delete') }}
                 </a>
             </div>

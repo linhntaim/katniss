@@ -4,16 +4,13 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Utils\PaginationHelper;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
 
-class ArticleController extends ViewController
+class ArticleController extends AdminController
 {
     private $articleRepository;
 
@@ -32,19 +29,15 @@ class ArticleController extends ViewController
      */
     public function index(Request $request)
     {
+        $articles = $this->articleRepository->getPaged();
+
         $this->_title(trans('pages.admin_articles_title'));
         $this->_description(trans('pages.admin_articles_desc'));
 
-        $articles = $this->articleRepository->getPaged();
-
-        $query = new QueryStringBuilder([
-            'page' => $articles->currentPage()
-        ], adminUrl('articles'));
         return $this->_index([
             'articles' => $articles,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($articles->lastPage(), $articles->currentPage(), $articles->perPage()),
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
+            'pagination' => $this->paginationRender->renderByPagedModels($articles),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 
@@ -140,7 +133,6 @@ class ArticleController extends ViewController
             'article_categories' => $article->categories,
             'categories' => $articleCategoryRepository->getExceptDefault(),
             'templates' => HomeThemeFacade::articleTemplates(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

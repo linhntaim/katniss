@@ -39,7 +39,7 @@ class Extensions
     {
         $extensions = $this->activated();
         foreach ($extensions as $extension) {
-            if (!in_admin() || !in_array($extension, $this->adminExcepts)) {
+            if (!inAdmin() || !in_array($extension, $this->adminExcepts)) {
                 $extensionClass = $this->extensionClass($extension);
                 if (!empty($extensionClass) && class_exists($extensionClass)) {
                     $extension = new $extensionClass();

@@ -39,13 +39,16 @@
     <div class="row">
         <div class="col-md-6">
             <div class="margin-bottom">
-                <a role="button" class="btn btn-warning delete" href="{{ adminUrl('link-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                <a role="button" class="btn btn-warning delete"
+                   href="{{ addErrorUrl(adminUrl('link-categories/{id}', ['id'=> $category->id])) }}">
                     {{ trans('form.action_delete') }}
                 </a>
-                <a role="button" class="btn btn-primary" href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">
+                <a role="button" class="btn btn-primary"
+                   href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">
                     {{ trans('form.action_edit') }}
                 </a>
-                <a role="button" class="btn btn-primary pull-right" href="{{ adminUrl('link-categories/create') }}">
+                <a role="button" class="btn btn-primary pull-right"
+                   href="{{ adminUrl('link-categories/create') }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
                 </a>
             </div>

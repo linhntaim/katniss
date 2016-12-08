@@ -4,14 +4,11 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Katniss\Everdeen\Utils\PaginationHelper;
 
-class LinkCategoryController extends ViewController
+class LinkCategoryController extends AdminController
 {
     protected $linkCategoryRepository;
 
@@ -30,19 +27,15 @@ class LinkCategoryController extends ViewController
      */
     public function index(Request $request)
     {
+        $categories = $this->linkCategoryRepository->getPaged();
+
         $this->_title(trans('pages.admin_link_categories_title'));
         $this->_description(trans('pages.admin_link_categories_desc'));
 
-        $categories = $this->linkCategoryRepository->getPaged();
-
-        $query = new QueryStringBuilder([
-            'page' => $categories->currentPage()
-        ], adminUrl('link-categories'));
         return $this->_index([
             'categories' => $categories,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($categories->lastPage(), $categories->currentPage(), $categories->perPage()),
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
+            'pagination' => $this->paginationRender->renderByPagedModels($categories),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 
@@ -127,7 +120,6 @@ class LinkCategoryController extends ViewController
         return $this->_edit([
             'category' => $category,
             'categories' => $this->linkCategoryRepository->getAll(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -203,7 +195,6 @@ class LinkCategoryController extends ViewController
         return $this->_any('sort', [
             'category' => $category,
             'links' => $category->orderedLinks,
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 }

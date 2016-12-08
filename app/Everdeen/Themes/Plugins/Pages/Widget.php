@@ -18,7 +18,7 @@ class Widget extends DefaultWidget
 
     public function register()
     {
-        enqueue_theme_header(
+        enqueueThemeHeader(
             '<style>.widget-pages ul.list-group{margin-bottom: 0;}</style>',
             'widget_pages'
         );

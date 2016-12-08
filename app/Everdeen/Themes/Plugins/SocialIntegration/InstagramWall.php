@@ -37,7 +37,7 @@ class InstagramWall extends DefaultWidget
 
     public function register()
     {
-        enqueue_theme_header(
+        enqueueThemeHeader(
             '<style>.widget-instagram-wall ul.media-list li.media-item{width: calc(100%/' . $this->numOfColumns . ')}</style>',
             'instagram_wall_style'
         );

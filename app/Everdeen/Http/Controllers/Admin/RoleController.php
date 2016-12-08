@@ -2,12 +2,9 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\RoleRepository;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Katniss\Everdeen\Utils\PaginationHelper;
 
-class RoleController extends ViewController
+class RoleController extends AdminController
 {
     protected $roleRepository;
 
@@ -26,17 +23,15 @@ class RoleController extends ViewController
      */
     public function index()
     {
+        $roles = $this->roleRepository->getPaged();
+
         $this->_title(trans('pages.admin_roles_title'));
         $this->_description(trans('pages.admin_roles_desc'));
 
-        $roles = $this->roleRepository->getPaged();
-        $query = new QueryStringBuilder([
-            'page' => $roles->currentPage()
-        ], adminUrl('user-roles'));
         return $this->_index([
             'roles' => $roles,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($roles->lastPage(), $roles->currentPage(), $roles->perPage())
+            'pagination' => $this->paginationRender->renderByPagedModels($roles),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 }

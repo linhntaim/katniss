@@ -80,10 +80,10 @@
                                                 <a href="{{ adminUrl('extensions/{name}/edit', ['name' => $extension['name']]) }}">{{ trans('form.action_edit') }}</a>
                                             @endif
                                             @if(!$extension['static'])
-                                                <a class="deactivate" href="{{ adminUrl('extensions/{name}', ['name'=> $extension['name']]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                                <a class="deactivate" href="{{ addRdrUrl(adminUrl('extensions/{name}', ['name'=> $extension['name']]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                                             @endif
                                         @else
-                                            <a class="activate" href="{{ adminUrl('extensions/{name}', ['name' => $extension['name']]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ addRdrUrl(adminUrl('extensions/{name}', ['name' => $extension['name']]) . '?activate=1') }}">{{ trans('form.action_activate') }}</a>
                                         @endif
                                     </td>
                                 </tr>

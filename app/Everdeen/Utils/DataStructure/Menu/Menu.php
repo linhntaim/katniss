@@ -47,10 +47,11 @@ class Menu
             || (notRootUrl($url) && beginsWith($this->matchingUrl, $url));
     }
 
-    public function add($url, $name, $before = '', $after = '', $itemClass = '', $linkClass = '', $itemId = '')
+    public function add($url, $name, $before = '', $after = '', $itemClass = '', $linkClass = '', $itemId = '', $title = '')
     {
         $this->data[] = [
             'item' => [
+                'title' => empty($title) ? $name : $title,
                 'url' => $url,
                 'name' => $name,
                 'before' => $before,
