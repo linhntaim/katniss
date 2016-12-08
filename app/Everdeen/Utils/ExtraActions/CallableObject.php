@@ -11,26 +11,26 @@ namespace Katniss\Everdeen\Utils\ExtraActions;
 
 class CallableObject
 {
-    /**
-     * @var string|array
-     */
-    protected $definition;
+    protected $function;
 
     /**
      * @var array
      */
     protected $params;
 
+    /**
+     * @var array
+     */
     protected $tmpParams;
 
     /**
      * CallableObject constructor.
-     * @param string|array $definition
+     * @param callable $function
      * @param array $params
      */
-    public function __construct($definition, array $params = [])
+    public function __construct($function, array $params = [])
     {
-        $this->definition = $definition;
+        $this->function = $function;
         $this->params = $params;
         $this->tmpParams = $this->params;
     }
@@ -55,13 +55,15 @@ class CallableObject
         $this->tmpParams = array_merge($this->tmpParams, $params);
     }
 
-    public function execute()
+    public function execute($refresh = true)
     {
-        if (!empty($this->definition)) {
-            return call_user_func_array($this->definition, $this->tmpParams);
+        if (!empty($this->function)) {
+            return call_user_func_array($this->function, $this->tmpParams);
         }
 
-        $this->tmpParams = $this->params;
+        if ($refresh) {
+            $this->tmpParams = $this->params;
+        }
 
         return false;
     }

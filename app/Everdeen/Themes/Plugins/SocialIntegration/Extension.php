@@ -241,11 +241,11 @@ class Extension extends BaseExtension
         $sharing_buttons = [];
 
         if ($this->facebookEnable) {
-            enqueue_theme_footer($this->facebookJsSdk(), 'facebook_js_sdk');
-            add_filter('open_graph_tags_before_render', new CallableObject(function ($data) {
+            enqueueThemeFooter($this->facebookJsSdk(), 'facebook_js_sdk');
+            addFilter('open_graph_tags_before_render', new CallableObject(function ($data) {
                 $data['fb:app_id'] = $this->facebookAppId;
                 return $data;
-            }));
+            }), 'ext:social_integration:fb_app_id');
 
             if ($this->facebookCommentEnable) {
                 $color_scheme = $this->facebookCommentColorScheme;
@@ -254,7 +254,7 @@ class Extension extends BaseExtension
                 $mobile = $this->facebookCommentMobile;
                 $width = $this->facebookCommentWidth;
                 $widthUnit = $this->facebookCommentWidthUnit;
-                add_place('facebook_comment', new CallableObject(function ($url) use ($color_scheme, $num_posts, $order_by, $mobile, $width, $widthUnit) {
+                addPlace('facebook_comments', new CallableObject(function ($url) use ($color_scheme, $num_posts, $order_by, $mobile, $width, $widthUnit) {
                     $color_scheme = ' data-colorscheme="' . $color_scheme . '"';
                     $num_posts = ' data-numposts="' . $num_posts . '"';
                     $order_by = ' data-order-by="' . $order_by . '"';
@@ -263,11 +263,11 @@ class Extension extends BaseExtension
                     }
                     $width = ' data-width="' . $width . $widthUnit . '"';
                     return '<div class="fb-comments" data-href="' . $url . '"' . $color_scheme . $num_posts . $order_by . $mobile . $width . '"></div>';
-                }));
+                }), 'ext:social_integration:render_facebook_comments');
             }
 
             if ($this->facebookLikeEnable || $this->facebookShareEnable || $this->facebookRecommendEnable || $this->facebookSendEnable) {
-                enqueue_theme_header('<style>.fb_iframe_widget > span{vertical-align: baseline!important;}</style>', 'facebook_css_fixed');
+                enqueueThemeHeader('<style>.fb_iframe_widget > span{vertical-align: baseline!important;}</style>', 'facebook_css_fixed');
             }
 
             if ($this->facebookLikeEnable) {
@@ -292,14 +292,14 @@ class Extension extends BaseExtension
         }
 
         if ($this->twitterEnable) {
-            enqueue_theme_footer($this->twitterJsSdk(), 'twitter_js_sdk');
+            enqueueThemeFooter($this->twitterJsSdk(), 'twitter_js_sdk');
             if ($this->twitterShareEnable) {
                 $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
             }
         }
 
         if ($this->linkedInEnable) {
-            enqueue_theme_footer($this->linkedInJsSdk(), 'linkedin_js_sdk');
+            enqueueThemeFooter($this->linkedInJsSdk(), 'linkedin_js_sdk');
             if ($this->linkedInShareEnable) {
                 if ($this->linkedInShareCountMode != 'nocount') {
                     $sharing_buttons['linkedin_share'] = '<script type="IN/Share" data-url="{sharing_url}" data-counter="' . $this->linkedInShareCountMode . '"></script>';
@@ -310,7 +310,7 @@ class Extension extends BaseExtension
         }
 
         if ($this->googleEnable) {
-            enqueue_theme_footer($this->googleJsSdk(), 'google_plus_js_sdk');
+            enqueueThemeFooter($this->googleJsSdk(), 'google_plus_js_sdk');
             if ($this->googleShareEnable) {
                 if ($this->googleShareButtonAnnotation == 'inline') {
                     $sharing_buttons['google_share'] = '<div class="g-plusone" data-size="medium" data-annotation="inline" data-width="300" data-href="{sharing_url}"></div>';
@@ -320,8 +320,8 @@ class Extension extends BaseExtension
             }
         }
 
-        add_place('sharing_buttons', new CallableObject(function ($sharing_url) use ($sharing_buttons) {
-            $buttons = content_filter('sharing_buttons', $sharing_buttons);
+        addPlace('sharing_buttons', new CallableObject(function ($sharing_url) use ($sharing_buttons) {
+            $buttons = contentFilter('sharing_buttons', $sharing_buttons);
             if (count($buttons) > 0) {
                 array_walk($buttons, function (&$button) use ($sharing_url) {
                     $button = str_replace('{sharing_url}', $sharing_url, $button);
@@ -330,7 +330,7 @@ class Extension extends BaseExtension
             }
 
             return '';
-        }));
+        }), 'ext:social_integration:render_sharing_buttons');
     }
 
     public function fields()

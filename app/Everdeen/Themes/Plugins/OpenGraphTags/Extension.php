@@ -53,7 +53,7 @@ class Extension extends BaseExtension
 
     public function register()
     {
-        enqueue_theme_header(new CallableObject([$this, 'render']));
+        enqueueThemeHeader(new CallableObject([$this, 'render']));
     }
 
     public function render()
@@ -69,7 +69,7 @@ class Extension extends BaseExtension
             'og:locale:alternate' => $this->ogLocaleAlternate,
         ];
 
-        $data = content_filter('open_graph_tags_before_render', $data);
+        $data = contentFilter('open_graph_tags_before_render', $data);
 
         return $this->parseCollection($data);
     }

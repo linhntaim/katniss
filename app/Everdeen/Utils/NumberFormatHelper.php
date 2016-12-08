@@ -81,7 +81,7 @@ class NumberFormatHelper
             $originalCurrencyCode = $this->currencyCode;
         }
         $number = floatval($number);
-        $number = content_filter(self::FILTER_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
+        $number = contentFilter(self::FILTER_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
         return $this->format($number) . ' ' . $this->currencyCode;
     }
 
@@ -117,7 +117,7 @@ class NumberFormatHelper
             $originalCurrencyCode = $this->currencyCode;
         }
         $number = $this->fromFormat($formattedCurrency);
-        $number = content_filter(self::FILTER_FROM_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
+        $number = contentFilter(self::FILTER_FROM_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
         return $number;
     }
 
