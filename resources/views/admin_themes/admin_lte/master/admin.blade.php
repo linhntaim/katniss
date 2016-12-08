@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>{{ theme_title() }}</title>
-    <meta name="author" content="{{ theme_author() }}">
-    <meta name="description" content="{{ theme_description() }}">
-    <meta name="keywords" content="{{ theme_keywords() }}">
-    <meta name="application-name" content="{{ theme_application_name() }}">
+    <title>{{ themeTitle() }}</title>
+    <meta name="author" content="{{ themeAuthor() }}">
+    <meta name="description" content="{{ themeDescription() }}">
+    <meta name="keywords" content="{{ themeKeywords() }}">
+    <meta name="application-name" content="{{ themeApplicationName() }}">
     @include('fav_icons')
-    {!! lib_styles() !!}
+    {!! libStyles() !!}
     @yield('lib_styles')
-    {!! ext_styles() !!}
+    {!! extStyles() !!}
     @yield('extended_styles')
-    {!! theme_header() !!}
+    {!! themeHeader() !!}
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -43,12 +43,12 @@
         </footer>
         @include('admin_themes.admin_lte.master.admin_control_sidebar')
     </div>
-{!! lib_scripts() !!}
+{!! libScripts() !!}
 @yield('lib_scripts')
-{!! ext_scripts() !!}
+{!! extScripts() !!}
 @yield('extended_scripts')
 @include('admin_themes.admin_lte.master.common_modals')
 @yield('modals')
-{!! theme_footer() !!}
+{!! themeFooter() !!}
 </body>
 </html>

@@ -76,7 +76,7 @@
                         <div class="col-xs-12 col-sm-6 col-md-4">
                             <div class="form-group">
                                 <label for="inputTemplate">{{ trans('label.post_template') }}</label>
-                                <select id="inputTemplate" class="form-control" name="template" style="width: 100%;"
+                                <select id="inputTemplate" class="form-control select2" name="template" style="width: 100%;"
                                         data-placeholder="{{ trans('form.action_select') }} {{ trans('label.post_template') }}">
                                     <option value="0">[{{ trans('label.not_set') }}]</option>
                                     @foreach($templates as $templateValue => $templateText)

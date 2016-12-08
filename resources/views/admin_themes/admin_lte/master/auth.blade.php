@@ -5,17 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     @yield('site_meta')
-    <title>{!! theme_title() !!}</title>
-    <meta name="description" content="{!! theme_description() !!}">
-    <meta name="author" content="{{ theme_author() }}">
-    <meta name="keywords" content="{{ theme_keywords() }}">
+    <title>{!! themeTitle() !!}</title>
+    <meta name="description" content="{!! themeDescription() !!}">
+    <meta name="author" content="{{ themeAuthor() }}">
+    <meta name="keywords" content="{{ themeKeywords() }}">
     @include('fav_icons')
-    {!! lib_styles() !!}
+    {!! libStyles() !!}
     @yield('lib_styles')
-    {!! ext_styles() !!}
+    {!! extStyles() !!}
     <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
     @yield('extended_styles')
-    {!! theme_header() !!}
+    {!! themeHeader() !!}
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -31,7 +31,7 @@
         @yield('auth_form')
     </div>
 </div>
-{!! lib_scripts() !!}
+{!! libScripts() !!}
 <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @yield('lib_scripts')
 <script>
@@ -45,10 +45,10 @@
     });
     {!! cdataClose() !!}
 </script>
-{!! ext_scripts() !!}
+{!! extScripts() !!}
 @yield('extended_scripts')
 @include('admin_themes.admin_lte.master.common_modals')
 @yield('modals')
-{!! theme_footer() !!}
+{!! themeFooter() !!}
 </body>
 </html>

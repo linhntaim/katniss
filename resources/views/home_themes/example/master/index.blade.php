@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{!! theme_title() !!}</title>
-    <meta name="author" content="{{ theme_author() }}">
-    <meta name="description" content="{!! theme_description() !!}}">
-    <meta name="keywords" content="{!! theme_keywords() !!}">
-    <meta name="application-name" content="{!! theme_application_name() !!}">
+    <title>{!! themeTitle() !!}</title>
+    <meta name="author" content="{{ themeAuthor() }}">
+    <meta name="description" content="{!! themeDescription() !!}}">
+    <meta name="keywords" content="{!! themeKeywords() !!}">
+    <meta name="application-name" content="{!! themeApplicationName() !!}">
     @include('fav_icons')
-    {!! lib_styles() !!}
+    {!! libStyles() !!}
     @yield('lib_styles')
-    {!! ext_styles() !!}
+    {!! extStyles() !!}
     @yield('extended_styles')
-    {!! theme_header() !!}
+    {!! themeHeader() !!}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -48,10 +48,10 @@
     <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
 </footer>
 @yield('modals')
-{!! lib_scripts() !!}
+{!! libScripts() !!}
 @yield('lib_scripts')
-{!! ext_scripts() !!}
+{!! extScripts() !!}
 @yield('extended_scripts')
-{!! theme_footer() !!}
+{!! themeFooter() !!}
 </body>
 </html>

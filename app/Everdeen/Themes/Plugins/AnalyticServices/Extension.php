@@ -77,15 +77,15 @@ mixpanel.init(\'' . $this->mixPanelToken . '\');';
     {
         if (!$this->cacheEnable) {
             if ($this->gaEnable) {
-                enqueue_theme_footer($this->gaAsync ? $this->gaScriptAsync() : $this->gaScript(), 'ga_script');
+                enqueueThemeFooter($this->gaAsync ? $this->gaScriptAsync() : $this->gaScript(), 'ga_script');
             }
             if ($this->mixPanelEnable) {
-                enqueue_theme_footer($this->mixPanelScript(), 'mix_panel_script');
+                enqueueThemeFooter($this->mixPanelScript(), 'mix_panel_script');
             }
         } else {
-            enqueue_theme_footer(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
+            enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
             if ($this->gaEnable && $this->gaAsync) {
-                enqueue_theme_footer($this->gaJsAsync(), 'ga_js_async');
+                enqueueThemeFooter($this->gaJsAsync(), 'ga_js_async');
             }
         }
     }

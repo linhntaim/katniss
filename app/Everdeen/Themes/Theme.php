@@ -183,10 +183,10 @@ abstract class Theme
             }
             $this->title = implode($separator, $titles);
 
-            add_filter('open_graph_tags_before_render', new CallableObject(function ($data) {
-                $data['og:title'] = theme_title();
+            addFilter('open_graph_tags_before_render', new CallableObject(function ($data) {
+                $data['og:title'] = themeTitle();
                 return $data;
-            }));
+            }), 'theme:title');
         }
         return $this->title;
     }
@@ -200,10 +200,10 @@ abstract class Theme
         if (!empty($description)) {
             $this->description = htmlShorten($description, AppConfig::MEDIUM_SHORTEN_TEXT_LENGTH);
 
-            add_filter('open_graph_tags_before_render', new CallableObject(function ($data) {
-                $data['og:description'] = theme_description();
+            addFilter('open_graph_tags_before_render', new CallableObject(function ($data) {
+                $data['og:description'] = themeDescription();
                 return $data;
-            }));
+            }), 'theme:description');
         }
         return $this->description;
     }
@@ -345,7 +345,7 @@ abstract class Theme
         $this->registerExtensions($is_auth);
         $this->registerWidgets($is_auth);
 
-        enqueue_theme_header(Html5::metaName('generator', $this->generator), 'framework_version');
+        enqueueThemeHeader(Html5::metaName('generator', $this->generator), 'framework_version');
 
         $this->registerComposers($is_auth);
         $this->registerLibStyles($is_auth);

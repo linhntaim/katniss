@@ -74,7 +74,7 @@ class MainMenuComposer
             homeUrl('example/articles'),
             trans_choice('label.article', 2)
         );
-        $menu = content_filter('main_menu', $menu);
+        $menu = contentFilter('main_menu', $menu);
         return $menu;
     }
 }

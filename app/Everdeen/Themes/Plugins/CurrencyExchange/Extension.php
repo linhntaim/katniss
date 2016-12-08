@@ -50,12 +50,12 @@ class Extension extends BaseExtension
     public function register()
     {
         $exchangeRates = $this->exchangeRates;
-        add_filter(NumberFormatHelper::FILTER_FORMAT_CURRENCY, new CallableObject(function ($number, $originalCurrencyCode) use ($exchangeRates) {
+        addFilter(NumberFormatHelper::FILTER_FORMAT_CURRENCY, new CallableObject(function ($number, $originalCurrencyCode) use ($exchangeRates) {
             return isset($exchangeRates[$originalCurrencyCode]) ? $number / $exchangeRates[$originalCurrencyCode] : $number;
-        }));
-        add_filter(NumberFormatHelper::FILTER_FROM_FORMAT_CURRENCY, new CallableObject(function ($number, $originalCurrencyCode) use ($exchangeRates) {
+        }), 'ext:currency_exchange:format');
+        addFilter(NumberFormatHelper::FILTER_FROM_FORMAT_CURRENCY, new CallableObject(function ($number, $originalCurrencyCode) use ($exchangeRates) {
             return isset($exchangeRates[$originalCurrencyCode]) ? $number * $exchangeRates[$originalCurrencyCode] : $number;
-        }));
+        }), 'ext:currency_exchange:from_format');
     }
 
     public function viewAdminParams()

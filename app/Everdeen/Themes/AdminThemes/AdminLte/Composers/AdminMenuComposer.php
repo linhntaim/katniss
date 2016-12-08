@@ -164,7 +164,7 @@ class AdminMenuComposer
                 );
             }
         }
-        $menu = content_filter('admin_menu', $menu);
+        $menu = contentFilter('admin_menu', $menu);
         return $menu;
     }
 }

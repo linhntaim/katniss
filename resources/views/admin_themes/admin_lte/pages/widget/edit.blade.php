@@ -27,13 +27,13 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('widgets/{id}', ['id' => $themeWidget->id]) }}?{{ $error_rdr_param }}">
+                    <a class="btn btn-warning delete" href="{{ addErrorUrl(adminUrl('widgets/{id}', ['id' => $themeWidget->id])) }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     @if($themeWidget->active)
-                        <a class="btn btn-success deactivate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                        <a class="btn btn-success deactivate" href="{{ addErrorUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                     @else
-                        <a class="btn btn-success activate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                        <a class="btn btn-success activate" href="{{ addErrorUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?activate=1') }}">{{ trans('form.action_activate') }}</a>
                     @endif
                 </div>
                 <h4 class="box-title">{{ trans('form.action_edit') }} {{ $widget->getDisplayName() }}</h4>
