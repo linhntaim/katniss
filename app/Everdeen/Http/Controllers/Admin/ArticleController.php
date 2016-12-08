@@ -38,7 +38,6 @@ class ArticleController extends AdminController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -134,7 +133,6 @@ class ArticleController extends AdminController
             'article_categories' => $article->categories,
             'categories' => $articleCategoryRepository->getExceptDefault(),
             'templates' => HomeThemeFacade::articleTemplates(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

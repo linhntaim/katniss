@@ -36,7 +36,6 @@ class AppOptionController extends AdminController
             'options' => $options,
             'pagination' => $this->paginationRender->renderByPagedModels($options),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
             'value_max_length' => AppConfig::TINY_SHORTEN_TEXT_LENGTH,
         ]);
     }
@@ -56,7 +55,6 @@ class AppOptionController extends AdminController
 
         return $this->_edit([
             'app_option' => $appOption,
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

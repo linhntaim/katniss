@@ -87,7 +87,7 @@
                     </button>
                     <h4 class="modal-title" id="clone-modal-title">{{ trans('form.action_clone') }}</h4>
                 </div>
-                <form method="post" action="{{ adminUrl('widgets') }}?duplicate=1&amp;{{ $rdr_param }}">
+                <form method="post" action="{{ addRdrUrl(adminUrl('widgets') . '?duplicate=1') }}">
                     {{ csrf_field() }}
                     <input type="hidden" name="id" value="">
                     <div id="clone-modal-content" class="modal-body">
@@ -203,15 +203,15 @@
                                         <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
                                         |
                                         @if($themeWidget->active)
-                                            <a class="deactivate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                            <a class="deactivate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                                             |
                                         @else
-                                            <a class="activate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?activate=1') }}">{{ trans('form.action_activate') }}</a>
                                             |
                                         @endif
                                         <a class="clone" href="#">{{ trans('form.action_clone') }}</a> |
                                         <a class="delete"
-                                           href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
+                                           href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id])) }}">{{ trans('form.action_delete') }}</a>
                                     </div>
                                 </li>
                             @endforeach
@@ -253,15 +253,15 @@
                                         <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
                                         |
                                         @if($themeWidget->active)
-                                            <a class="deactivate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?deactivate=1&amp;{{ $rdr_param }}">{{ trans('form.action_deactivate') }}</a>
+                                            <a class="deactivate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                                             |
                                         @else
-                                            <a class="activate" href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?activate=1&amp;{{ $rdr_param }}">{{ trans('form.action_activate') }}</a>
+                                            <a class="activate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?activate=1') }}">{{ trans('form.action_activate') }}</a>
                                             |
                                         @endif
                                         <a class="clone" href="#">{{ trans('form.action_clone') }}</a> |
                                         <a class="delete"
-                                           href="{{ adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) }}?{{ $rdr_param }}">{{ trans('form.action_delete') }}</a>
+                                           href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id])) }}">{{ trans('form.action_delete') }}</a>
                                     </div>
                                 </li>
                             @endforeach

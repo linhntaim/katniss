@@ -70,7 +70,7 @@
                                           <a href="{{ adminUrl('pages/{id}/edit', ['id'=> $page->id]) }}">
                                               {{ trans('form.action_edit') }}
                                           </a>
-                                          <a class="delete" href="{{ adminUrl('pages/{id}', ['id'=> $page->id]) }}?{{ $rdr_param }}">
+                                          <a class="delete" href="{{ addRdrUrl(adminUrl('pages/{id}', ['id'=> $page->id])) }}">
                                               {{ trans('form.action_delete') }}
                                           </a>
                                     </td>

@@ -54,7 +54,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ adminUrl('app-options/{id}/edit', ['id'=> $option->id]) }}">{{ trans('form.action_edit') }}</a>
-                                        <a class="delete" href="{{ adminUrl('app-options/{id}', ['id'=> $option->id])}}?{{ $rdr_param }}">
+                                        <a class="delete" href="{{ addRdrUrl(adminUrl('app-options/{id}', ['id'=> $option->id])) }}">
                                             {{ trans('form.action_delete') }}
                                         </a>
                                     </td>

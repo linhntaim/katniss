@@ -157,16 +157,6 @@ function methodParam($method)
     return '_method=' . $method;
 }
 
-function rdrQueryParam($url)
-{
-    return AppConfig::KEY_REDIRECT_URL . '=' . urlencode($url);
-}
-
-function errorRdrQueryParam($url)
-{
-    return AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($url);
-}
-
 #endregion
 
 #region Locale
@@ -441,6 +431,28 @@ function apiUrl($route = '', array $params = [], $version = 'v1')
 function webApiUrl($route = '', array $params = [])
 {
     return url('web-api/' . embedParamsInRoute($route, $params));
+}
+
+function addRdrUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
+{
+    if (empty($rdrUrl)) {
+        $rdrUrl = request()->fullUrl();
+    }
+    $rdrParam = AppConfig::KEY_REDIRECT_URL . '=' . urlencode($rdrUrl);
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
+}
+
+function addErrorUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
+{
+    if (empty($rdrUrl)) {
+        $rdrUrl = request()->fullUrl();
+    }
+    $rdrParam = AppConfig::KEY_REDIRECT_ON_ERROR_URL . '=' . urlencode($rdrUrl);
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
 }
 
 function redirectUrlAfterLogin(User $user)

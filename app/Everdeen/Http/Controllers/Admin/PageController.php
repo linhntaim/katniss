@@ -36,7 +36,6 @@ class PageController extends AdminController
             'pages' => $pages,
             'pagination' => $this->paginationRender->renderByPagedModels($pages),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -124,7 +123,6 @@ class PageController extends AdminController
         return $this->_edit([
             'page' => $page,
             'templates' => HomeThemeFacade::pageTemplates(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

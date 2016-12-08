@@ -66,7 +66,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}?{{ $rdr_param }}">
+                    <a class="btn btn-warning delete" href="{{ addErrorUrl(adminUrl('articles/{id}', ['id'=> $article->id])) }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     <a class="btn btn-primary pull-right" href="{{ adminUrl('articles/create') }}">

@@ -39,7 +39,6 @@ class ExtensionController extends ViewController
 
         return $this->_index([
             'extensions' => $extensions,
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 

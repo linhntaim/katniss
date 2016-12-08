@@ -49,13 +49,13 @@
     </script>
 @endsection
 @section('page_content')
-    <form class="check-slug" method="post" action="{{ adminUrl('link-categories/{id}', ['id'=> $category->id])}}">
+    <form class="check-slug" method="post" action="{{ adminUrl('link-categories/{id}', ['id'=> $category->id]) }}">
         {{ csrf_field() }}
         {{ method_field('put') }}
         <div class="row">
             <div class="col-xs-12">
                 <div class="margin-bottom">
-                    <a class="btn btn-warning delete" href="{{ adminUrl('link-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                    <a class="btn btn-warning delete" href="{{ addErrorUrl(adminUrl('link-categories/{id}', ['id'=> $category->id])) }}">
                         {{ trans('form.action_delete') }}
                     </a>
                     <a class="btn btn-success" href="{{ adminUrl('link-categories/{id}/sort', ['id' => $category->id]) }}">

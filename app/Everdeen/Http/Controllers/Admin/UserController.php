@@ -38,7 +38,6 @@ class UserController extends AdminController
             'users' => $users,
             'pagination' => $this->paginationRender->renderByPagedModels($users),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -134,7 +133,6 @@ class UserController extends AdminController
             'owner_role' => $roleRepository->getByName('owner'),
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

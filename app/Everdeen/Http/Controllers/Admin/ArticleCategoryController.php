@@ -36,7 +36,6 @@ class ArticleCategoryController extends AdminController
             'categories' => $categories,
             'pagination' => $this->paginationRender->renderByPagedModels($categories),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -121,7 +120,6 @@ class ArticleCategoryController extends AdminController
         return $this->_edit([
             'category' => $category,
             'categories' => $this->articleCategoryRepository->getAll(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 

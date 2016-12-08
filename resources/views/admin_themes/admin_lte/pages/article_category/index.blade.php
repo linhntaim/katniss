@@ -70,7 +70,7 @@
                                             <a href="{{ adminUrl('article-categories/{id}/edit', ['id'=> $category->id]) }}">
                                                 {{ trans('form.action_edit') }}
                                             </a>
-                                            <a class="delete" href="{{ adminUrl('article-categories/{id}', ['id'=> $category->id]) }}?{{ $rdr_param }}">
+                                            <a class="delete" href="{{ addRdrUrl(adminUrl('article-categories/{id}', ['id'=> $category->id])) }}">
                                                 {{ trans('form.action_delete') }}
                                             </a>
                                         </td>

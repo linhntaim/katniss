@@ -37,7 +37,6 @@ class LinkController extends AdminController
             'links' => $links,
             'pagination' => $this->paginationRender->renderByPagedModels($links),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-            'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }
 
@@ -128,7 +127,6 @@ class LinkController extends AdminController
             'link' => $link,
             'link_categories' => $link->categories,
             'categories' => $categoryRepository->getAll(),
-            'rdr_param' => errorRdrQueryParam($request->fullUrl()),
         ]);
     }
 
