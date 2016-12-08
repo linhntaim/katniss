@@ -4,16 +4,13 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
-use Katniss\Everdeen\Utils\PaginationHelper;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Katniss\Everdeen\Models\Role;
 
-class UserController extends ViewController
+class UserController extends AdminController
 {
     protected $userRepository;
 
@@ -32,17 +29,15 @@ class UserController extends ViewController
      */
     public function index(Request $request)
     {
+        $users = $this->userRepository->getPaged();
+
         $this->_title(trans('pages.admin_users_title'));
         $this->_description(trans('pages.admin_users_desc'));
 
-        $users = $this->userRepository->getPaged();
-        $users_query = new QueryStringBuilder([
-            'page' => $users->currentPage()
-        ], adminUrl('users'));
         return $this->_index([
             'users' => $users,
-            'users_query' => $users_query,
-            'page_helper' => new PaginationHelper($users->lastPage(), $users->currentPage(), $users->perPage()),
+            'pagination' => $this->paginationRender->renderByPagedModels($users),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }

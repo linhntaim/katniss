@@ -4,14 +4,11 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\PageRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Utils\PaginationHelper;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
 
-class PageController extends ViewController
+class PageController extends AdminController
 {
     private $pageRepository;
 
@@ -30,18 +27,15 @@ class PageController extends ViewController
      */
     public function index(Request $request)
     {
+        $pages = $this->pageRepository->getPaged();
+
         $this->_title(trans('pages.admin_pages_title'));
         $this->_description(trans('pages.admin_pages_desc'));
 
-        $pages = $this->pageRepository->getPaged();
-
-        $query = new QueryStringBuilder([
-            'page' => $pages->currentPage()
-        ], adminUrl('pages'));
         return $this->_index([
             'pages' => $pages,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($pages->lastPage(), $pages->currentPage(), $pages->perPage()),
+            'pagination' => $this->paginationRender->renderByPagedModels($pages),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }

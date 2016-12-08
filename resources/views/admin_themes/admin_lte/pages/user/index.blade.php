@@ -61,7 +61,7 @@
                         <tbody>
                             @foreach($users as $user)
                             <tr id="user-{{ $user->id }}">
-                                <td class="order-col-2">{{ ++$page_helper->startOrder }}</td>
+                                <td class="order-col-2">{{ ++$start_order }}</td>
                                 <td>{{ $user->display_name }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
@@ -87,25 +87,7 @@
                     </table>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li class="first{{ $page_helper->atFirst ? ' disabled':'' }}">
-                            <a href="{{ $users_query->update('page', $page_helper->first)->toString() }}">&laquo;</a>
-                        </li>
-                        <li class="prev{{ $page_helper->atFirst ? ' disabled':'' }}">
-                            <a href="{{ $users_query->update('page', $page_helper->prev)->toString()}}">&lsaquo;</a>
-                        </li>
-                        @for($i=$page_helper->start;$i<=$page_helper->end;++$i)
-                            <li{!! $i==$page_helper->current ? ' class="active"':'' !!}>
-                                <a href="{{ $users_query->update('page', $i)->toString() }}">{{ $i }}</a>
-                            </li>
-                        @endfor
-                        <li class="next{{ $page_helper->atLast ? ' disabled':'' }}">
-                            <a href="{{ $users_query->update('page', $page_helper->next)->toString() }}">&rsaquo;</a>
-                        </li>
-                        <li class="last{{ $page_helper->atLast ? ' disabled':'' }}">
-                            <a href="{{ $users_query->update('page', $page_helper->last)->toString() }}">&raquo;</a>
-                        </li>
-                    </ul>
+                    {{ $pagination }}
                 </div>
             @else
                 <div class="box-body">

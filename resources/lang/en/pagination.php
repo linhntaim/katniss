@@ -14,6 +14,12 @@ return [
     */
 
     'previous' => '&laquo; Previous',
-    'next'     => 'Next &raquo;',
+    'next' => 'Next &raquo;',
 
+    '_page' => 'Page :number',
+    'page_first' => 'First page',
+    'page_last' => 'Last page',
+    'page_next' => 'Next page',
+    'page_prev' => 'Previous page',
+    'page_current' => 'Current page',
 ];

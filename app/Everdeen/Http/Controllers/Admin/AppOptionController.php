@@ -4,14 +4,11 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\AppOptionRepository;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\PaginationHelper;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
 
-class AppOptionController extends ViewController
+class AppOptionController extends AdminController
 {
     protected $appOptionRepository;
 
@@ -30,18 +27,15 @@ class AppOptionController extends ViewController
      */
     public function index(Request $request)
     {
+        $options = $this->appOptionRepository->getPaged();
+
         $this->_title(trans('pages.admin_app_options_title'));
         $this->_description(trans('pages.admin_app_options_desc'));
 
-        $options = $this->appOptionRepository->getPaged();
-        $query = new QueryStringBuilder([
-            'page' => $options->currentPage(),
-            'delete' => null,
-        ], adminUrl('app-options'));
         return $this->_index([
             'options' => $options,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($options->lastPage(), $options->currentPage(), $options->perPage()),
+            'pagination' => $this->paginationRender->renderByPagedModels($options),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
             'rdr_param' => rdrQueryParam($request->fullUrl()),
             'value_max_length' => AppConfig::TINY_SHORTEN_TEXT_LENGTH,
         ]);

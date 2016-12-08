@@ -4,15 +4,12 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Repositories\LinkRepository;
-use Katniss\Everdeen\Utils\PaginationHelper;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
 
-class LinkController extends ViewController
+class LinkController extends AdminController
 {
     protected $linkRepository;
 
@@ -31,18 +28,15 @@ class LinkController extends ViewController
      */
     public function index(Request $request)
     {
+        $links = $this->linkRepository->getPaged();
+
         $this->_title(trans('pages.admin_links_title'));
         $this->_description(trans('pages.admin_links_desc'));
 
-        $links = $this->linkRepository->getPaged();
-
-        $query = new QueryStringBuilder([
-            'page' => $links->currentPage()
-        ], adminUrl('links'));
         return $this->_index([
             'links' => $links,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($links->lastPage(), $links->currentPage(), $links->perPage()),
+            'pagination' => $this->paginationRender->renderByPagedModels($links),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }

@@ -4,14 +4,11 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
-use Katniss\Everdeen\Utils\QueryStringBuilder;
-use Katniss\Everdeen\Utils\PaginationHelper;
 
-class ArticleCategoryController extends ViewController
+class ArticleCategoryController extends AdminController
 {
     private $articleCategoryRepository;
 
@@ -30,18 +27,15 @@ class ArticleCategoryController extends ViewController
      */
     public function index(Request $request)
     {
+        $categories = $this->articleCategoryRepository->getPaged();
+
         $this->_title(trans('pages.admin_article_categories_title'));
         $this->_description(trans('pages.admin_article_categories_desc'));
 
-        $categories = $this->articleCategoryRepository->getPaged();
-
-        $query = new QueryStringBuilder([
-            'page' => $categories->currentPage()
-        ], adminUrl('article-categories'));
         return $this->_index([
             'categories' => $categories,
-            'query' => $query,
-            'page_helper' => new PaginationHelper($categories->lastPage(), $categories->currentPage(), $categories->perPage()),
+            'pagination' => $this->paginationRender->renderByPagedModels($categories),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
             'rdr_param' => rdrQueryParam($request->fullUrl()),
         ]);
     }

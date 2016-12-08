@@ -19,9 +19,6 @@ class ExtensionController extends ViewController
 
     public function index(Request $request)
     {
-        $this->_title(trans('pages.admin_extensions_title'));
-        $this->_description(trans('pages.admin_extensions_desc'));
-
         $extensionClasses = ExtensionsFacade::all();
         $extensions = [];
         foreach ($extensionClasses as $extensionClass) {
@@ -36,6 +33,9 @@ class ExtensionController extends ViewController
                 'static' => ExtensionsFacade::isStatic($extensionName),
             ];
         }
+
+        $this->_title(trans('pages.admin_extensions_title'));
+        $this->_description(trans('pages.admin_extensions_desc'));
 
         return $this->_index([
             'extensions' => $extensions,
