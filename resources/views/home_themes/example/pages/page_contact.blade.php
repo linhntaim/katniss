@@ -57,6 +57,8 @@
                         </div>
                     @endif
                 </div>
+            @else
+                <div class="">{{ trans('example_theme.must_activate_extensions_for_contact_template') }}</div>
             @endif
         </div>
     </section>
