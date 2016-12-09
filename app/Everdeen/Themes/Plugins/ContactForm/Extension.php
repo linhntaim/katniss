@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\ContactForm;
 
+use Illuminate\Support\HtmlString;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Themes\Plugins\ContactForm\Controllers\ContactFormAdminController;
 use Katniss\Everdeen\Themes\Plugins\ContactForm\Controllers\ContactFormHomeController;
@@ -50,5 +51,12 @@ class Extension extends BaseExtension
         addExtraRouteResourceTriggers('admin/contact-forms', ContactFormAdminController::class);
         addExtraRouteResourceTriggers('contact-forms', ContactFormHomeController::class);
         addExtraRouteResourceTriggers('web-api/contact-forms', ContactFormWebApiController::class);
+    }
+}
+
+if (!function_exists('htmlContactForm')) {
+    function htmlContactForm()
+    {
+        return new HtmlString(view()->make('plugins.contact_form.form'));
     }
 }

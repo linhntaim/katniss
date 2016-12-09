@@ -25,6 +25,39 @@
                     </div>
                 </div>
             </div>
+            @if(isActivatedExtension('contact_form') || isActivatedExtension('google_maps'))
+                <hr>
+                <div class="row text-left">
+                    @if(isActivatedExtension('contact_form'))
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        {{ trans('contact_form.page_contact_forms_title') }}
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    {{ \Katniss\Everdeen\Themes\Plugins\ContactForm\htmlContactForm() }}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if(isActivatedExtension('google_maps'))
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">
+                                        {{ trans('contact_form.page_contact_forms_title') }}
+                                    </h3>
+                                </div>
+                                <div class="panel-body">
+                                    {{ \Katniss\Everdeen\Themes\Plugins\ContactForm\htmlContactForm() }}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            @endif
         </div>
     </section>
 @endsection
