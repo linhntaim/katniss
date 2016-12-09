@@ -25,8 +25,8 @@
                     </div>
                 </div>
             </div>
+            <hr>
             @if(isActivatedExtension('contact_form') || isActivatedExtension('google_maps'))
-                <hr>
                 <div class="row text-left">
                     @if(isActivatedExtension('contact_form'))
                         <div class="col-md-6">
@@ -58,7 +58,7 @@
                     @endif
                 </div>
             @else
-                <div class="">{{ trans('example_theme.must_activate_extensions_for_contact_template') }}</div>
+                <div class="alert alert-danger">{{ trans('example_theme.must_activate_extensions_for_contact_template') }}</div>
             @endif
         </div>
     </section>
