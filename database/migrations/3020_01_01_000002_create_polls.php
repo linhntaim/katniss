@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Schema\Blueprint;
 
+class CreatePolls extends Migration
 {
     /**
      * Run the migrations.
@@ -39,6 +40,8 @@ use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Schema\Bluepr
         Schema::create('poll_choices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('poll_id')->unsigned();
+            $table->integer('votes')->unsigned()->default(0);
+            $table->integer('order')->unsigned()->default(0);
             $table->timestamps();
 
             $table->foreign('poll_id')->references('id')->on('polls')->onDelete('cascade');
