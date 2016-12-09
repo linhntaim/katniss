@@ -22,6 +22,8 @@ class CreatePosts extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->index(['user_id', 'type', 'created_at']);
         });
 
         Schema::create('post_translations', function (Blueprint $table) {
@@ -30,7 +32,7 @@ class CreatePosts extends Migration
 
             $table->bigIncrements('id');
             $table->bigInteger('post_id')->unsigned();
-            $table->string('locale')->index();
+            $table->string('locale');
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('description')->nullable();
@@ -38,6 +40,8 @@ class CreatePosts extends Migration
 
             $table->unique(['post_id', 'locale']);
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+
+            $table->index(['post_id', 'locale', 'title']);
         });
     }
 

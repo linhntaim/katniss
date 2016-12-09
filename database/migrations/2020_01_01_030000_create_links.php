@@ -20,6 +20,8 @@ class CreateLinks extends Migration
             $table->increments('id');
             $table->string('image')->default('');
             $table->timestamps();
+
+            $table->index('created_at');
         });
 
         Schema::create('link_translations', function (Blueprint $table) {
@@ -28,13 +30,15 @@ class CreateLinks extends Migration
 
             $table->increments('id');
             $table->integer('link_id')->unsigned();
-            $table->string('locale')->index();
+            $table->string('locale');
             $table->string('name');
             $table->string('url');
             $table->text('description');
 
             $table->unique(['link_id', 'locale']);
             $table->foreign('link_id')->references('id')->on('links')->onDelete('cascade');
+
+            $table->index(['link_id', 'locale', 'name']);
         });
     }
 

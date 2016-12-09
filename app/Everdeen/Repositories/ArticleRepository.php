@@ -14,12 +14,28 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Post;
 use Katniss\Everdeen\Themes\Extension;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
+use Katniss\Everdeen\Utils\AppConfig;
 
 class ArticleRepository extends PostRepository
 {
     public function __construct($id = null)
     {
         parent::__construct(Post::ARTICLE, $id);
+    }
+
+    public function getPagedByCategory($categoryId)
+    {
+        $categoryRepository = new ArticleCategoryRepository();
+        $category = $categoryRepository->getById($categoryId);
+        return $category->posts()->where('type', $this->type)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+//        return Post::where('type', $this->type)
+//            ->whereHas('categories', function ($query) use($categoryId) {
+//                $query->where('id', $categoryId);
+//            })
+//            ->orderBy('created_at', 'desc')
+//            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])

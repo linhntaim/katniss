@@ -24,6 +24,8 @@ class CreateAppOptions extends Migration
             $table->string('registered_by')->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
+
+            $table->index('created_at');
         });
     }
 
