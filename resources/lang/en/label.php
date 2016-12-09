@@ -64,6 +64,7 @@ return [
     'phone' => 'Phone',
     'website' => 'Website',
     'address' => 'Address',
+    'copyright' => 'Copyright',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -110,6 +111,8 @@ click the button below to get another welcome email from us.',
     '_hi' => 'Hi, :name',
     'toggle_navigation' => 'Toggle Navigation',
     '_member_since' => 'Member since :time',
+    'enter_password_for_session' => 'Enter your password to retrieve your session',
+    'or_different_sign_in' => 'Or sign in as a different user',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

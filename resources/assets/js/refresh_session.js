@@ -16,7 +16,10 @@ function startSessionTimeout() {
     }
     _sessionTimeout = setTimeout(function () {
         console.log('session end');
-        if (KATNISS_USER === false) {
+        if (KATNISS_USER !== false && KATNISS_USER_REQUIRED) {
+            x_modal_lock();
+        }
+        else {
             var api = new KatnissApi(true);
             api.get('user/csrf-token', null, function (failed, data, messages) {
                 if (!failed) {
@@ -24,10 +27,7 @@ function startSessionTimeout() {
                 }
             })
         }
-        else {
-            x_modal_lock();
-        }
-    }, KATNISS_SESSION_LIFETIME);
+    }, KATNISS_SESSION_LIFETIME + 1000); // plus to make sure session ending completely
 }
 
 startSessionTimeout();

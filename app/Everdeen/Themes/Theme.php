@@ -384,10 +384,9 @@ abstract class Theme
     protected function registerExtScripts($is_auth = false)
     {
         $userApp = app('user_app');
-        $this->extJsQueue->add('global-vars', [
+        $this->extJsQueue->add('global_vars', [
             'KATNISS_THEME_PATH' => $this->asset(),
             'KATNISS_REQUEST_TOKEN' => csrf_token(),
-//            'KATNISS_REQUEST_TOKEN' => csrf_token(),
             'KATNISS_APP' => $userApp->toJson(),
             'KATNISS_SETTINGS' => SettingsFacade::toJson(),
             'KATNISS_API_URL' => apiUrl(null, [], $userApp->version),

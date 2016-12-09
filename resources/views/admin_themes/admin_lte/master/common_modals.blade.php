@@ -69,10 +69,10 @@
                         </form>
                     </div>
                     <div class="help-block text-center">
-                        Enter your password to retrieve your session
+                        {{ trans('label.enter_password_for_session') }}
                     </div>
                     <div class="text-center">
-                        <a href="{{ homeUrl('auth/login') }}">Or sign in as a different user</a>
+                        <a href="{{ homeUrl('auth/login') }}">{{ trans('label.or_different_sign_in') }}</a>
                     </div>
                     <div class="lockscreen-footer text-center">
                         <strong>

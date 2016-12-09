@@ -13,7 +13,7 @@
 Route::group([
     'prefix' => 'web-api',
 ], function () {
-    Route::get('extra', 'KatnissController@extra');
+    Route::any('extra', 'KatnissController@extra');
 
     Route::group([
         'namespace' => 'WebApi',

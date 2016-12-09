@@ -64,6 +64,7 @@ return [
     'phone' => 'Điện thoại',
     'website' => 'Trang web',
     'address' => 'Địa chỉ',
+    'copyright' => 'Bản quyền',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -110,6 +111,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     '_hi' => 'Chào, :name',
     'toggle_navigation' => 'Ẩn/hiện trình đơn',
     '_member_since' => 'Là thành viên từ :time',
+    'enter_password_for_session' => 'Nhập mật khẩu của bạn để tiếp tục',
+    'or_different_sign_in' => 'Hoặc đăng nhập với tài khoản khác tại đây',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
