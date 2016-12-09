@@ -627,6 +627,7 @@ return [
         'respond' => 'https://oss.maxcdn.com/respond/1.4.2/respond.min.js',
         'jquery' => 'http://code.jquery.com/jquery-2.1.4.min.js',
         'jquery-ui' => 'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js',
+        'jquery-ui-theme-smoothness' => 'https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css',
         'jquery-ui-bootstrap' => '$.widget.bridge(\'uibutton\', $.ui.button); // Resolve conflict in jQuery UI tooltip with Bootstrap tooltip',
         'bootstrap' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js',
         'bootstrap-css' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',

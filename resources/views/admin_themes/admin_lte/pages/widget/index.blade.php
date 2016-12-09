@@ -8,7 +8,7 @@
     </ol>
 @endsection
 @section('lib_styles')
-    <link rel="stylesheet" href="https:{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
 @endsection
 @section('extended_styles')
     <style>
