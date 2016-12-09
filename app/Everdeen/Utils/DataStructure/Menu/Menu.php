@@ -31,9 +31,29 @@ class Menu
         $this->currentIndex = -1;
     }
 
+    public function has()
+    {
+        return count($this->data) > 0;
+    }
+
     public function get()
     {
         return $this->data;
+    }
+
+    public function append(Menu $menu)
+    {
+        foreach ($menu->get() as $item) {
+            $this->data[] = $item;
+        }
+    }
+
+    public function prepend(Menu $menu)
+    {
+        $data = $menu->get();
+        for ($i = count($data) - 1; $i >= 0; --$i) {
+            array_unshift($this->data, $data[$i]);
+        }
     }
 
     protected function matchUrl($url)

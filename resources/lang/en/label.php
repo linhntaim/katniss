@@ -61,6 +61,9 @@ return [
     'title' => 'Title',
     'post_template' => 'Template',
     'author' => 'Author',
+    'phone' => 'Phone',
+    'website' => 'Website',
+    'address' => 'Address',
 
     'settings' => 'Settings',
     'country' => 'Country',

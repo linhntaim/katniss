@@ -80,20 +80,6 @@ class AdminMenuComposer
                     '', '', 'header'
                 );
                 $menu->add( // add a menu item
-                    adminUrl('user-roles'),
-                    trans('pages.admin_roles_title'), '<i class="fa fa-unlock"></i> <span>', '</span>'
-                );
-                $menu->add( // add a menu item
-                    adminUrl('users'),
-                    trans('pages.admin_users_title'),
-                    '<i class="fa fa-user"></i> <span>', '</span>'
-                );
-                // Theme Settings
-                $menu->add( // add a menu header
-                    null,
-                    mb_strtoupper(trans('pages.admin_theme_settings_title')), '', '', 'header'
-                );
-                $menu->add( // add a menu item
                     adminUrl('app-options'),
                     trans('pages.admin_app_options_title'),
                     '<i class="fa fa-cogs"></i> <span>', '</span>'
@@ -123,6 +109,21 @@ class AdminMenuComposer
                     trans('pages.admin_ui_lang_email_title'), '<i class="fa fa-file-text-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
+
+                // Users
+                $menu->add( // add a menu header
+                    null,
+                    mb_strtoupper(trans('pages.admin_users_title')), '', '', 'header'
+                );
+                $menu->add( // add a menu item
+                    adminUrl('user-roles'),
+                    trans('pages.admin_roles_title'), '<i class="fa fa-unlock"></i> <span>', '</span>'
+                );
+                $menu->add( // add a menu item
+                    adminUrl('users'),
+                    trans('pages.admin_users_title'),
+                    '<i class="fa fa-user"></i> <span>', '</span>'
+                );
 
                 //Links
                 $menu->add( // add a menu header
@@ -164,7 +165,23 @@ class AdminMenuComposer
                 );
             }
         }
+        $extraMenu = $this->getExtraMenu();
+        if ($extraMenu->has()) {
+            $menu->add( // add a menu header
+                null,
+                mb_strtoupper(trans('pages.admin_extra_header')),
+                '', '', 'header'
+            );
+            $menu->append($extraMenu);
+        }
         $menu = contentFilter('admin_menu', $menu);
+        return $menu;
+    }
+
+    protected function getExtraMenu()
+    {
+        $menu = new Menu();
+        $menu = contentFilter('extra_admin_menu', $menu);
         return $menu;
     }
 }

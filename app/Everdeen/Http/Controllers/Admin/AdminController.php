@@ -8,7 +8,6 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-
 use Katniss\Everdeen\Http\Controllers\ViewController;
 
 class AdminController extends ViewController

@@ -29,7 +29,7 @@ KatnissApi.prototype.switchToWebApi = function () {
 };
 KatnissApi.prototype.buildUrl = function (relativePath) {
     var apiUrl = !this.isWebApi ? KATNISS_API_URL : KATNISS_WEB_API_URL;
-    return startWith(relativePath, apiUrl) ?
+    return beginsWith(relativePath, apiUrl) ?
         relativePath : apiUrl + '/' + relativePath;
 };
 KatnissApi.prototype.buildParams = function (params) {

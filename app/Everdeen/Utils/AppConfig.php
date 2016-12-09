@@ -18,6 +18,7 @@ class AppConfig
     const KEY_HTML_INPUTS = 'x_html_inputs';
     const KEY_LOCALE_INPUT = 'x_locale';
     const KEY_CALLBACK_REDIRECT_URL = 'x_callback_redirect_uri';
+    const KEY_EXTRA_ROUTE = 'x_route';
 
     const REGEX_YOUTUBE_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(youtube.com\/watch\?v=|youtube.com\/embed\/|youtu.be\/)(.+)$/';
 

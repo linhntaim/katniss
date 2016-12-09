@@ -123,6 +123,9 @@ class ViewController extends KatnissController
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
     {
+        if (empty($url)) {
+            $url = $request->fullUrl();
+        }
         $errorRdrUrl = $rdrUrl = $url;
         $rdr = $request->session()->pull(AppConfig::KEY_REDIRECT_URL, '');
         if (!empty($rdr)) {

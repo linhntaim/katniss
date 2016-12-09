@@ -4,10 +4,9 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 
-class UiLangController extends ViewController
+class UiLangController extends AdminController
 {
     public function __construct()
     {

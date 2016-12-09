@@ -84,7 +84,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->create(
-                $this->authUser->id,
+                $request->authUser->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()
@@ -158,7 +158,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->update(
-                $this->authUser->id,
+                $request->authUser->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()

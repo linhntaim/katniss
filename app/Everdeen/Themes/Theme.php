@@ -392,6 +392,7 @@ abstract class Theme
             'KATNISS_SETTINGS' => SettingsFacade::toJson(),
             'KATNISS_API_URL' => apiUrl(null, [], $userApp->version),
             'KATNISS_WEB_API_URL' => webApiUrl(),
+            'KATNISS_EXTRA_ROUTE_PARAM' => AppConfig::KEY_EXTRA_ROUTE,
             'KATNISS_SESSION_LIFETIME' => sessionLifetime(),
             'KATNISS_USER' => isAuth() ? authUser()->toJson() : 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_APP', 'KATNISS_SETTINGS', 'KATNISS_USER']);
@@ -414,5 +415,16 @@ abstract class Theme
             }
         }
         return $view;
+    }
+
+    public function resolveExtraView($view, $pageTitle, $pageDesc, $data = [], $mergeData = [])
+    {
+        $this->title($pageTitle);
+        $this->description($pageDesc);
+        return view($this->page('extra'), array_merge($data, [
+            'extra_view' => $view,
+            'extra_page_title' => $pageTitle,
+            'extra_page_desc' => $pageDesc,
+        ], $mergeData));
     }
 }

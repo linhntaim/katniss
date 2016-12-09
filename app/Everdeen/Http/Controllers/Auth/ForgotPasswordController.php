@@ -11,7 +11,7 @@ class ForgotPasswordController extends ViewController
 {
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Controller
+    | Password Reset ContactFormAdminController
     |--------------------------------------------------------------------------
     |
     | This controller is responsible for handling password reset emails and

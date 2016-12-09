@@ -24,6 +24,7 @@ class Extension extends BaseExtension
     const NAME = 'open_graph_tags';
     const DISPLAY_NAME = 'Open Graph Tags';
     const DESCRIPTION = 'Set up Open Graph Tags';
+    const EDITABLE = false;
 
     protected $ogTitle;
     protected $ogType;

@@ -61,6 +61,9 @@ return [
     'title' => 'Tiêu đề',
     'post_template' => 'Mẫu giao diện',
     'author' => 'Tác giả',
+    'phone' => 'Điện thoại',
+    'website' => 'Trang web',
+    'address' => 'Địa chỉ',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

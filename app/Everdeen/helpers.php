@@ -10,23 +10,24 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Jenssegers\Agent\Facades\Agent;
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Themes\AdminThemes\AdminThemeFacade;
+use Katniss\Everdeen\Themes\ExtensionsFacade;
+use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Themes\WidgetsFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\ExtraActions\ActionHook;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentFilter;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentPlace;
+use Katniss\Everdeen\Utils\ExtraActions\ActionTrigger;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
-use Katniss\Everdeen\Models\User;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Themes\AdminThemes\AdminThemeFacade;
-use Katniss\Everdeen\Themes\Theme;
-use Katniss\Everdeen\Themes\WidgetsFacade;
-use Katniss\Everdeen\Themes\ExtensionsFacade;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -431,6 +432,17 @@ function apiUrl($route = '', array $params = [], $version = 'v1')
 function webApiUrl($route = '', array $params = [])
 {
     return url('web-api/' . embedParamsInRoute($route, $params));
+}
+
+function addExtraUrl($path, $mainUrl = null, $separatedChar = '')
+{
+    if (empty($mainUrl)) {
+        $mainUrl = request()->fullUrl();
+    }
+    $pathParam = AppConfig::KEY_EXTRA_ROUTE . '=' . $path;
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $pathParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $pathParam : $mainUrl . '&' . $pathParam;
 }
 
 function addRdrUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
@@ -846,20 +858,24 @@ function isMatchedUserPassword($password, User $user = null)
 }
 
 /**
- * @param $id
+ * @param string $id
  * @param CallableObject $callableObject
+ * @param string $name
+ * @param bool $strict
  */
 function addAction($id, CallableObject $callableObject, $name, $strict = true)
 {
     ActionHook::add($id, $callableObject, $name, $strict);
 }
 
-function hasAction($id, $name) {
+function hasAction($id, $name)
+{
     return ActionHook::has($id, $name);
 }
 
 
-function removeAction($id, $name) {
+function removeAction($id, $name)
+{
     return ActionHook::remove($id, $name);
 }
 
@@ -869,21 +885,107 @@ function doAction($id, array $params = [])
 }
 
 /**
- * @param $id
+ * @param string $id
  * @param CallableObject $callableObject
  * @param string $name
+ * @param bool $strict
+ */
+function addTrigger($id, CallableObject $callableObject, $name, $strict = true)
+{
+    ActionTrigger::add($id, $callableObject, $name, $strict);
+}
+
+function addExtraRouteResourceTriggers($resourceRoute, $controllerClass)
+{
+    addTrigger('extra_route', new CallableObject(function (Request $request) use ($controllerClass) {
+        $controller = new $controllerClass;
+        switch (strtolower($request->method())) {
+            case 'get':
+                return $controller->index($request);
+                break;
+            case 'post':
+                return $controller->store($request);
+                break;
+            default:
+                return '';
+        }
+    }), $resourceRoute);
+
+    addTrigger('extra_route', new CallableObject(function (Request $request) use ($controllerClass) {
+        $controller = new $controllerClass;
+        switch (strtolower($request->method())) {
+            case 'get':
+                return $controller->create($request);
+                break;
+            default:
+                return '';
+        }
+    }), $resourceRoute . '/create');
+
+    addTrigger('extra_route', new CallableObject(function (Request $request) use ($controllerClass) {
+        $controller = new $controllerClass;
+        switch (strtolower($request->method())) {
+            case 'get':
+                return $controller->show($request, $request->input('id'));
+                break;
+            case 'post':
+                return $controller->update($request, $request->input('id'));
+                break;
+            case 'delete':
+                return $controller->destroy($request, $request->input('id'));
+                break;
+            default:
+                return '';
+        }
+    }), $resourceRoute . '/id');
+
+    addTrigger('extra_route', new CallableObject(function (Request $request) use ($controllerClass) {
+        $controller = new $controllerClass;
+        switch (strtolower($request->method())) {
+            case 'get':
+                return $controller->edit($request, $request->input('id'));
+                break;
+            default:
+                return '';
+        }
+    }), $resourceRoute . '/id/edit');
+}
+
+function hasTrigger($id, $name)
+{
+    return ActionTrigger::has($id, $name);
+}
+
+
+function removeTrigger($id, $name)
+{
+    return ActionTrigger::remove($id, $name);
+}
+
+function doTrigger($id, $name, array $params = [])
+{
+    return ActionTrigger::activate($id, $name, $params);
+}
+
+/**
+ * @param string $id
+ * @param CallableObject $callableObject
+ * @param string $name
+ * @param bool $strict
  */
 function addFilter($id, CallableObject $callableObject, $name, $strict = true)
 {
     ActionContentFilter::add($id, $callableObject, $name, $strict);
 }
 
-function hasFilter($id, $name) {
+function hasFilter($id, $name)
+{
     return ActionContentFilter::has($id, $name);
 }
 
 
-function removeFilter($id, $name) {
+function removeFilter($id, $name)
+{
     return ActionContentFilter::remove($id, $name);
 }
 
@@ -898,20 +1000,24 @@ function contentFilter($id, $content, array $params = [])
 }
 
 /**
- * @param $id
+ * @param string $id
  * @param CallableObject $callableObject
+ * @param string $name
+ * @param bool $strict
  */
 function addPlace($id, CallableObject $callableObject, $name, $strict = true)
 {
     ActionContentPlace::add($id, $callableObject, $name, $strict);
 }
 
-function hasPlace($id, $name) {
+function hasPlace($id, $name)
+{
     return ActionContentPlace::has($id, $name);
 }
 
 
-function removePlace($id, $name) {
+function removePlace($id, $name)
+{
     return ActionContentPlace::remove($id, $name);
 }
 

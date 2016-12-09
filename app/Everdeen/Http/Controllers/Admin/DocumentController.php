@@ -2,11 +2,10 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 
-class DocumentController extends ViewController
+class DocumentController extends AdminController
 {
     public function __construct()
     {

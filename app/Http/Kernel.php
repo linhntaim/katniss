@@ -30,6 +30,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Katniss\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
             \Katniss\Everdeen\Http\Middleware\ViewMiddleware::class,
         ],
 
@@ -37,6 +38,7 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
             \Katniss\Everdeen\Http\Middleware\ApiMiddleware::class,
+            \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
         ],
     ];
 

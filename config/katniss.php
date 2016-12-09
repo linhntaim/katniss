@@ -41,6 +41,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
@@ -629,5 +630,6 @@ return [
         'bootstrap-css' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
         'font-awesome-css' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
         'source-sans-pro-css' => 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext',
+        'handlebars' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js',
     ],
 ];
