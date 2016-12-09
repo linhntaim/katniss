@@ -2,10 +2,10 @@
 @section('auth_type','login')
 @section('box_message', trans('pages.my_settings_desc'))
 @section('lib_styles')
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
 @endsection
 @section('lib_scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>

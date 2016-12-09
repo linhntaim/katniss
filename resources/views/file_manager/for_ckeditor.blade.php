@@ -5,9 +5,8 @@
     <link rel="stylesheet" href="{{ libraryAsset('elfinder/css/theme.css') }}">
 @endsection
 @section('lib_scripts')
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="{{ _kExternalLink('jquery') }}"></script>
+    <script src="{{ _kExternalLink('jquery-ui') }}"></script>
     <script src="{{ libraryAsset('elfinder/js/elfinder.min.js') }}"></script>
     <script src="{{ libraryAsset('elfinder/js/i18n/elfinder.'.$site_locale.'.js') }}"></script>
 @endsection
