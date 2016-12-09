@@ -28,6 +28,8 @@ return [
     'status_private' => 'Riêng tư',
     'status_hidden' => 'Ẩn',
     'status_normal' => 'Bình thường',
+    'status_enabled' => 'Cho phép',
+    'status_disabled' => 'Không cho phép',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',

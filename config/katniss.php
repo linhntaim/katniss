@@ -42,6 +42,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
         Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,

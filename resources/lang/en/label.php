@@ -28,6 +28,8 @@ return [
     'status_private' => 'Private',
     'status_hidden' => 'Hidden',
     'status_normal' => 'Normal',
+    'status_enabled' => 'Enabled',
+    'status_disabled' => 'Disabled',
 
     'wanna_delete' => 'Do you really want to delete :name ?',
     'wanna_verify' => 'Do you really want to verify :name ?',

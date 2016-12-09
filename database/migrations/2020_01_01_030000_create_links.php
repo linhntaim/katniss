@@ -35,9 +35,9 @@ class CreateLinks extends Migration
             $table->string('url');
             $table->text('description');
 
-            $table->unique(['link_id', 'locale']);
             $table->foreign('link_id')->references('id')->on('links')->onDelete('cascade');
 
+            $table->unique(['link_id', 'locale']);
             $table->index(['link_id', 'locale', 'name']);
         });
     }

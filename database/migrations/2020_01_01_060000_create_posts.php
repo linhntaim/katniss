@@ -38,9 +38,9 @@ class CreatePosts extends Migration
             $table->string('description')->nullable();
             $table->longText('content');
 
-            $table->unique(['post_id', 'locale']);
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 
+            $table->unique(['post_id', 'locale']);
             $table->index(['post_id', 'locale', 'title']);
         });
     }

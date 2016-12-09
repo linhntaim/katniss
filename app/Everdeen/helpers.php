@@ -439,7 +439,7 @@ function addExtraUrl($path, $mainUrl = null, $separatedChar = '')
     if (empty($mainUrl)) {
         $mainUrl = request()->fullUrl();
     }
-    $pathParam = AppConfig::KEY_EXTRA_ROUTE . '=' . $path;
+    $pathParam = AppConfig::KEY_EXTRA_ROUTE . '=' . urlencode($path);
     if (!empty($separatedChar)) return $mainUrl . $separatedChar . $pathParam;
     $parsed = parse_url($mainUrl);
     return empty($parsed['query']) ? $mainUrl . '?' . $pathParam : $mainUrl . '&' . $pathParam;

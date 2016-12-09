@@ -42,7 +42,7 @@ class Extension extends BaseExtension
                 $menu->add( // add a menu item
                     addExtraUrl('admin/contact-forms', adminUrl('extra')),
                     trans('contact_form.page_contact_forms_title'),
-                    '<i class="fa fa-table"></i> <span>', '</span>'
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
             }
             return $menu;
