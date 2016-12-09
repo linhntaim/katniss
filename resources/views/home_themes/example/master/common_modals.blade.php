@@ -46,12 +46,12 @@
         <div class="modal-content no-shadow bg-transparent">
             <div id="x-lock-modal-content" class="modal-body">
                 <div class="lockscreen-wrapper">
-                    <div class="lockscreen-logo">
+                    <div class="lockscreen-logo text-center">
                         <a href="{{ homeUrl() }}"><strong>{{ $site_name }}</strong></a>
                     </div>
-                    <div class="lockscreen-name">{{ isAuth() ? $auth_user->display_name : '' }}</div>
+                    <div class="lockscreen-name text-center">{{ isAuth() ? $auth_user->display_name : '' }}</div>
                     <div class="lockscreen-item">
-                        <div class="lockscreen-image">
+                        <div class="lockscreen-image text-center">
                             <img src="{{ isAuth() ? $auth_user->url_avatar : asset('avatar.png') }}" alt="User Image">
                         </div>
                         <form class="lockscreen-credentials" method="post" action="{{ apiUrl('user/quick-login') }}">

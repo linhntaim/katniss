@@ -47,11 +47,12 @@
 <footer>
     <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
 </footer>
-@yield('modals')
 {!! libScripts() !!}
 @yield('lib_scripts')
 {!! extScripts() !!}
 @yield('extended_scripts')
+@include('home_themes.example.master.common_modals')
+@yield('modals')
 {!! themeFooter() !!}
 </body>
 </html>

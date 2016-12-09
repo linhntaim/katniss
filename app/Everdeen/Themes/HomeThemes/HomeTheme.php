@@ -149,7 +149,7 @@ abstract class HomeTheme extends Theme
         parent::registerExtScripts($is_auth);
 
         $this->extJsQueue->add('global_vars', [
-            'KATNISS_USER_REQUIRED' => 'false',
+            'KATNISS_USER_REQUIRED' => 'true',
         ], JsQueue::TYPE_VAR, ['KATNISS_USER_REQUIRED'], true);
         $this->extJsQueue->add('global-app-script', libraryAsset('katniss.home.js'));
     }
