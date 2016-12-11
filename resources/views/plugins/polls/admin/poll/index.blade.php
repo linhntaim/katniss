@@ -14,6 +14,13 @@
                 {{ trans('form.action_add') }} {{ trans_choice('polls.poll_lc', 1) }}
             </a>
         </div>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('polls.poll', 2)]) }}</h3>
@@ -26,6 +33,7 @@
                             <th class="order-col-2">#</th>
                             <th>{{ trans('label.name') }}</th>
                             <th>{{ trans('label.description') }}</th>
+                            <th>{{ trans_choice('polls.choice', 2) }}</th>
                             <th>{{ trans('polls.multi_choice') }}</th>
                             <th>{{ trans('form.action') }}</th>
                         </tr>
@@ -35,6 +43,7 @@
                             <th class="order-col-2">#</th>
                             <th>{{ trans('label.name') }}</th>
                             <th>{{ trans('label.description') }}</th>
+                            <th>{{ trans_choice('polls.choice', 2) }}</th>
                             <th>{{ trans('polls.multi_choice') }}</th>
                             <th>{{ trans('form.action') }}</th>
                         </tr>
@@ -45,10 +54,19 @@
                                 <td class="order-col-1">{{ ++$start_order }}</td>
                                 <td>{{ $poll->name }}</td>
                                 <td>{{ $poll->description }}</td>
-                                <td>{{ $poll->multi_choice ? trans('label.enabled') : trans('label.disabled') }}</td>
+                                <td>{{ $poll->choices()->count() }}</td>
                                 <td>
-                                    <a href="{{ addExtraUrl('admin/polls/id', adminUrl('extra')) . '&id=' . $poll->id }}">
+                                    @if($poll->multi_choice)
+                                        <label class="label label-success">{{ trans('label.status_enabled') }}</label>
+                                    @else
+                                        <label class="label label-default">{{ trans('label.status_disabled') }}</label>
+                                    @endif
+                                <td>
+                                    <a href="{{ addExtraUrl('admin/polls/id/edit', adminUrl('extra')) . '&id=' . $poll->id }}">
                                         {{ trans('form.action_edit') }}
+                                    </a>
+                                    <a href="{{ addExtraUrl('admin/polls/id/sort', adminUrl('extra')) . '&id=' . $poll->id }}">
+                                        {{ trans('form.action_sort') }}
                                     </a>
                                     <a class="delete"
                                        href="{{ addRdrUrl(addExtraUrl('admin/polls/id', adminUrl('extra')) . '&id=' . $poll->id) }}">

@@ -15,4 +15,6 @@ return [
     'choice' => 'Choice|Choices',
     'choice_lc' => 'choice|choices',
     'multi_choice' => 'Multi-choice',
+    'votes' => 'Votes',
+    'poll_not_empty' => 'Poll is not empty',
 ];

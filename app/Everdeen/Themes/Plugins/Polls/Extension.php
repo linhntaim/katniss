@@ -8,9 +8,11 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\Polls;
 
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Themes\Plugins\Polls\Controllers\ChoiceAdminController;
 use Katniss\Everdeen\Themes\Plugins\Polls\Controllers\PollAdminController;
+use Katniss\Everdeen\Themes\Plugins\Polls\Controllers\PollWebApiController;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 
@@ -51,7 +53,16 @@ class Extension extends BaseExtension
             return $menu;
         }), 'ext:polls:menu');
 
+        addExtraRouteResourceTriggers('web-api/polls', PollWebApiController::class);
         addExtraRouteResourceTriggers('admin/polls', PollAdminController::class);
+        addTrigger('extra_route', new CallableObject(function (Request $request) {
+            $controllerClass = PollAdminController::class;
+            $controller = new $controllerClass;
+            if (strtolower($request->method()) == 'get') {
+                return $controller->sort($request, $request->input('id'));
+            }
+            return '';
+        }), 'admin/polls/id/sort');
         addExtraRouteResourceTriggers('admin/poll-choices', ChoiceAdminController::class);
     }
 }

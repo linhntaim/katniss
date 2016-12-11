@@ -15,4 +15,6 @@ return [
     'choice' => 'Bình chọn',
     'choice_lc' => 'bình chọn',
     'multi_choice' => 'Cho phép nhiều bình chọn',
+    'votes' => 'Lượng bình chọn',
+    'poll_not_empty' => 'Mục bình chọn không trống',
 ];

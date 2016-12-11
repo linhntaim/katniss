@@ -928,7 +928,7 @@ function addExtraRouteResourceTriggers($resourceRoute, $controllerClass)
             case 'get':
                 return $controller->show($request, $request->input('id'));
                 break;
-            case 'post':
+            case 'put':
                 return $controller->update($request, $request->input('id'));
                 break;
             case 'delete':

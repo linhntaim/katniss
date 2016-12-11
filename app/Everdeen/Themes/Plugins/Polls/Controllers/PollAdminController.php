@@ -60,7 +60,7 @@ class PollAdminController extends AdminController
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
 
         if ($validateResult->isFailed()) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors($validateResult->getFailed());
         }
@@ -69,7 +69,7 @@ class PollAdminController extends AdminController
             'multi_choice' => 'sometimes|in:1',
         ]);
         if ($validator->fails()) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors($validator);
         }
@@ -80,7 +80,7 @@ class PollAdminController extends AdminController
                 $request->input('multi_choice', 0) == 1
             );
         } catch (KatnissException $ex) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors([$ex->getMessage()]);
         }
@@ -152,5 +152,23 @@ class PollAdminController extends AdminController
         }
 
         return redirect($rdrUrl);
+    }
+
+    public function sort(Request $request, $id)
+    {
+        $poll = $this->pollRepository->model($id);
+
+        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
+        $this->_description(trans('pages.admin_link_categories_desc'));
+
+        return $request->theme()->resolveExtraView(
+            'plugins.polls.admin.poll.sort',
+            trans('polls.page_polls_title'),
+            trans('polls.page_polls_desc'),
+            [
+                'poll' => $poll,
+                'choices' => $poll->orderedChoices,
+            ]
+        );
     }
 }

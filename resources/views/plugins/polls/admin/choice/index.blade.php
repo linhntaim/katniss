@@ -10,10 +10,17 @@
 <div class="row">
     <div class="col-md-12">
         <div class="margin-bottom">
-            <a class="btn btn-primary" href="{{ addExtraUrl('admin/polls/create', adminUrl('extra')) }}">
+            <a class="btn btn-primary" href="{{ addExtraUrl('admin/poll-choices/create', adminUrl('extra')) }}">
                 {{ trans('form.action_add') }} {{ trans_choice('polls.choice_lc', 1) }}
             </a>
         </div>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('polls.choice', 2)]) }}</h3>
@@ -47,7 +54,7 @@
                                 <td>{{ $choice->poll->name }}</td>
                                 <td>{{ $choice->votes }}</td>
                                 <td>
-                                    <a href="{{ addExtraUrl('admin/poll-choices/id', adminUrl('extra')) . '&id=' . $choice->id }}">
+                                    <a href="{{ addExtraUrl('admin/poll-choices/id/edit', adminUrl('extra')) . '&id=' . $choice->id }}">
                                         {{ trans('form.action_edit') }}
                                     </a>
                                     <a class="delete"

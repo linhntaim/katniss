@@ -90,9 +90,33 @@ class PollRepository extends ModelRepository
         }
     }
 
+    public function updateSort(array $choiceIds)
+    {
+        $poll = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $order = 0;
+            foreach ($choiceIds as $choiceId) {
+                ++$order;
+                $poll->choices()->where('id', $choiceId)->update(['order' => $order]);
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function delete()
     {
         $poll = $this->model();
+
+        if ($poll->choices()->count() > 0) {
+            throw new KatnissException(trans('polls.poll_not_empty'));
+        }
 
         try {
             $poll->delete();

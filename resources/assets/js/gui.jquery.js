@@ -70,4 +70,10 @@ $(function () {
         }
         return false;
     });
+
+    $('.unsigned-integer-input').on('keydown', function (e) {
+        return (e.which >= 48 && e.which <= 57)
+            || (e.which >= 96 && e.which <= 105)
+            || [8, 9, 13, 35, 36, 37, 39, 46, 144].indexOf(e.which) != -1; // back space, tab, enter, end, home, left arrow, right arrow, delete, num lock
+    });
 });

@@ -65,7 +65,7 @@ class ChoiceAdminController extends AdminController
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
 
         if ($validateResult->isFailed()) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors($validateResult->getFailed());
         }
@@ -75,7 +75,7 @@ class ChoiceAdminController extends AdminController
             'votes' => 'sometimes|integer',
         ]);
         if ($validator->fails()) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors($validator);
         }
@@ -87,7 +87,7 @@ class ChoiceAdminController extends AdminController
                 $validateResult->getLocalizedInputs()
             );
         } catch (KatnissException $ex) {
-            return redirect($rdrUrl)
+            return redirect($errorRdrUrl)
                 ->withInput()
                 ->withErrors([$ex->getMessage()]);
         }

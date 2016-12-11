@@ -36,9 +36,12 @@ class ChoiceRepository extends ModelRepository
     {
         DB::beginTransaction();
         try {
+            $pollRepository = new PollRepository($pollId);
+
             $choice = new Choice();
             $choice->poll_id = $pollId;
             $choice->votes = $votes;
+            $choice->order = $pollRepository->model()->choices()->count() + 1;
             foreach ($localizedData as $locale => $transData) {
                 $trans = $choice->translateOrNew($locale);
                 $trans->name = $transData['name'];
@@ -55,7 +58,7 @@ class ChoiceRepository extends ModelRepository
         }
     }
 
-    public function update($pollId, $votes = 0,array $localizedData = [])
+    public function update($pollId, $votes = 0, array $localizedData = [])
     {
         $choice = $this->model();
 

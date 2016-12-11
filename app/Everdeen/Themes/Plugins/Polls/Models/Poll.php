@@ -27,4 +27,9 @@ class Poll extends Model
     {
         return $this->hasMany(Choice::class, 'poll_id', 'id');
     }
+
+    public function getOrderedChoicesAttribute()
+    {
+        return $this->choices()->orderBy('order', 'asc')->get();
+    }
 }
