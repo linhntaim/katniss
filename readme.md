@@ -267,6 +267,34 @@ Request flow:
 
 - Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
 
+### Action Hooking
+
+For hooking into existing codes.
+
+#### Content Filter
+
+For changing value of variables.
+
+#### Content Place
+
+For placing value together.
+
+#### Hook
+
+For hooking to a context of coding.
+
+#### Trigger
+
+For triggering only one in an available set of actions.
+
+### Extra routes
+
+Based on action hooking of Trigger.
+
+For processing extra routes defined by theme or plugins.
+
+See coding of extensions `Contact Form` or `Polls` for more.
+
 ### App Options
 
 To store/retrieve runtime application's options in database.
@@ -334,6 +362,10 @@ Sample Extensions:
     - Log-in enable: Facebook, Google.
 - Currency Exchange:
     - Allow user to configure the exchange rates to automatically convert to/from any currencies.
+- Contact Form:
+    - Allow user to embed contact forms to website and manage contact form request data.
+- Polls:
+    - Allow user to and manage polls and embed polls to website.
 
 ##### Widget
 
@@ -356,6 +388,10 @@ Sample Widgets:
     - Show list of available pages.
 - Article Categories:
     - Show list of categories of articles.
+- Contact Form:
+    - Show contact form.
+- Polls:
+    - Show poll for voting and viewing result on website.
     
 #### Template
 

@@ -90,7 +90,7 @@ class ArticleController extends AdminController
 
         try {
             $this->articleRepository->create(
-                $this->authUser->id,
+                $request->authUser->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs(),
@@ -169,7 +169,7 @@ class ArticleController extends AdminController
 
         try {
             $this->articleRepository->update(
-                $this->authUser->id,
+                $request->authUser->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs(),

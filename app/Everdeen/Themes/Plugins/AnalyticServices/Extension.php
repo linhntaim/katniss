@@ -17,7 +17,6 @@ class Extension extends BaseExtension
     const NAME = 'analytic_services';
     const DISPLAY_NAME = 'Analytic Services';
     const DESCRIPTION = 'Set up Analytic Services';
-    const EDITABLE = true;
 
     public $cacheEnable;
     public $gaEnable;

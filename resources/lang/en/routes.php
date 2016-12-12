@@ -7,6 +7,8 @@
  */
 
 return [
+    'extra'                                         => 'extra',
+    'admin/extra'                                   => 'admin/extra',
     'errors/{code}'                                 => 'errors/{code}',
     'admin/errors/{code}'                           => 'admin/errors/{code}',
 

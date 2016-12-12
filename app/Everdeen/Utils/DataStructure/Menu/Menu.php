@@ -18,7 +18,7 @@ class Menu
     protected $matchingUrl;
     protected $strict;
 
-    public function __construct($matchingUrl = null, $strict = true)
+    public function __construct($matchingUrl = null, $strict = false)
     {
         $this->matchingUrl = $matchingUrl;
         $this->strict = $strict;
@@ -31,20 +31,63 @@ class Menu
         $this->currentIndex = -1;
     }
 
+    public function has()
+    {
+        return count($this->data) > 0;
+    }
+
     public function get()
     {
         return $this->data;
     }
 
+    public function append(Menu $menu)
+    {
+        foreach ($menu->get() as $item) {
+            $this->data[] = $item;
+        }
+    }
+
+    public function prepend(Menu $menu)
+    {
+        $data = $menu->get();
+        for ($i = count($data) - 1; $i >= 0; --$i) {
+            array_unshift($this->data, $data[$i]);
+        }
+    }
+
     protected function matchUrl($url)
     {
-        if (empty($this->matchingUrl)) return false;
-        if ($this->strict && $url == $this->matchingUrl) {
+        if (!beginsWith($url, 'http') || empty($this->matchingUrl)) return false;
+        if ($this->strict) {
+            return $url == $this->matchingUrl;
+        }
+
+        if ($url == $this->matchingUrl
+            || (notRootUrl($url) && beginsWith($this->matchingUrl, $url))
+        ) {
             return true;
         }
 
-        return $url == $this->matchingUrl
-            || (notRootUrl($url) && beginsWith($this->matchingUrl, $url));
+        $url = parse_url($url);
+        $matchingUrl = parse_url($this->matchingUrl);
+        if (!empty($url['query']) && !empty($matchingUrl['query'])) {
+            parse_str($url['query'], $urlQuery);
+            parse_str($matchingUrl['query'], $matchingUrlQuery);
+            $matching = false;
+            foreach ($urlQuery as $key => $value) {
+                if (isset($matchingUrlQuery[$key])
+                    && (beginsWith($matchingUrlQuery[$key], $value) || beginsWith($value, $matchingUrlQuery[$key]))
+                ) {
+                    $matching = true;
+                    break;
+                }
+            }
+            if (!$matching) return false;
+        }
+
+        return $url['host'] == $matchingUrl['host']
+            && $url['path'] == $matchingUrl['path'];
     }
 
     public function add($url, $name, $before = '', $after = '', $itemClass = '', $linkClass = '', $itemId = '', $title = '')

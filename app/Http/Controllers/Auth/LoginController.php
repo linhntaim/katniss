@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Login Controller
+    | Login ContactFormAdminController
     |--------------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and

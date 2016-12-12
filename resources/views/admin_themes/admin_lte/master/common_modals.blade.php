@@ -61,7 +61,7 @@
                                 <input type="password" name="password" class="form-control"
                                        placeholder="{{ trans('label.password') }}">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn">
+                                    <button type="submit" class="btn">
                                         <i class="fa fa-arrow-right text-muted"></i>
                                     </button>
                                 </div>
@@ -69,14 +69,14 @@
                         </form>
                     </div>
                     <div class="help-block text-center">
-                        Enter your password to retrieve your session
+                        {{ trans('label.enter_password_for_session') }}
                     </div>
                     <div class="text-center">
-                        <a href="{{ homeUrl('auth/login') }}">Or sign in as a different user</a>
+                        <a href="{{ homeUrl('auth/login') }}">{{ trans('label.or_different_sign_in') }}</a>
                     </div>
                     <div class="lockscreen-footer text-center">
                         <strong>
-                            Copyright &copy; {{ date('Y') }}
+                            {{ trans('label.copyright') }} &copy; {{ date('Y') }}
                             <a href="{{ $site_home_url }}">{{ $site_name }} {{ $site_version }}</a>
                         </strong>
                     </div>
@@ -163,7 +163,7 @@
         var $lockId = $('.lockscreen-credentials input[name="id"]');
         var $lockPassword = $('.lockscreen-credentials input[name="password"]');
         var $lockImage = $('.lockscreen-image > img');
-        $('.lockscreen-credentials button').off('click').on('click', function (e) {
+        $('.lockscreen-credentials').on('submit', function (e) {
             e.preventDefault();
             var api = new KatnissApi(true);
             api.get('user/quick-login', {

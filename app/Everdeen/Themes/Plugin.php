@@ -17,7 +17,7 @@ abstract class Plugin
     const DISPLAY_NAME = '';
     const DESCRIPTION = '';
     const THEME_NAME = '';
-    const EDITABLE = false;
+    const EDITABLE = true;
     const TRANSLATABLE = false;
 
     /**
@@ -125,6 +125,8 @@ abstract class Plugin
 
     public function getProperty($name, $locale = '')
     {
+        if (!$this::EDITABLE) abort(404);
+
         if (empty($locale)) {
             if (isset($this->data[$name])) return $this->data[$name];
             if ($this::TRANSLATABLE && isset($this->currentLocalizedData[$name])) {
@@ -149,24 +151,28 @@ abstract class Plugin
 
     public function validationRules()
     {
+        if (!$this::EDITABLE) abort(404);
+
         return [];
     }
 
     public function localizedValidationRules()
     {
-        if (!$this::TRANSLATABLE) abort(404);
+        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
 
         return [];
     }
 
     public function fields()
     {
+        if (!$this::EDITABLE) abort(404);
+
         return [];
     }
 
     public function localizedFields()
     {
-        if (!$this::TRANSLATABLE) abort(404);
+        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
 
         return [];
     }
@@ -187,6 +193,8 @@ abstract class Plugin
 
     public function viewAdminParams()
     {
+        if (!$this::EDITABLE) abort(404);
+
         return [];
     }
 }

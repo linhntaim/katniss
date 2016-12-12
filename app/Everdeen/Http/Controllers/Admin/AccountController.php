@@ -4,11 +4,10 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\UserRepository;
 
-class AccountController extends ViewController
+class AccountController extends AdminController
 {
     protected $userRepository;
 
@@ -30,13 +29,13 @@ class AccountController extends ViewController
 
     public function update(Request $request)
     {
-        $this->userRepository->model($this->authUser);
+        $this->userRepository->model($request->authUser);
 
         $validator = Validator::make($request->all(), [
             'current_password' => 'required|password',
             'display_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $this->authUser->id . ',id',
-            'name' => 'required|max:255|unique:users,name,' . $this->authUser->id . ',id',
+            'email' => 'required|email|max:255|unique:users,email,' . $request->authUser->id . ',id',
+            'name' => 'required|max:255|unique:users,name,' . $request->authUser->id . ',id',
             'password' => 'sometimes|confirmed|min:6',
         ]);
 

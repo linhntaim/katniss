@@ -41,6 +41,7 @@ class Theme extends HomeTheme
         parent::registerLibStyles($is_auth);
 
         $this->libCssQueue->add(CssQueue::LIB_BOOTSTRAP_NAME, $this->cssAsset('bootstrap.min.css'));
+        $this->libCssQueue->add(CssQueue::LIB_FONT_AWESOME_NAME, _kExternalLink(CssQueue::LIB_FONT_AWESOME_NAME));
     }
 
     protected function registerExtStyles($is_auth = false)
@@ -55,6 +56,7 @@ class Theme extends HomeTheme
         parent::registerLibScripts($is_auth);
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, $this->jsAsset('jquery.js'));
+        $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
         $this->libJsQueue->add('jquery-easing', $this->jsAsset('jquery.easing.min.js'));
     }

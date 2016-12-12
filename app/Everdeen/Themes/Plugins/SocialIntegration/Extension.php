@@ -18,7 +18,6 @@ class Extension extends BaseExtension
     const NAME = 'social_integration';
     const DISPLAY_NAME = 'Social Integration';
     const DESCRIPTION = 'Integrate Social Functions into website';
-    const EDITABLE = true;
 
     public static function getSharedViewData()
     {
@@ -149,7 +148,7 @@ class Extension extends BaseExtension
         $this->instagramAccessToken = defPr($this->getProperty('instagram_access_token'), '');
 
         if ($this->instagramEnable) {
-            _kWidgets([InstagramWall::WIDGET_NAME => InstagramWall::class]);
+            _kWidgets([InstagramWall::NAME => InstagramWall::class]);
         }
 
         $this->makeSharedData([

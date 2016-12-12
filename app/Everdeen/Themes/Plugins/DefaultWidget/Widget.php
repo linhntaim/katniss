@@ -47,6 +47,17 @@ class Widget extends BaseWidget
 
     public function localizedFields()
     {
-        return ['name', 'description'];
+        return array_merge(parent::localizedFields(), [
+            'name',
+            'description'
+        ]);
+    }
+
+    public function localizedValidationRules()
+    {
+        return array_merge(parent::localizedValidationRules(), [
+            'name' => 'sometimes|max:255',
+            'description' => 'sometimes|max:255',
+        ]);
     }
 }

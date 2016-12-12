@@ -10,4 +10,6 @@ return [
     'facebook_comment' => 'Bình luận bằng Facebook',
     'example_widget' => 'Công cụ hiển thị',
     'conversation' => 'Cuộc hội thoại',
+    'must_activate_extensions_for_contact_template' =>
+        'Hãy kích hoạt Tiện ích mở rộng Contact Form và Google Maps để các chức năng hoạt động đầy đủ',
 ];

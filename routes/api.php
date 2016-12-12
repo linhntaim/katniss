@@ -15,23 +15,28 @@ use Illuminate\Http\Request;
 
 Route::group([
     'prefix' => 'v1',
-    'namespace' => 'Api\V1',
-    'middleware' => 'auth'
 ], function () {
-    Route::post('upload/cropper-js', 'UploadController@useJsCropper');
-
-    Route::post('user/{id}/avatar/cropper-js', 'UserController@postAvatarUsingCropperJs');
+    Route::any('extra', 'KatnissController@extra');
 
     Route::group([
-        'middleware' => 'entrust:,access-admin'
+        'namespace' => 'Api\V1',
+        'middleware' => 'auth'
     ], function () {
-        #region Admin Role
+        Route::post('upload/cropper-js', 'UploadController@useJsCropper');
+
+        Route::post('user/{id}/avatar/cropper-js', 'UserController@postAvatarUsingCropperJs');
+
         Route::group([
-            'middleware' => 'entrust:admin'
+            'middleware' => 'entrust:,access-admin'
         ], function () {
-            Route::post('widgets/update-order', 'WidgetController@updateOrder');
-            Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
+            #region Admin Role
+            Route::group([
+                'middleware' => 'entrust:admin'
+            ], function () {
+                Route::post('widgets/update-order', 'WidgetController@updateOrder');
+                Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
+            });
+            #endregion
         });
-        #endregion
     });
 });

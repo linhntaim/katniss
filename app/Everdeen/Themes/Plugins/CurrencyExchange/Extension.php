@@ -17,7 +17,6 @@ class Extension extends BaseExtension
     const NAME = 'currency_exchange';
     const DISPLAY_NAME = 'Currency Exchange';
     const DESCRIPTION = 'Convert currency value';
-    const EDITABLE = true;
 
     protected $mainCurrencyCode;
     protected $exchangeRates;

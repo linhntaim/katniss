@@ -73,8 +73,9 @@ abstract class Extension extends Plugin
 
         if ($this::EDITABLE) {
             $this->fromDataConstruct((array)AppOptionHelper::get($this->getOptionName(), []));
-            $this->__init();
         }
+
+        $this->__init();
     }
 
     public function getOptionName()
@@ -82,53 +83,11 @@ abstract class Extension extends Plugin
         return 'extension_' . $this::NAME;
     }
 
-    public function getProperty($name, $locale = '')
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return parent::getProperty($name, $locale);
-    }
-
     public function viewAdmin()
     {
         if (!$this::EDITABLE) abort(404);
 
         return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::NAME) : HomeThemeFacade::adminExtension($this::NAME);
-    }
-
-    public function viewAdminParams()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return parent::viewAdminParams();
-    }
-
-    public function validationRules()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return parent::validationRules();
-    }
-
-    public function localizedValidationRules()
-    {
-        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
-
-        return parent::localizedValidationRules();
-    }
-
-    public function fields()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return parent::fields();
-    }
-
-    public function localizedFields()
-    {
-        if (!$this::EDITABLE || !$this::TRANSLATABLE) abort(404);
-
-        return parent::localizedFields();
     }
 
     public function save(array $data = [], array $localizedData = [])

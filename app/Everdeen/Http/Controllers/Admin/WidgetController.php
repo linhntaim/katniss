@@ -4,13 +4,12 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Themes\WidgetsFacade;
 
-class WidgetController extends ViewController
+class WidgetController extends AdminController
 {
     protected $widgetRepository;
 
@@ -29,7 +28,10 @@ class WidgetController extends ViewController
         $widgets = [];
         foreach ($widgetClasses as $widgetClass) {
             $widget = new $widgetClass();
-            $widgets[$widget->getName()] = $widget->getDisplayName();
+            $widgets[$widget->getName()] = [
+                'display_name' => $widget->getDisplayName(),
+                'editable' => $widget->isEditable(),
+            ];
         }
 
         $placeholders = HomeThemeFacade::placeholders();
@@ -111,6 +113,9 @@ class WidgetController extends ViewController
         }
         $params = empty($themeWidget) ? [] : $themeWidget->params;
         $widget = new $widgetClass($params);
+        if (!$widget->isEditable()) {
+            abort(404);
+        }
         $widget->setThemeWidget($themeWidget);
 
         $this->_title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
@@ -140,6 +145,9 @@ class WidgetController extends ViewController
         }
         $params = empty($themeWidget) ? [] : $themeWidget->params;
         $widget = new $widgetClass($params);
+        if (!$widget->isEditable()) {
+            abort(404);
+        }
         $widget->setThemeWidget($themeWidget);
 
         $redirect = redirect(adminUrl('widgets/{id}/edit', ['id' => $themeWidget->id]));

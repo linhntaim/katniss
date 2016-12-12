@@ -10,4 +10,6 @@ return [
     'facebook_comment' => 'Facebook Comments',
     'example_widget' => 'Example Widgets',
     'conversation' => 'Conversation',
+    'must_activate_extensions_for_contact_template' =>
+        'Must activate Contact Form and Google Maps extension for fully functionality',
 ];

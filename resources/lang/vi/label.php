@@ -28,6 +28,8 @@ return [
     'status_private' => 'Riêng tư',
     'status_hidden' => 'Ẩn',
     'status_normal' => 'Bình thường',
+    'status_enabled' => 'Cho phép',
+    'status_disabled' => 'Không cho phép',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',
@@ -61,6 +63,10 @@ return [
     'title' => 'Tiêu đề',
     'post_template' => 'Mẫu giao diện',
     'author' => 'Tác giả',
+    'phone' => 'Điện thoại',
+    'website' => 'Trang web',
+    'address' => 'Địa chỉ',
+    'copyright' => 'Bản quyền',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -107,6 +113,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     '_hi' => 'Chào, :name',
     'toggle_navigation' => 'Ẩn/hiện trình đơn',
     '_member_since' => 'Là thành viên từ :time',
+    'enter_password_for_session' => 'Nhập mật khẩu của bạn để tiếp tục',
+    'or_different_sign_in' => 'Hoặc đăng nhập với tài khoản khác tại đây',
 
     'guest' => 'Khách',
     'user_lc' => 'người dùng',

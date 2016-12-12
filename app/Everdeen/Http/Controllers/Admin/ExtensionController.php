@@ -3,12 +3,11 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
-use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\ExtensionsFacade;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 
-class ExtensionController extends ViewController
+class ExtensionController extends AdminController
 {
     public function __construct()
     {

@@ -9,10 +9,10 @@
     </ol>
 @endsection
 @section('lib_styles')
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
 @endsection
 @section('lib_scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
 @endsection
 @section('extended_scripts')
     @include('file_manager.open_documents_script')

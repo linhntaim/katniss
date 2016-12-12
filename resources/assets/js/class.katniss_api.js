@@ -29,7 +29,7 @@ KatnissApi.prototype.switchToWebApi = function () {
 };
 KatnissApi.prototype.buildUrl = function (relativePath) {
     var apiUrl = !this.isWebApi ? KATNISS_API_URL : KATNISS_WEB_API_URL;
-    return startWith(relativePath, apiUrl) ?
+    return beginsWith(relativePath, apiUrl) ?
         relativePath : apiUrl + '/' + relativePath;
 };
 KatnissApi.prototype.buildParams = function (params) {
@@ -72,6 +72,16 @@ KatnissApi.prototype.buildOptions = function (requestType, params, options) {
 KatnissApi.prototype.beforeRequest = function () {
     if (this.isWebApi) startSessionTimeout();
 };
+KatnissApi.prototype.get = function (relativePath, params, done, fail, always) {
+    this.beforeRequest();
+    this.promise(
+        $.get(
+            this.buildUrl(relativePath),
+            this.buildParams(params)
+        ),
+        done, fail, always
+    );
+};
 KatnissApi.prototype.post = function (relativePath, params, done, fail, always) {
     this.beforeRequest();
     this.promise(
@@ -82,15 +92,13 @@ KatnissApi.prototype.post = function (relativePath, params, done, fail, always) 
         done, fail, always
     );
 };
-KatnissApi.prototype.get = function (relativePath, params, done, fail, always) {
-    this.beforeRequest();
-    this.promise(
-        $.get(
-            this.buildUrl(relativePath),
-            this.buildParams(params)
-        ),
-        done, fail, always
-    );
+KatnissApi.prototype.put = function (relativePath, params, done, fail, always) {
+    params._method = 'put';
+    this.post(relativePath, params, done, fail, always);
+};
+KatnissApi.prototype.delete = function (relativePath, params, done, fail, always) {
+    params._method = 'delete';
+    this.post(relativePath, params, done, fail, always);
 };
 KatnissApi.prototype.request = function (relativePath, requestType, params, options,
                                          done, fail, always) {

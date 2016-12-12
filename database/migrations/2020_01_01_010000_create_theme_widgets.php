@@ -25,6 +25,8 @@ class CreateThemeWidgets extends Migration
             $table->boolean('active')->default(true);
             $table->tinyInteger('order')->unsigned()->default(0);
             $table->timestamps();
+
+            $table->index(['widget_name', 'placeholder', 'created_at']);
         });
     }
 

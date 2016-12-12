@@ -49,6 +49,8 @@ class LinkRepository extends ModelRepository
             }
 
             DB::commit();
+
+            return $link;
         } catch (\Exception $ex) {
             DB::rollBack();
 

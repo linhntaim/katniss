@@ -18,8 +18,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="{{ _kExternalLink('html5shiv') }}"></script>
+    <script src="{{ _kExternalLink('respond') }}"></script>
     <![endif]-->
 </head>
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -47,11 +47,12 @@
 <footer>
     <p><a href="{{ homeUrl() }}">{{ $site_name }}</a> &copy; {{ date('Y') }}. Based on <a href="https://laravel.com/" rel="nofollow">Laravel</a>.</p>
 </footer>
-@yield('modals')
 {!! libScripts() !!}
 @yield('lib_scripts')
 {!! extScripts() !!}
 @yield('extended_scripts')
+@include('home_themes.example.master.common_modals')
+@yield('modals')
 {!! themeFooter() !!}
 </body>
 </html>
