@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Events;
 use Illuminate\Queue\SerializesModels;
 use Katniss\Everdeen\Models\User;
 
-class UserPasswordChanged extends Event
+class PasswordChanged extends Event
 {
     use SerializesModels;
 

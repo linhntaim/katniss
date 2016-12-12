@@ -8,7 +8,9 @@
 
 namespace Katniss\Everdeen\Themes;
 
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
@@ -55,7 +57,8 @@ abstract class Widget extends Plugin
 
     public function setId($id)
     {
-        $this->themeWidget = ThemeWidget::findOrFail($id);
+        $widgetRepository = new ThemeWidgetRepository($id);
+        $this->themeWidget = $widgetRepository->model();
     }
 
     public function getId()
@@ -129,26 +132,30 @@ abstract class Widget extends Plugin
             $localizedData = [];
         }
 
-        $order = ThemeWidget::where('placeholder', $placeholder)->count() + 1;
-        $this->themeWidget = ThemeWidget::create([
-            'widget_name' => $this::NAME,
-            'theme_name' => $this::THEME_NAME,
-            'placeholder' => $placeholder,
-            'constructing_data' => $this->toDataConstructAsJson($data, $localizedData),
-            'order' => $order,
-        ]);
-        return empty($this->themeWidget) ? [trans('error.database_insert')] : true;
+        $widgetRepository = new ThemeWidgetRepository();
+        try {
+            $this->themeWidget = $widgetRepository->create(
+                $this::NAME,
+                $this::THEME_NAME,
+                $placeholder,
+                $this->toDataConstructAsJson($data, $localizedData)
+            );
+            return true;
+        } catch (KatnissException $ex) {
+            return [$ex->getMessage()];
+        }
     }
 
     public function update(array $data = [], array $localizedData = [])
     {
         if (!$this::EDITABLE) abort(404);
 
-        $this->themeWidget->constructing_data = $this->toDataConstructAsJson($data, $localizedData);
-        if ($this->themeWidget->save() === true) {
+        $widgetRepository = new ThemeWidgetRepository($this->themeWidget);
+        try {
+            $this->themeWidget = $widgetRepository->updateData($this->toDataConstructAsJson($data, $localizedData));
             return true;
+        } catch (KatnissException $ex) {
+            return [$ex->getMessage()];
         }
-
-        return [trans('error.database_update')];
     }
 }

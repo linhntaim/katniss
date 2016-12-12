@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
 class Widgets
@@ -23,7 +24,8 @@ class Widgets
     public function init()
     {
         $this->defines = array_merge(_kWidgets(), HomeThemeFacade::widgets());
-        $this->widgets = ThemeWidget::checkWidgets(array_keys($this->defines))->forDisplay()->get();
+        $widgetRepository = new ThemeWidgetRepository();
+        $this->widgets = $widgetRepository->getActive(array_keys($this->defines));
     }
 
     public function display($placeholder, $before = '', $after = '', $default = '')

@@ -16,17 +16,17 @@ class AppOptionHelper
     /**
      * @var \Illuminate\Database\Eloquent\Collection
      */
-    private static $app_options;
+    private static $appOptions;
 
     public static function load()
     {
-        self::$app_options = AppOption::all();
-        return self::$app_options;
+        self::$appOptions = AppOption::all();
+        return self::$appOptions;
     }
 
     public static function all()
     {
-        return self::$app_options;
+        return self::$appOptions;
     }
 
     /**
@@ -36,7 +36,7 @@ class AppOptionHelper
      */
     public static function getById($id, $restrict = false)
     {
-        $appOption = self::$app_options->where('id', $id)->first();
+        $appOption = self::$appOptions->where('id', $id)->first();
         if ($restrict && empty($appOption)) {
             abort(404);
         }
@@ -46,7 +46,7 @@ class AppOptionHelper
     public static function get($key, $default = '')
     {
         if (!empty($key)) {
-            $appOption = self::$app_options->where('key', $key)->first();
+            $appOption = self::$appOptions->where('key', $key)->first();
             if ($appOption) {
                 return $appOption->value;
             }
@@ -58,7 +58,7 @@ class AppOptionHelper
     public static function set($key, $value, $registeredBy = null)
     {
         if (!empty($key)) {
-            $appOption = self::$app_options->where('key', $key)->first();
+            $appOption = self::$appOptions->where('key', $key)->first();
             $shouldReload = false;
             if (empty($appOption)) {
                 $appOption = new AppOption();
@@ -69,7 +69,7 @@ class AppOptionHelper
             $appOption->registered_by = $registeredBy;
             $appOption->save();
             if ($shouldReload) {
-                self::$app_options->push($appOption);
+                self::$appOptions->push($appOption);
             }
             return $appOption;
         }
@@ -80,7 +80,7 @@ class AppOptionHelper
     public static function remove($key)
     {
         if (!empty($key)) {
-            return self::$app_options->where('key', $key)->delete();
+            return self::$appOptions->where('key', $key)->delete();
         }
         return false;
     }

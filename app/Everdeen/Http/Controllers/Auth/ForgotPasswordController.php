@@ -50,7 +50,7 @@ class ForgotPasswordController extends ViewController
      * Send a reset link to the given user.
      *
      * @param  \Katniss\Everdeen\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function postEmail(Request $request)
     {

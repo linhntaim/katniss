@@ -9,9 +9,9 @@
 namespace Katniss\Everdeen\Listeners;
 
 use Katniss\Everdeen\Utils\MailHelper;
-use Katniss\Everdeen\Events\UserPasswordChanged;
+use Katniss\Everdeen\Events\PasswordChanged;
 
-class EmailAccountPassword
+class PasswordChangedEmailing
 {
     /**
      * Create the event listener.
@@ -26,10 +26,10 @@ class EmailAccountPassword
     /**
      * Handle the event.
      *
-     * @param  UserPasswordChanged $event
+     * @param  PasswordChanged $event
      * @return void
      */
-    public function handle(UserPasswordChanged $event)
+    public function handle(PasswordChanged $event)
     {
         MailHelper::queueSendTemplate('user_password_changed', $event->getParamsForMailing(), $event->locale);
     }

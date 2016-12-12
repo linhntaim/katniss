@@ -9,11 +9,13 @@
 namespace Katniss\Everdeen\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Katniss\Everdeen\Events\UserAfterRegistered;
-use Katniss\Everdeen\Events\UserPasswordChanged;
+use Katniss\Everdeen\Events\UserCreated;
+use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Models\UserSetting;
+use Katniss\Everdeen\Models\UserSocial;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Utils\Storage\StorePhotoByCropperJs;
@@ -35,33 +37,67 @@ class UserRepository extends ModelRepository
         return User::all();
     }
 
-    public function create($name, $displayName, $email, $password, array $roles = null, $sendWelcomeMail = false)
+    public function getBySocial($provider, $providerId, $providerEmail)
+    {
+        return User::fromSocial($provider, $providerId, $providerEmail)->first();
+    }
+
+    public function getLikeName($name)
+    {
+        return User::where('name', 'like', $name . '%')->get();
+    }
+
+    /**
+     * @param $name
+     * @param $displayName
+     * @param $email
+     * @param $password
+     * @param array|null $roles
+     * @param bool $sendWelcomeMail
+     * @param null $urlAvatar
+     * @param null $urlAvatarThumb
+     * @param null $social
+     * @return User
+     * @throws KatnissException
+     */
+    public function create($name, $displayName, $email, $password, array $roles = null, $sendWelcomeMail = false,
+                           $urlAvatar = null, $urlAvatarThumb = null, $social = null)
     {
         DB::beginTransaction();
         try {
+            $settings = UserSetting::create();
+
             $user = User::create(array(
                 'display_name' => $displayName,
                 'email' => $email,
                 'name' => $name,
                 'password' => bcrypt($password),
-                'url_avatar' => appDefaultUserProfilePicture(),
-                'url_avatar_thumb' => appDefaultUserProfilePicture(),
+                'url_avatar' => empty($urlAvatar) ? appDefaultUserProfilePicture() : $urlAvatar,
+                'url_avatar_thumb' => empty($urlAvatarThumb) ? appDefaultUserProfilePicture() : $urlAvatarThumb,
                 'activation_code' => str_random(32),
-                'active' => false
+                'active' => false,
+                'setting_id' => $settings->id,
             ));
             $user->save();
-            if ($roles != null) {
-                $user->attachRoles($roles);
+
+            if (empty($roles)) {
+                $roleRepository = new RoleRepository();
+                $roles = [$roleRepository->getByName('user')->id];
+            }
+            $user->attachRoles($roles);
+
+            if (!empty($social)) {
+                $user->socialProviders()->save(new UserSocial($social));
             }
 
             if ($sendWelcomeMail) {
-                event(new UserAfterRegistered($user, array_merge(request()->theme()->viewParams(), [
-                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                    MailHelper::EMAIL_TO => $email,
-                    MailHelper::EMAIL_TO_NAME => $displayName,
-
-                    'password' => $password,
-                ])));
+                event(new UserCreated($user, $password, !empty($social),
+                    array_merge(request()->theme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
             }
 
             DB::commit();
@@ -99,7 +135,7 @@ class UserRepository extends ModelRepository
             }
 
             if ($passwordChanged) {
-                event(new UserPasswordChanged($user, $password,
+                event(new PasswordChanged($user, $password,
                     array_merge(request()->theme()->viewParams(), [
                         MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                         MailHelper::EMAIL_TO => $email,

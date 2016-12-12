@@ -12,7 +12,7 @@ namespace Katniss\Everdeen\Events;
 use Illuminate\Queue\SerializesModels;
 use Katniss\Everdeen\Models\User;
 
-class UserAfterRegistered extends Event
+class UserCreated extends Event
 {
     use SerializesModels;
 

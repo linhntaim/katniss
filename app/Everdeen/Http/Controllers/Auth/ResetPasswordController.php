@@ -3,7 +3,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Katniss\Everdeen\Events\UserPasswordChanged;
+use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
@@ -83,7 +83,7 @@ class ResetPasswordController extends ViewController
             'remember_token' => Str::random(60),
         ])->save();
 
-        event(new UserPasswordChanged($user, $password));
+        event(new PasswordChanged($user, $password));
 
         $this->guard()->login($user);
     }

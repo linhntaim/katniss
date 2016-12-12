@@ -9,7 +9,7 @@
             @endforeach
         </div>
     @endif
-    <form method="post" action="{{ homeUrl('auth/inactive') }}">
+    <form method="post" action="{{ homeUrl('password/email') }}">
         {{ csrf_field() }}
         <div class="form-group has-feedback">
             <input type="email" class="form-control" placeholder="{{ trans('label.email') }}" required name="email" value="{{ old('email') }}">

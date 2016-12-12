@@ -13,7 +13,7 @@ class CreatePasswordResetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
+        Schema::create('sys_password_resets', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->rowFormat = 'DYNAMIC';
 
@@ -30,6 +30,6 @@ class CreatePasswordResetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('sys_password_resets');
     }
 }

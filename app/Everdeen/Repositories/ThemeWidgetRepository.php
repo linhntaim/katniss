@@ -33,16 +33,25 @@ class ThemeWidgetRepository extends ModelRepository
             ->orderBy('order', 'asc')->orderBy('created_at', 'asc')->get();
     }
 
-    public function create($widgetName, $themeName, $placeholder, $constructingData, $active)
+    public function getActive(array $availableWidgetNames = [])
     {
-        return ThemeWidget::create([
-            'widget_name' => $widgetName,
-            'theme_name' => $themeName,
-            'placeholder' => $placeholder,
-            'constructing_data' => $constructingData,
-            'active' => $active,
-            'order' => ThemeWidget::where('placeholder', $placeholder)->count() + 1,
-        ]);
+        return ThemeWidget::checkWidgets($availableWidgetNames)->forDisplay()->get();
+    }
+
+    public function create($widgetName, $themeName, $placeholder, $constructingData, $active = true)
+    {
+        try {
+            return ThemeWidget::create([
+                'widget_name' => $widgetName,
+                'theme_name' => $themeName,
+                'placeholder' => $placeholder,
+                'constructing_data' => $constructingData,
+                'active' => $active,
+                'order' => ThemeWidget::where('placeholder', $placeholder)->count() + 1,
+            ]);
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
     }
 
     public function duplicate($placeholder)
@@ -62,6 +71,18 @@ class ThemeWidgetRepository extends ModelRepository
         $widget = $this->model();
         try {
             $widget->active = $active;
+            $widget->save();
+            return $widget;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateData($constructingData)
+    {
+        $widget = $this->model();
+        try {
+            $widget->constructing_data = $constructingData;
             $widget->save();
             return $widget;
         } catch (\Exception $ex) {

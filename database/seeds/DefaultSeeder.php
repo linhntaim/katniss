@@ -9,6 +9,7 @@ use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserApp;
+use Katniss\Everdeen\Models\UserSetting;
 
 class DefaultSeeder extends Seeder
 {
@@ -51,6 +52,7 @@ class DefaultSeeder extends Seeder
         ));
 
         // TODO: Add 1 administrator
+        $setting = UserSetting::create();
         $owner = User::create(array(
             'display_name' => 'Owner',
             'name' => 'owner',
@@ -59,10 +61,12 @@ class DefaultSeeder extends Seeder
             'url_avatar' => appDefaultUserProfilePicture(),
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
-            'active' => true
+            'active' => true,
+            'setting_id' => $setting->id,
         ));
         $owner->attachRole($owner_role);
 
+        $setting = UserSetting::create();
         $admin = User::create(array(
             'display_name' => 'Administrator',
             'name' => 'admin',
@@ -71,7 +75,8 @@ class DefaultSeeder extends Seeder
             'url_avatar' => appDefaultUserProfilePicture(),
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
-            'active' => true
+            'active' => true,
+            'setting_id' => $setting->id,
         ));
         $admin->attachRoles([$admin_role, $owner_role]);
 
@@ -82,6 +87,7 @@ class DefaultSeeder extends Seeder
             'version' => 'v1',
         ]);
 
+        $setting = UserSetting::create();
         $tester = User::create(array(
             'display_name' => 'Tester',
             'name' => 'tester',
@@ -90,7 +96,8 @@ class DefaultSeeder extends Seeder
             'url_avatar' => appDefaultUserProfilePicture(),
             'url_avatar_thumb' => appDefaultUserProfilePicture(),
             'activation_code' => str_random(32),
-            'active' => true
+            'active' => true,
+            'setting_id' => $setting->id,
         ));
         $tester->attachRole($tester_role);
 

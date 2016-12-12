@@ -9,9 +9,9 @@
 namespace Katniss\Everdeen\Listeners;
 
 use Katniss\Everdeen\Utils\MailHelper;
-use Katniss\Everdeen\Events\UserAfterRegistered;
+use Katniss\Everdeen\Events\UserCreated;
 
-class EmailAccountActivation
+class UserActivationEmailing
 {
     /**
      * Create the event listener.
@@ -26,10 +26,10 @@ class EmailAccountActivation
     /**
      * Handle the event.
      *
-     * @param  UserAfterRegistered $event
+     * @param  UserCreated $event
      * @return void
      */
-    public function handle(UserAfterRegistered $event)
+    public function handle(UserCreated $event)
     {
         $viewPath = $event->fromSocial ? 'welcome_social' : 'welcome';
         MailHelper::queueSendTemplate($viewPath, $event->getParamsForMailing(), $event->locale);

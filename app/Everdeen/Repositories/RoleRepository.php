@@ -14,7 +14,6 @@ use Katniss\Everdeen\Utils\AppConfig;
 
 class RoleRepository extends ModelRepository
 {
-
     public function getById($id)
     {
         return Role::findOrFail($id);
