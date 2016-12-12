@@ -17,7 +17,7 @@
                     var params = {
                         id: '{{ $poll->id }}',
                         choice_ids: items,
-                        order: 1
+                        sort: 1
                     };
                     params[KATNISS_EXTRA_ROUTE_PARAM] = 'web-api/polls/id';
                     api.put('extra', params);

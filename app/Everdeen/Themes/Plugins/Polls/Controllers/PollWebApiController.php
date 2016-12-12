@@ -26,8 +26,11 @@ class PollWebApiController extends WebApiController
 
     public function update(Request $request, $id)
     {
-        if($request->has('order')) {
+        if ($request->has('sort')) {
             return $this->updateOrder($request, $id);
+        }
+        if ($request->has('votes')) {
+            return $this->updateVotes($request, $id);
         }
 
         return $this->responseSuccess();
@@ -51,5 +54,38 @@ class PollWebApiController extends WebApiController
         }
 
         return $this->responseSuccess();
+    }
+
+    public function updateVotes(Request $request, $id)
+    {
+        $poll = $this->pollRepository->model($id);
+
+        if (!$this->customValidate($request, [
+            'choice_ids' => 'required|array|exists:poll_choices,id',
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
+        }
+
+        try {
+            $this->pollRepository->updateVotes($request->input('choice_ids'));
+        } catch (KatnissException $ex) {
+            return $this->responseFail($ex->getMessage());
+        }
+
+        $totalVotes = 0;
+        $choices = [];
+        foreach ($poll->orderedChoices as $choice) {
+            $choices[] = [
+                'name' => $choice->name,
+                'votes' => $choice->votes,
+            ];
+            $totalVotes += $choice->votes;
+        }
+
+        return $this->responseSuccess([
+            'choices' => $choices,
+            'total_votes' => $totalVotes
+        ]);
     }
 }

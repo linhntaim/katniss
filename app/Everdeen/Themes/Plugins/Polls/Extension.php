@@ -53,7 +53,14 @@ class Extension extends BaseExtension
             return $menu;
         }), 'ext:polls:menu');
 
-        addExtraRouteResourceTriggers('web-api/polls', PollWebApiController::class);
+        addTrigger('extra_route', new CallableObject(function (Request $request) {
+            $controllerClass = PollWebApiController::class;
+            $controller = new $controllerClass;
+            if (strtolower($request->method()) == 'put') {
+                return $controller->update($request, $request->input('id'));
+            }
+            return '';
+        }), 'web-api/polls/id');
         addExtraRouteResourceTriggers('admin/polls', PollAdminController::class);
         addTrigger('extra_route', new CallableObject(function (Request $request) {
             $controllerClass = PollAdminController::class;

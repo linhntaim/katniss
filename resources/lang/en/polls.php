@@ -16,5 +16,11 @@ return [
     'choice_lc' => 'choice|choices',
     'multi_choice' => 'Multi-choice',
     'votes' => 'Votes',
+    'vote' => 'Vote|Votes',
+    'vote_lc' => 'vote|votes',
     'poll_not_empty' => 'Poll is not empty',
+    'action_vote' => 'Vote',
+    'action_view_result' => 'View result',
+    'action_view_votes' => 'Do voting',
+    'must_select_one' => 'You must select one choice at least to vote',
 ];

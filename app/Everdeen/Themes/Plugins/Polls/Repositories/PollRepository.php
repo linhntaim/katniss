@@ -110,6 +110,22 @@ class PollRepository extends ModelRepository
         }
     }
 
+    public function updateVotes(array $choiceIds)
+    {
+        $poll = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $poll->choices()->whereIn('id', $choiceIds)->increment('votes');
+            DB::commit();
+            return true;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function delete()
     {
         $poll = $this->model();

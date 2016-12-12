@@ -15,6 +15,7 @@ require('laravel-elixir-vue-2');
 
 elixir(function(mix) {
     mix.scripts([
+        'js.cookie.js',
         'helpers.js',
         'class.number_format_helper.js',
         'class.katniss_api.js',
@@ -23,6 +24,7 @@ elixir(function(mix) {
     ], 'public/assets/libraries/katniss.home.js');
 
     mix.scripts([
+        'js.cookie.js',
         'helpers.js',
         'slug.js',
         'slug.jquery.js',
