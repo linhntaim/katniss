@@ -24,6 +24,8 @@ class EntrustSetupTables extends Migration
             $table->string('description')->nullable();
             $table->tinyInteger('status')->unsigned()->default(\Katniss\Everdeen\Models\Role::STATUS_NORMAL);
             $table->timestamps();
+
+            $table->index('created_at');
         });
 
         // Create table for associating roles to users (Many-to-Many)
@@ -52,6 +54,8 @@ class EntrustSetupTables extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->timestamps();
+
+            $table->index('created_at');
         });
 
         // Create table for associating permissions to roles (Many-to-Many)

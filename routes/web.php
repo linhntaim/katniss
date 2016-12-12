@@ -10,22 +10,28 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::group([
     'prefix' => 'web-api',
-    'namespace' => 'WebApi',
 ], function () {
-    Route::get('instagram/access-token', 'InstagramController@getAccessToken');
-    Route::get('instagram/authorize', 'InstagramController@getAuthorize');
+    Route::any('extra', 'KatnissController@extra');
 
-    Route::get('user/csrf-token', 'UserController@getCsrfToken');
-    Route::get('user/quick-login', 'UserController@getQuickLogin');
+    Route::group([
+        'namespace' => 'WebApi',
+    ], function () {
+        Route::get('instagram/access-token', 'InstagramController@getAccessToken');
+        Route::get('instagram/authorize', 'InstagramController@getAuthorize');
+
+        Route::get('user/csrf-token', 'UserController@getCsrfToken');
+        Route::get('user/quick-login', 'UserController@getQuickLogin');
+    });
 });
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
 ], function () {
+    Route::any(homeRoute('extra'), 'KatnissController@extra');
+
     Route::get(homeRoute('errors/{code}'), 'ViewController@error');
     Route::get(adminRoute('errors/{code}'), 'ViewController@error');
 
@@ -77,6 +83,8 @@ Route::group([
     Route::group([
         'middleware' => 'auth'
     ], function () {
+        Route::any(adminRoute('extra'), 'KatnissController@extra');
+        // my account
         Route::get(homeRoute('me/account'), 'Admin\AccountController@index');
         Route::put(homeRoute('me/account'), 'Admin\AccountController@update');
         // document

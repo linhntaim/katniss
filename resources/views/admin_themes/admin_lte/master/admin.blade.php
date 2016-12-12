@@ -16,33 +16,33 @@
     @yield('extended_styles')
     {!! themeHeader() !!}
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="{{ _kExternalLink('html5shiv') }}"></script>
+    <script src="{{ _kExternalLink('respond') }}"></script>
     <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <div class="wrapper">
-        @include('admin_themes.admin_lte.master.admin_menu')
-        <div class="content-wrapper">
-            <section class="content-header">
-                <h1>
-                    @yield('page_title')
-                    <small>@yield('page_description')</small>
-                </h1>
-                @yield('page_breadcrumb')
-            </section>
-            <section class="content">
-                @yield('page_content')
-            </section>
-        </div>
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                {{ $site_description }}
-            </div>
-            <strong>Copyright &copy; {{ date('Y') }} <a href="{{ $site_home_url }}">{{ $site_name }} {{ $site_version }}</a></strong>
-        </footer>
-        @include('admin_themes.admin_lte.master.admin_control_sidebar')
+<div class="wrapper">
+    @include('admin_themes.admin_lte.master.admin_menu')
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>
+                @yield('page_title')
+                <small>@yield('page_description')</small>
+            </h1>
+            @yield('page_breadcrumb')
+        </section>
+        <section class="content">
+            @yield('page_content')
+        </section>
     </div>
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            {{ $site_description }}
+        </div>
+        <strong>{{ trans('label.copyright') }} &copy; {{ date('Y') }} <a href="{{ $site_home_url }}">{{ $site_name }} {{ $site_version }}</a></strong>
+    </footer>
+    @include('admin_themes.admin_lte.master.admin_control_sidebar')
+</div>
 {!! libScripts() !!}
 @yield('lib_scripts')
 {!! extScripts() !!}

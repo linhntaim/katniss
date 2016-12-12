@@ -28,15 +28,6 @@ class PostRepository extends ByTypeRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getPagedByCategory($categoryId)
-    {
-        $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getById($categoryId);
-        return $category->posts()->where('type', $this->type)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-    }
-
     public function getAll()
     {
         return Post::where('type', $this->type)->get();

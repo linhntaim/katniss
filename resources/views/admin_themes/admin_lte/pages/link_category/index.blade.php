@@ -43,7 +43,6 @@
                                     <th class="order-col-2">#</th>
                                     <th>{{ trans('label.name') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
-                                    <th>{{ trans_choice('label.link', 2) }}</th>
                                     <th>{{ trans('label.category_parent') }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
@@ -53,7 +52,6 @@
                                     <th class="order-col-2">#</th>
                                     <th>{{ trans('label.name') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
-                                    <th>{{ trans_choice('label.link', 2) }}</th>
                                     <th>{{ trans('label.category_parent') }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
@@ -64,7 +62,6 @@
                                         <td class="order-col-2">{{ ++$start_order }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->slug }}</td>
-                                        <td>{{ $category->links()->count() }}</td>
                                         <td>{{ empty($category->parent_id) ? '' : $category->parent->name }}</td>
                                         <td>
                                             <a href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">

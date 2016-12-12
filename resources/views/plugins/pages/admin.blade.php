@@ -1,1 +1,1 @@
-@extends('widgets.default.admin')
+@extends('plugins.default_widget.admin')

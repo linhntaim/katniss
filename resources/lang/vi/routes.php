@@ -7,6 +7,8 @@
  */
 
 return [
+    'extra'                                         => 'chuc-nang-bo-sung',
+    'admin/extra'                                   => 'quan-tri/chuc-nang-bo-sung',
     'errors/{code}'                                 => 'ma-loi/{code}',
     'admin/errors/{code}'                           => 'quan-tri/ma-loi/{code}',
 

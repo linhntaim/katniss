@@ -12,21 +12,6 @@ use Katniss\Http\Controllers\Controller;
 class KatnissController extends Controller
 {
     /**
-     * @var boolean
-     */
-    protected $isAuth;
-
-    /**
-     * @var \Katniss\Everdeen\Models\User
-     */
-    protected $authUser;
-
-    /**
-     * @var string
-     */
-    protected $localeCode;
-
-    /**
      * @var \Illuminate\Support\Collection
      */
     protected $validationErrors;
@@ -38,17 +23,8 @@ class KatnissController extends Controller
 
     public function __construct()
     {
-        AppOptionHelper::load();
         $this->validationErrors = collect([]);
-
-        $this->middleware(function (Request $request, $next) {
-            $this->localeCode = currentLocaleCode();
-            $this->isAuth = isAuth();
-            $this->authUser = authUser();
-            $this->currentRequest = $request;
-
-            return $next($request);
-        });
+        $this->currentRequest = request();
     }
 
     /**
@@ -78,7 +54,7 @@ class KatnissController extends Controller
 
 
         $locales = $result->getLocales();
-        if (!in_array(AppConfig::INTERNATIONAL_LOCALE_CODE, $locales)) {
+        if (!empty($locales) && !in_array(AppConfig::INTERNATIONAL_LOCALE_CODE, $locales)) {
             if (count($locales) != count(supportedLocaleCodesOfInputTabs()) - 1) {
                 $result->fails(trans('error.default_locale_inputs_must_be_set'));
             }
@@ -108,5 +84,13 @@ class KatnissController extends Controller
     protected function getFirstValidationError()
     {
         return $this->validationErrors->first();
+    }
+
+    public function extra(Request $request)
+    {
+        if (!$request->has(AppConfig::KEY_EXTRA_ROUTE)) {
+            abort(404);
+        }
+        return doTrigger('extra_route', $request->input(AppConfig::KEY_EXTRA_ROUTE), [$request]);
     }
 }

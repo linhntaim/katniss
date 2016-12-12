@@ -33,7 +33,7 @@ class InstagramController extends WebApiController
             }
         }
 
-        Theme::byRequest(); // register theme
+//        Theme::byRequest(); // register theme
         $shared = Extension::getSharedData(SocialIntegrationExtension::NAME);
 
         $client = new \GuzzleHttp\Client();

@@ -46,7 +46,9 @@ abstract class Widget extends Plugin
     {
         parent::__construct();
 
-        $this->fromDataConstruct($data);
+        if ($this::EDITABLE) {
+            $this->fromDataConstruct($data);
+        }
 
         $this->__init();
     }
@@ -76,15 +78,17 @@ abstract class Widget extends Plugin
 
     public function viewAdmin()
     {
+        if (!$this::EDITABLE) abort(404);
+
         return empty($this::THEME_NAME) ?
             HomeThemeFacade::commonAdminWidget($this::NAME) : HomeThemeFacade::adminWidget($this::NAME);
     }
 
     public function viewAdminParams()
     {
-        return [
+        return array_merge(parent::viewAdminParams(), [
             'html_id' => $this->getHtmlId(),
-        ];
+        ]);
     }
 
     public function viewHome()
@@ -110,7 +114,7 @@ abstract class Widget extends Plugin
         return '';
     }
 
-    public function save($placeholder, array $data = [], array  $localizedData = [])
+    public function save($placeholder, array $data = [], array $localizedData = [])
     {
         if (empty($this->themeWidget)) {
             return $this->create($placeholder, $data, $localizedData);
@@ -138,6 +142,8 @@ abstract class Widget extends Plugin
 
     public function update(array $data = [], array $localizedData = [])
     {
+        if (!$this::EDITABLE) abort(404);
+
         $this->themeWidget->constructing_data = $this->toDataConstructAsJson($data, $localizedData);
         if ($this->themeWidget->save() === true) {
             return true;

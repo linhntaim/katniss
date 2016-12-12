@@ -13,10 +13,19 @@ use Katniss\Everdeen\Themes\Theme;
 
 class Request extends BaseRequest
 {
+    public $isAuth;
+    public $authUser;
+
     /**
      * @var Theme
      */
     protected $theme;
+
+    public function setAuth($isAuth, $authUser)
+    {
+        $this->isAuth = $isAuth;
+        $this->authUser = $isAuth ? $authUser : null;
+    }
 
     /**
      * @return Theme

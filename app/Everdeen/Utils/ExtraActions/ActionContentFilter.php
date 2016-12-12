@@ -8,8 +8,6 @@
 
 namespace Katniss\Everdeen\Utils\ExtraActions;
 
-use Katniss\Everdeen\Exceptions\KatnissException;
-
 class ActionContentFilter
 {
     private static $filters = [];
@@ -21,10 +19,6 @@ class ActionContentFilter
         }
     }
 
-    /**
-     * @param string $id
-     * @param CallableObject $callableFilter
-     */
     public static function add($id, CallableObject $callableFilter, $name, $strict = true)
     {
         if (empty($id) || empty($name)) return false;

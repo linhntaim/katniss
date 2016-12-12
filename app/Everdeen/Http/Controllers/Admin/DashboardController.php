@@ -2,9 +2,7 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
-
-class DashboardController extends ViewController
+class DashboardController extends AdminController
 {
     public function __construct()
     {

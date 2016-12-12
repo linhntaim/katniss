@@ -17,7 +17,6 @@ class Extension extends BaseExtension
     const NAME = 'app_settings';
     const DISPLAY_NAME = 'App Settings';
     const DESCRIPTION = 'Change app settings';
-    const EDITABLE = true;
 
     public static function getSharedViewData()
     {

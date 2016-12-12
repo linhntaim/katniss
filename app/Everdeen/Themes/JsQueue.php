@@ -35,7 +35,7 @@ class JsQueue extends AssetQueue
         $this->rawValueNames = func_get_args();
     }
 
-    public function add($name, $content, $type = AssetQueue::TYPE_DEFAULT, $rawValueNames = [])
+    public function add($name, $content, $type = AssetQueue::TYPE_DEFAULT, $rawValueNames = [], $merge = false)
     {
         if ($name == self::LIB_BOOTSTRAP_NAME && $this->existed(self::LIB_JQUERY_UI_NAME)) {
             parent::add(
@@ -44,10 +44,14 @@ class JsQueue extends AssetQueue
                 self::TYPE_RAW
             );
         }
-
-        parent::add($name, $content, $type);
-        if ($type == self::TYPE_VAR) {
-            $this->rawValueNames = $rawValueNames;
+        if ($merge && $type == self::TYPE_VAR && $this->existed($name) && $this->queue[$name]['type'] == self::TYPE_VAR) {
+            $this->queue[$name]['content'] = array_merge($this->queue[$name]['content'], $content);
+            $this->rawValueNames = array_merge($this->rawValueNames, $rawValueNames);
+        } else {
+            parent::add($name, $content, $type);
+            if ($type == self::TYPE_VAR) {
+                $this->rawValueNames = $rawValueNames;
+            }
         }
     }
 

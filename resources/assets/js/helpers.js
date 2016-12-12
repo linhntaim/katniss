@@ -47,9 +47,27 @@ function isArray(variable) {
     return isObject(variable, 'Array');
 }
 
-function startWith(strSrc, strWith) {
+function beginsWith(strSrc, strWith) {
     if (isSet(strSrc)) {
         return strSrc.toString().indexOf(strWith) == 0;
     }
     return false;
+}
+
+function nl2br(str) {
+    return str.replace(/\r*\n/g, '<br>');
+}
+
+function htmlspecialchars(str) {
+    var map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+
+    return str.replace(/[&<>"']/g, function (m) {
+        return map[m];
+    });
 }

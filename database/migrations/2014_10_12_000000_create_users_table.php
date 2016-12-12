@@ -29,6 +29,8 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('long_time_format')->unsigned()->default(0);
             $table->tinyInteger('short_time_format')->unsigned()->default(0);
             $table->timestamps();
+
+            $table->index('created_at');
         });
 
         Schema::create('users', function (Blueprint $table) {
@@ -50,6 +52,8 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->foreign('setting_id')->references('id')->on('user_settings');
+
+            $table->index(['setting_id', 'created_at']);
         });
 
         Schema::create('user_socials', function (Blueprint $table) {
@@ -59,10 +63,12 @@ class CreateUsersTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('provider');
             $table->string('provider_id');
-            $table->unique(['provider', 'provider_id']);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            $table->unique(['provider', 'provider_id']);
+            $table->index(['user_id', 'created_at']);
         });
     }
 

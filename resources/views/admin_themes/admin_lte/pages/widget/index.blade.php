@@ -8,7 +8,7 @@
     </ol>
 @endsection
 @section('lib_styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
 @endsection
 @section('extended_styles')
     <style>
@@ -19,7 +19,7 @@
     </style>
 @endsection
 @section('lib_scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
@@ -138,8 +138,8 @@
                             <div class="form-group col-xs-12 col-sm-4">
                                 <label for="inputWidget">{{ trans_choice('label.widget', 1) }}</label>
                                 <select id="inputWidget" class="form-control select2" name="widget" required style="width: 100%">
-                                    @foreach($widgets as $name => $display_name)
-                                        <option value="{{ $name }}">{{ $display_name }}</option>
+                                    @foreach($widgets as $name => $widget)
+                                        <option value="{{ $name }}">{{ $widget['display_name'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -193,15 +193,17 @@
                                         <i class="fa fa-ellipsis-v"></i>
                                         <i class="fa fa-ellipsis-v"></i>
                                     </span>
-                                    <span class="text">{{ $widgets[$themeWidget->name] }}</span>
+                                    <span class="text">{{ $widgets[$themeWidget->name]['display_name'] }}</span>
                                     @if($themeWidget->active)
                                         <span class="label label-success">{{ trans('label.status_activated') }}</span>
                                     @else
                                         <span class="label label-warning">{{ trans('label.status_deactivated') }}</span>
                                     @endif
                                     <div class="tools">
-                                        <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
-                                        |
+                                        @if($widgets[$themeWidget->name]['editable'])
+                                            <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
+                                            |
+                                        @endif
                                         @if($themeWidget->active)
                                             <a class="deactivate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                                             |
@@ -243,15 +245,17 @@
                                         <i class="fa fa-ellipsis-v"></i>
                                         <i class="fa fa-ellipsis-v"></i>
                                     </span>
-                                    <span class="text">{{ $widgets[$themeWidget->name] }}</span>
+                                    <span class="text">{{ $widgets[$themeWidget->name]['display_name'] }}</span>
                                     @if($themeWidget->active)
                                         <span class="label label-success">{{ trans('label.status_activated') }}</span>
                                     @else
                                         <span class="label label-warning">{{ trans('label.status_deactivated') }}</span>
                                     @endif
                                     <div class="tools">
-                                        <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
-                                        |
+                                        @if($widgets[$themeWidget->name]['editable'])
+                                            <a href="{{ adminUrl('widgets/{id}/edit', ['id'=> $themeWidget->id]) }}">{{ trans('form.action_edit') }}</a>
+                                            |
+                                        @endif
                                         @if($themeWidget->active)
                                             <a class="deactivate" href="{{ addRdrUrl(adminUrl('widgets/{id}', ['id'=> $themeWidget->id]) . '?deactivate=1') }}">{{ trans('form.action_deactivate') }}</a>
                                             |

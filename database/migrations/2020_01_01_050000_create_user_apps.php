@@ -20,6 +20,8 @@ class CreateUserApps extends Migration
             $table->string('name');
             $table->string('version');
             $table->timestamps();
+
+            $table->index('created_at');
         });
     }
 
