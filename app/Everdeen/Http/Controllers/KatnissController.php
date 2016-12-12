@@ -54,7 +54,7 @@ class KatnissController extends Controller
 
 
         $locales = $result->getLocales();
-        if (!in_array(AppConfig::INTERNATIONAL_LOCALE_CODE, $locales)) {
+        if (!empty($locales) && !in_array(AppConfig::INTERNATIONAL_LOCALE_CODE, $locales)) {
             if (count($locales) != count(supportedLocaleCodesOfInputTabs()) - 1) {
                 $result->fails(trans('error.default_locale_inputs_must_be_set'));
             }
