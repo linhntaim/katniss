@@ -36,4 +36,8 @@ elixir(function(mix) {
 
     mix.styles('modal_cropper_image.css', 'public/assets/libraries/modal_cropper_image.css');
     mix.scripts('modal_cropper_image.js', 'public/assets/libraries/modal_cropper_image.js');
+
+    mix.scripts([
+        'google_maps_markers.js'
+    ], 'public/assets/libraries/google_maps_markers.js');
 });

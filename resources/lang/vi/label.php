@@ -66,6 +66,8 @@ return [
     'phone' => 'Điện thoại',
     'website' => 'Trang web',
     'address' => 'Địa chỉ',
+    'latitude' => 'Vĩ độ',
+    'longitude' => 'Kinh độ',
     'copyright' => 'Bản quyền',
 
     'settings' => 'Thiết lập',
@@ -88,6 +90,8 @@ return [
     'to_lc' => 'đến',
 
     'not_set' => 'Chưa thiết lập',
+    'success' => 'Thành công',
+    'info' => 'Thông tin',
     'alert' => 'Cảnh báo',
     'warning' => 'Lưu ý',
     'error' => 'Lỗi',

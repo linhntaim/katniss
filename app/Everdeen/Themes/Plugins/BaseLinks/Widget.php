@@ -40,8 +40,8 @@ class Widget extends DefaultWidget
     {
         $links = collect([]);
         if (!empty($this->categoryId)) {
-            $linkCategoryRepository = new LinkCategoryRepository($this->categoryId);
-            $links = $linkCategoryRepository->model()->orderedLinks;
+            $linkCategoryRepository = new LinkCategoryRepository();
+            $links = $linkCategoryRepository->model($this->categoryId)->orderedLinks;
         }
         return array_merge(parent::viewHomeParams(), [
             'links' => $links,

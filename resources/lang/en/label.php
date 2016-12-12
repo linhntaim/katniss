@@ -66,6 +66,8 @@ return [
     'phone' => 'Phone',
     'website' => 'Website',
     'address' => 'Address',
+    'latitude' => 'Latitude',
+    'longitude' => 'Longitude',
     'copyright' => 'Copyright',
 
     'settings' => 'Settings',
@@ -88,6 +90,8 @@ return [
     'to_lc' => 'to',
 
     'not_set' => 'Not set',
+    'success' => 'Success',
+    'info' => 'Info',
     'alert' => 'Alert',
     'warning' => 'Warning',
     'error' => 'Error',
