@@ -109,8 +109,16 @@
                             </a>)
                         @endif
                     </label>
-                    <input class="form-control image-from-documents" id="inputFeaturedImage" name="featured_image"
-                           placeholder="{{ trans('label.picture') }}" type="text" value="{{ $page->featured_image }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputFeaturedImage" name="featured_image"
+                               placeholder="{{ trans('label.picture') }}" type="text" value="{{ $page->featured_image }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputFeaturedImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
