@@ -27,8 +27,6 @@
                     api.put('admin/media-categories/{{ $category->id }}', {
                         media_ids: items,
                         sort: 1
-                    }, function (isFailed, data, messages) {
-                        console.log(isFailed, data, messages);
                     });
                 }
             });

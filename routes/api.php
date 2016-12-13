@@ -33,8 +33,8 @@ Route::group([
             Route::group([
                 'middleware' => 'entrust:admin'
             ], function () {
-                Route::post('widgets/update-order', 'WidgetController@updateOrder');
-                Route::post('link-categories/{id}/update-order', 'LinkCategoryController@updateOrder');
+                Route::put('widgets/sort', 'WidgetController@sort');
+                Route::put('link-categories/{id}', 'LinkCategoryController@update');
             });
             #endregion
         });

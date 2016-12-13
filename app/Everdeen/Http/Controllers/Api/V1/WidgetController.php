@@ -19,7 +19,7 @@ class WidgetController extends ApiController
         $this->widgetRepository = new ThemeWidgetRepository();
     }
 
-    public function updateOrder(Request $request)
+    public function sort(Request $request)
     {
         if (!$this->customValidate($request, [
             'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),

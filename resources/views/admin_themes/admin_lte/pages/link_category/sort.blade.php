@@ -24,8 +24,9 @@
                         items.push($(this).attr('data-item'));
                     });
                     var api = new KatnissApi();
-                    api.post('link-categories/{{ $category->id }}/update-order', {
-                        link_ids: items
+                    api.put('link-categories/{{ $category->id }}', {
+                        link_ids: items,
+                        sort: 1
                     });
                 }
             });
