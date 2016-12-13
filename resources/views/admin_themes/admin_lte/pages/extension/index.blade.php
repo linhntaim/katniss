@@ -29,7 +29,7 @@
             @endif
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ trans('form.list_of',['name'=>trans('pages.admin_extensions_title')]) }}</h3>
+                    <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.extension_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
                 @if(count($extensions)>0)
                     <div class="box-body">

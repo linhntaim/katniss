@@ -21,7 +21,7 @@ class PageSeeder extends Seeder
                 'user_id' => 2,
                 'template' => null,
                 'featured_image' => $generator->imageUrl(),
-                'type' => Post::PAGE,
+                'type' => Post::TYPE_PAGE,
             ]);
             $trans = $post->translateOrNew('--');
             $trans->post_id = $post->id;

@@ -6,18 +6,18 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
-use Katniss\Everdeen\Repositories\LinkCategoryRepository;
+use Katniss\Everdeen\Repositories\MediaCategoryRepository;
 
-class LinkCategoryController extends AdminController
+class MediaCategoryController extends AdminController
 {
-    protected $linkCategoryRepository;
+    protected $mediaCategoryRepository;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->viewPath = 'link_category';
-        $this->linkCategoryRepository = new LinkCategoryRepository();
+        $this->viewPath = 'media_category';
+        $this->mediaCategoryRepository = new MediaCategoryRepository();
     }
 
     /**
@@ -27,10 +27,10 @@ class LinkCategoryController extends AdminController
      */
     public function index(Request $request)
     {
-        $categories = $this->linkCategoryRepository->getPaged();
+        $categories = $this->mediaCategoryRepository->getPaged();
 
-        $this->_title(trans('pages.admin_link_categories_title'));
-        $this->_description(trans('pages.admin_link_categories_desc'));
+        $this->_title(trans('pages.admin_media_categories_title'));
+        $this->_description(trans('pages.admin_media_categories_desc'));
 
         return $this->_index([
             'categories' => $categories,
@@ -46,11 +46,11 @@ class LinkCategoryController extends AdminController
      */
     public function create()
     {
-        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_add')]);
-        $this->_description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_media_categories_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_media_categories_desc'));
 
         return $this->_create([
-            'categories' => $this->linkCategoryRepository->getAll(),
+            'categories' => $this->mediaCategoryRepository->getAll(),
         ]);
     }
 
@@ -67,7 +67,7 @@ class LinkCategoryController extends AdminController
             'slug' => 'required|max:255|unique:category_translations,slug',
         ]);
 
-        $errorRedirect = redirect(adminUrl('link-categories/create'))
+        $errorRedirect = redirect(adminUrl('media-categories/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -77,7 +77,7 @@ class LinkCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_LINK,
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
             ]);
             if ($validator->fails()) {
                 return $errorRedirect->withErrors($validator);
@@ -85,12 +85,12 @@ class LinkCategoryController extends AdminController
         }
 
         try {
-            $this->linkCategoryRepository->create($parentId, $validateResult->getLocalizedInputs());
+            $this->mediaCategoryRepository->create($parentId, $validateResult->getLocalizedInputs());
         } catch (KatnissException $ex) {
             return $errorRedirect->withErrors([$ex->getMessage()]);
         }
 
-        return redirect(adminUrl('link-categories'));
+        return redirect(adminUrl('media-categories'));
     }
 
     /**
@@ -112,14 +112,14 @@ class LinkCategoryController extends AdminController
      */
     public function edit(Request $request, $id)
     {
-        $category = $this->linkCategoryRepository->model($id);
+        $category = $this->mediaCategoryRepository->model($id);
 
-        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_edit')]);
-        $this->_description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_media_categories_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_media_categories_desc'));
 
         return $this->_edit([
             'category' => $category,
-            'categories' => $this->linkCategoryRepository->getAll(),
+            'categories' => $this->mediaCategoryRepository->getAll(),
         ]);
     }
 
@@ -132,9 +132,9 @@ class LinkCategoryController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        $category = $this->linkCategoryRepository->model($id);
+        $category = $this->mediaCategoryRepository->model($id);
 
-        $redirect = redirect(adminUrl('link-categories/{id}/edit', ['id' => $category->id]));
+        $redirect = redirect(adminUrl('media-categories/{id}/edit', ['id' => $category->id]));
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
@@ -148,7 +148,7 @@ class LinkCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_LINK
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA
             ]);
             if ($validator->fails()) {
                 return $redirect->withErrors($validator);
@@ -156,7 +156,7 @@ class LinkCategoryController extends AdminController
         }
 
         try {
-            $this->linkCategoryRepository->update($parentId, $validateResult->getLocalizedInputs());
+            $this->mediaCategoryRepository->update($parentId, $validateResult->getLocalizedInputs());
         } catch (KatnissException $ex) {
             return $redirect->withErrors([$ex->getMessage()]);
         }
@@ -172,12 +172,12 @@ class LinkCategoryController extends AdminController
      */
     public function destroy(Request $request, $id)
     {
-        $this->linkCategoryRepository->model($id);
+        $this->mediaCategoryRepository->model($id);
 
-        $this->_rdrUrl($request, adminUrl('link-categories'), $rdrUrl, $errorRdrUrl);
+        $this->_rdrUrl($request, adminUrl('media-categories'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->linkCategoryRepository->delete();
+            $this->mediaCategoryRepository->delete();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
@@ -187,14 +187,14 @@ class LinkCategoryController extends AdminController
 
     public function sort(Request $request, $id)
     {
-        $category = $this->linkCategoryRepository->model($id);
+        $category = $this->mediaCategoryRepository->model($id);
 
-        $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
-        $this->_description(trans('pages.admin_link_categories_desc'));
+        $this->_title([trans('pages.admin_media_categories_title'), trans('form.action_sort')]);
+        $this->_description(trans('pages.admin_media_categories_desc'));
 
         return $this->_any('sort', [
             'category' => $category,
-            'links' => $category->orderedLinks,
+            'media' => $category->orderedMedia,
         ]);
     }
 }

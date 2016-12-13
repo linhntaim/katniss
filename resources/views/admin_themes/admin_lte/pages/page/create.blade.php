@@ -59,7 +59,7 @@
     </script>
 @endsection
 @section('page_content')
-    <form method="post" action="{{ adminUrl('pages') }}">
+    <form class="check-slug" method="post" action="{{ adminUrl('pages') }}">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-xs-12">

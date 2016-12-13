@@ -81,7 +81,7 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::ARTICLE,
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
             'featured_image' => 'sometimes|url',
         ]);
         if ($validator->fails()) {
@@ -160,7 +160,7 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::ARTICLE,
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
             'featured_image' => 'sometimes|url',
         ]);
         if ($validator->fails()) {

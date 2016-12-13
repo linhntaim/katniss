@@ -23,6 +23,8 @@ Route::group([
 
         Route::get('user/csrf-token', 'UserController@getCsrfToken');
         Route::get('user/quick-login', 'UserController@getQuickLogin');
+
+        Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
     });
 });
 
@@ -168,6 +170,21 @@ Route::group([
                 Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('articles/{id}'), 'ArticleController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('articles/{id}'), 'ArticleController@destroy')->where('id', '[0-9]+');
+                //Media Categories
+                Route::get(adminRoute('media-categories'), 'MediaCategoryController@index');
+                Route::get(adminRoute('media-categories/create'), 'MediaCategoryController@create');
+                Route::post(adminRoute('media-categories'), 'MediaCategoryController@store');
+                Route::get(adminRoute('media-categories/{id}/edit'), 'MediaCategoryController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('media-categories/{id}'), 'MediaCategoryController@update');
+                Route::delete(adminRoute('media-categories/{id}'), 'MediaCategoryController@destroy')->where('id', '[0-9]+');
+                Route::get(adminRoute('media-categories/{id}/sort'), 'MediaCategoryController@sort')->where('id', '[0-9]+');
+                //Media
+                Route::get(adminRoute('media-items'), 'MediaController@index');
+                Route::get(adminRoute('media-items/create'), 'MediaController@create');
+                Route::post(adminRoute('media-items'), 'MediaController@store');
+                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

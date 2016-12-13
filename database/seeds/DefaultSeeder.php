@@ -103,7 +103,7 @@ class DefaultSeeder extends Seeder
 
         $locales = ['en', 'vi'];
         $category = new Category();
-        $category->type = Category::ARTICLE;
+        $category->type = Category::TYPE_ARTICLE;
         $data = [
             'en' => [
                 'name' => 'Uncategorized',
@@ -133,7 +133,7 @@ class DefaultSeeder extends Seeder
 
         $locales = ['en', 'vi'];
         $category = new Category();
-        $category->type = Category::LINK;
+        $category->type = Category::TYPE_LINK;
         $data = [
             'en' => [
                 'name' => 'Example link category',

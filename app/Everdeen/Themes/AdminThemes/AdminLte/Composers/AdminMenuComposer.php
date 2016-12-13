@@ -147,7 +147,7 @@ class AdminMenuComposer
                 //Links
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
-                    trans('pages.admin_link_header'),
+                    trans('pages.admin_links_title'),
                     '<i class="fa fa-external-link"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
                 $subMenu = new Menu($currentUrl);
@@ -166,7 +166,7 @@ class AdminMenuComposer
                 //Posts
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
-                    trans('pages.admin_post_header'),
+                    trans('pages.admin_posts_title'),
                     '<i class="fa fa-align-justify"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
                 $subMenu = new Menu($currentUrl);
@@ -186,13 +186,32 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
+
+                //Posts
+                $menu->add(  // add an example menu item which have sub menu
+                    '#',
+                    trans('pages.admin_media_title'),
+                    '<i class="fa fa-photo"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu($currentUrl);
+                $subMenu->add( //add a menu item
+                    adminUrl('media-categories'),
+                    trans('pages.admin_media_categories_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('media-items'),
+                    trans('pages.admin_media_items_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $menu->addSubMenu($subMenu);
             }
         }
         $extraMenu = $this->getExtraMenu();
         if ($extraMenu->has()) {
             $menu->add(  // add an example menu item which have sub menu
                 '#',
-                trans('pages.admin_extra_header'),
+                trans('pages.admin_extra_title'),
                 '<i class="fa fa-folder"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
             );
             $menu->addSubMenu($extraMenu);

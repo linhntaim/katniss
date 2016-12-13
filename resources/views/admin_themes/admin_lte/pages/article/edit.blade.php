@@ -60,7 +60,7 @@
     </script>
 @endsection
 @section('page_content')
-    <form method="post" action="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}">
+    <form class="check-slug" method="post" action="{{ adminUrl('articles/{id}', ['id'=> $article->id]) }}">
         {{ csrf_field() }}
         {{ method_field('put') }}
         <div class="row">

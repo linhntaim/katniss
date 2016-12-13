@@ -6,19 +6,20 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
-use Katniss\Everdeen\Repositories\LinkCategoryRepository;
-use Katniss\Everdeen\Repositories\LinkRepository;
+use Katniss\Everdeen\Models\Media;
+use Katniss\Everdeen\Repositories\MediaCategoryRepository;
+use Katniss\Everdeen\Repositories\MediaRepository;
 
-class LinkController extends AdminController
+class MediaController extends AdminController
 {
-    protected $linkRepository;
+    protected $mediaRepository;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->viewPath = 'link';
-        $this->linkRepository = new LinkRepository();
+        $this->viewPath = 'media';
+        $this->mediaRepository = new MediaRepository();
     }
 
     /**
@@ -28,14 +29,14 @@ class LinkController extends AdminController
      */
     public function index(Request $request)
     {
-        $links = $this->linkRepository->getPaged();
+        $mediaItems = $this->mediaRepository->getPaged();
 
-        $this->_title(trans('pages.admin_links_title'));
-        $this->_description(trans('pages.admin_links_desc'));
+        $this->_title(trans('pages.admin_media_items_title'));
+        $this->_description(trans('pages.admin_media_items_desc'));
 
         return $this->_index([
-            'links' => $links,
-            'pagination' => $this->paginationRender->renderByPagedModels($links),
+            'media_items' => $mediaItems,
+            'pagination' => $this->paginationRender->renderByPagedModels($mediaItems),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
@@ -47,13 +48,17 @@ class LinkController extends AdminController
      */
     public function create()
     {
-        $categoryRepository = new LinkCategoryRepository();
+        $categoryRepository = new MediaCategoryRepository();
 
-        $this->_title([trans('pages.admin_links_title'), trans('form.action_add')]);
-        $this->_description(trans('pages.admin_links_desc'));
+        $this->_title([trans('pages.admin_media_items_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_media_items_desc'));
 
         return $this->_create([
-            'categories' => $categoryRepository->getAll()
+            'categories' => $categoryRepository->getAll(),
+            'types' => [
+                Media::TYPE_PHOTO => trans_choice('label.photo', 1),
+                Media::TYPE_VIDEO => trans_choice('label.video', 1)
+            ],
         ]);
     }
 
@@ -66,11 +71,11 @@ class LinkController extends AdminController
     public function store(Request $request)
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'required',
-            'url' => 'required', // no need to confirm link is an url, for trickly use
+            'title' => 'required|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
-        $error_redirect = redirect(adminUrl('links/create'))
+        $error_redirect = redirect(adminUrl('media-items/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -78,16 +83,18 @@ class LinkController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
-            'image' => 'sometimes|url',
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
+            'url' => 'required|url',
+            'type' => 'required|in:' . implode(',', [Media::TYPE_PHOTO, Media::TYPE_VIDEO]),
         ]);
         if ($validator->fails()) {
             return $error_redirect->withErrors($validator);
         }
 
         try {
-            $this->linkRepository->create(
-                $request->input('image', ''),
+            $this->mediaRepository->create(
+                $request->input('url'),
+                $request->input('type'),
                 $request->input('categories', []),
                 $validateResult->getLocalizedInputs()
             );
@@ -95,7 +102,7 @@ class LinkController extends AdminController
             return $error_redirect->withErrors([$ex->getMessage()]);
         }
 
-        return redirect(adminUrl('links'));
+        return redirect(adminUrl('media-items'));
     }
 
     /**
@@ -117,16 +124,20 @@ class LinkController extends AdminController
      */
     public function edit(Request $request, $id)
     {
-        $link = $this->linkRepository->model($id);
-        $categoryRepository = new LinkCategoryRepository();
+        $media = $this->mediaRepository->model($id);
+        $categoryRepository = new MediaCategoryRepository();
 
-        $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
-        $this->_description(trans('pages.admin_links_desc'));
+        $this->_title([trans('pages.admin_media_items_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_media_items_desc'));
 
         return $this->_edit([
-            'link' => $link,
-            'link_categories' => $link->categories,
+            'media' => $media,
+            'media_categories' => $media->categories,
             'categories' => $categoryRepository->getAll(),
+            'types' => [
+                Media::TYPE_PHOTO => trans_choice('label.photo', 1),
+                Media::TYPE_VIDEO => trans_choice('label.video', 1)
+            ],
         ]);
     }
 
@@ -139,13 +150,13 @@ class LinkController extends AdminController
      */
     public function update(Request $request, $id)
     {
-        $link = $this->linkRepository->model($id);
+        $media = $this->mediaRepository->model($id);
 
-        $redirect = redirect(adminUrl('links/{id}/edit', ['id' => $link->id]));
+        $redirect = redirect(adminUrl('media-items/{id}/edit', ['id' => $media->id]));
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'required',
-            'url' => 'required',
+            'title' => 'required|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
@@ -153,16 +164,18 @@ class LinkController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
-            'image' => 'sometimes|url',
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
+            'url' => 'required|url',
+            'type' => 'required|in:' . implode(',', [Media::TYPE_PHOTO, Media::TYPE_VIDEO]),
         ]);
         if ($validator->fails()) {
             return $redirect->withErrors($validator);
         }
 
         try {
-            $this->linkRepository->update(
-                $request->input('image', ''),
+            $this->mediaRepository->update(
+                $request->input('url'),
+                $request->input('type'),
                 $request->input('categories', []),
                 $validateResult->getLocalizedInputs()
             );
@@ -180,11 +193,11 @@ class LinkController extends AdminController
      */
     public function destroy(Request $request, $id)
     {
-        $this->linkRepository->model($id);
-        $this->_rdrUrl($request, adminUrl('links'), $rdrUrl, $errorRdrUrl);
+        $this->mediaRepository->model($id);
+        $this->_rdrUrl($request, adminUrl('media-items'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->linkRepository->delete();
+            $this->mediaRepository->delete();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

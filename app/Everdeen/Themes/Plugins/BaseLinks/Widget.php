@@ -63,7 +63,7 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'category_id' => 'required|exists:categories,id,type,' . Category::LINK,
+            'category_id' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
         ]);
     }
 }

@@ -21,7 +21,7 @@ class ArticleSeeder extends Seeder
         $categoryIds = [];
         for ($i = 0; $i < $loopCategory; ++$i) {
             $category = Category::create([
-                'type' => Category::ARTICLE
+                'type' => Category::TYPE_ARTICLE
             ]);
             $categoryIds[] = $category->id;
 
@@ -39,7 +39,7 @@ class ArticleSeeder extends Seeder
                 'user_id' => 2,
                 'template' => null,
                 'featured_image' => $generator->imageUrl(),
-                'type' => Post::ARTICLE,
+                'type' => Post::TYPE_ARTICLE,
             ]);
             $trans = $post->translateOrNew('--');
             $trans->post_id = $post->id;

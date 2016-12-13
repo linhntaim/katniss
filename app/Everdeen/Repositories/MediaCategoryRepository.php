@@ -12,24 +12,24 @@ use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Category;
 
-class LinkCategoryRepository extends CategoryRepository
+class MediaCategoryRepository extends CategoryRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Category::TYPE_LINK, $id);
+        parent::__construct(Category::TYPE_MEDIA, $id);
     }
 
-    public function updateSort($linkIds)
+    public function updateSort(array $mediaIds)
     {
         $category = $this->model();
 
         DB::beginTransaction();
         try {
             $order = 0;
-            $category_links = $category->links();
-            foreach ($linkIds as $linkId) {
+            $categoryMedia = $category->media();
+            foreach ($mediaIds as $mediaId) {
                 ++$order;
-                $category_links->updateExistingPivot($linkId, ['order' => $order]);
+                $categoryMedia->updateExistingPivot($mediaId, ['order' => $order]);
             }
             DB::commit();
             return true;
@@ -43,7 +43,7 @@ class LinkCategoryRepository extends CategoryRepository
     public function delete()
     {
         $category = $this->model();
-        if ($category->links()->count() > 0) {
+        if ($category->media()->count() > 0) {
             throw new KatnissException(trans('error.category_not_empty'));
         }
 

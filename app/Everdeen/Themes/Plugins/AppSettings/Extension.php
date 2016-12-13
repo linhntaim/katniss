@@ -76,7 +76,7 @@ class Extension extends BaseExtension
     {
         return array_merge(parent::validationRules(), [
             'register_enable' => 'sometimes|in:1',
-            'default_article_category' => 'sometimes|exists:categories,id,type,' . Category::ARTICLE,
+            'default_article_category' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
         ]);
     }
 }

@@ -8,28 +8,38 @@ use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class DocumentController extends ViewController
 {
+    protected $customTypes = [
+        'images' => [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ],
+        'flash' => [
+            'application/x-shockwave-flash',
+        ],
+        'audio' => [
+            'audio/aac',
+            'audio/mp4',
+            'audio/mpeg',
+            'audio/ogg',
+            'audio/webm',
+        ],
+        'video' => [
+            'video/x-flv',
+            'video/h264',
+            'video/webm',
+        ],
+    ];
+
     public function onlyMimes($customType)
     {
         $onlyMimes = [];
 
-        if ($customType == 'images') {
-            $onlyMimes = [
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-            ];
-        } elseif ($customType == 'flash') {
-            $onlyMimes = [
-                'application/x-shockwave-flash',
-            ];
-        } elseif ($customType == 'audio') {
-            $onlyMimes = [
-                'audio/aac',
-                'audio/mp4',
-                'audio/mpeg',
-                'audio/ogg',
-                'audio/webm',
-            ];
+        $customTypes = explode(',', $customType);
+        foreach ($customTypes as $type) {
+            if (!empty($this->customTypes[$type])) {
+                $onlyMimes = array_merge($onlyMimes, $this->customTypes[$type]);
+            }
         }
 
         return $onlyMimes;

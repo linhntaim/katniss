@@ -21,7 +21,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ trans('form.list_of',['name'=>trans('pages.admin_app_options_title')]) }}</h3>
+                    <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.app_option_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
                 @if($options->count()>0)
                     <div class="box-body">

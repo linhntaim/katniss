@@ -12,7 +12,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.role', 2)]) }}</h3>
+                <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.role_lc', 2)]) }}</h3>
             </div><!-- /.box-header -->
             @if($roles->count()>0)
                 <div class="box-body">

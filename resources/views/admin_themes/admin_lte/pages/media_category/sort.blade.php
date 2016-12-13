@@ -1,10 +1,10 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_link_categories_title'))
-@section('page_description', trans('pages.admin_link_categories_desc'))
+@section('page_title', trans('pages.admin_media_categories_title'))
+@section('page_description', trans('pages.admin_media_categories_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('link-categories') }}">{{ trans('pages.admin_link_categories_title') }}</a></li>
+        <li><a href="{{ adminUrl('media-categories') }}">{{ trans('pages.admin_media_categories_title') }}</a></li>
         <li><a href="#">{{ trans('form.action_sort') }}</a></li>
     </ol>
 @endsection
@@ -23,9 +23,12 @@
                     self.children().each(function () {
                         items.push($(this).attr('data-item'));
                     });
-                    var api = new KatnissApi();
-                    api.post('link-categories/{{ $category->id }}/update-order', {
-                        link_ids: items
+                    var api = new KatnissApi(true);
+                    api.put('admin/media-categories/{{ $category->id }}', {
+                        media_ids: items,
+                        sort: 1
+                    }, function (isFailed, data, messages) {
+                        console.log(isFailed, data, messages);
                     });
                 }
             });
@@ -40,15 +43,15 @@
         <div class="col-md-6">
             <div class="margin-bottom">
                 <a role="button" class="btn btn-warning delete"
-                   href="{{ addErrorUrl(adminUrl('link-categories/{id}', ['id'=> $category->id])) }}">
+                   href="{{ addErrorUrl(adminUrl('media-categories/{id}', ['id'=> $category->id])) }}">
                     {{ trans('form.action_delete') }}
                 </a>
                 <a role="button" class="btn btn-primary"
-                   href="{{ adminUrl('link-categories/{id}/edit', ['id'=> $category->id]) }}">
+                   href="{{ adminUrl('media-categories/{id}/edit', ['id'=> $category->id]) }}">
                     {{ trans('form.action_edit') }}
                 </a>
                 <a role="button" class="btn btn-primary pull-right"
-                   href="{{ adminUrl('link-categories/create') }}">
+                   href="{{ adminUrl('media-categories/create') }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.category_lc', 1) }}
                 </a>
             </div>
@@ -64,15 +67,15 @@
                             @endforeach
                         </div>
                     @endif
-                    @if($links->count()>0)
+                    @if($media->count()>0)
                         <ul class="todo-list sortable" data-category="{{ $category->id }}">
-                            @foreach($links as $link)
-                                <li data-item="{{ $link->id }}">
+                            @foreach($media as $item)
+                                <li data-item="{{ $item->id }}">
                                     <span class="handle">
                                         <i class="fa fa-ellipsis-v"></i>
                                         <i class="fa fa-ellipsis-v"></i>
                                     </span>
-                                    <span class="text"><a href="{{ $link->link }}">{{ $link->name }}</a></span>
+                                    <span class="text">{{ $item->title }}</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -83,7 +86,7 @@
             </div>
             <div>
                 <div class="pull-right">
-                    <a role="button" class="btn btn-warning" href="{{ adminUrl('link-categories') }}">{{ trans('form.action_cancel') }}</a>
+                    <a role="button" class="btn btn-warning" href="{{ adminUrl('media-categories') }}">{{ trans('form.action_cancel') }}</a>
                 </div>
             </div>
         </div>
