@@ -46,7 +46,7 @@
                         self.removeClass('theme-widget-empty');
                     }
                     var api = new KatnissApi();
-                    api.post('widgets/update-order', {
+                    api.put('widgets/sort', {
                         placeholder: self.attr('data-placeholder'),
                         widget_ids: items
                     });
