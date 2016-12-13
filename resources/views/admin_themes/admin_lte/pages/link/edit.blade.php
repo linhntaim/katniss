@@ -72,7 +72,15 @@
                             </a>)
                         @endif
                     </label>
-                    <input class="form-control image-from-documents" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
