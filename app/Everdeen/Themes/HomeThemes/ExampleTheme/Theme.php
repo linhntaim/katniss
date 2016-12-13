@@ -9,19 +9,55 @@
 namespace Katniss\Everdeen\Themes\HomeThemes\ExampleTheme;
 
 
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\CssQueue;
+use Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Controllers\ThemeAdminController;
 use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
 use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
+use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 
 class Theme extends HomeTheme
 {
     const NAME = 'example';
-    const DISPLAY_NAME = 'Example';
+    const DISPLAY_NAME = 'Example Theme';
     const VIEW = 'example';
 
     public function __construct()
     {
         parent::__construct();
+    }
+
+    public function mockAdmin()
+    {
+        addFilter('extra_admin_menu', new CallableObject(function (Menu $menu) {
+            if (authUser()->hasRole('admin')) {
+                $menu->add(  // add an example menu item which have sub menu
+                    '#',
+                    trans('example_theme.page_theme_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu(currentFullUrl());
+                $subMenu->add( // add a menu item
+                    addExtraUrl('admin/themes/example/options', adminUrl('extra')),
+                    trans('example_theme.page_options_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $menu->addSubMenu($subMenu);
+            }
+            return $menu;
+        }), 'theme:example:menu');
+        $controllerClass = ThemeAdminController::class;
+        addTrigger('extra_route', new CallableObject(function (Request $request) use ($controllerClass) {
+            $controller = new $controllerClass;
+            switch (strtolower($request->method())) {
+                case 'get':
+                    return $controller->options($request);
+                case 'put':
+                    return $controller->updateOptions($request);
+            }
+            return '';
+        }), 'admin/themes/example/options');
     }
 
     public function register($is_auth = false)
@@ -33,6 +69,9 @@ class Theme extends HomeTheme
     {
         view()->composer(
             $this->masterPath('index'), Composers\MainMenuComposer::class
+        );
+        view()->composer(
+            $this->pagePath('template_contact'), Composers\ContactTemplateComposer::class
         );
     }
 

@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers;
 
+use Illuminate\Support\HtmlString;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Controllers\MapMarkerAdminController;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
@@ -45,23 +46,6 @@ class Extension extends BaseExtension
             return $menu;
         }), 'ext:google_maps_markers:menu');
 
-//        addTrigger('extra_route', new CallableObject(function (Request $request) {
-//            $controllerClass = PollWebApiController::class;
-//            $controller = new $controllerClass;
-//            if (strtolower($request->method()) == 'put') {
-//                return $controller->update($request, $request->input('id'));
-//            }
-//            return '';
-//        }), 'web-api/polls/id');
         addExtraRouteResourceTriggers('admin/google-maps-markers', MapMarkerAdminController::class);
-//        addTrigger('extra_route', new CallableObject(function (Request $request) {
-//            $controllerClass = PollAdminController::class;
-//            $controller = new $controllerClass;
-//            if (strtolower($request->method()) == 'get') {
-//                return $controller->sort($request, $request->input('id'));
-//            }
-//            return '';
-//        }), 'admin/polls/id/sort');
-//        addExtraRouteResourceTriggers('admin/poll-choices', ChoiceAdminController::class);
     }
 }

@@ -21,6 +21,10 @@ abstract class HomeTheme extends Theme
         parent::__construct(Theme::TYPE_HOME);
     }
 
+    public function mockAdmin()
+    {
+    }
+
     public function plugin($name, $render)
     {
         return $this->viewPath . 'plugins.' . $name . '.' . $render;
