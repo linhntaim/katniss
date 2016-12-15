@@ -46,7 +46,7 @@ class ArticleSeeder extends Seeder
             $trans->title = ucfirst($generator->words(10, true));
             $trans->slug = str_slug($trans->title);
             $trans->description = $generator->sentence(10);
-            $trans->content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
+            $trans->content = $trans->raw_content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>');
             $trans->save();

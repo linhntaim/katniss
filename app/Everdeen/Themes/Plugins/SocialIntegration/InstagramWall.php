@@ -32,7 +32,7 @@ class InstagramWall extends DefaultWidget
         $this->numOfColumns = defPr($this->getProperty('num_of_columns'), 3);
         $this->numOfItems = defPr($this->getProperty('num_of_items'), 12);
 
-        $this->shared = Extension::getSharedData(SocialIntegrationExtension::EXTENSION_NAME);
+        $this->shared = Extension::getSharedData(SocialIntegrationExtension::NAME);
     }
 
     public function register()
@@ -40,6 +40,47 @@ class InstagramWall extends DefaultWidget
         enqueueThemeHeader(
             '<style>.widget-instagram-wall ul.media-list li.media-item{width: calc(100%/' . $this->numOfColumns . ')}</style>',
             'instagram_wall_style'
+        );
+        enqueueThemeFooter(
+            '<script>
+    $(function() {
+        $(\'.widget-instagram-wall .next\').on(\'click\', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var $container = $this.closest(\'.widget-instagram-wall\').find(\'.media-list\');
+            var api = new KatnissApi(true);
+            var params = {
+                id: $this.attr(\'data-widget-id\'),
+                max_id: $this.attr(\'data-max-id\')
+            };
+            params[KATNISS_EXTRA_ROUTE_PARAM] = \'web-api/instagram-wall-widget/id\';
+            
+            $this.addClass(\'hide\');
+            $this.prev().removeClass(\'hide\');
+            api.get(\'extra\', params, function(isFailed, data, messages) {
+                $this.prev().addClass(\'hide\');
+                if(!isFailed) {
+                    if(data.instagram_media.length > 0) {
+                        var media;
+                        for(var index in data.instagram_media) {
+                            media = data.instagram_media[index];
+                            $container.append(\'<li id="instagram-\' + media.id + \'" class="media-item">\' + 
+                                \'<a target="_blank" href="\' + media.link + \'" title="\' + media.caption.text + \'">\' +
+                                \'<img src="\' + media.images.low_resolution.url + \'" alt="\' + media.caption.text + \'">\' +
+                                \'</a></li>\');
+                        }
+                        $this.attr(\'data-max-id\', media.id);
+                    }
+                    
+                    if(data.loading == true) {
+                        $this.removeClass(\'hide\');
+                    }
+                }
+            });
+        }).trigger(\'click\');
+    });
+</script>',
+            'instagram_wall_script'
         );
     }
 
@@ -54,19 +95,34 @@ class InstagramWall extends DefaultWidget
 
     public function viewHomeParams()
     {
-        // instagram client
-        $client = new Client($this->shared->instagramClientId, $this->shared->instagramClientSecret);
-        $client->setAccessToken(new AccessToken(['access_token' => $this->shared->instagramAccessToken]));
-        $instagramUser = $client->users()->find($this->username);
-        $instagramMedia = [];
-        if (!empty($instagramUser)) {
-            $instagramUser = $instagramUser->get();
-            $instagramMedia = $client->users()->getMedia($instagramUser['id'], $this->numOfItems)->get();
+        return array_merge(parent::viewHomeParams(), $this->getInstagramData());
+    }
+
+    public function getInstagramData($maxId = null)
+    {
+        $instagramUser = null;
+        $instagramMedia = collect([]);
+        $loading = true;
+
+        if (!empty($this->username)) {
+            $client = new Client($this->shared->instagramClientId, $this->shared->instagramClientSecret);
+            $client->setAccessToken(new AccessToken(['access_token' => $this->shared->instagramAccessToken]));
+            $instagramUser = $client->users()->find($this->username);
+            if (!empty($instagramUser)) {
+                $instagramUser = $instagramUser->get();
+                $instagramMedia = $client->users()->getMedia($instagramUser['id'], $this->numOfItems + 1, null, $maxId)->get();
+                $loading = $instagramMedia->count() > $this->numOfItems;
+                if ($loading) {
+                    $instagramMedia->pop();
+                }
+            }
         }
-        return array_merge(parent::viewHomeParams(), [
+
+        return [
+            'loading' => $loading,
             'instagram_media' => $instagramMedia,
             'instagram_user' => $instagramUser,
-        ]);
+        ];
     }
 
     public function render()

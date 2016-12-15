@@ -2,6 +2,7 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Closure;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
@@ -19,6 +20,11 @@ class WidgetController extends AdminController
 
         $this->viewPath = 'widget';
         $this->widgetRepository = new ThemeWidgetRepository();
+
+        $this->middleware(function ($request, Closure $next) {
+            WidgetsFacade::init();
+            return $next($request);
+        });
     }
 
     public function index(Request $request)

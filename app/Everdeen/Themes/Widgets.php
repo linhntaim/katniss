@@ -8,13 +8,14 @@
 
 namespace Katniss\Everdeen\Themes;
 
+use Illuminate\Support\HtmlString;
 use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
 class Widgets
 {
-    private $widgets;
+    private $themeWidgets;
     private $defines;
 
     public function __construct()
@@ -25,24 +26,24 @@ class Widgets
     {
         $this->defines = array_merge(_kWidgets(), HomeThemeFacade::widgets());
         $widgetRepository = new ThemeWidgetRepository();
-        $this->widgets = $widgetRepository->getActive(array_keys($this->defines));
+        $this->themeWidgets = $widgetRepository->getActive(array_keys($this->defines));
     }
 
     public function display($placeholder, $before = '', $after = '', $default = '')
     {
-        $widgets = $this->widgets->where('placeholder', $placeholder)->sortBy('order');
-        $count_widgets = $widgets->count();
-        $output = $count_widgets > 0 ? $before : $default;
-        foreach ($widgets as $widget) {
-            $output .= $widget->render();
+        $themeWidgets = $this->themeWidgets->where('placeholder', $placeholder)->sortBy('order');
+        $countThemeWidgets = $themeWidgets->count();
+        $output = $countThemeWidgets > 0 ? $before : $default;
+        foreach ($themeWidgets as $themeWidget) {
+            $output .= $themeWidget->render();
         }
-        return $count_widgets > 0 ? $output . $after : $output;
+        return new HtmlString($countThemeWidgets > 0 ? $output . $after : $output);
     }
 
     public function register()
     {
-        foreach ($this->widgets as $widget) {
-            $widget->register();
+        foreach ($this->themeWidgets as $themeWidget) {
+            $themeWidget->register();
         }
     }
 

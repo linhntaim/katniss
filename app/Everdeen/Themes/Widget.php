@@ -16,29 +16,6 @@ use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Widget extends Plugin
 {
-    public static function doRender(ThemeWidget $themeWidget)
-    {
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (!empty($widgetClass) && class_exists($widgetClass)) {
-            $params = empty($themeWidget) ? [] : $themeWidget->params;
-            $widget = new $widgetClass($params);
-            $widget->setThemeWidget($themeWidget);
-            return $widget->render();
-        }
-        return '';
-    }
-
-    public static function doRegister(ThemeWidget $themeWidget)
-    {
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (!empty($widgetClass) && class_exists($widgetClass)) {
-            $params = empty($themeWidget) ? [] : $themeWidget->params;
-            $widget = new $widgetClass($params);
-            $widget->setThemeWidget($themeWidget);
-            $widget->register();
-        }
-    }
-
     /**
      * @var ThemeWidget
      */
@@ -46,13 +23,13 @@ abstract class Widget extends Plugin
 
     public function __construct(array $data = [])
     {
-        parent::__construct();
+        debug('widget constructor');
 
         if ($this::EDITABLE) {
             $this->fromDataConstruct($data);
         }
 
-        $this->__init();
+        parent::__construct();
     }
 
     public function setId($id)
@@ -103,6 +80,7 @@ abstract class Widget extends Plugin
     public function viewHomeParams()
     {
         return [
+            'widget_id' => $this->getId(),
             'html_id' => $this->getHtmlId(),
         ];
     }

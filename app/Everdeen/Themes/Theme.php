@@ -362,7 +362,6 @@ abstract class Theme
 
     protected function registerWidgets($is_auth = false)
     {
-        WidgetsFacade::init();
     }
 
     protected function registerComposers($is_auth = false)

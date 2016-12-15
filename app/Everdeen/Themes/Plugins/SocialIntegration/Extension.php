@@ -8,6 +8,8 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\SocialIntegration;
 
+use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Controllers\InstagramWallWidgetWebApiController;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Utils\InstagramHelper;
@@ -147,7 +149,7 @@ class Extension extends BaseExtension
         $this->instagramClientSecret = defPr($this->getProperty('instagram_client_secret'), config('services.instagram.client_secret'));
         $this->instagramAccessToken = defPr($this->getProperty('instagram_access_token'), '');
 
-        if ($this->instagramEnable) {
+        if ($this->instagramEnable && !empty($this->instagramAccessToken)) {
             _kWidgets([InstagramWall::NAME => InstagramWall::class]);
         }
 
@@ -330,6 +332,17 @@ class Extension extends BaseExtension
 
             return '';
         }), 'ext:social_integration:render_sharing_buttons');
+
+        if ($this->instagramEnable && !empty($this->instagramAccessToken)) {
+            addTrigger('extra_route', new CallableObject(function (Request $request) {
+                $controllerClass = InstagramWallWidgetWebApiController::class;
+                $controller = new $controllerClass;
+                if (strtolower($request->method()) == 'get') {
+                    return $controller->show($request, $request->input('id'));
+                }
+                return '';
+            }), 'web-api/instagram-wall-widget/id');
+        }
     }
 
     public function fields()

@@ -69,13 +69,11 @@ abstract class Extension extends Plugin
 
     public function __construct()
     {
-        parent::__construct();
-
         if ($this::EDITABLE) {
             $this->fromDataConstruct((array)AppOptionHelper::get($this->getOptionName(), []));
         }
 
-        $this->__init();
+        parent::__construct();
     }
 
     public function getOptionName()

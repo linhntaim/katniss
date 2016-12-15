@@ -21,10 +21,10 @@ class Post extends Model
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
-    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content'];
+    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content', 'raw_content'];
 
     protected $translationForeignKey = 'post_id';
-    public $translatedAttributes = ['title', 'slug', 'description', 'content'];
+    public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
 
     public function author()
     {

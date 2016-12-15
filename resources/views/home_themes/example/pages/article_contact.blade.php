@@ -10,7 +10,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('articles', null, null, trans('label.no_widget')) !!}
+                    {{ placeholder('articles', null, null, trans('label.no_widget')) }}
                 </div>
                 <div class="col-sm-9 text-left">
                     <div id="article-{{ $article->id }}">
@@ -26,7 +26,7 @@
                                 <img class="img-responsive" alt="{{ $article->title }}" src="{{ $article->featured_image }}">
                             </div>
                         @endif
-                        <article>{!! $article->content !!}</article>
+                        <article>{!! contentFilter('post_content', $article->content) !!}</article>
                     </div>
                 </div>
             </div>

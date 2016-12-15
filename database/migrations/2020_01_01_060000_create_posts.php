@@ -37,6 +37,7 @@ class CreatePosts extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->longText('content');
+            $table->longText('raw_content');
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 

@@ -137,7 +137,7 @@
                             $title = $trans ? $trans->title : '';
                             $slug = $trans ? $trans->slug : '';
                             $description = $trans ? $trans->description : '';
-                            $content = $trans ? $trans->content : '';
+                            $content = $trans ? $trans->raw_content : '';
                             ?>
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">

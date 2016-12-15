@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('articles', null, null, trans('label.no_widget')) !!}
+                    {{ placeholder('articles', null, null, trans('label.no_widget')) }}
                 </div>
                 <div class="col-sm-9 text-left">
                     @if($articles->count() > 0)

@@ -101,9 +101,7 @@ abstract class HomeTheme extends Theme
 
     protected function registerWidgets($is_auth = false)
     {
-        parent::registerWidgets();
-
-        // Home theme need to register widgets for rendering
+        WidgetsFacade::init();
         WidgetsFacade::register();
     }
 

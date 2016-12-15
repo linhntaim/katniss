@@ -34,6 +34,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
         Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::class,
         Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\Galleries\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Widget::class,
     ],
     'extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,

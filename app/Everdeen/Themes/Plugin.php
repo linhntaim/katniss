@@ -37,6 +37,7 @@ abstract class Plugin
 
     public function __construct()
     {
+        $this->__init();
     }
 
     public function getName()

@@ -33,7 +33,6 @@ class InstagramController extends WebApiController
             }
         }
 
-//        Theme::byRequest(); // register theme
         $shared = Extension::getSharedData(SocialIntegrationExtension::NAME);
 
         $client = new \GuzzleHttp\Client();
@@ -64,5 +63,9 @@ class InstagramController extends WebApiController
     {
         $this->setCallbackRedirectUrl($request, $request->input('rdr'));
         return redirect(InstagramHelper::getAuthorizeUrl($request->input('client_id')));
+    }
+
+    public function getMedia(Request $request) {
+
     }
 }
