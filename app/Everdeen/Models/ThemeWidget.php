@@ -113,10 +113,8 @@ class ThemeWidget extends Model
     public function checkWidget()
     {
         if (empty($this->widget)) {
-            $widgetClass = WidgetsFacade::widgetClass($this->name);
-            if (empty($widgetClass) || !class_exists($widgetClass)) return false;
-
-            $this->widget = new $widgetClass($this->params);
+            $this->widget = WidgetsFacade::resolveClass($this->name, $this->params);
+            if (is_null($this->widget)) return false;
             $this->widget->setThemeWidget($this);
         }
 

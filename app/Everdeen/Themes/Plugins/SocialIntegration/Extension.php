@@ -14,7 +14,6 @@ use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Utils\InstagramHelper;
 
-
 class Extension extends BaseExtension
 {
     const NAME = 'social_integration';
@@ -150,7 +149,7 @@ class Extension extends BaseExtension
         $this->instagramAccessToken = defPr($this->getProperty('instagram_access_token'), '');
 
         if ($this->instagramEnable && !empty($this->instagramAccessToken)) {
-            _kWidgets([InstagramWall::NAME => InstagramWall::class]);
+            _kWidgets([InstagramWallWidget::NAME => InstagramWallWidget::class]);
         }
 
         $this->makeSharedData([

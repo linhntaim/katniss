@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 
+use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Plugin
@@ -16,7 +17,7 @@ abstract class Plugin
     const NAME = '';
     const DISPLAY_NAME = '';
     const DESCRIPTION = '';
-    const THEME_NAME = '';
+    const THEME_ONLY = false;
     const EDITABLE = true;
     const TRANSLATABLE = false;
 
@@ -57,7 +58,7 @@ abstract class Plugin
 
     public function getTheme()
     {
-        return $this::THEME_NAME;
+        return $this::THEME_ONLY;
     }
 
     public function isTranslatable()
@@ -190,7 +191,19 @@ abstract class Plugin
         return [];
     }
 
-    public abstract function viewAdmin();
+    public function view($name)
+    {
+        return !$this::THEME_ONLY ?
+            HomeThemeFacade::commonPluginPath($this::NAME, $name)
+            : HomeThemeFacade::pluginPath($this::NAME, $name);
+    }
+
+    public function viewAdmin()
+    {
+        if (!$this::EDITABLE) abort(404);
+
+        return $this->view('admin');
+    }
 
     public function viewAdminParams()
     {

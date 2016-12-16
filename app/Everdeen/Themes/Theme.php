@@ -96,6 +96,11 @@ abstract class Theme
         $this->extCssQueue = new CssQueue();
     }
 
+    public function getName()
+    {
+        return $this::NAME;
+    }
+
     protected function masterPath($name)
     {
         return $this->viewPath . 'master.' . $name;
@@ -121,39 +126,49 @@ abstract class Theme
         return $this->errorPath($name);
     }
 
-    public function asset($file_path = '')
+    public function pluginPath($pluginName, $viewName)
     {
-        return asset($this->assetPath . $file_path);
+        return $this->viewPath . $this->commonPluginPath($pluginName, $viewName);
     }
 
-    public function imageAsset($file_path)
+    public function commonPluginPath($pluginName, $viewName)
     {
-        return $this->asset('img/' . $file_path);
+        return 'plugins.' . $pluginName . '.' . $viewName;
     }
 
-    public function cssAsset($file_path)
+    public function asset($filePath = '')
     {
-        return $this->asset('css/' . $file_path);
+        return asset($this->assetPath . $filePath);
     }
 
-    public function jsAsset($file_path)
+    public function imageAsset($filePath)
     {
-        return $this->asset('js/' . $file_path);
+        return $this->asset('img/' . $filePath);
     }
 
-    public function pluginAsset($file_path)
+    public function cssAsset($filePath)
     {
-        return $this->asset('plugins/' . $file_path);
+        return $this->asset('css/' . $filePath);
     }
 
-    public function libAsset($file_path = '')
+    public function jsAsset($filePath)
     {
-        return self::libraryAsset($file_path);
+        return $this->asset('js/' . $filePath);
     }
 
-    static function libraryAsset($file_path = '')
+    public function pluginAsset($filePath)
     {
-        return asset('assets/libraries/' . $file_path);
+        return $this->asset('plugins/' . $filePath);
+    }
+
+    public function libAsset($filePath = '')
+    {
+        return self::libraryAsset($filePath);
+    }
+
+    static function libraryAsset($filePath = '')
+    {
+        return asset('assets/libraries/' . $filePath);
     }
 
     /**
@@ -339,48 +354,48 @@ abstract class Theme
             PHP_EOL . '<!-- End extended scripts -->');
     }
 
-    public function register($is_auth = false)
+    public function register($isAuth = false)
     {
         // priority of registering: extension > widget > others
-        $this->registerExtensions($is_auth);
-        $this->registerWidgets($is_auth);
+        $this->registerExtensions($isAuth);
+        $this->registerWidgets($isAuth);
 
         enqueueThemeHeader(Html5::metaName('generator', $this->generator), 'framework_version');
 
-        $this->registerComposers($is_auth);
-        $this->registerLibStyles($is_auth);
-        $this->registerExtStyles($is_auth);
-        $this->registerLibScripts($is_auth);
-        $this->registerExtScripts($is_auth);
+        $this->registerComposers($isAuth);
+        $this->registerLibStyles($isAuth);
+        $this->registerExtStyles($isAuth);
+        $this->registerLibScripts($isAuth);
+        $this->registerExtScripts($isAuth);
     }
 
-    protected function registerExtensions($is_auth = false)
+    protected function registerExtensions($isAuth = false)
     {
         ExtensionsFacade::init();
         ExtensionsFacade::register();
     }
 
-    protected function registerWidgets($is_auth = false)
+    protected function registerWidgets($isAuth = false)
     {
     }
 
-    protected function registerComposers($is_auth = false)
+    protected function registerComposers($isAuth = false)
     {
     }
 
-    protected function registerLibStyles($is_auth = false)
+    protected function registerLibStyles($isAuth = false)
     {
     }
 
-    protected function registerExtStyles($is_auth = false)
+    protected function registerExtStyles($isAuth = false)
     {
     }
 
-    protected function registerLibScripts($is_auth = false)
+    protected function registerLibScripts($isAuth = false)
     {
     }
 
-    protected function registerExtScripts($is_auth = false)
+    protected function registerExtScripts($isAuth = false)
     {
         $userApp = app('user_app');
         $this->extJsQueue->add('global_vars', [

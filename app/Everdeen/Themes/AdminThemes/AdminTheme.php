@@ -24,11 +24,11 @@ abstract class AdminTheme extends Theme
         return [];
     }
 
-    public function register($is_auth = false)
+    public function register($isAuth = false)
     {
         HomeThemeFacade::mockAdmin(); // make home themes can extend admin functionality
 
-        parent::register($is_auth);
+        parent::register($isAuth);
     }
 
     protected function registerExtScripts($is_auth = false)

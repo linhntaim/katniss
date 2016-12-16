@@ -60,9 +60,9 @@ class Theme extends HomeTheme
         }), 'admin/themes/example/options');
     }
 
-    public function register($is_auth = false)
+    public function register($isAuth = false)
     {
-        parent::register($is_auth);
+        parent::register($isAuth);
     }
 
     protected function registerComposers($is_auth = false)

@@ -13,10 +13,10 @@ use Katniss\Everdeen\Models\Media;
 use Katniss\Everdeen\Repositories\MediaCategoryRepository;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
-class Widget extends DefaultWidget
+class GalleryWidget extends DefaultWidget
 {
-    const NAME = 'galleries';
-    const DISPLAY_NAME = 'Galleries';
+    const NAME = 'galleries.widget';
+    const DISPLAY_NAME = 'Gallery';
 
     protected $categoryId = '';
 

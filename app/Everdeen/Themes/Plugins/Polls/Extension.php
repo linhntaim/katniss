@@ -32,23 +32,30 @@ class Extension extends BaseExtension
     {
         parent::__init();
 
-        _kWidgets([Widget::NAME => Widget::class]);
+        _kWidgets([PollWidget::NAME => PollWidget::class]);
     }
 
     public function register()
     {
         addFilter('extra_admin_menu', new CallableObject(function (Menu $menu) {
             if (authUser()->hasRole('admin')) {
-                $menu->add( // add a menu item
+                $menu->add(  // add an example menu item which have sub menu
+                    '#',
+                    trans('polls.page_polls_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu(currentFullUrl());
+                $subMenu->add( // add a menu item
                     addExtraUrl('admin/polls', adminUrl('extra')),
                     trans('polls.page_polls_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
-                $menu->add( // add a menu item
+                $subMenu->add( // add a menu item
                     addExtraUrl('admin/poll-choices', adminUrl('extra')),
                     trans('polls.page_poll_choices_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
+                $menu->addSubMenu($subMenu);
             }
             return $menu;
         }), 'ext:polls:menu');

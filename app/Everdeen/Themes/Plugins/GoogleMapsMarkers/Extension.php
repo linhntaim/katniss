@@ -30,7 +30,7 @@ class Extension extends BaseExtension
     {
         parent::__init();
 
-        _kWidgets([Widget::NAME => Widget::class]);
+        _kWidgets([MapMarkerWidget::NAME => MapMarkerWidget::class]);
     }
 
     public function register()

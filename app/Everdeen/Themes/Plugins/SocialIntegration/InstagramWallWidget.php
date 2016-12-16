@@ -13,9 +13,9 @@ use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegra
 use Larabros\Elogram\Client;
 use League\OAuth2\Client\Token\AccessToken;
 
-class InstagramWall extends DefaultWidget
+class InstagramWallWidget extends DefaultWidget
 {
-    const NAME = 'instagram_wall';
+    const NAME = 'social_integration.instagram_wall_widget';
     const DISPLAY_NAME = 'Instagram Wall';
 
     protected $username;

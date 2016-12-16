@@ -13,20 +13,26 @@ use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
-class Widgets
+class Widgets extends Plugins
 {
-    private $themeWidgets;
-    private $defines;
+    protected $themeWidgets;
 
     public function __construct()
     {
+        parent::__construct(array_merge(_kWidgets(), HomeThemeFacade::widgets()));
     }
 
     public function init()
     {
-        $this->defines = array_merge(_kWidgets(), HomeThemeFacade::widgets());
         $widgetRepository = new ThemeWidgetRepository();
         $this->themeWidgets = $widgetRepository->getActive(array_keys($this->defines));
+    }
+
+    public function register()
+    {
+        foreach ($this->themeWidgets as $themeWidget) {
+            $themeWidget->register();
+        }
     }
 
     public function display($placeholder, $before = '', $after = '', $default = '')
@@ -38,22 +44,5 @@ class Widgets
             $output .= $themeWidget->render();
         }
         return new HtmlString($countThemeWidgets > 0 ? $output . $after : $output);
-    }
-
-    public function register()
-    {
-        foreach ($this->themeWidgets as $themeWidget) {
-            $themeWidget->register();
-        }
-    }
-
-    public function all()
-    {
-        return $this->defines;
-    }
-
-    public function widgetClass($name)
-    {
-        return empty($this->defines[$name]) ? null : $this->defines[$name];
     }
 }

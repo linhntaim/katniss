@@ -81,13 +81,6 @@ abstract class Extension extends Plugin
         return 'extension_' . $this::NAME;
     }
 
-    public function viewAdmin()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::NAME) : HomeThemeFacade::adminExtension($this::NAME);
-    }
-
     public function save(array $data = [], array $localizedData = [])
     {
         if (!$this::EDITABLE) abort(404);

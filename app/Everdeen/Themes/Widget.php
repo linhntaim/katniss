@@ -56,14 +56,6 @@ abstract class Widget extends Plugin
         $this->themeWidget = $themeWidget;
     }
 
-    public function viewAdmin()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return empty($this::THEME_NAME) ?
-            HomeThemeFacade::commonAdminWidget($this::NAME) : HomeThemeFacade::adminWidget($this::NAME);
-    }
-
     public function viewAdminParams()
     {
         return array_merge(parent::viewAdminParams(), [
@@ -73,8 +65,7 @@ abstract class Widget extends Plugin
 
     public function viewHome()
     {
-        return empty($this::THEME_NAME) ?
-            HomeThemeFacade::commonWidget($this::NAME) : HomeThemeFacade::widget($this::NAME);
+        return $this->view('render');
     }
 
     public function viewHomeParams()
@@ -114,7 +105,7 @@ abstract class Widget extends Plugin
         try {
             $this->themeWidget = $widgetRepository->create(
                 $this::NAME,
-                $this::THEME_NAME,
+                $this::THEME_ONLY ? HomeThemeFacade::getName() : '',
                 $placeholder,
                 $this->toDataConstructAsJson($data, $localizedData)
             );

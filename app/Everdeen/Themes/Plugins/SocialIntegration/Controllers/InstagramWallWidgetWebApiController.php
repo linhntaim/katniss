@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Themes\Plugins\SocialIntegration\Controllers;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\Plugins\SocialIntegration\InstagramWall;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\InstagramWallWidget;
 
 class InstagramWallWidgetWebApiController extends WebApiController
 {
@@ -19,7 +19,7 @@ class InstagramWallWidgetWebApiController extends WebApiController
     {
         $widgetRepository = new ThemeWidgetRepository($id);
         $themeWidget = $widgetRepository->model();
-        if ($themeWidget->name != InstagramWall::NAME || !$themeWidget->checkWidget()) {
+        if ($themeWidget->name != InstagramWallWidget::NAME || !$themeWidget->checkWidget()) {
             abort(404);
         }
 

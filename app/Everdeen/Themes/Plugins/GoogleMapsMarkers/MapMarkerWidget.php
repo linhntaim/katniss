@@ -11,10 +11,10 @@ namespace Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 use Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Repositories\MapMarkerRepository;
 
-class Widget extends DefaultWidget
+class MapMarkerWidget extends DefaultWidget
 {
-    const NAME = 'google_maps_markers_widget';
-    const DISPLAY_NAME = 'Google Maps Markers';
+    const NAME = 'google_maps_markers.widget';
+    const DISPLAY_NAME = 'Google Maps Marker';
 
     protected $mapMarkerId = '';
 

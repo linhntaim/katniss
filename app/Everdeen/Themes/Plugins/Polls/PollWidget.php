@@ -11,10 +11,10 @@ namespace Katniss\Everdeen\Themes\Plugins\Polls;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 use Katniss\Everdeen\Themes\Plugins\Polls\Repositories\PollRepository;
 
-class Widget extends DefaultWidget
+class PollWidget extends DefaultWidget
 {
-    const NAME = 'polls_widget';
-    const DISPLAY_NAME = 'Polls';
+    const NAME = 'polls.widget';
+    const DISPLAY_NAME = 'Poll';
 
     protected $pollId = '';
 

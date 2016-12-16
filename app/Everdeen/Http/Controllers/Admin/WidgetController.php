@@ -80,12 +80,10 @@ class WidgetController extends AdminController
             return $redirect->withInput()->withErrors($validator);
         }
 
-        $widget = $request->input('widget');
-        $widgetClass = WidgetsFacade::widgetClass($widget);
-        if (empty($widgetClass) || !class_exists($widgetClass)) {
+        $widget = WidgetsFacade::resolveClass($request->input('widget'));
+        if (is_null($widget)) {
             abort(404);
         }
-        $widget = new $widgetClass();
         $widget->create($request->input('placeholder'));
 
         return $redirect;
@@ -112,17 +110,10 @@ class WidgetController extends AdminController
     public function edit(Request $request, $id)
     {
         $themeWidget = $this->widgetRepository->model($id);
-
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (empty($widgetClass) || !class_exists($widgetClass)) {
+        if (!$themeWidget->checkWidget()) {
             abort(404);
         }
-        $params = empty($themeWidget) ? [] : $themeWidget->params;
-        $widget = new $widgetClass($params);
-        if (!$widget->isEditable()) {
-            abort(404);
-        }
-        $widget->setThemeWidget($themeWidget);
+        $widget = $themeWidget->widget();
 
         $this->_title([trans('pages.admin_widgets_title'), $widget->getDisplayName(), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_widgets_desc'));
@@ -144,17 +135,10 @@ class WidgetController extends AdminController
         }
 
         $themeWidget = $this->widgetRepository->model($id);
-
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (empty($widgetClass) || !class_exists($widgetClass)) {
+        if (!$themeWidget->checkWidget()) {
             abort(404);
         }
-        $params = empty($themeWidget) ? [] : $themeWidget->params;
-        $widget = new $widgetClass($params);
-        if (!$widget->isEditable()) {
-            abort(404);
-        }
-        $widget->setThemeWidget($themeWidget);
+        $widget = $themeWidget->widget();
 
         $redirect = redirect(adminUrl('widgets/{id}/edit', ['id' => $themeWidget->id]));
 

@@ -10,9 +10,9 @@ namespace Katniss\Everdeen\Themes\Plugins\ContactForm;
 
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
-class Widget extends DefaultWidget
+class ContactFormWidget extends DefaultWidget
 {
-    const NAME = 'contact_form_widget';
+    const NAME = 'contact_form.widget';
     const DISPLAY_NAME = 'Contact Form';
 
     public function render()

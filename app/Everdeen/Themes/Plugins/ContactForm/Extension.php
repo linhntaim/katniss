@@ -32,7 +32,7 @@ class Extension extends BaseExtension
     {
         parent::__init();
 
-        _kWidgets([Widget::NAME => Widget::class]);
+        _kWidgets([ContactFormWidget::NAME => ContactFormWidget::class]);
     }
 
     public function register()

@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\Admin\AdminController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\PluginControllerTrait;
+use Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension;
 use Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Models\MapMarker;
 use Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Repositories\MapMarkerRepository;
 
 class MapMarkerAdminController extends AdminController
 {
+    use PluginControllerTrait;
+
     protected $mapMarkerRepository;
 
     public function __construct()
@@ -31,7 +35,7 @@ class MapMarkerAdminController extends AdminController
         $mapMarkers = $this->mapMarkerRepository->getPaged();
 
         return $request->theme()->resolveExtraView(
-            'plugins.google_maps_markers.admin.index',
+            $this->_extra('index', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc'),
             [
@@ -45,7 +49,7 @@ class MapMarkerAdminController extends AdminController
     public function create(Request $request)
     {
         return $request->theme()->resolveExtraView(
-            'plugins.google_maps_markers.admin.create',
+            $this->_extra('create', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc')
         );
@@ -99,7 +103,7 @@ class MapMarkerAdminController extends AdminController
         $this->_description(trans('pages.admin_links_desc'));
 
         return $request->theme()->resolveExtraView(
-            'plugins.google_maps_markers.admin.edit',
+            $this->_extra('edit', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc'),
             [

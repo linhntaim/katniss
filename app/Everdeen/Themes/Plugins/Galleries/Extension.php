@@ -32,7 +32,7 @@ class Extension extends BaseExtension
     {
         parent::__init();
 
-        _kWidgets([Widget::NAME => Widget::class]);
+        _kWidgets([GalleryWidget::NAME => GalleryWidget::class]);
     }
 
     public function register()
