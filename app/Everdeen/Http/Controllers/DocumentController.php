@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Http\Controllers;
 use Barryvdh\Elfinder\Connector;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Vendors\Studio42\ElFinder\Php\ElFinder;
 
 class DocumentController extends ViewController
 {
@@ -80,7 +81,7 @@ class DocumentController extends ViewController
 
     public function getConnector(Request $request)
     {
-        $own_directory = $request->authUser->ownDirectory;
+        $ownDirectory = $request->authUser->ownDirectory;
         $uploadAllow = [
             'image/jpeg',
             'image/png',
@@ -139,13 +140,13 @@ class DocumentController extends ViewController
         if (!empty($onlyMimes)) {
             $uploadAllow = $onlyMimes;
         }
-        $connector = new Connector(new \elFinder([
+        $connector = new Connector(new ElFinder([
             'roots' => [
                 [
                     'driver' => 'LocalFileSystem',
-                    'path' => userPublicPath($own_directory),
+                    'path' => userPublicPath($ownDirectory),
                     'alias' => 'Online drive: \Home',
-                    'URL' => asset('files/' . $own_directory . '/'),
+                    'URL' => asset('files/' . $ownDirectory . '/'),
                     'accessControl' => config('elfinder.access'),
                     'dateFormat' => DateTimeHelper::shortDateFormat(),
                     'timeFormat' => DateTimeHelper::shortTimeFormat(),
