@@ -6,7 +6,7 @@
  * Time: 23:44
  */
 
-namespace Katniss\Everdeen\Themes;
+namespace Katniss\Everdeen\Themes\Queue;
 
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 

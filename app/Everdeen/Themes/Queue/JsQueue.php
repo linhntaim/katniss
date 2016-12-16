@@ -6,7 +6,7 @@
  * Time: 19:32
  */
 
-namespace Katniss\Everdeen\Themes;
+namespace Katniss\Everdeen\Themes\Queue;
 
 
 use Katniss\Everdeen\Utils\HtmlTag\Html5;

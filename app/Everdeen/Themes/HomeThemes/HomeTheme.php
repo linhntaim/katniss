@@ -8,9 +8,7 @@
 
 namespace Katniss\Everdeen\Themes\HomeThemes;
 
-
-use Katniss\Everdeen\Themes\ExtensionsFacade;
-use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Themes\Theme;
 use Katniss\Everdeen\Themes\WidgetsFacade;
 

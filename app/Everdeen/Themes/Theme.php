@@ -8,12 +8,13 @@
 
 namespace Katniss\Everdeen\Themes;
 
-use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Themes\Queue\CssQueue;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
+use Katniss\Everdeen\Themes\Queue\TextQueue;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Utils\HtmlTag\Html5;
 use Katniss\Everdeen\Utils\SettingsFacade;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 abstract class Theme
 {

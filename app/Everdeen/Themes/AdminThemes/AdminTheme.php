@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Themes\AdminThemes;
 
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
-use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Themes\Theme;
 
 abstract class AdminTheme extends Theme

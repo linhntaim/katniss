@@ -6,7 +6,7 @@
  * Time: 19:31
  */
 
-namespace Katniss\Everdeen\Themes;
+namespace Katniss\Everdeen\Themes\Queue;
 
 
 abstract class AssetQueue

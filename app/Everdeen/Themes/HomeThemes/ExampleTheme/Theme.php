@@ -10,10 +10,10 @@ namespace Katniss\Everdeen\Themes\HomeThemes\ExampleTheme;
 
 
 use Katniss\Everdeen\Http\Request;
-use Katniss\Everdeen\Themes\CssQueue;
 use Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Controllers\ThemeAdminController;
 use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
-use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Themes\Queue\CssQueue;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 
