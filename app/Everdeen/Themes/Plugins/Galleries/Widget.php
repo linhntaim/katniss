@@ -10,7 +10,6 @@ namespace Katniss\Everdeen\Themes\Plugins\Galleries;
 
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Models\Media;
-use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Repositories\MediaCategoryRepository;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
@@ -30,8 +29,6 @@ class Widget extends DefaultWidget
 
     public function register()
     {
-        enqueueThemeHeader('<link rel="stylesheet" href="' . libraryAsset('fancybox/jquery.fancybox.css') . '">', 'galleries_widget_css');
-        enqueueThemeFooter('<script src="' . libraryAsset('fancybox/jquery.fancybox.pack.js') . '"></script>', 'galleries_widget_js');
         enqueueThemeFooter('<script>
     $(function() {
         $(\'#' . $this->getHtmlId() . ' .thumbnail a\').fancybox()

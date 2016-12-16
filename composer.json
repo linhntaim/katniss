@@ -16,7 +16,7 @@
         "zizaco/entrust": "^1.7",
         "mcamara/laravel-localization": "^1.1",
         "larabros/elogram": "^1.2",
-        "milesj/decoda": "6.7.2"
+        "thunderer/shortcode": "^0.6.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
