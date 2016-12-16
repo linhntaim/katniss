@@ -11,7 +11,6 @@ namespace Katniss\Everdeen\Themes\Plugins\Galleries;
 use Katniss\Everdeen\Models\Media;
 use Katniss\Everdeen\Repositories\MediaCategoryRepository;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 use Thunder\Shortcode\ShortcodeFacade;
@@ -37,8 +36,7 @@ class Extension extends BaseExtension
 
     public function register()
     {
-        addFilter('post_content', new CallableObject(function ($content) {
-            $facade = new ShortcodeFacade();
+        addFilter('short_code', new CallableObject(function (ShortcodeFacade $facade) {
             $facade->addHandler('gallery', function (ShortcodeInterface $s) {
                 static $galleryCount = 0;
                 ++$galleryCount;
@@ -48,12 +46,12 @@ class Extension extends BaseExtension
                     $mediaCategoryRepository = new MediaCategoryRepository();
                     $photos = $mediaCategoryRepository->model($id)->orderedMedia->where('type', Media::TYPE_PHOTO);
                 }
-                return view()->make(HomeThemeFacade::commonExtension($this::NAME, 'html'), [
+                return view()->make($this->view('html'), [
                     'photos' => $photos,
                     'gallery_name' => 'post_content_gallery_' . $galleryCount,
                 ])->render();
             });
-            return $facade->process($content);
+            return $facade;
         }), 'ext:galleries');
 
         enqueueThemeHeader('<link rel="stylesheet" href="' . libraryAsset('fancybox/jquery.fancybox.css') . '">', 'galleries_widget_css');

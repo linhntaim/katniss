@@ -10,4 +10,6 @@ return [
     'register_enable' => 'Cho phép người dùng đăng ký',
     'posts' => 'Bài viết',
     'default_article_category' => 'Chuyên mục mặc định cho chuyên đề',
+    'short_code' => 'Short Code',
+    'short_code_enable' => 'Cho phép short code hoạt động',
 ];

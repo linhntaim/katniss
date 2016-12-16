@@ -11,6 +11,8 @@ namespace Katniss\Everdeen\Themes\Plugins\AppSettings;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
+use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
+use Thunder\Shortcode\ShortcodeFacade;
 
 class Extension extends BaseExtension
 {
@@ -29,6 +31,7 @@ class Extension extends BaseExtension
     }
 
     protected $registerEnable;
+    protected $shortCodeEnable;
     protected $defaultArticleCategory;
 
     public function __construct()
@@ -41,16 +44,25 @@ class Extension extends BaseExtension
         parent::__init();
 
         $this->registerEnable = $this->getProperty('register_enable') == 1;
+        $this->shortCodeEnable = $this->getProperty('short_code_enable') == 1;
         $this->defaultArticleCategory = $this->getProperty('default_article_category', '');
 
         $this->makeSharedData([
             'registerEnable',
+            'shortCodeEnable',
             'defaultArticleCategory',
         ]);
     }
 
     public function register()
     {
+        if($this->shortCodeEnable) {
+            addFilter('post_content', new CallableObject(function ($content) {
+                $facade = new ShortcodeFacade();
+                $facade = contentFilter('short_code', $facade);
+                return $facade->process($content);
+            }), 'ext:app_settings');
+        }
     }
 
     public function viewAdminParams()
@@ -59,6 +71,7 @@ class Extension extends BaseExtension
 
         return array_merge(parent::viewAdminParams(), [
             'register_enable' => $this->registerEnable,
+            'short_code_enable' => $this->shortCodeEnable,
             'default_article_category' => $this->defaultArticleCategory,
             'article_categories' => $articleCategoryRepository->getAll(),
         ]);
@@ -68,6 +81,7 @@ class Extension extends BaseExtension
     {
         return array_merge(parent::fields(), [
             'register_enable',
+            'short_code_enable',
             'default_article_category',
         ]);
     }
@@ -76,6 +90,7 @@ class Extension extends BaseExtension
     {
         return array_merge(parent::validationRules(), [
             'register_enable' => 'sometimes|in:1',
+            'short_code_enable' => 'sometimes|in:1',
             'default_article_category' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
         ]);
     }
