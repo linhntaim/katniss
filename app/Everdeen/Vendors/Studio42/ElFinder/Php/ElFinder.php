@@ -11,15 +11,27 @@ namespace Katniss\Everdeen\Vendors\Studio42\ElFinder\Php;
 
 class ElFinder extends \elFinder
 {
+    protected function _rmCheck($path)
+    {
+        $ownDirectory = request()->authUser->ownDirectory;
+        $notDeletes = [
+            concatDirectories(userPublicPath($ownDirectory), 'profile_pictures') => true,
+        ];
+        foreach ($notDeletes as $pathDelete => $loose) {
+            if (!$loose && $pathDelete == $path) {
+                return false;
+            } elseif ($loose && beginsWith($pathDelete, $path)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     protected function rm($args)
     {
         $targets = is_array($args['targets']) ? $args['targets'] : array();
         $result = array('removed' => array());
 
-        $ownDirectory = request()->authUser->ownDirectory;
-        $notDelete = [
-            concatDirectories(userPublicPath($ownDirectory), 'profile_pictures')
-        ];
 
         foreach ($targets as $target) {
             elFinder::extendTimeLimit();
@@ -28,7 +40,7 @@ class ElFinder extends \elFinder
                 $result['warning'] = $this->error(self::ERROR_RM, '#' . $target, self::ERROR_FILE_NOT_FOUND);
                 return $result;
             }
-            if (in_array($volume->getPath($target), $notDelete)) {
+            if (!$this->_rmCheck($volume->getPath($target))) {
                 $result['warning'] = trans('error.elfinder_rm_not_allowed');
                 return $result;
             }
