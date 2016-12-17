@@ -312,7 +312,7 @@ See coding of extensions `Contact Form` or `Polls` for more.
 Parser integrated.
 
 - See vendor [thunder/shortcode](#thunderershortcode).
-- See example coding in `Galleries` extension.
+- See example coding in `Google Maps Marker` & `Galleries` extensions.
 - Must be enabled in `App Settings` extension in order to work, default is disabled.
 
 ### App Options
@@ -400,9 +400,12 @@ Sample Extensions:
     - Allow user to and manage polls and embed polls to website.
 - Google Maps Markers:
     - Enable to manage and embed maps with markers into website.
+    - Support short code: `[map_marker id="{id of a map marker}"]`.
+        - To see example, try to insert it into a post content.
 - Galleries:
     - Enable to embed galleries to websites.
-    - Allow to embed
+    - Support short code: `[gallery id="{id of a media category}"]`.
+        - To see example, try to insert it into a post content.
 
 ##### Widget
 
