@@ -31,7 +31,13 @@ class GalleryWidget extends DefaultWidget
     {
         enqueueThemeFooter('<script>
     $(function() {
-        $(\'#' . $this->getHtmlId() . ' .thumbnail a\').fancybox()
+        $(\'#' . $this->getHtmlId() . ' .thumbnail a\').fancybox({
+            helpers: {
+                overlay: {
+                  locked: false
+                }
+            }
+        });
     });
 </script>', $this->getHtmlId());
     }

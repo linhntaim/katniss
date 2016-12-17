@@ -62,7 +62,13 @@ class Extension extends BaseExtension
         enqueueThemeFooter('<script src="' . libraryAsset('fancybox/jquery.fancybox.pack.js') . '"></script>', 'galleries_widget_js');
         enqueueThemeFooter('<script>
     $(function() {
-        $(\'.embed-galleries .thumbnail a\').fancybox()
+        $(\'.embed-galleries .thumbnail a\').fancybox({
+            helpers: {
+                overlay: {
+                  locked: false
+                }
+            }
+        });
     });
 </script>', 'embed_galleries');
     }
