@@ -43,12 +43,8 @@ class ExtensionController extends AdminController
 
     public function edit(Request $request, $name)
     {
-        $extensionClass = ExtensionsFacade::extensionClass($name);
-        if (empty($extensionClass) || !class_exists($extensionClass) || !isActivatedExtension($name)) {
-            abort(404);
-        }
-        $extension = new $extensionClass();
-        if (!$extension->isEditable()) {
+        $extension = ExtensionsFacade::resolveClass($name);
+        if (is_null($extension) || !$extension->isEditable()) {
             abort(404);
         }
 
@@ -70,12 +66,8 @@ class ExtensionController extends AdminController
             return $this->deactivate($request, $name);
         }
 
-        $extensionClass = ExtensionsFacade::extensionClass($name);
-        if (empty($extensionClass) || !class_exists($extensionClass)) {
-            abort(404);
-        }
-        $extension = new $extensionClass();
-        if (!$extension->isEditable()) {
+        $extension = ExtensionsFacade::resolveClass($name);
+        if (is_null($extension) || !$extension->isEditable()) {
             abort(404);
         }
 

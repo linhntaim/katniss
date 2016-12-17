@@ -40,6 +40,23 @@
 
 <div class="box">
     <div class="box-header with-border">
+        <h3 class="box-title">{{ trans('app_settings.short_code') }}</h3>
+    </div>
+    <div class="box-body">
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputShortCodeEnable">
+                    <input id="inputShortCodeEnable" type="checkbox" name="short_code_enable"
+                           value="1"{{ $short_code_enable ? ' checked' : '' }}>
+                    &nbsp; {{ trans('app_settings.short_code_enable') }}
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <div class="box-header with-border">
         <h3 class="box-title">{{ trans('app_settings.posts') }}</h3>
     </div>
     <div class="box-body">

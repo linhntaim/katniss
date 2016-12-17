@@ -54,8 +54,16 @@
                 </div>
                 <div class="form-group">
                     <label for="inputImage">{{ trans('label.picture') }}</label>
-                    <input class="form-control image-from-documents" id="inputImage" name="image"
-                           placeholder="{{ trans('label.picture') }}" type="text" value="{{ old('image') }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputImage" name="image"
+                               placeholder="{{ trans('label.picture') }}" type="text" value="{{ old('image') }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">

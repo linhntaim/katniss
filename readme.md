@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.3.26`.
+Current version: `5.3.28`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.3.3`.
+Current version: `2.4.0`.
 
 Latest version:
 
@@ -188,7 +188,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.1.9`.
+Current version: `1.1.10`.
 
 Latest version:
 
@@ -214,6 +214,18 @@ Latest version:
 )](https://packagist.org/packages/larabros/elogram)
 
 For fetching data from Instagram API.
+
+#### thunderer/shortcode
+
+[Shortcode](https://github.com/thunderer/Shortcode)
+
+Current version: `0.6.4`.
+
+Latest version:
+
+[![Latest Stable Version](https://poser.pugx.org/thunderer/shortcode/v/stable.svg)](https://packagist.org/packages/thunderer/shortcode)
+
+For parsing short codes.
 
 #### almasaeed2010/AdminLTE
 
@@ -287,13 +299,21 @@ For hooking to a context of coding.
 
 For triggering only one in an available set of actions.
 
-### Extra routes
+### Extra Routes
 
 Based on action hooking of Trigger.
 
 For processing extra routes defined by theme or plugins.
 
 See coding of extensions `Contact Form` or `Polls` for more.
+
+### Short Codes
+
+Parser integrated.
+
+- See vendor [thunder/shortcode](#thunderershortcode).
+- See example coding in `Galleries` extension.
+- Must be enabled in `App Settings` extension in order to work, default is disabled.
 
 ### App Options
 
@@ -334,6 +354,11 @@ Request flow:
 Sample Themes:
 
 - Example Theme (base on [Start Bootstrap - Scrolling Nav](#ironsummitmediastartbootstrap-scrolling-nav)).
+    - Admin Options Page for editing theme options:
+        - Set default map marker for theme.
+    - Specific template for post detail instead of default template:
+        - Post contact template: display a contact form and a default map marker at bottom of page.
+        - See [Template](#template) for more.
 
 #### Plugins
     
@@ -350,6 +375,7 @@ Sample Extensions:
     - Configure some app settings.
         - Enable user registration.
         - Set default category for Articles.
+        - Enable short code functionality to work.
 - Open Graph Tags:
     - Be always activated.
     - Add open graph tags into website.
@@ -366,6 +392,11 @@ Sample Extensions:
     - Allow user to embed contact forms to website and manage contact form request data.
 - Polls:
     - Allow user to and manage polls and embed polls to website.
+- Google Maps Markers:
+    - Enable to manage and embed maps with markers into website.
+- Galleries:
+    - Enable to embed galleries to websites.
+    - Allow to embed
 
 ##### Widget
 
@@ -390,8 +421,12 @@ Sample Widgets:
     - Show list of categories of articles.
 - Contact Form:
     - Show contact form.
-- Polls:
+- Poll:
     - Show poll for voting and viewing result on website.
+- Google Maps Marker:
+    - Show map marker by Google Maps on website.
+- Gallery:
+    - Show photos media on website.
     
 #### Template
 
@@ -455,7 +490,7 @@ Database seeding:
 
 Anonymous users will get the role of User after registering.
 
-### Settings
+### User Settings
 
 To store customized settings of each user.
 
@@ -491,3 +526,7 @@ Pages and articles can have their own custom templates, depending on definition 
 There's always a default category needs to be set for articles. 
 
 - For seeding information, please see `database/seeds/DefaultSeeder.php`, line 97.
+
+### Media
+
+Manage media (photos, videos) and categories of them.

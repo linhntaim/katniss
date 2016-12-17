@@ -18,7 +18,7 @@ class CreatePosts extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('template')->nullable();
             $table->string('featured_image')->nullable();
-            $table->tinyInteger('type')->unsigned()->default(0); // 1 = PAGE;
+            $table->tinyInteger('type')->unsigned()->default(0); // 0 = PAGE;
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
@@ -37,6 +37,7 @@ class CreatePosts extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->longText('content');
+            $table->longText('raw_content');
 
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 

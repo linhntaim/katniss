@@ -18,7 +18,7 @@ class ArticleCategoryRepository extends CategoryRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Category::ARTICLE, $id);
+        parent::__construct(Category::TYPE_ARTICLE, $id);
     }
 
     public function getExceptDefault()

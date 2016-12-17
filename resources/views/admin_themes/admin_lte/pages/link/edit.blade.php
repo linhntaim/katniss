@@ -39,7 +39,7 @@
                         {{ trans('form.action_add') }} {{ trans_choice('label.link', 1) }}
                     </a>
                 </div>
-                <h4 class="box-title">{{ trans('form.action_edit') }} {{ trans_choice('label.category_lc', 1) }}</h4>
+                <h4 class="box-title">{{ trans('form.action_edit') }} {{ trans_choice('label.link_lc', 1) }}</h4>
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         @foreach ($errors->all() as $error)
@@ -72,7 +72,15 @@
                             </a>)
                         @endif
                     </label>
-                    <input class="form-control image-from-documents" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputImage" name="image" placeholder="{{ trans('label.picture') }}" type="text" value="{{ $link->image }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">

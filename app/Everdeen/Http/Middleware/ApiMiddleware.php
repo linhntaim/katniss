@@ -10,6 +10,7 @@ namespace Katniss\Everdeen\Http\Middleware;
 
 use Closure;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Repositories\UserAppRepository;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\SettingsFacade;
 use Katniss\Everdeen\Models\UserApp;
@@ -25,11 +26,12 @@ class ApiMiddleware
         $app = $request->input('_app');
         if (is_string($app)) {
             $app = json_decode($app, true);
-            if(empty($app) || empty($app['id']) || empty($app['secret'])) {
+            if (empty($app) || empty($app['id']) || empty($app['secret'])) {
                 abort(404);
             }
         }
-        $userApp = UserApp::getByIdAndSecret($app['id'], $app['secret']);
+        $userAppRepository = new UserAppRepository();
+        $userApp = $userAppRepository->getByIdAndSecret($app['id'], $app['secret']);
         if (empty($userApp)) {
             abort(404);
         }

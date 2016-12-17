@@ -32,7 +32,7 @@ class Extension extends BaseExtension
     {
         parent::__init();
 
-        _kWidgets([Widget::NAME => Widget::class]);
+        _kWidgets([ContactFormWidget::NAME => ContactFormWidget::class]);
     }
 
     public function register()
@@ -52,10 +52,8 @@ class Extension extends BaseExtension
         addExtraRouteResourceTriggers('contact-forms', ContactFormHomeController::class);
         addExtraRouteResourceTriggers('web-api/contact-forms', ContactFormWebApiController::class);
     }
-}
 
-if (!function_exists('htmlContactForm')) {
-    function htmlContactForm()
+    public static function htmlContactForm()
     {
         return new HtmlString(view()->make('plugins.contact_form.form'));
     }

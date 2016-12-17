@@ -8,49 +8,41 @@
 
 namespace Katniss\Everdeen\Themes;
 
+use Illuminate\Support\HtmlString;
 use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
-class Widgets
+class Widgets extends Plugins
 {
-    private $widgets;
-    private $defines;
+    protected $themeWidgets;
 
     public function __construct()
     {
+        parent::__construct(array_merge(_kWidgets(), HomeThemeFacade::widgets()));
     }
 
     public function init()
     {
-        $this->defines = array_merge(_kWidgets(), HomeThemeFacade::widgets());
-        $this->widgets = ThemeWidget::checkWidgets(array_keys($this->defines))->forDisplay()->get();
-    }
-
-    public function display($placeholder, $before = '', $after = '', $default = '')
-    {
-        $widgets = $this->widgets->where('placeholder', $placeholder)->sortBy('order');
-        $count_widgets = $widgets->count();
-        $output = $count_widgets > 0 ? $before : $default;
-        foreach ($widgets as $widget) {
-            $output .= $widget->render();
-        }
-        return $count_widgets > 0 ? $output . $after : $output;
+        $widgetRepository = new ThemeWidgetRepository();
+        $this->themeWidgets = $widgetRepository->getActive(array_keys($this->defines));
     }
 
     public function register()
     {
-        foreach ($this->widgets as $widget) {
-            $widget->register();
+        foreach ($this->themeWidgets as $themeWidget) {
+            $themeWidget->register();
         }
     }
 
-    public function all()
+    public function display($placeholder, $before = '', $after = '', $default = '')
     {
-        return $this->defines;
-    }
-
-    public function widgetClass($name)
-    {
-        return empty($this->defines[$name]) ? null : $this->defines[$name];
+        $themeWidgets = $this->themeWidgets->where('placeholder', $placeholder)->sortBy('order');
+        $countThemeWidgets = $themeWidgets->count();
+        $output = $countThemeWidgets > 0 ? $before : $default;
+        foreach ($themeWidgets as $themeWidget) {
+            $output .= $themeWidget->render();
+        }
+        return new HtmlString($countThemeWidgets > 0 ? $output . $after : $output);
     }
 }

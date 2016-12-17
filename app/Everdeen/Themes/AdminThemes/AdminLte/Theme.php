@@ -9,8 +9,8 @@
 namespace Katniss\Everdeen\Themes\AdminThemes\AdminLte;
 
 use Katniss\Everdeen\Themes\AdminThemes\AdminTheme;
-use Katniss\Everdeen\Themes\CssQueue;
-use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Themes\Queue\CssQueue;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
 
 
 class Theme extends AdminTheme

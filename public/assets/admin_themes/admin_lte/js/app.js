@@ -73,10 +73,10 @@ $.AdminLTE.options = {
     //Enable slide over content
     slide: true
   },
-  //Box Widget Plugin. Enable this plugin
+  //Box PollWidget Plugin. Enable this plugin
   //to allow boxes to be collapsed and/or removed
   enableBoxWidget: true,
-  //Box Widget plugin options
+  //Box PollWidget plugin options
   boxWidgetOptions: {
     boxWidgetIcons: {
       //Collapse icon

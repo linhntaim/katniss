@@ -8,9 +8,8 @@
 
 namespace Katniss\Everdeen\Themes\AdminThemes;
 
-
-use Katniss\Everdeen\Themes\ExtensionsFacade;
-use Katniss\Everdeen\Themes\JsQueue;
+use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Themes\Theme;
 
 abstract class AdminTheme extends Theme
@@ -25,13 +24,20 @@ abstract class AdminTheme extends Theme
         return [];
     }
 
+    public function register($isAuth = false)
+    {
+        HomeThemeFacade::mockAdmin(); // make home themes can extend admin functionality
+
+        parent::register($isAuth);
+    }
+
     protected function registerExtScripts($is_auth = false)
     {
         parent::registerExtScripts($is_auth);
 
         $this->extJsQueue->add('global_vars', [
             'KATNISS_USER_REQUIRED' => 'true',
-        ], JsQueue::TYPE_VAR, ['KATNISS_USER_REQUIRED'], true);
+        ], JsQueue::TYPE_VAR, ['KATNISS_USER_REQUIRED'], true); // add more global vars to existing ones
         $this->extJsQueue->add('global-app-script', libraryAsset('katniss.admin.js'));
     }
 }

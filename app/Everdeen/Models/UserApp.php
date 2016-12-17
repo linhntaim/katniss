@@ -33,14 +33,4 @@ class UserApp extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-
-    /**
-     * @param int $id
-     * @param string $secret
-     * @return UserApp
-     */
-    public static function getByIdAndSecret($id, $secret)
-    {
-        return self::where('id', $id)->where('secret', $secret)->first();
-    }
 }

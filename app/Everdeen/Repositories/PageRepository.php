@@ -14,6 +14,6 @@ class PageRepository extends PostRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Post::PAGE, $id);
+        parent::__construct(Post::TYPE_PAGE, $id);
     }
 }

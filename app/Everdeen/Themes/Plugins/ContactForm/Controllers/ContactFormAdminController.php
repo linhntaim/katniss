@@ -11,11 +11,15 @@ namespace Katniss\Everdeen\Themes\Plugins\ContactForm\Controllers;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\Admin\AdminController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\PluginControllerTrait;
+use Katniss\Everdeen\Themes\Plugins\ContactForm\Extension;
 use Katniss\Everdeen\Themes\Plugins\ContactForm\Repositories\ContactFormRepository;
 use Katniss\Everdeen\Utils\AppConfig;
 
 class ContactFormAdminController extends AdminController
 {
+    use PluginControllerTrait;
+
     protected $contactFormRepository;
 
     public function __construct()
@@ -30,7 +34,7 @@ class ContactFormAdminController extends AdminController
         $contactForms = $this->contactFormRepository->getPaged();
 
         return $request->theme()->resolveExtraView(
-            'plugins.contact_form.admin.index',
+            $this->_extra('index', Extension::NAME),
             trans('contact_form.page_contact_forms_title'),
             trans('contact_form.page_contact_forms_desc'),
             [

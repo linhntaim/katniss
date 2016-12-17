@@ -34,6 +34,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
         Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::class,
         Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
     ],
     'extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,
@@ -43,6 +44,8 @@ return [
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
         Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
         Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
@@ -637,5 +640,7 @@ return [
         'handlebars' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js',
         'select2-js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
         'select2-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css',
+        'gmap3' => 'https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js',
+        'google-maps-js-api' => 'https://maps.googleapis.com/maps/api/js',
     ],
 ];

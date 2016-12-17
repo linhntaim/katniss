@@ -16,7 +16,7 @@ class LinkCategoryRepository extends CategoryRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Category::LINK, $id);
+        parent::__construct(Category::TYPE_LINK, $id);
     }
 
     public function updateSort($linkIds)

@@ -86,4 +86,13 @@ return [
     'admin/articles/create'                         => 'admin/articles/create',
     'admin/articles/{id}'                           => 'admin/articles/{id}',
     'admin/articles/{id}/edit'                      => 'admin/articles/{id}/edit',
+    'admin/media-categories'                        => 'admin/media-categories',
+    'admin/media-categories/create'                 => 'admin/media-categories/create',
+    'admin/media-categories/{id}'                   => 'admin/media-categories/{id}',
+    'admin/media-categories/{id}/edit'              => 'admin/media-categories/{id}/edit',
+    'admin/media-categories/{id}/sort'              => 'admin/media-categories/{id}/sort',
+    'admin/media-items'                             => 'admin/media-items',
+    'admin/media-items/create'                      => 'admin/media-items/create',
+    'admin/media-items/{id}'                        => 'admin/media-items/{id}',
+    'admin/media-items/{id}/edit'                   => 'admin/media-items/{id}/edit',
 ];

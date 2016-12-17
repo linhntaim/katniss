@@ -21,7 +21,7 @@ class ArticleSeeder extends Seeder
         $categoryIds = [];
         for ($i = 0; $i < $loopCategory; ++$i) {
             $category = Category::create([
-                'type' => Category::ARTICLE
+                'type' => Category::TYPE_ARTICLE
             ]);
             $categoryIds[] = $category->id;
 
@@ -39,14 +39,14 @@ class ArticleSeeder extends Seeder
                 'user_id' => 2,
                 'template' => null,
                 'featured_image' => $generator->imageUrl(),
-                'type' => Post::ARTICLE,
+                'type' => Post::TYPE_ARTICLE,
             ]);
             $trans = $post->translateOrNew('--');
             $trans->post_id = $post->id;
             $trans->title = ucfirst($generator->words(10, true));
             $trans->slug = str_slug($trans->title);
             $trans->description = $generator->sentence(10);
-            $trans->content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
+            $trans->content = $trans->raw_content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>');
             $trans->save();

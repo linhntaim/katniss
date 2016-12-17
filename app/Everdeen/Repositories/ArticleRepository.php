@@ -20,7 +20,7 @@ class ArticleRepository extends PostRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Post::ARTICLE, $id);
+        parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
     public function getPagedByCategory($categoryId)
@@ -43,7 +43,7 @@ class ArticleRepository extends PostRepository
         DB::beginTransaction();
         try {
             $article = new Post();
-            $article->type = Post::ARTICLE;
+            $article->type = Post::TYPE_ARTICLE;
             $article->user_id = $userId;
             $article->template = $template;
             $article->featured_image = $featuredImage;

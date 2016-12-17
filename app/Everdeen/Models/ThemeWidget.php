@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Katniss\Everdeen\Themes\Widget;
+use Katniss\Everdeen\Themes\WidgetsFacade;
 
 class ThemeWidget extends Model
 {
@@ -84,13 +85,39 @@ class ThemeWidget extends Model
         return $query;
     }
 
+    /**
+     * @var Widget
+     */
+    protected $widget;
+
+    public function widget()
+    {
+        return $this->widget;
+    }
+
     public function render()
     {
-        return Widget::doRender($this);
+        if ($this->checkWidget()) {
+            return $this->widget->render();
+        }
+        return null;
     }
 
     public function register()
     {
-        Widget::doRegister($this);
+        if ($this->checkWidget()) {
+            $this->widget->register();
+        }
+    }
+
+    public function checkWidget()
+    {
+        if (empty($this->widget)) {
+            $this->widget = WidgetsFacade::resolveClass($this->name, $this->params);
+            if (is_null($this->widget)) return false;
+            $this->widget->setThemeWidget($this);
+        }
+
+        return true;
     }
 }

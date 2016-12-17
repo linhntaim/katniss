@@ -14,19 +14,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    const UNKNOWN = 0;
-    const PAGE = 1;
-    const ARTICLE = 2;
-    const FAQ = 3;
+    const TYPE_PAGE = 0;
+    const TYPE_ARTICLE = 1;
 
     use Translatable;
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
-    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content'];
+    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content', 'raw_content'];
 
     protected $translationForeignKey = 'post_id';
-    public $translatedAttributes = ['title', 'slug', 'description', 'content'];
+    public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
 
     public function author()
     {
@@ -35,12 +33,12 @@ class Post extends Model
 
     public function scopeOfPage($query)
     {
-        return $query->where('type', $this::PAGE);
+        return $query->where('type', $this::TYPE_PAGE);
     }
 
     public function scopeOfArticle($query)
     {
-        return $query->where('type', $this::ARTICLE);
+        return $query->where('type', $this::TYPE_ARTICLE);
     }
 
     public function categories()

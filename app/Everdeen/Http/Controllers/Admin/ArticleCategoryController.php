@@ -77,7 +77,7 @@ class ArticleCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::LINK,
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_LINK,
             ]);
             if ($validator->fails()) {
                 return $errorRedirect->withErrors($validator);
@@ -148,7 +148,7 @@ class ArticleCategoryController extends AdminController
         $parent_id = intval($request->input('parent'), 0);
         if ($parent_id != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::ARTICLE
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE
             ]);
             if ($validator->fails()) {
                 return $redirect->withErrors($validator);

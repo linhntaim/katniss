@@ -28,7 +28,7 @@ class AuthorizationWithEntrust
         $roles = empty($roles) ? null : explode('|', $roles);
         $permissions = empty($permissions) ? null : explode('|', $permissions);
         if (!$this->auth->user()->ability($roles, $permissions)) {
-            return response('Unauthorized.', 401);
+            return abort(401);
         }
 
         return $next($request);
