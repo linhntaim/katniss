@@ -40,29 +40,13 @@ class ContactTemplateComposer
         $themeOptions = getOption('theme_example', []);
         if (empty($themeOptions['default_map_marker_id'])) return null;
 
-        $mapMarkerRepository = new MapMarkerRepository($themeOptions['default_map_marker_id']);
-        $mapMarker = $mapMarkerRepository->model();
-        $mapMarkerData = $mapMarker->data;
-        $mapMarkerName = !empty($mapMarker->name) ? $mapMarker->name : $mapMarkerData->address;
-        $mapMarkerDescription = $mapMarker->description;
-        $mapMarkerLatitude = $mapMarkerData->lat;
-        $mapMarkerLongitude = $mapMarkerData->lng;
+        return new HtmlString(
+            GoogleMapsMarkersExtension::enqueueMapMarkerLayout(
+                $themeOptions['default_map_marker_id'],
+                'default-map-marker',
+                '#default-map-marker .map'
+            )
+        );
 
-        enqueueThemeHeader('<style>#default-map-marker .map{width: 100%;height: 300px;margin:5px 0}</style>', 'theme_example_contact_template');
-        enqueueThemeFooter('<script src="' . _kExternalLink('google-maps-js-api') . '?key=' . env('GOOGLE_MAPS_API_KEY') . '&language=' . currentLocaleCode() . '&region=' . settings()->country . '"></script>', 'google_maps_js_api');
-        enqueueThemeFooter('<script src="' . libraryAsset('google_maps_markers.js') . '"></script>', 'google_maps_markers_js');
-        enqueueThemeFooter('<script>$(function(){
-    new GoogleMapsMarkers($(\'#default-map-marker .map\'), {
-        zoom: 15,
-        markCenter: true,
-        center: {
-            lat: ' . $mapMarkerLatitude . ',
-            lng: ' . $mapMarkerLongitude . '
-        },
-        centerName: \'' . $mapMarkerName . '\'
-    });
-});</script>', 'default-map-marker');
-
-        return new HtmlString('<div id="default-map-marker"><div class="map"></div></div>');
     }
 }

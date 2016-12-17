@@ -44,20 +44,13 @@ class MapMarkerWidget extends DefaultWidget
     public function register()
     {
         if (!empty($this->mapMarkerId)) {
-            enqueueThemeHeader('<style>.widget-google-maps-markers .map{width: 100%;height: 300px;margin:5px 0}</style>', 'google_maps_markers_widget');
-            enqueueThemeFooter('<script src="' . _kExternalLink('google-maps-js-api') . '?key=' . env('GOOGLE_MAPS_API_KEY') . '&language=' . currentLocaleCode() . '&region=' . settings()->country . '"></script>', 'google_maps_js_api');
-            enqueueThemeFooter('<script src="' . libraryAsset('google_maps_markers.js') . '"></script>', 'google_maps_markers_js');
-            enqueueThemeFooter('<script>$(function(){
-    new GoogleMapsMarkers($(\'#' . $this->getHtmlId() . ' .map\'), {
-        zoom: 15,
-        markCenter: true,
-        center: {
-            lat: ' . $this->mapMarkerLatitude . ',
-            lng: ' . $this->mapMarkerLongitude . '
-        },
-        centerName: \'' . $this->mapMarkerName . '\'
-    });
-});</script>', $this->getHtmlId());
+            Extension::enqueueMapMarkerJs(
+                '#' . $this->getHtmlId() . ' .map',
+                $this->mapMarkerName,
+                $this->mapMarkerLatitude,
+                $this->mapMarkerLongitude,
+                $this->getHtmlId()
+            );
         }
     }
 

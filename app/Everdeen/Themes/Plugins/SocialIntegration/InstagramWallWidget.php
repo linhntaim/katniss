@@ -37,12 +37,13 @@ class InstagramWallWidget extends DefaultWidget
 
     public function register()
     {
-        enqueueThemeHeader(
-            '<style>.widget-instagram-wall ul.media-list li.media-item{width: calc(100%/' . $this->numOfColumns . ')}</style>',
-            'instagram_wall_style'
-        );
-        enqueueThemeFooter(
-            '<script>
+        if (!empty($this->username)) {
+            enqueueThemeHeader(
+                '<style>.widget-instagram-wall ul.media-list li.media-item{width: calc(100%/' . $this->numOfColumns . ')}</style>',
+                'instagram_wall_style'
+            );
+            enqueueThemeFooter(
+                '<script>
     $(function() {
         $(\'.widget-instagram-wall .next\').on(\'click\', function(e) {
             e.preventDefault();
@@ -80,8 +81,9 @@ class InstagramWallWidget extends DefaultWidget
         }).trigger(\'click\');
     });
 </script>',
-            'instagram_wall_script'
-        );
+                'instagram_wall_script'
+            );
+        }
     }
 
     public function viewAdminParams()

@@ -12,6 +12,7 @@ use Katniss\Everdeen\Models\Media;
 use Katniss\Everdeen\Repositories\MediaCategoryRepository;
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 use Thunder\Shortcode\ShortcodeFacade;
 
@@ -41,15 +42,18 @@ class Extension extends BaseExtension
                 static $galleryCount = 0;
                 ++$galleryCount;
                 $id = $s->getParameter('id');
-                $photos = collect([]);
                 if (!empty($id)) {
-                    $mediaCategoryRepository = new MediaCategoryRepository();
-                    $photos = $mediaCategoryRepository->model($id)->orderedMedia->where('type', Media::TYPE_PHOTO);
+                    try {
+                        $mediaCategoryRepository = new MediaCategoryRepository();
+                        $photos = $mediaCategoryRepository->model($id)->orderedMedia->where('type', Media::TYPE_PHOTO);
+                        return view()->make($this->view('html'), [
+                            'photos' => $photos,
+                            'gallery_name' => 'post_content_gallery_' . $galleryCount,
+                        ])->render();
+                    } catch (\Exception $exception) {
+                    }
                 }
-                return view()->make($this->view('html'), [
-                    'photos' => $photos,
-                    'gallery_name' => 'post_content_gallery_' . $galleryCount,
-                ])->render();
+                return Str::format('[gallery id="{0}"]', $id);
             });
             return $facade;
         }), 'ext:galleries');
@@ -58,7 +62,13 @@ class Extension extends BaseExtension
         enqueueThemeFooter('<script src="' . libraryAsset('fancybox/jquery.fancybox.pack.js') . '"></script>', 'galleries_widget_js');
         enqueueThemeFooter('<script>
     $(function() {
-        $(\'.embed-galleries .thumbnail a\').fancybox()
+        $(\'.embed-galleries .thumbnail a\').fancybox({
+            helpers: {
+                overlay: {
+                  locked: false
+                }
+            }
+        });
     });
 </script>', 'embed_galleries');
     }

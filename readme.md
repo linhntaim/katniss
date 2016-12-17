@@ -312,7 +312,7 @@ See coding of extensions `Contact Form` or `Polls` for more.
 Parser integrated.
 
 - See vendor [thunder/shortcode](#thunderershortcode).
-- See example coding in `Galleries` extension.
+- See example coding in `Google Maps Marker` & `Galleries` extensions.
 - Must be enabled in `App Settings` extension in order to work, default is disabled.
 
 ### App Options
@@ -361,6 +361,12 @@ Sample Themes:
         - See [Template](#template) for more.
 
 #### Plugins
+
+Defines plugins for the site, which are extensions and widgets.
+
+Plugins can be common or theme-based.
+
+Widgets can be extension-based.
     
 ##### Extension
 
@@ -394,9 +400,12 @@ Sample Extensions:
     - Allow user to and manage polls and embed polls to website.
 - Google Maps Markers:
     - Enable to manage and embed maps with markers into website.
+    - Support short code: `[map_marker id="{id of a map marker}"]`.
+        - To see example, try to insert it into a post content.
 - Galleries:
     - Enable to embed galleries to websites.
-    - Allow to embed
+    - Support short code: `[gallery id="{id of a media category}"]`.
+        - To see example, try to insert it into a post content.
 
 ##### Widget
 
@@ -509,6 +518,8 @@ Ready for integrating with:
 - CKEditor.
 - Input field.
 
+Users cannot delete folder `profile_pictures` in their own directory.
+
 ### Links
 
 Manage links and categories of links.
@@ -530,3 +541,5 @@ There's always a default category needs to be set for articles.
 ### Media
 
 Manage media (photos, videos) and categories of them.
+
+Media in a category can be sorted.
