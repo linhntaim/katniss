@@ -23,7 +23,7 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
-    public function getPagedByCategory($categoryId)
+    public function getPagedByCategory($categoryId, &$category)
     {
         $categoryRepository = new ArticleCategoryRepository();
         $category = $categoryRepository->getById($categoryId);
