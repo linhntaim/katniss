@@ -40,7 +40,7 @@ class ContactFormHomeController extends ViewController
         if ($validator->fails()) {
             return redirect($rdrUrl)
                 ->withInput()
-                ->withErrors($validator);
+                ->withErrors($validator, $request->input('error_bag'));
         }
 
         try {
@@ -55,7 +55,7 @@ class ContactFormHomeController extends ViewController
         } catch (KatnissException $ex) {
             return redirect($rdrUrl)
                 ->withInput()
-                ->withErrors([$ex->getMessage()]);
+                ->withErrors([$ex->getMessage()], $request->input('error_bag'));
         }
 
         return redirect($rdrUrl);

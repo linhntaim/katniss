@@ -1,8 +1,9 @@
 <form action="{{ addRdrUrl(addExtraUrl('contact-forms', homeUrl('extra'))) }}" method="post">
     {{ csrf_field() }}
-    @if (count($errors) > 0)
+    <input type="hidden" name="error_bag" value="{{ $error_bag }}">
+    @if (count($errors->{$error_bag}) > 0)
         <div class="alert alert-danger">
-            @foreach ($errors->all() as $error)
+            @foreach ($errors->{$error_bag}->all() as $error)
                 <p>{{ $error }}</p>
             @endforeach
         </div>

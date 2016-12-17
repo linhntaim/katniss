@@ -30,12 +30,6 @@ class ArticleRepository extends PostRepository
         return $category->posts()->where('type', $this->type)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-//        return Post::where('type', $this->type)
-//            ->whereHas('categories', function ($query) use($categoryId) {
-//                $query->where('id', $categoryId);
-//            })
-//            ->orderBy('created_at', 'desc')
-//            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
@@ -53,6 +47,7 @@ class ArticleRepository extends PostRepository
                 $trans->slug = $transData['slug'];
                 $trans->description = $transData['description'];
                 $trans->content = clean($transData['content'], 'blog');
+                $trans->raw_content = $transData['content'];
             }
 
             $article->save();
@@ -91,6 +86,7 @@ class ArticleRepository extends PostRepository
                     $trans->slug = $transData['slug'];
                     $trans->description = $transData['description'];
                     $trans->content = clean($transData['content'], 'blog');
+                    $trans->raw_content = $transData['content'];
                 } elseif ($article->hasTranslation($locale)) {
                     $deletedLocales[] = $locale;
                 }

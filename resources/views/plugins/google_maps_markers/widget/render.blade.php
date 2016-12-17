@@ -1,5 +1,5 @@
 @if(!empty($map_marker))
-    <div id="{{ $html_id }}" class="widget-google-maps-markers">
+    <div id="{{ $html_id }}" class="widget-google-maps-markers default-google-maps-marker">
         @if(!empty($name))
             <h4>{{ $name }}</h4>
         @endif
