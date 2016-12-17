@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{!! themeTitle() !!}</title>
     <meta name="author" content="{{ themeAuthor() }}">
-    <meta name="description" content="{!! themeDescription() !!}}">
+    <meta name="description" content="{!! themeDescription() !!}">
     <meta name="keywords" content="{!! themeKeywords() !!}">
     <meta name="application-name" content="{!! themeApplicationName() !!}">
     @include('fav_icons')
