@@ -15,6 +15,13 @@ class ContactFormWidget extends DefaultWidget
     const NAME = 'contact_form.widget';
     const DISPLAY_NAME = 'Contact Form';
 
+    public function viewHomeParams()
+    {
+        return array_merge(parent::viewHomeParams(), [
+            'error_bag' => Extension::errorBag(),
+        ]);
+    }
+
     public function render()
     {
         return $this->renderByTemplate();

@@ -55,6 +55,19 @@ class Extension extends BaseExtension
 
     public static function htmlContactForm()
     {
-        return new HtmlString(view()->make('plugins.contact_form.form'));
+        return new HtmlString(view()->make('plugins.contact_form.form', [
+            'error_bag' => self::errorBag(),
+        ]));
+    }
+
+    public static function contactFormId()
+    {
+        static $id = 0;
+        return 'contact_form_' . (++$id);
+    }
+
+    public static function errorBag()
+    {
+        return 'error_' . self::contactFormId();
     }
 }
