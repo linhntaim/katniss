@@ -5,12 +5,15 @@ namespace Katniss\Everdeen\Http\Controllers\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-use Katniss\Everdeen\Events\UserAfterRegistered;
+use Katniss\Everdeen\Events\UserCreated;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSocial;
+use Katniss\Everdeen\Repositories\RoleRepository;
+use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Katniss\Everdeen\Utils\MailHelper;
@@ -84,33 +87,28 @@ class RegisterController extends ViewController
      */
     protected function create(array $data, $fromSocial = false)
     {
-        DB::beginTransaction();
-        try {
-            $user = User::create([
-                'display_name' => $data['display_name'],
-                'email' => $data['email'],
-                'name' => $data['name'],
-                'password' => bcrypt($data['password']),
-                'url_avatar' => $data['url_avatar'],
-                'url_avatar_thumb' => $data['url_avatar'],
-                'activation_code' => str_random(32),
-            ]);
-            $defaultRole = Role::where('name', 'user')->firstOrFail();
-            $user->attachRole($defaultRole->id);
+        $social = $fromSocial ? [
+            'provider' => $data['provider'],
+            'provider_id' => $data['provider_id'],
+        ] : null;
 
-            if ($fromSocial) {
-                $user->socialProviders()->save(new UserSocial([
-                    'provider' => $data['provider'],
-                    'provider_id' => $data['provider_id'],
-                ]));
-            }
-            DB::commit();
-        } catch (\Exception $ex) {
-            DB::rollBack();
+        $userRepository = new UserRepository();
+
+        try {
+            return $userRepository->create(
+                $data['name'],
+                $data['display_name'],
+                $data['email'],
+                $data['password'],
+                null,
+                true,
+                $data['url_avatar'],
+                $data['url_avatar'],
+                $social
+            );
+        } catch (KatnissException $ex) {
             return false;
         }
-
-        return $user;
     }
 
     /**
@@ -150,14 +148,6 @@ class RegisterController extends ViewController
 
         $storedUser = $this->create($request->all());
         if ($storedUser) {
-            event(new UserAfterRegistered($storedUser, $request->input('password'), false,
-                array_merge($this->_params(), [
-                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                    MailHelper::EMAIL_TO => $storedUser->email,
-                    MailHelper::EMAIL_TO_NAME => $storedUser->display_name,
-                ])
-            ));
-
             $this->guard()->login($storedUser);
         } else {
             return $errorRdr->withErrors([trans('auth.register_failed_system_error')]);
@@ -208,7 +198,7 @@ class RegisterController extends ViewController
 
         $storedUser = $this->create($request->all(), true);
         if ($storedUser) {
-            event(new UserAfterRegistered($storedUser, $request->input('password'), true,
+            event(new UserCreated($storedUser, $request->input('password'), true,
                 array_merge($this->_params(), [
                     MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                     MailHelper::EMAIL_TO => $storedUser->email,

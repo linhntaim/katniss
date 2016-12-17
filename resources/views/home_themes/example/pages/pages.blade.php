@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('pages', null, null, trans('label.no_widget')) !!}
+                    {{ placeholder('pages', null, null, trans('label.no_widget')) }}
                 </div>
                 <div class="col-sm-9 text-left">
                     @if($pages->count() > 0)

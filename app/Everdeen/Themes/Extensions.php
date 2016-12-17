@@ -11,11 +11,9 @@ namespace Katniss\Everdeen\Themes;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 
-class Extensions
+class Extensions extends Plugins
 {
     private $statics;
-
-    private $defines;
 
     private $activated;
 
@@ -23,14 +21,14 @@ class Extensions
 
     public function __construct()
     {
+        parent::__construct(array_merge(config('katniss.extensions'), HomeThemeFacade::extensions()));
     }
 
     public function init()
     {
-        $this->defines = array_merge(config('katniss.extensions'), HomeThemeFacade::extensions());
         $this->statics = config('katniss.static_extensions');
         $this->activated = array_unique(
-            array_merge((array)AppOptionHelper::get('activated_extensions', []), $this->staticExtensions())
+            array_merge((array)AppOptionHelper::get('activated_extensions', []), $this->statics())
         );
         $this->adminExcepts = config('katniss.admin_except_extensions');
     }
@@ -40,30 +38,15 @@ class Extensions
         $extensions = $this->activated();
         foreach ($extensions as $extension) {
             if (!inAdmin() || !in_array($extension, $this->adminExcepts)) {
-                $extensionClass = $this->extensionClass($extension);
-                if (!empty($extensionClass) && class_exists($extensionClass)) {
-                    $extension = new $extensionClass();
+                $extension = $this->resolveClass($extension);
+                if (!is_null($extension)) {
                     $extension->register();
                 }
             }
         }
     }
 
-    public function all()
-    {
-        return $this->defines;
-    }
-
-    public function extensionClass($name)
-    {
-        static $extensions;
-        if (empty($extensions)) {
-            $extensions = $this->all();
-        }
-        return empty($extensions[$name]) ? null : $extensions[$name];
-    }
-
-    public function staticExtensions()
+    public function statics()
     {
         return $this->statics;
     }

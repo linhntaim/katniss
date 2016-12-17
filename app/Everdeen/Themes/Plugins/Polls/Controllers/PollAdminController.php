@@ -12,10 +12,14 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\Admin\AdminController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\PluginControllerTrait;
+use Katniss\Everdeen\Themes\Plugins\Polls\Extension;
 use Katniss\Everdeen\Themes\Plugins\Polls\Repositories\PollRepository;
 
 class PollAdminController extends AdminController
 {
+    use PluginControllerTrait;
+
     protected $pollRepository;
 
     public function __construct()
@@ -30,7 +34,7 @@ class PollAdminController extends AdminController
         $polls = $this->pollRepository->getPaged();
 
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.poll.index',
+            $this->_extra('poll.index', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
             [
@@ -44,7 +48,7 @@ class PollAdminController extends AdminController
     public function create(Request $request)
     {
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.poll.create',
+            $this->_extra('poll.create', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc')
         );
@@ -96,7 +100,7 @@ class PollAdminController extends AdminController
         $this->_description(trans('pages.admin_links_desc'));
 
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.poll.edit',
+            $this->_extra('poll.edit', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
             [

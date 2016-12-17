@@ -15,5 +15,5 @@ class PostTranslation extends Model
     public $timestamps = false;
 
     protected $table = 'post_translations';
-    protected $fillable = ['title', 'slug', 'description', 'content'];
+    protected $fillable = ['title', 'slug', 'description', 'content', 'raw_content'];
 }

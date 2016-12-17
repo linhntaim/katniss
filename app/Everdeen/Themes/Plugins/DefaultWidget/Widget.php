@@ -13,7 +13,7 @@ use Katniss\Everdeen\Themes\Widget as BaseWidget;
 class Widget extends BaseWidget
 {
     const NAME = 'default_widget';
-    const DISPLAY_NAME = 'Default Widget';
+    const DISPLAY_NAME = 'Default PollWidget';
     const TRANSLATABLE = true;
 
     public $name = '';

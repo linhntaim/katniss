@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-xs-1"></div>
                 <div class="col-xs-10">
-                    {!! placeholder('default_placeholder', KATNISS_EMPTY_STRING, KATNISS_EMPTY_STRING, trans('label.no_widget')) !!}
+                    {{ placeholder('default_placeholder', KATNISS_EMPTY_STRING, KATNISS_EMPTY_STRING, trans('label.no_widget')) }}
                 </div>
                 <div class="col-xs-1"></div>
             </div>

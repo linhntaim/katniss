@@ -18,7 +18,16 @@ class LinkCategoryController extends ApiController
         $this->linkCategoryRepository = new LinkCategoryRepository();
     }
 
-    public function updateOrder(Request $request, $id)
+    public function update(Request $request, $id)
+    {
+        if ($request->has('sort')) {
+            return $this->updateSort($request, $id);
+        }
+
+        return $this->responseFail();
+    }
+
+    public function updateSort(Request $request, $id)
     {
         $this->linkCategoryRepository->model($id);
 

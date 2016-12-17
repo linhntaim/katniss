@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    {!! placeholder('pages', null, null, trans('label.no_widget')) !!}
+                    {{ placeholder('pages', null, null, trans('label.no_widget')) }}
                 </div>
                 <div class="col-sm-9 text-left">
                     <div id="page-{{ $page->id }}">
@@ -20,7 +20,7 @@
                                 <img class="img-responsive" alt="{{ $page->title }}" src="{{ $page->featured_image }}">
                             </div>
                         @endif
-                        <article>{!! $page->content !!}</article>
+                        <article>{!! contentFilter('post_content', $page->content) !!}</article>
                     </div>
                 </div>
             </div>

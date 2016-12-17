@@ -21,14 +21,14 @@ class PageSeeder extends Seeder
                 'user_id' => 2,
                 'template' => null,
                 'featured_image' => $generator->imageUrl(),
-                'type' => Post::PAGE,
+                'type' => Post::TYPE_PAGE,
             ]);
             $trans = $post->translateOrNew('--');
             $trans->post_id = $post->id;
             $trans->title = ucfirst($generator->words(10, true));
             $trans->slug = str_slug($trans->title);
             $trans->description = $generator->sentence(10);
-            $trans->content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
+            $trans->content = $trans->raw_content = wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>')
                 .  wrapContent($generator->paragraphs(10, true),'<p>','</p>');
             $trans->save();

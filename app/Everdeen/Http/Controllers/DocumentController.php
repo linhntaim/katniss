@@ -5,31 +5,42 @@ namespace Katniss\Everdeen\Http\Controllers;
 use Barryvdh\Elfinder\Connector;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Vendors\Studio42\ElFinder\Php\ElFinder;
 
 class DocumentController extends ViewController
 {
+    protected $customTypes = [
+        'images' => [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+        ],
+        'flash' => [
+            'application/x-shockwave-flash',
+        ],
+        'audio' => [
+            'audio/aac',
+            'audio/mp4',
+            'audio/mpeg',
+            'audio/ogg',
+            'audio/webm',
+        ],
+        'video' => [
+            'video/x-flv',
+            'video/h264',
+            'video/webm',
+        ],
+    ];
+
     public function onlyMimes($customType)
     {
         $onlyMimes = [];
 
-        if ($customType == 'images') {
-            $onlyMimes = [
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-            ];
-        } elseif ($customType == 'flash') {
-            $onlyMimes = [
-                'application/x-shockwave-flash',
-            ];
-        } elseif ($customType == 'audio') {
-            $onlyMimes = [
-                'audio/aac',
-                'audio/mp4',
-                'audio/mpeg',
-                'audio/ogg',
-                'audio/webm',
-            ];
+        $customTypes = explode(',', $customType);
+        foreach ($customTypes as $type) {
+            if (!empty($this->customTypes[$type])) {
+                $onlyMimes = array_merge($onlyMimes, $this->customTypes[$type]);
+            }
         }
 
         return $onlyMimes;
@@ -70,7 +81,7 @@ class DocumentController extends ViewController
 
     public function getConnector(Request $request)
     {
-        $own_directory = $request->authUser->ownDirectory;
+        $ownDirectory = $request->authUser->ownDirectory;
         $uploadAllow = [
             'image/jpeg',
             'image/png',
@@ -129,13 +140,13 @@ class DocumentController extends ViewController
         if (!empty($onlyMimes)) {
             $uploadAllow = $onlyMimes;
         }
-        $connector = new Connector(new \elFinder([
+        $connector = new Connector(new ElFinder([
             'roots' => [
                 [
                     'driver' => 'LocalFileSystem',
-                    'path' => userPublicPath($own_directory),
+                    'path' => userPublicPath($ownDirectory),
                     'alias' => 'Online drive: \Home',
-                    'URL' => asset('files/' . $own_directory . '/'),
+                    'URL' => asset('files/' . $ownDirectory . '/'),
                     'accessControl' => config('elfinder.access'),
                     'dateFormat' => DateTimeHelper::shortDateFormat(),
                     'timeFormat' => DateTimeHelper::shortTimeFormat(),

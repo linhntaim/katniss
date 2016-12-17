@@ -21,17 +21,17 @@
         </div>
     </div>
 </div>
-<div class="modal fade modal-danger" id="x-alert-modal" tabindex="-1" role="dialog"
-     aria-labelledby="x-alert-modal-title">
+<div class="modal fade" id="x-custom-modal" tabindex="-1" role="dialog"
+     aria-labelledby="x-custom-modal-title">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="x-alert-modal-title">{{ trans('label.alert') }}</h4>
+                <h4 class="modal-title" id="x-custom-modal-title"></h4>
             </div>
-            <div id="x-alert-modal-content" class="modal-body">
+            <div id="x-custom-modal-content" class="modal-body">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline" data-dismiss="modal">
@@ -148,10 +148,23 @@
         });
     }
 
+    function x_modal_custom(content, title, type) {
+        var $customModal = $('#x-custom-modal');
+        $customModal.attr('class', 'modal fade');
+        if(typeof type !== 'undefined') {
+            $customModal.addClass('modal-' + type);
+        }
+        $customModal.find('#x-custom-modal-title').html(title);
+        $customModal.find('#x-custom-modal-content').html(content);
+        $customModal.modal('show');
+    }
+
     function x_modal_alert(content) {
-        var $alertModal = $('#x-alert-modal');
-        $alertModal.find('#x-alert-modal-content').html(content);
-        $alertModal.modal('show');
+        x_modal_custom(content, '{{ trans('label.alert') }}', 'danger');
+    }
+
+    function x_modal_success(content) {
+        x_modal_custom(content, '{{ trans('label.info') }}', 'success');
     }
 
     function x_modal_lock() {

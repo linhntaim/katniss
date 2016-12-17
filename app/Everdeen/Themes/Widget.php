@@ -8,35 +8,14 @@
 
 namespace Katniss\Everdeen\Themes;
 
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
 use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Widget extends Plugin
 {
-    public static function doRender(ThemeWidget $themeWidget)
-    {
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (!empty($widgetClass) && class_exists($widgetClass)) {
-            $params = empty($themeWidget) ? [] : $themeWidget->params;
-            $widget = new $widgetClass($params);
-            $widget->setThemeWidget($themeWidget);
-            return $widget->render();
-        }
-        return '';
-    }
-
-    public static function doRegister(ThemeWidget $themeWidget)
-    {
-        $widgetClass = WidgetsFacade::widgetClass($themeWidget->name);
-        if (!empty($widgetClass) && class_exists($widgetClass)) {
-            $params = empty($themeWidget) ? [] : $themeWidget->params;
-            $widget = new $widgetClass($params);
-            $widget->setThemeWidget($themeWidget);
-            $widget->register();
-        }
-    }
-
     /**
      * @var ThemeWidget
      */
@@ -44,18 +23,19 @@ abstract class Widget extends Plugin
 
     public function __construct(array $data = [])
     {
-        parent::__construct();
+        debug('widget constructor');
 
         if ($this::EDITABLE) {
             $this->fromDataConstruct($data);
         }
 
-        $this->__init();
+        parent::__construct();
     }
 
     public function setId($id)
     {
-        $this->themeWidget = ThemeWidget::findOrFail($id);
+        $widgetRepository = new ThemeWidgetRepository($id);
+        $this->themeWidget = $widgetRepository->model();
     }
 
     public function getId()
@@ -76,14 +56,6 @@ abstract class Widget extends Plugin
         $this->themeWidget = $themeWidget;
     }
 
-    public function viewAdmin()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return empty($this::THEME_NAME) ?
-            HomeThemeFacade::commonAdminWidget($this::NAME) : HomeThemeFacade::adminWidget($this::NAME);
-    }
-
     public function viewAdminParams()
     {
         return array_merge(parent::viewAdminParams(), [
@@ -93,13 +65,13 @@ abstract class Widget extends Plugin
 
     public function viewHome()
     {
-        return empty($this::THEME_NAME) ?
-            HomeThemeFacade::commonWidget($this::NAME) : HomeThemeFacade::widget($this::NAME);
+        return $this->view('render');
     }
 
     public function viewHomeParams()
     {
         return [
+            'widget_id' => $this->getId(),
             'html_id' => $this->getHtmlId(),
         ];
     }
@@ -129,26 +101,30 @@ abstract class Widget extends Plugin
             $localizedData = [];
         }
 
-        $order = ThemeWidget::where('placeholder', $placeholder)->count() + 1;
-        $this->themeWidget = ThemeWidget::create([
-            'widget_name' => $this::NAME,
-            'theme_name' => $this::THEME_NAME,
-            'placeholder' => $placeholder,
-            'constructing_data' => $this->toDataConstructAsJson($data, $localizedData),
-            'order' => $order,
-        ]);
-        return empty($this->themeWidget) ? [trans('error.database_insert')] : true;
+        $widgetRepository = new ThemeWidgetRepository();
+        try {
+            $this->themeWidget = $widgetRepository->create(
+                $this::NAME,
+                $this::THEME_ONLY ? HomeThemeFacade::getName() : '',
+                $placeholder,
+                $this->toDataConstructAsJson($data, $localizedData)
+            );
+            return true;
+        } catch (KatnissException $ex) {
+            return [$ex->getMessage()];
+        }
     }
 
     public function update(array $data = [], array $localizedData = [])
     {
         if (!$this::EDITABLE) abort(404);
 
-        $this->themeWidget->constructing_data = $this->toDataConstructAsJson($data, $localizedData);
-        if ($this->themeWidget->save() === true) {
+        $widgetRepository = new ThemeWidgetRepository($this->themeWidget);
+        try {
+            $this->themeWidget = $widgetRepository->updateData($this->toDataConstructAsJson($data, $localizedData));
             return true;
+        } catch (KatnissException $ex) {
+            return [$ex->getMessage()];
         }
-
-        return [trans('error.database_update')];
     }
 }

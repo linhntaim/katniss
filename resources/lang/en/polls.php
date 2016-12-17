@@ -8,8 +8,8 @@
 return [
     'page_polls_title' => 'Polls',
     'page_polls_desc' => 'Manage polls',
-    'page_poll_choices_title' => 'Poll Choices',
-    'page_poll_choices_desc' => 'Manage poll choices',
+    'page_poll_choices_title' => 'Choices',
+    'page_poll_choices_desc' => 'Manage choices',
     'poll' => 'Poll|Polls',
     'poll_lc' => 'poll|polls',
     'choice' => 'Choice|Choices',

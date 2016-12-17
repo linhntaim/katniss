@@ -112,8 +112,6 @@ class User extends Authenticatable
 
     public static function create(array $attributes = [])
     {
-        $settings = UserSetting::create();
-        $attributes['setting_id'] = $settings->id;
         return parent::create($attributes);
     }
 }

@@ -10,4 +10,6 @@ return [
     'register_enable' => 'Enable user registration',
     'posts' => 'Posts',
     'default_article_category' => 'Default article category',
+    'short_code' => 'Short Code',
+    'short_code_enable' => 'Enable short code parsing',
 ];

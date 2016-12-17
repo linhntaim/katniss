@@ -59,7 +59,7 @@
     </script>
 @endsection
 @section('page_content')
-    <form method="post" action="{{ adminUrl('articles') }}">
+    <form class="check-slug" method="post" action="{{ adminUrl('articles') }}">
         {{ csrf_field() }}
         <div class="row">
             <div class="col-xs-12">
@@ -106,8 +106,16 @@
                 </div>
                 <div class="form-group">
                     <label for="inputFeaturedImage">{{ trans('label.picture') }}</label>
-                    <input class="form-control image-from-documents" id="inputFeaturedImage" name="featured_image"
-                           placeholder="{{ trans('label.picture') }}" type="text" value="{{ old('featured_image') }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputFeaturedImage" name="featured_image"
+                               placeholder="{{ trans('label.picture') }}" type="text" value="{{ old('featured_image') }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputFeaturedImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">

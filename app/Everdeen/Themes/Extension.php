@@ -69,25 +69,16 @@ abstract class Extension extends Plugin
 
     public function __construct()
     {
-        parent::__construct();
-
         if ($this::EDITABLE) {
             $this->fromDataConstruct((array)AppOptionHelper::get($this->getOptionName(), []));
         }
 
-        $this->__init();
+        parent::__construct();
     }
 
     public function getOptionName()
     {
         return 'extension_' . $this::NAME;
-    }
-
-    public function viewAdmin()
-    {
-        if (!$this::EDITABLE) abort(404);
-
-        return empty($this::THEME_NAME) ? HomeThemeFacade::commonAdminExtension($this::NAME) : HomeThemeFacade::adminExtension($this::NAME);
     }
 
     public function save(array $data = [], array $localizedData = [])

@@ -12,11 +12,15 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\Admin\AdminController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Themes\PluginControllerTrait;
+use Katniss\Everdeen\Themes\Plugins\Polls\Extension;
 use Katniss\Everdeen\Themes\Plugins\Polls\Repositories\ChoiceRepository;
 use Katniss\Everdeen\Themes\Plugins\Polls\Repositories\PollRepository;
 
 class ChoiceAdminController extends AdminController
 {
+    use PluginControllerTrait;
+
     protected $choiceRepository;
 
     public function __construct()
@@ -31,7 +35,7 @@ class ChoiceAdminController extends AdminController
         $choices = $this->choiceRepository->getPaged();
 
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.choice.index',
+            $this->_extra('choice.index', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),
             [
@@ -47,7 +51,7 @@ class ChoiceAdminController extends AdminController
         $pollRepository = new PollRepository();
 
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.choice.create',
+            $this->_extra('choice.create', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),
             [
@@ -104,7 +108,7 @@ class ChoiceAdminController extends AdminController
         $this->_description(trans('pages.admin_links_desc'));
 
         return $request->theme()->resolveExtraView(
-            'plugins.polls.admin.choice.edit',
+            $this->_extra('choice.edit', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),
             [

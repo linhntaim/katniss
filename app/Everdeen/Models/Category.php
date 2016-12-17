@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    const UNKNOWN = 0;
-    const LINK = 1;
-    const ARTICLE = 2;
+    const TYPE_LINK = 0;
+    const TYPE_ARTICLE = 1;
+    const TYPE_MEDIA = 2;
 
     use Translatable;
     public $useTranslationFallback = true;
@@ -27,7 +27,7 @@ class Category extends Model
 
     public function scopeOfLink($query)
     {
-        return $query->where('type', $this::LINK);
+        return $query->where('type', $this::TYPE_LINK);
     }
 
     public function links()
@@ -43,5 +43,15 @@ class Category extends Model
     public function posts()
     {
         return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
+    }
+
+    public function media()
+    {
+        return $this->belongsToMany(Media::class, 'categories_media', 'category_id', 'media_id');
+    }
+
+    public function getOrderedMediaAttribute()
+    {
+        return $this->media()->orderBy('order', 'asc')->get();
     }
 }

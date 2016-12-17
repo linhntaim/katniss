@@ -4,6 +4,7 @@ namespace Katniss\Everdeen\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Katniss\Everdeen\Models\UserApp;
+use Katniss\Everdeen\Repositories\UserAppRepository;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\MySqlConnection;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\DatabaseSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\FileSessionHandler;
@@ -99,7 +100,8 @@ class KatnissServiceProvider extends ServiceProvider
         });
 
         $this->app['user_app'] = $this->app->share(function () {
-            return UserApp::findOrFail(KATNISS_DEFAULT_APP);
+            $userAppRepository = new UserAppRepository(KATNISS_DEFAULT_APP);
+            return $userAppRepository->model();
         });
     }
 }

@@ -4,6 +4,10 @@ namespace Katniss\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Katniss\Everdeen\Events\PasswordChanged;
+use Katniss\Everdeen\Events\UserCreated;
+use Katniss\Everdeen\Listeners\PasswordChangedEmailing;
+use Katniss\Everdeen\Listeners\UserActivationEmailing;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -13,9 +17,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Katniss\Everdeen\Events\SomeEvent' => [
-            'Katniss\Everdeen\Listeners\EventListener',
+        UserCreated::class => [
+            UserActivationEmailing::class,
         ],
+        PasswordChanged::class => [
+            PasswordChangedEmailing::class,
+        ]
     ];
 
     /**

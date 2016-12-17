@@ -24,8 +24,9 @@
                         items.push($(this).attr('data-item'));
                     });
                     var api = new KatnissApi();
-                    api.post('link-categories/{{ $category->id }}/update-order', {
-                        link_ids: items
+                    api.put('link-categories/{{ $category->id }}', {
+                        link_ids: items,
+                        sort: 1
                     });
                 }
             });
@@ -79,6 +80,11 @@
                     @else
                         <p>{{ trans('label.list_empty') }}</p>
                     @endif
+                </div>
+            </div>
+            <div>
+                <div class="pull-right">
+                    <a role="button" class="btn btn-warning" href="{{ adminUrl('link-categories') }}">{{ trans('form.action_cancel') }}</a>
                 </div>
             </div>
         </div>

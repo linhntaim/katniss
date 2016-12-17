@@ -48,6 +48,7 @@ class PostRepository extends ByTypeRepository
                 $trans->slug = $transData['slug'];
                 $trans->description = $transData['description'];
                 $trans->content = clean($transData['content'], 'page');
+                $trans->raw_content = $transData['content'];
             }
 
             $page->save();
@@ -79,6 +80,7 @@ class PostRepository extends ByTypeRepository
                     $trans->slug = $transData['slug'];
                     $trans->description = $transData['description'];
                     $trans->content = clean($transData['content'], 'page');
+                    $trans->raw_content = $transData['content'];
                 } elseif ($page->hasTranslation($locale)) {
                     $deletedLocales[] = $locale;
                 }

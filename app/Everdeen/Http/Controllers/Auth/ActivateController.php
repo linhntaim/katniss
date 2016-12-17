@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Http\Controllers\Auth;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Utils\MailHelper;
 
 class ActivateController extends ViewController
@@ -14,6 +15,8 @@ class ActivateController extends ViewController
         parent::__construct();
 
         $this->viewPath = 'auth';
+
+        $this->middleware('guest');
     }
 
     public function getInactive(Request $request)
@@ -61,7 +64,8 @@ class ActivateController extends ViewController
         // if user has logged in but has the id not equals $id, the activation will not process
         // due to the middleware 'guest' applied to this controller in the constructor
 
-        $user = User::findOrFail($id);
+        $userRepository = new UserRepository($id);
+        $user = $userRepository->model();
         $active = $user->activation_code == $activation_code;
         if ($active) {
             $user->active = true;

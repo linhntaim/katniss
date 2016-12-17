@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Themes\Plugins\BaseLinks;
 
 use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Repositories\LinkCategoryRepository;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
 class Widget extends DefaultWidget
@@ -16,26 +17,32 @@ class Widget extends DefaultWidget
     const NAME = 'base_links';
     const DISPLAY_NAME = 'Base Links';
 
-    protected $category_id = '';
+    protected $categoryId = '';
 
     protected function __init()
     {
         parent::__init();
 
-        $this->category_id = $this->getProperty('category_id');
+        $this->categoryId = $this->getProperty('category_id');
     }
 
     public function viewAdminParams()
     {
+        $linkCategoryRepository = new LinkCategoryRepository();
+
         return array_merge(parent::viewAdminParams(), [
-            'category_id' => $this->category_id,
-            'categories' => Category::where('type', Category::LINK)->get(),
+            'category_id' => $this->categoryId,
+            'categories' => $linkCategoryRepository->getAll(),
         ]);
     }
 
     public function viewHomeParams()
     {
-        $links = empty($this->category_id) ? collect([]) : Category::findOrFail($this->category_id)->orderedLinks;
+        $links = collect([]);
+        if (!empty($this->categoryId)) {
+            $linkCategoryRepository = new LinkCategoryRepository();
+            $links = $linkCategoryRepository->model($this->categoryId)->orderedLinks;
+        }
         return array_merge(parent::viewHomeParams(), [
             'links' => $links,
         ]);
@@ -56,7 +63,7 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'category_id' => 'required|exists:categories,id,type,' . Category::LINK,
+            'category_id' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
         ]);
     }
 }

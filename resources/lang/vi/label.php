@@ -66,7 +66,10 @@ return [
     'phone' => 'Điện thoại',
     'website' => 'Trang web',
     'address' => 'Địa chỉ',
+    'latitude' => 'Vĩ độ',
+    'longitude' => 'Kinh độ',
     'copyright' => 'Bản quyền',
+    'type' => 'Kiểu',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -88,6 +91,8 @@ return [
     'to_lc' => 'đến',
 
     'not_set' => 'Chưa thiết lập',
+    'success' => 'Thành công',
+    'info' => 'Thông tin',
     'alert' => 'Cảnh báo',
     'warning' => 'Lưu ý',
     'error' => 'Lỗi',
@@ -125,6 +130,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'app_option' => 'Thiết lập',
     'app_option_lc' => 'thiết lập',
     'widget' => 'Công cụ hiển thị',
+    'extension_lc' => 'tiện ích mở rộng',
     'theme_placeholder' => 'Vùng hiển thị',
     'file' => 'Tập tin',
     'file_lc' => 'tập tin',
@@ -136,6 +142,9 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'article_lc' => 'chuyên đề',
     'page' => 'Trang',
     'page_lc' => 'trang',
+    'media_lc' => 'nghe nhìn',
+    'photo' => 'Ảnh',
+    'video' => 'Video',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

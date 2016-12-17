@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Laravel\Socialite\Facades\Socialite;
@@ -65,7 +66,7 @@ class LoginController extends ViewController
     /**
      * Show the application login form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function showLoginForm()
     {
@@ -168,7 +169,8 @@ class LoginController extends ViewController
                 ->withErrors([trans('error.fail_social_get_info') . ' (' . $ex->getMessage() . ')']);
         }
 
-        if ($authUser = User::fromSocial($provider, $socialUser->id, $socialUser->email)->first()) {
+        $userRepository = new UserRepository();
+        if ($authUser = $userRepository->getBySocial($provider, $socialUser->id, $socialUser->email)) {
             $this->guard()->login($authUser);
             return redirect($this->redirectPath());
         }
@@ -180,7 +182,7 @@ class LoginController extends ViewController
         }
 
         $userName = strtok($socialUser->email, '@');
-        $users = User::where('name', 'like', $userName . '%')->get();
+        $users = $userRepository->getLikeName($userName);
         if ($users->where('name', $userName)->count() > 0) {
             $userName = $userName . '.' . $users->count();
         }

@@ -60,7 +60,7 @@
     </script>
 @endsection
 @section('page_content')
-    <form method="post" action="{{ adminUrl('pages/{id}', ['id'=> $page->id]) }}">
+    <form class="check-slug" method="post" action="{{ adminUrl('pages/{id}', ['id'=> $page->id]) }}">
         {{ csrf_field() }}
         {{ method_field('put') }}
         <div class="row">
@@ -109,8 +109,16 @@
                             </a>)
                         @endif
                     </label>
-                    <input class="form-control image-from-documents" id="inputFeaturedImage" name="featured_image"
-                           placeholder="{{ trans('label.picture') }}" type="text" value="{{ $page->featured_image }}">
+                    <div class="input-group">
+                        <input class="form-control" id="inputFeaturedImage" name="featured_image"
+                               placeholder="{{ trans('label.picture') }}" type="text" value="{{ $page->featured_image }}">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-primary image-from-documents"
+                                    data-input-id="inputFeaturedImage">
+                                <i class="fa fa-server"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
@@ -129,7 +137,7 @@
                             $title = $trans ? $trans->title : '';
                             $slug = $trans ? $trans->slug : '';
                             $description = $trans ? $trans->description : '';
-                            $content = $trans ? $trans->content : '';
+                            $content = $trans ? $trans->raw_content : '';
                             ?>
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
