@@ -361,6 +361,12 @@ Sample Themes:
         - See [Template](#template) for more.
 
 #### Plugins
+
+Defines plugins for the site, which are extensions and widgets.
+
+Plugins can be common or theme-based.
+
+Widgets can be extension-based.
     
 ##### Extension
 
@@ -509,6 +515,8 @@ Ready for integrating with:
 - CKEditor.
 - Input field.
 
+Users cannot delete folder `profile_pictures` in their own directory.
+
 ### Links
 
 Manage links and categories of links.
@@ -530,3 +538,5 @@ There's always a default category needs to be set for articles.
 ### Media
 
 Manage media (photos, videos) and categories of them.
+
+Media in a category can be sorted.
