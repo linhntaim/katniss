@@ -4,7 +4,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ trans_choice('label.article', 2) }}</h1>
+                    <h1 class="text-uppercase">
+                        @if(!empty($category))
+                            {{ trans_choice('label.category', 1) }}: <em>{{ $category->name }}</em>
+                        @else
+                            {{ trans_choice('label.article', 2) }}
+                        @endif
+                    </h1>
                 </div>
             </div>
             <div class="row">
