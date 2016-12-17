@@ -13,7 +13,7 @@
                 @if(!empty($poll_description))
                     <div class="help-block small">{{ $poll_description }}</div>
                 @endif
-                <form class="poll-votes small" method="post" data-id="{{ $poll_id }}"
+                <form class="poll-votes" method="post" data-id="{{ $poll_id }}"
                       action="{{ addRdrUrl(addExtraUrl('web-api/polls/id', webApiUrl('extra')) . '&id=' . $poll_id) }}">
                     {{ csrf_field() }}
                     {{ method_field('put') }}
@@ -34,7 +34,7 @@
                         <button type="button" class="btn btn-success show-poll-result">{{ trans('polls.action_view_result') }}</button>
                     </div>
                 </form>
-                <div class="poll-result small" style="display: none">
+                <div class="poll-result" style="display: none">
                     <ul class="list-unstyled">
                         @foreach($choices as $choice)
                             <li>{{ $choice->name }}: {{ $choice->votes }} {{ trans_choice('polls.vote_lc', $choice->votes) }}</li>
