@@ -7,15 +7,11 @@
         }
     </style>
 @endsection
-@section('lib_scripts')
-    <script src="{{ _kExternalLink('google-maps-js-api') . '?key=' . env('GOOGLE_MAPS_API_KEY') . '&language=' . $site_locale .'&region=' . settings()->country }}"></script>
-    <script src="{{ libraryAsset('google_maps_markers.js') }}"></script>
-@endsection
 @section('extended_scripts')
     <script>
         {!! cdataOpen() !!}
         $(function () {
-            var mapMarker = new GoogleMapsMarkers($('#map'));
+            var mapMarker = createGoogleMapsMarker($('#map'));
             mapMarker.enableClickToAddress(function () {
                 $('[name="data[address]"]').val(mapMarker.clickResult.address);
                 $('[name="data[lat]"]').val(mapMarker.clickResult.latLng.lat());

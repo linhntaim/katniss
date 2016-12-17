@@ -65,7 +65,7 @@ class Extension extends BaseExtension
                 return Str::format('[map_marker id="{0}"]', $id);
             });
             return $facade;
-        }), 'ext:galleries');
+        }), 'ext:google_maps_markers');
 
         addExtraRouteResourceTriggers('admin/google-maps-markers', MapMarkerAdminController::class);
 
