@@ -1,7 +1,13 @@
 /**
  * Created by Nguyen Tuan Linh on 2016-12-13.
  */
+function createGoogleMapsMarker($map, $options) {
+    if ($map.length <= 0) return null;
+    return new GoogleMapsMarkers($map, $options);
+}
 function GoogleMapsMarkers($map, options) {
+    if ($map.length <= 0) return;
+
     if (typeof options === 'undefined') options = {};
 
     this.$map = $map;
