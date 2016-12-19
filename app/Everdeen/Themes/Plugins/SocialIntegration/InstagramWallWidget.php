@@ -30,7 +30,7 @@ class InstagramWallWidget extends DefaultWidget
 
         $this->username = defPr($this->getProperty('username'), '');
         $this->numOfColumns = defPr($this->getProperty('num_of_columns'), 3);
-        $this->numOfItems = defPr($this->getProperty('num_of_items'), 12);
+        $this->numOfItems = defPr($this->getProperty('num_of_items'), 9);
 
         $this->shared = Extension::getSharedData(SocialIntegrationExtension::NAME);
     }
@@ -39,7 +39,10 @@ class InstagramWallWidget extends DefaultWidget
     {
         if (!empty($this->username)) {
             enqueueThemeHeader(
-                '<style>.widget-instagram-wall ul.media-list li.media-item{width: calc(100%/' . $this->numOfColumns . ')}</style>',
+                '<style>
+.widget-instagram-wall .list{margin-bottom:5px;}
+.widget-instagram-wall .list .item{float:left;padding-left:0;padding-right:0;width:' . number_format(100 / $this->numOfColumns, 8) . '%}
+</style>',
                 'instagram_wall_style'
             );
             enqueueThemeFooter(
@@ -48,7 +51,7 @@ class InstagramWallWidget extends DefaultWidget
         $(\'.widget-instagram-wall .next\').on(\'click\', function(e) {
             e.preventDefault();
             var $this = $(this);
-            var $container = $this.closest(\'.widget-instagram-wall\').find(\'.media-list\');
+            var $container = $this.closest(\'.widget-instagram-wall\').find(\'.list\');
             var api = new KatnissApi(true);
             var params = {
                 id: $this.attr(\'data-widget-id\'),
@@ -62,13 +65,14 @@ class InstagramWallWidget extends DefaultWidget
                 $this.prev().addClass(\'hide\');
                 if(!isFailed) {
                     if(data.instagram_media.length > 0) {
+                        $container.removeClass(\'hide\');
                         var media;
                         for(var index in data.instagram_media) {
                             media = data.instagram_media[index];
-                            $container.append(\'<li id="instagram-\' + media.id + \'" class="media-item">\' + 
+                            $container.append(\'<div id="instagram-\' + media.id + \'" class="item">\' + 
                                 \'<a target="_blank" href="\' + media.link + \'" title="\' + media.caption.text + \'">\' +
-                                \'<img src="\' + media.images.low_resolution.url + \'" alt="\' + media.caption.text + \'">\' +
-                                \'</a></li>\');
+                                \'<img class="img-responsive" src="\' + media.images.low_resolution.url + \'" alt="\' + media.caption.text + \'">\' +
+                                \'</a></div>\');
                         }
                         $this.attr(\'data-max-id\', media.id);
                     }

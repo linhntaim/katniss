@@ -32,34 +32,31 @@ class PollWidget extends DefaultWidget
         var _isVoted = [];
         function initWidgetsOfPolls() {
             var cookie = Cookies.get(\'wdg:polls_widget:voted\');
-            if(cookie) {
-                _isVoted = cookie.split(\',\');
-                if(_isVoted.length > 0) {
-                    var $form;
-                    for(var index in _isVoted) {
-                        $form = $(\'.widget-polls form[data-id="\' + _isVoted[index] + \'"]\');
-                        $form.next().show().find(\'button.show-poll-votes\').hide();
-                        $form.hide();
-                    }
+            _isVoted = cookie ? cookie.split(\',\') : [];
+            $(\'.widget-polls form\').each(function() {
+                var $form = $(this);
+                if(_isVoted.length <= 0 || _isVoted.indexOf($form.attr(\'data-id\')) == -1) {
+                    $form.removeClass(\'hide\');
                 }
-            }
+                else {
+                    $form.next().removeClass(\'hide\').find(\'button.show-poll-votes\').hide();
+                }
+            });
         }
         initWidgetsOfPolls();
         $(\'.widget-polls form button.show-poll-result\').on(\'click\', function(e){
-            console.log("show result");
             e.preventDefault();
             
             var $form = $(this).closest(\'form\');
-            $form.next().show();
-            $form.hide();
+            $form.next().removeClass(\'hide\');
+            $form.addClass(\'hide\');
         });
         $(\'.widget-polls .poll-result button.show-poll-votes\').on(\'click\', function(e){
-            console.log("show votes");
             e.preventDefault();
             
             var $result = $(this).closest(\'.poll-result\');
-            $result.prev().show();
-            $result.hide();
+            $result.prev().removeClass(\'hide\');
+            $result.addClass(\'hide\');
         });
         $(\'.widget-polls form\').on(\'submit\', function(){
             var $form = $(this);
@@ -90,13 +87,13 @@ class PollWidget extends DefaultWidget
                         for(var index in choices) {
                             $resultList.append(\'<li>\' + choices[index].name + \': \'+ choices[index].votes + \' \' + (choices[index].votes == 1 ? \'vote\' : \'votes\') + \'</li>\')
                         }
-                        $result.show();
+                        $result.removeClass(\'hide\');
                         $result.find(\'button.show-poll-votes\').hide();
                         _isVoted.push(pollId);
                         Cookies.set(\'wdg:polls_widget:voted\', _isVoted.join(\',\'), {
                             expires: 365
                         });
-                        $form.hide();
+                        $form.addClass(\'hide\');
                     }
                 });
             }
