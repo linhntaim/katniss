@@ -23,8 +23,6 @@ abstract class Widget extends Plugin
 
     public function __construct(array $data = [])
     {
-        debug('widget constructor');
-
         if ($this::EDITABLE) {
             $this->fromDataConstruct($data);
         }

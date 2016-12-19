@@ -11,24 +11,6 @@
 |
 */
 Route::group([
-    'prefix' => 'web-api',
-], function () {
-    Route::any('extra', 'KatnissController@extra');
-
-    Route::group([
-        'namespace' => 'WebApi',
-    ], function () {
-        Route::get('instagram/access-token', 'InstagramController@getAccessToken');
-        Route::get('instagram/authorize', 'InstagramController@getAuthorize');
-
-        Route::get('user/csrf-token', 'UserController@getCsrfToken');
-        Route::get('user/quick-login', 'UserController@getQuickLogin');
-
-        Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
-    });
-});
-
-Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
 ], function () {
