@@ -40,6 +40,19 @@ class Kernel extends HttpKernel
             \Katniss\Everdeen\Http\Middleware\ApiMiddleware::class,
             \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
         ],
+
+        'web_api' => [
+            'throttle:60,1',
+            'bindings',
+            \Katniss\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Katniss\Http\Middleware\VerifyCsrfToken::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
+            \Katniss\Everdeen\Http\Middleware\WebApiMiddleware::class,
+        ],
     ];
 
     /**
