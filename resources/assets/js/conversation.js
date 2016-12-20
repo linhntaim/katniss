@@ -217,7 +217,8 @@ $(document).ready(function () {
             _self.$enter.on('click', function () {
                 var isChecked = $(this).is(':checked');
                 Cookies.set('enter_to_send', isChecked ? 1 : 0);
-                _self.$button.text(isChecked == 1 ? 'Enter' : 'Send');
+                _self.$button.text(isChecked == 1 ?
+                    _self.$button.attr('data-action-press-enter') : _self.$button.attr('data-action-send'));
             });
         },
         clearTypingTimeout: function () {

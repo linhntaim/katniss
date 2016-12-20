@@ -49,13 +49,13 @@
         <hr>
         <div id="message">
                 <textarea id="inputMessage" class="form-control no-border no-border-radius no-resize no-focus-outline"
-                          name="inputMessage" placeholder="Type a message (maximum of 140 characters)..." rows="1" cols="10"
+                          name="inputMessage" placeholder="{{ trans_choice('label.message', 1) }}" rows="1" cols="10"
                           maxlength="255" required></textarea>
         </div>
         <div id="actions">
             <label for="inputEnter" class="sr-only">{{ trans_choice('label.message', 1) }}</label>
             <input id="inputEnter" name="inputEnter" type="checkbox">
-            <button type="button" id="buttonSend"
+            <button type="button" id="buttonSend" data-action-send="{{ trans('form.action_send') }}" data-action-press-enter="{{ trans('form.action_press_enter') }}"
                     class="btn btn-default btn-block no-border no-border-radius no-focus-outline">
                 {{ trans('form.action_send') }}
             </button>

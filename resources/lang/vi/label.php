@@ -145,6 +145,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'media_lc' => 'nghe nhìn',
     'photo' => 'Ảnh',
     'video' => 'Video',
+    'message' => 'Tin nhắn',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

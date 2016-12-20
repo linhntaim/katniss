@@ -75,4 +75,5 @@ return [
     'action_start' => 'Start',
     'action_go_to' => 'Go to',
     'action_generate' => 'Generate',
+    'action_press_enter' => 'Enter',
 ];

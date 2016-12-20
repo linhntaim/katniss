@@ -145,6 +145,7 @@ click the button below to get another welcome email from us.',
     'media_lc' => 'media',
     'photo' => 'Photo|Photos',
     'video' => 'Video|Videos',
+    'message' => 'Message|Messages',
 
     'no_widget' => 'No widget is placed here',
 

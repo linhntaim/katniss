@@ -74,6 +74,10 @@ class MainMenuComposer
             homeUrl('example/articles'),
             trans_choice('label.article', 2)
         );
+        $menu->add(
+            homeUrl('example/public-conversation'),
+            trans('example_theme.public_conversation')
+        );
         $menu = contentFilter('main_menu', $menu);
         return $menu;
     }
