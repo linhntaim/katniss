@@ -4,7 +4,9 @@
 $(document).ready(function () {
     var HTML_LEFT_MESSAGE_TEMPLATE = '<div id="box-{id}" class="square-box {device}" style="{style}"></div><p id="message-{id}" class="bg-info message pull-left">{message}</p><div id="clearfix-{id}" class="clearfix"></div>';
     var HTML_RIGHT_MESSAGE_TEMPLATE = '<p id="message-{id}" class="bg-primary message pull-right">{message}</p><div id="clearfix-{id}" class="clearfix"></div>';
-    var HTML_TYPING_MESSAGE_TEMPLATE = '<span class="text-grey">Is typing...</span>';
+    var HTML_TYPING_MESSAGE_TEMPLATE = '<span class="text-grey">' + IS_TYPING_LABEL + '</span>';
+    var USER_BOXES_USER_ITEM_TEMPLATE = '<div class="square-box user" style="background-image:url({url})" title="{title}" data-toggle="tooltip" data-placement="bottom"></div>';
+    var USER_BOXES_DEVICE_ITEM_TEMPLATE = '<div class="square-box device" style="background-color:#{color}" title="' + ANONYMOUS_LABEL + '-{id}" data-toggle="tooltip" data-placement="bottom"></div>';
     var TYPING_TIMEOUT = 3000;
     var REMOVE_TYPING_TIMEOUT = TYPING_TIMEOUT * 2;
     var MESSAGE_FIRST_CHILD_HEIGHT = 10;
@@ -21,7 +23,6 @@ $(document).ready(function () {
             var _self = this;
             this.$users = this.$userBoxes.find('.users');
             this.$scrollControls = this.$userBoxes.find('.scrolling-control');
-            this.$users.width(32 * this.$users.children().length);
             this.$scrollControls.on('click', function () {
                 if ($(this).hasClass('pull-left')) {
                     _self.marginLeft += 32;
@@ -41,6 +42,8 @@ $(document).ready(function () {
             this.autoLayout();
         },
         autoLayout: function () {
+            this.$users.width(32 * this.$users.children().length);
+
             if (this.$users.width() > this.$userBoxes.width()) {
                 this.$scrollControls.removeClass('hide');
                 this.marginLeft = 16;
@@ -64,14 +67,12 @@ $(document).ready(function () {
         typing: false,
         isTypingMessage: false,
         removeTypingTimeout: null,
-        clearFixHeight: 0,
         topMessageId: null,
         forceScrollToBottom: false,
         enablePreviousMessages: true,
         init: function () {
             var _self = this;
             _self.$messageFirstChild = _self.$messages.children().eq(0);
-            _self.clearFixHeight = _self.$messageFirstChild.height();
             _self.autoSetHeight();
             _self.$wrapper.scroll(function () {
                 if (_self.$wrapper.scrollTop() == 0) {
@@ -80,7 +81,7 @@ $(document).ready(function () {
             });
         },
         height: function () {
-            return this.$self.height();
+            return this.$wrapper.height();
         },
         setHeight: function (height) {
             height = height < 0 ? 0 : height;
@@ -91,17 +92,18 @@ $(document).ready(function () {
             this.setHeight($(window).height() - _footer.height() - _header.height());
         },
         autoSetFirstClearFixHeight: function () {
+            var _self = this;
             var height = 0;
-            var $items = this.$messages.find('.clearfix');
+            var $items = _self.$messages.find('.clearfix');
+            _self.$messageFirstChild.height(MESSAGE_FIRST_CHILD_HEIGHT);
             for (var i = $items.length - 1; i >= 1; --i) {
                 height += $items.eq(i).height();
-                if (height + this.clearFixHeight > this.height()) {
-                    this.$messageFirstChild.height(MESSAGE_FIRST_CHILD_HEIGHT);
+                if (height + MESSAGE_FIRST_CHILD_HEIGHT > _self.height()) {
                     return;
                 }
             }
-            var restHeight = this.height() - height;
-            this.$messageFirstChild.height(restHeight < MESSAGE_FIRST_CHILD_HEIGHT ? MESSAGE_FIRST_CHILD_HEIGHT : restHeight);
+            var restHeight = _self.height() - height;
+            _self.$messageFirstChild.height(restHeight < 0 ? MESSAGE_FIRST_CHILD_HEIGHT : restHeight);
         },
         prepend: function (message) {
             this.$messageFirstChild.after(message);
@@ -261,7 +263,8 @@ $(document).ready(function () {
         },
         autoSetHeight: function () {
             var _self = this;
-            var textAreaHeight = _self.lineHeight * _self.$textArea.val().split('\n').length;
+            _self.$textArea.height(0);
+            var textAreaHeight = _self.$textArea.get(0).scrollHeight - _self.paddingTop - _self.paddingBottom;
             _self.$textArea.height(textAreaHeight);
             _self.setHeight(textAreaHeight + _self.paddingTop + _self.paddingBottom + 1);
 
@@ -306,7 +309,16 @@ $(document).ready(function () {
             }, function (isFailed, data, messages) {
                 conversationToPusher('conversation', {
                     message: data.message,
-                    device_id: data.device_id
+                    device_id: data.device_id,
+                    device: KATNISS_USER === false ? {
+                            id: CURRENT_DEVICE_REAL_ID,
+                            color: CONVERSATION_DEVICES[CURRENT_DEVICE_REAL_ID]
+                        } : null,
+                    user: KATNISS_USER !== false ? {
+                            id: CURRENT_DEVICE_REAL_ID,
+                            url: CONVERSATION_USERS[CURRENT_DEVICE_REAL_ID],
+                            title: KATNISS_USER.display_name
+                        } : null
                 });
             });
         }
@@ -390,6 +402,40 @@ $(document).ready(function () {
         _footer.autoSetHeight();
     });
 
+    function updateConversationUsersAndDevices(user, device) {
+        var needAutoLayout = false;
+        if (isSet(user)
+            && !isSet(CONVERSATION_USERS[user.id])) {
+            CONVERSATION_USERS[user.id] = user.url;
+
+            _header.$userBoxes.find('.square-box:last').after(
+                strReplaceMany(USER_BOXES_USER_ITEM_TEMPLATE, {
+                    id: user.id,
+                    url: user.url,
+                    title: user.title
+                })
+            );
+            _header.$userBoxes.find('.square-box:last').tooltip();
+            needAutoLayout = true;
+        }
+        if (isSet(device)
+            && !isSet(CONVERSATION_DEVICES[device.id])) {
+            CONVERSATION_DEVICES[device.id] = device.color;
+
+            _header.$userBoxes.find('.square-box:last').after(
+                strReplaceMany(USER_BOXES_DEVICE_ITEM_TEMPLATE, {
+                    id: device.id,
+                    color: device.color
+                })
+            );
+            _header.$userBoxes.find('.square-box:last').tooltip();
+            needAutoLayout = true;
+        }
+        if (needAutoLayout) {
+            _header.autoLayout();
+        }
+    }
+
     setupPushClient(
         ORTC_SERVER,
         ORTC_CLIENT_ID,
@@ -402,6 +448,7 @@ $(document).ready(function () {
             switch (pushObject.type) {
                 case 'conversation':
                     removeTyping();
+                    updateConversationUsersAndDevices(pushObject.data.user, pushObject.data.device);
                     var message = pushObject.data.message;
                     if (CURRENT_DEVICE_ID != pushObject.data.device_id) {
                         message.is_owner = false;

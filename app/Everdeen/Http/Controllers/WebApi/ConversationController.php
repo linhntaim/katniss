@@ -65,6 +65,13 @@ class ConversationController extends WebApiController
             ) {
                 abort(404);
             }
+        } elseif ($conversation->isGroup) {
+            $users = $conversation->users;
+            if (!$request->isAuth
+                || $users->where('id', $request->authUser->id)->count() <= 0
+            ) {
+                abort(404);
+            }
         }
 
         if ($request->isAuth) {
@@ -81,9 +88,12 @@ class ConversationController extends WebApiController
             'ORTC_CLIENT_SECRET' => env('ORTC_CLIENT_SECRET'),
             'CONVERSATION_ID' => $conversation->id,
             'CONVERSATION_CHANNEL' => $conversation->channel->code,
-            'CURRENT_DEVICE_ID' => deviceId(),
+            'CURRENT_DEVICE_ID' => deviceId() . '', // force convert to string
+            'CURRENT_DEVICE_REAL_ID' => deviceRealId(),
             'CONVERSATION_USERS' => json_encode($users->pluck('url_avatar_thumb', 'id')->all()),
             'CONVERSATION_DEVICES' => json_encode($devices->pluck('pivot.color', 'id')->all()),
+            'IS_TYPING_LABEL' => trans('label.is_typing'),
+            'ANONYMOUS_LABEL' => trans('label.anonymous'),
         ], JsQueue::TYPE_VAR, ['CONVERSATION_USERS', 'CONVERSATION_DEVICES']);
         $jsQueue = $jsQueue->flush(false);
 

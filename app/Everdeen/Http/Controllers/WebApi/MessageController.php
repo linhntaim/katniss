@@ -86,6 +86,23 @@ class MessageController extends WebApiController
             $conversation,
             $request->input('message_id', null)
         );
+
+        if ($conversation->isDirect) {
+            $users = $conversation->users;
+            if (!$request->isAuth
+                || $users->count() != 2
+                || $users->where('id', $request->authUser->id)->count() <= 0
+            ) {
+                abort(404);
+            }
+        } elseif ($conversation->isGroup) {
+            if (!$request->isAuth
+                || $conversation->users()->where('id', $request->authUser->id)->count() <= 0
+            ) {
+                abort(404);
+            }
+        }
+
         $result = [];
         foreach ($messages as $message) {
             $result[] = [

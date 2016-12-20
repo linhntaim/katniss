@@ -24,7 +24,7 @@
         {{ method_field('put') }}
         <div class="form-group img-edit-wrapper">
             <img id="profile-user-img" class="profile-user-img img-responsive img-circle"
-                 alt="{{ $auth_user->name }}" src="{{ $auth_user->url_avatar }}">
+                 alt="{{ $auth_user->name }}" src="{{ $auth_user->url_avatar_thumb }}">
             <div class="img-edit-action">
                 <div class="img-edit profile-user img-circle cropper-image-view" data-img="#profile-user-img">
                     <span>{{ trans('form.action_edit') }}</span>

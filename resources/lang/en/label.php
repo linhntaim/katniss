@@ -123,6 +123,7 @@ click the button below to get another welcome email from us.',
     'enter_password_for_session' => 'Enter your password to retrieve your session',
     'or_different_sign_in' => 'Or sign in as a different user',
     'function_enter_to_send' => 'Check it to enable pressing Enter to send',
+    'is_typing' => 'Typing...',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',
