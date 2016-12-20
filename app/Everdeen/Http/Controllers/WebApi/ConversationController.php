@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
 use Closure;
+use Illuminate\Database\Eloquent\Collection;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ConversationRepository;
@@ -50,15 +51,37 @@ class ConversationController extends WebApiController
     protected function messages(Request $request, $id)
     {
         $conversation = $this->conversationRepository->model($id);
+        $users = collect([]);
+        $devices = collect([]);
         if ($conversation->isPublic) {
             $this->conversationRepository->updateCurrentDevice();
+            $users = $conversation->users()->get();
+            $devices = $conversation->devices()->get();
+        } elseif ($conversation->isDirect) {
+            $users = $conversation->users;
+            if (!$request->isAuth
+                || $users->count() != 2
+                || $users->where('id', $request->authUser->id)->count() <= 0
+            ) {
+                abort(404);
+            }
         }
 
-        $users = $conversation->users;
-        $devices = $conversation->devices;
+        if ($request->isAuth) {
+            $users = $this->changeFirstPosition($users, $request->authUser->id);
+        } else {
+            $devices = $this->changeFirstPosition($devices, deviceRealId());
+        }
 
         $jsQueue = new JsQueue();
-        $jsQueue->add('abc', [
+        $jsQueue->add('global-vars', [
+            'ORTC_SERVER' => env('ORTC_SERVER'),
+            'ORTC_CLIENT_ID' => session()->getId(),
+            'ORTC_CLIENT_KEY' => env('ORTC_CLIENT_KEY'),
+            'ORTC_CLIENT_SECRET' => env('ORTC_CLIENT_SECRET'),
+            'CONVERSATION_ID' => $conversation->id,
+            'CONVERSATION_CHANNEL' => $conversation->channel->code,
+            'CURRENT_DEVICE_ID' => deviceId(),
             'CONVERSATION_USERS' => json_encode($users->pluck('url_avatar_thumb', 'id')->all()),
             'CONVERSATION_DEVICES' => json_encode($devices->pluck('pivot.color', 'id')->all()),
         ], JsQueue::TYPE_VAR, ['CONVERSATION_USERS', 'CONVERSATION_DEVICES']);
@@ -70,5 +93,18 @@ class ConversationController extends WebApiController
             'conversation_devices' => $devices,
             'js_queue' => $jsQueue,
         ]);
+    }
+
+    protected function changeFirstPosition(Collection $collection, $itemId)
+    {
+        if ($collection->count() <= 0) return $collection;
+
+        $searchIndex = $collection->search(function ($item) use ($itemId) {
+            return $item->id == $itemId;
+        });
+        if ($searchIndex === false) return $collection;
+
+        $collection->prepend($collection->splice($searchIndex, 1)->first());
+        return $collection;
     }
 }

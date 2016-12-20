@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Katniss\Everdeen\Models\AppOption;
 use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Conversation;
 use Katniss\Everdeen\Models\Link;
 use Katniss\Everdeen\Models\Permission;
 use Katniss\Everdeen\Models\Role;
@@ -225,5 +226,7 @@ class DefaultSeeder extends Seeder
 
         $conversationRepository = new ConversationRepository();
         $conversationRepository->create();
+        $conversation = $conversationRepository->create(Conversation::TYPE_DIRECT);
+        $conversation->users()->attach([2, 3]);
     }
 }

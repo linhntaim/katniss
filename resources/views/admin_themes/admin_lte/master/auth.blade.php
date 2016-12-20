@@ -36,7 +36,6 @@
 <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @yield('lib_scripts')
 <script>
-    {!! cdataOpen() !!}
     $(function () {
         $('[type=checkbox]').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -44,7 +43,6 @@
             increaseArea: '20%' // optional
         });
     });
-    {!! cdataClose() !!}
 </script>
 {!! extScripts() !!}
 @yield('extended_scripts')

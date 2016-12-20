@@ -24,8 +24,15 @@
         <div id="user-boxes">
             <div class="scrolling-box">
                 <div class="users clearfix">
+                    @foreach($conversation_users as $user)
+                        <div class="square-box user" style="background-image:url({{ $user->url_avatar_thumb }})"
+                             title="{{ $is_auth && $auth_user->id == $user->id ? trans('label.you') :  $user->display_name }}"
+                             data-toggle="tooltip" data-placement="bottom"></div>
+                    @endforeach
                     @foreach($conversation_devices as $device)
-                        <div class="square-box device" style="background:#{{ $device->pivot->color }}" title="{{ trans('label.anonymous') }}-{{ $device->id }}"></div>
+                        <div class="square-box device" style="background-color:#{{ $device->pivot->color }}"
+                             title="{{ $device->uuid == deviceId() ? trans('label.you') : trans('label.anonymous') . '-' . $device->id }}"
+                             data-toggle="tooltip" data-placement="bottom"></div>
                     @endforeach
                 </div>
             </div>
@@ -54,7 +61,7 @@
         </div>
         <div id="actions">
             <label for="inputEnter" class="sr-only">{{ trans_choice('label.message', 1) }}</label>
-            <input id="inputEnter" name="inputEnter" type="checkbox">
+            <input id="inputEnter" name="inputEnter" type="checkbox" title="{{ trans('label.function_enter_to_send') }}" data-toggle="tooltip" data-placement="top">
             <button type="button" id="buttonSend" data-action-send="{{ trans('form.action_send') }}" data-action-press-enter="{{ trans('form.action_press_enter') }}"
                     class="btn btn-default btn-block no-border no-border-radius no-focus-outline">
                 {{ trans('form.action_send') }}
@@ -67,16 +74,6 @@
 <script src="{{ _kExternalLink('bootstrap') }}"></script>
 <script src="{{ _kExternalLink('realtime-co-ortc') }}"></script>
 {!! extScripts() !!}
-<script>
-    var ORTC_SERVER = '{{ env('ORTC_SERVER') }}';
-    var ORTC_CLIENT_ID = '{{ session()->getId() }}';
-    var ORTC_CLIENT_KEY = '{{ env('ORTC_CLIENT_KEY') }}';
-    var ORTC_CLIENT_SECRET = '{{ env('ORTC_CLIENT_SECRET') }}';
-
-    var CONVERSATION_ID = '{{ $conversation->id }}';
-    var CONVERSATION_CHANNEL = '{{ $conversation->channel->code }}';
-    var CURRENT_DEVICE_ID = '{{ deviceId() }}';
-</script>
 {!! $js_queue !!}
 <script src="{{ libraryAsset('katniss.conversation.js') }}"></script>
 </body>

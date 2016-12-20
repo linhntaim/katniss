@@ -12,7 +12,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         function urlParam(name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results == null) {
@@ -57,7 +56,6 @@
             }
             $('#elfinder').elfinder(elfinderOptions);
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('body')

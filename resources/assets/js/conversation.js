@@ -2,7 +2,7 @@
  * Created by Nguyen Tuan Linh on 2016-07-22.
  */
 $(document).ready(function () {
-    var HTML_LEFT_MESSAGE_TEMPLATE = '<div id="box-{id}" class="square-box" style="{style}"></div><p id="message-{id}" class="bg-info message pull-left">{message}</p><div id="clearfix-{id}" class="clearfix"></div>';
+    var HTML_LEFT_MESSAGE_TEMPLATE = '<div id="box-{id}" class="square-box {device}" style="{style}"></div><p id="message-{id}" class="bg-info message pull-left">{message}</p><div id="clearfix-{id}" class="clearfix"></div>';
     var HTML_RIGHT_MESSAGE_TEMPLATE = '<p id="message-{id}" class="bg-primary message pull-right">{message}</p><div id="clearfix-{id}" class="clearfix"></div>';
     var HTML_TYPING_MESSAGE_TEMPLATE = '<span class="text-grey">Is typing...</span>';
     var TYPING_TIMEOUT = 3000;
@@ -195,11 +195,13 @@ $(document).ready(function () {
                 }
             }).on('startTyping', function () {
                 conversationToPusher('typing', {
-                    value: true
+                    value: true,
+                    device_id: CURRENT_DEVICE_ID
                 });
             }).on('endTyping', function () {
                 conversationToPusher('typing', {
-                    value: false
+                    value: false,
+                    device_id: CURRENT_DEVICE_ID
                 });
             }).focus();
             _self.$button.on('click', function () {
@@ -332,10 +334,10 @@ $(document).ready(function () {
                 {
                     id: messages[i].id,
                     message: htmlMessage,
-                    style: 'background:' +
-                    (isSet(messages[i].device_id) ?
-                        '#' + CONVERSATION_DEVICES[messages[i].device_id]
-                        : 'url(' + CONVERSATION_DEVICES[messages[i].user_id] + ')' )
+                    device: isSet(messages[i].device_id) ? 'device' : 'user',
+                    style: isSet(messages[i].device_id) ?
+                        'background-color:#' + CONVERSATION_DEVICES[messages[i].device_id]
+                        : 'background-image:url(' + CONVERSATION_USERS[messages[i].user_id] + ')'
                 }
             );
             _main.prepend(htmlMessage);
@@ -357,10 +359,10 @@ $(document).ready(function () {
             {
                 id: message.id,
                 message: htmlMessage,
-                style: 'background:' +
-                (isSet(message.device_id) ?
-                    '#' + CONVERSATION_DEVICES[message.device_id]
-                    : 'url(' + CONVERSATION_DEVICES[message.user_id] + ')' )
+                device: isSet(message.device_id) ? 'device' : 'user',
+                style: isSet(message.device_id) ?
+                    'background-color:#' + CONVERSATION_DEVICES[message.device_id]
+                    : 'background-image:url(' + CONVERSATION_USERS[message.user_id] + ')'
             }
         );
         _main.append(htmlMessage);
@@ -407,11 +409,13 @@ $(document).ready(function () {
                     addMessage(message);
                     break;
                 case 'typing':
-                    if (pushObject.data.value == true) {
-                        addTyping();
-                    }
-                    else {
-                        removeTyping();
+                    if (CURRENT_DEVICE_ID != pushObject.data.device_id) {
+                        if (pushObject.data.value == true) {
+                            addTyping();
+                        }
+                        else {
+                            removeTyping();
+                        }
                     }
                     break;
                 default:
@@ -421,4 +425,6 @@ $(document).ready(function () {
         }
     });
     registerPusher();
+
+    $('[data-toggle="tooltip"]').tooltip();
 });

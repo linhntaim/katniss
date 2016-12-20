@@ -6,7 +6,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         function enableAlongCheckbox(id) {
             $(id).on('ifChanged', function () {
                 $('[data-enable-target="' + id + '"]').prop('disabled', !$(this).is(':checked'));
@@ -33,7 +32,6 @@
             enableAlongCheckbox('#inputGoogleShareEnable');
             enableAlongCheckbox('#inputInstagramEnable');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 

@@ -12,7 +12,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             var elfinderOptions = {
                 lang: '{{ $site_locale }}',
@@ -46,7 +45,6 @@
             }
             $('#elfinder').elfinder(elfinderOptions);
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('body')

@@ -6,7 +6,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
@@ -14,7 +13,6 @@
                 increaseArea: '20%' // optional
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addErrorUrl(addRdrUrl(addExtraUrl('admin/polls', adminUrl('extra')), addExtraUrl('admin/polls', adminUrl('extra')))) }}">

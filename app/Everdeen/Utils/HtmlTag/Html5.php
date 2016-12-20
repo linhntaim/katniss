@@ -19,9 +19,7 @@ class Html5
     public static function jsInline($content)
     {
         return '<script>
-' . cdataOpen() . '
 ' . $content . '
-' . cdataClose() . '
 </script>';
     }
 

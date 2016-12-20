@@ -1,5 +1,4 @@
 <script>
-    {!! cdataOpen() !!}
     function openMyDocuments(fromInputId, documentType) {
         documentType = typeof documentType === 'undefined' ? '' : '?custom_type=' + documentType;
         window.open(
@@ -23,5 +22,4 @@
             openMyDocuments(id, $this.attr('data-document-types'));
         });
     });
-    {!! cdataClose() !!}
 </script>

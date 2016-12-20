@@ -12,8 +12,13 @@ class Message extends Model
 
     public function getIsOwnerAttribute()
     {
-        return (!empty($this->attributes['user_id']) && deviceRealId() == $this->attributes['user_id'])
-            || (!empty($this->attributes['device_id']) && deviceRealId() == $this->attributes['device_id']);
+        $device = device();
+        return (!empty($this->attributes['user_id'])
+                && $device instanceof User
+                && deviceRealId() == $this->attributes['user_id'])
+            || (!empty($this->attributes['device_id'])
+                && $device instanceof Device
+                && deviceRealId() == $this->attributes['device_id']);
     }
 
     public function getIsFromUserAttribute()

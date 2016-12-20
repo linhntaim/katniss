@@ -19,7 +19,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('#elfinder').elfinder({
                 lang: '{{ $site_locale }}',
@@ -44,7 +43,6 @@
                 dateFormat : '{{ $dateFormat }} {{ $timeFormat }}'
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')

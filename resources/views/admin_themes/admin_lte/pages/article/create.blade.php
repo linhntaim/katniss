@@ -19,7 +19,6 @@
 @section('extended_scripts')
     @include('file_manager.open_documents_script')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             $('.slug-from').each(function () {
@@ -55,7 +54,6 @@
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')

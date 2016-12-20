@@ -71,6 +71,7 @@ return [
     'copyright' => 'Copyright',
     'type' => 'Type',
     'anonymous' => 'Anonymous',
+    'you' => 'You',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -121,6 +122,7 @@ click the button below to get another welcome email from us.',
     '_member_since' => 'Member since :time',
     'enter_password_for_session' => 'Enter your password to retrieve your session',
     'or_different_sign_in' => 'Or sign in as a different user',
+    'function_enter_to_send' => 'Check it to enable pressing Enter to send',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

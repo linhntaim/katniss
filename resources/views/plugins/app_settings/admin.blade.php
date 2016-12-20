@@ -8,7 +8,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
@@ -17,7 +16,6 @@
             });
             $('.select2').select2();
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 

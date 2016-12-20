@@ -6,11 +6,9 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addErrorUrl(addRdrUrl(addExtraUrl('admin/poll-choices', adminUrl('extra')), addExtraUrl('admin/poll-choices', adminUrl('extra')))) }}">

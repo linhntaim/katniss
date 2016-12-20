@@ -9,11 +9,9 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             new CropImageModal($('body'), 1, 'user/{{ $auth_user->id }}/avatar/cropper-js');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('modals')

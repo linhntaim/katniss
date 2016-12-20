@@ -104,6 +104,12 @@ hr {
     float: left;
 }
 
+.square-box.user {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 main > .wrapper {
     overflow: auto;
 }

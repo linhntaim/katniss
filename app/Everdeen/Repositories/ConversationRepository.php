@@ -54,7 +54,9 @@ class ConversationRepository extends ModelRepository
         $currentDevice = device();
         try {
             if ($currentDevice instanceof User) {
-                $this->model()->users()->sync(deviceRealId());
+                if ($conversation->users()->where('id', deviceRealId())->count() <= 0) {
+                    $conversation->users()->attach(deviceRealId());
+                }
             } elseif ($currentDevice instanceof Device) {
                 $colors = $conversation->devices
                     ->pluck('pivot.color', 'id')
