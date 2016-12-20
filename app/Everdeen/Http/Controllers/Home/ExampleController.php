@@ -167,4 +167,12 @@ class ExampleController extends ViewController
             'category' => $category,
         ]);
     }
+
+    public function getPublicConversation()
+    {
+        $this->_title(trans('example_theme.public_conversation'));
+        $this->_description(trans('example_theme.public_conversation'));
+
+        return $this->_any('public_conversation');
+    }
 }

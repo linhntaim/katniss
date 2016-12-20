@@ -70,6 +70,7 @@ return [
     'longitude' => 'Kinh độ',
     'copyright' => 'Bản quyền',
     'type' => 'Kiểu',
+    'anonymous' => 'Khách ghé thăm',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

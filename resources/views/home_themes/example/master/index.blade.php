@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @yield('site_meta')
     <title>{!! themeTitle() !!}</title>
-    <meta name="author" content="{{ themeAuthor() }}">
     <meta name="description" content="{!! themeDescription() !!}">
     <meta name="keywords" content="{!! themeKeywords() !!}">
+    <meta name="author" content="{!! themeAuthor() !!}">
     <meta name="application-name" content="{!! themeApplicationName() !!}">
     @include('fav_icons')
     {!! libStyles() !!}
@@ -15,8 +16,6 @@
     {!! extStyles() !!}
     @yield('extended_styles')
     {!! themeHeader() !!}
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
     <script src="{{ _kExternalLink('html5shiv') }}"></script>
     <script src="{{ _kExternalLink('respond') }}"></script>

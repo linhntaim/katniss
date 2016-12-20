@@ -22,6 +22,7 @@ use Katniss\Everdeen\Themes\WidgetsFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Utils\CurrentDevice;
 use Katniss\Everdeen\Utils\ExtraActions\ActionHook;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentFilter;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentPlace;
@@ -1365,5 +1366,47 @@ function longTimeFormatsAsOptions($selected)
 function shortTimeFormatsAsOptions($selected)
 {
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
+}
+
+#endregion
+
+#region CurrentDevice
+function device()
+{
+    return CurrentDevice::getDevice();
+}
+
+function hasDevice()
+{
+    return !empty(CurrentDevice::getDevice());
+}
+
+function deviceId()
+{
+    return CurrentDevice::getDeviceId();
+}
+
+function deviceSecret()
+{
+    return CurrentDevice::getDeviceSecret();
+}
+
+function deviceRealId()
+{
+    return CurrentDevice::getDeviceRealId();
+}
+
+#endregion
+
+#region Colors
+function rgbToHex($rgb = [])
+{
+    if (!is_array($rgb) || count($rgb) != 3) {
+        $rgb = [rand(0, 255), rand(0, 255), rand(0, 255)];
+    }
+    $hex[0] = str_pad(dechex($rgb[0]), 2, '0', STR_PAD_LEFT);
+    $hex[1] = str_pad(dechex($rgb[1]), 2, '0', STR_PAD_LEFT);
+    $hex[2] = str_pad(dechex($rgb[2]), 2, '0', STR_PAD_LEFT);
+    return implode('', $hex);
 }
 #endregion

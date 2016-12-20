@@ -19,11 +19,6 @@ abstract class AdminTheme extends Theme
         parent::__construct(Theme::TYPE_ADMIN);
     }
 
-    public function extensions()
-    {
-        return [];
-    }
-
     public function register($isAuth = false)
     {
         HomeThemeFacade::mockAdmin(); // make home themes can extend admin functionality

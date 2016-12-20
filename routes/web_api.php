@@ -22,4 +22,8 @@ Route::group([
     Route::get('user/quick-login', 'UserController@getQuickLogin');
 
     Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
+
+    Route::get('conversations/{id}', 'ConversationController@show');
+    Route::get('messages', 'MessageController@index');
+    Route::post('messages', 'MessageController@store');
 });

@@ -16,7 +16,8 @@
         "zizaco/entrust": "^1.7",
         "mcamara/laravel-localization": "^1.1",
         "larabros/elogram": "^1.2",
-        "thunderer/shortcode": "^0.6.4"
+        "thunderer/shortcode": "^0.6.4",
+        "moontoast/math": "^1.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

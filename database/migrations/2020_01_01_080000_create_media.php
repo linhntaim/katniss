@@ -14,6 +14,9 @@ class CreateMedia extends Migration
     public function up()
     {
         Schema::create('media', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
             $table->bigIncrements('id');
             $table->string('url');
             $table->tinyInteger('type')->unsigned()->default(0); // 1 = PHOTO;

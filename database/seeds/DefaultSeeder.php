@@ -10,6 +10,7 @@ use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserApp;
 use Katniss\Everdeen\Models\UserSetting;
+use Katniss\Everdeen\Repositories\ConversationRepository;
 
 class DefaultSeeder extends Seeder
 {
@@ -221,5 +222,8 @@ class DefaultSeeder extends Seeder
             'active' => true,
             'order' => 2
         ]);
+
+        $conversationRepository = new ConversationRepository();
+        $conversationRepository->create();
     }
 }

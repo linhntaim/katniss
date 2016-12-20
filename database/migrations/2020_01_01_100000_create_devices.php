@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Schema\Blueprint;
 
-class CreateUserApps extends Migration
+class CreateDevices extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateUserApps extends Migration
      */
     public function up()
     {
-        Schema::create('user_apps', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->unsigned();
+            $table->uuid('uuid');
             $table->string('secret');
-            $table->string('name');
-            $table->string('version');
             $table->timestamps();
 
-            $table->index('created_at');
+            $table->index(['uuid', 'secret', 'created_at']);
         });
     }
 
@@ -35,6 +33,6 @@ class CreateUserApps extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_apps');
+        Schema::dropIfExists('devices');
     }
 }

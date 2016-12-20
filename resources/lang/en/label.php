@@ -70,6 +70,7 @@ return [
     'longitude' => 'Longitude',
     'copyright' => 'Copyright',
     'type' => 'Type',
+    'anonymous' => 'Anonymous',
 
     'settings' => 'Settings',
     'country' => 'Country',

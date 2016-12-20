@@ -29,11 +29,6 @@ abstract class HomeTheme extends Theme
         WidgetsFacade::register();
     }
 
-    public function extensions()
-    {
-        return [];
-    }
-
     public function placeholders()
     {
         return [];
@@ -75,7 +70,7 @@ abstract class HomeTheme extends Theme
         parent::registerExtScripts($is_auth);
 
         $this->extJsQueue->add('global_vars', [
-            'KATNISS_USER_REQUIRED' => 'true',
+            'KATNISS_USER_REQUIRED' => 'false',
         ], JsQueue::TYPE_VAR, ['KATNISS_USER_REQUIRED'], true);
         $this->extJsQueue->add('global-app-script', libraryAsset('katniss.home.js'));
     }

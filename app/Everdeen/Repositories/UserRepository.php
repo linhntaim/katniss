@@ -47,6 +47,11 @@ class UserRepository extends ModelRepository
         return User::where('name', 'like', $name . '%')->get();
     }
 
+    public function getByNameAndHashedPassword($name, $hashedPassword)
+    {
+        return User::where('name', $name)->where('password', $hashedPassword)->first();
+    }
+
     /**
      * @param $name
      * @param $displayName

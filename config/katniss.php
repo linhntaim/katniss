@@ -642,5 +642,6 @@ return [
         'select2-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css',
         'gmap3' => 'https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js',
         'google-maps-js-api' => 'https://maps.googleapis.com/maps/api/js',
+        'realtime-co-ortc' => 'http://messaging-public.realtime.co/js/2.1.0/ortc.js',
     ],
 ];
