@@ -31,6 +31,7 @@ class Kernel extends HttpKernel
             \Katniss\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
+            \Katniss\Everdeen\Http\Middleware\ViewMiddleware::class,
         ],
 
         'api' => [
@@ -49,6 +50,7 @@ class Kernel extends HttpKernel
             \Katniss\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Katniss\Everdeen\Http\Middleware\KatnissMiddleware::class,
+            \Katniss\Everdeen\Http\Middleware\WebApiMiddleware::class,
         ],
     ];
 
@@ -67,8 +69,7 @@ class Kernel extends HttpKernel
         'guest' => \Katniss\Everdeen\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        'view' => \Katniss\Everdeen\Http\Middleware\ViewMiddleware::class,
-        'webApi' => \Katniss\Everdeen\Http\Middleware\WebApiMiddleware::class,
+        'theme' => \Katniss\Everdeen\Http\Middleware\ThemeMiddleware::class,
 
         'device' => \Katniss\Everdeen\Http\Middleware\DeviceMiddleware::class,
         'entrust' => \Katniss\Everdeen\Http\Middleware\AuthorizationWithEntrust::class,

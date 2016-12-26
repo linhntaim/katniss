@@ -8,7 +8,7 @@
 
 namespace Katniss\Everdeen\Themes\Plugins\ExtraHtml;
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 use Katniss\Everdeen\Utils\AppConfig;
 
@@ -29,7 +29,7 @@ class Widget extends DefaultWidget
     public function viewAdminParams()
     {
         return array_merge(parent::viewAdminParams(), [
-            'extended_localizing_path' => HomeThemeFacade::commonPluginPath($this::NAME, 'admin_localizing')
+            'extended_localizing_path' => ThemeFacade::commonPluginPath($this::NAME, 'admin_localizing')
         ]);
     }
 

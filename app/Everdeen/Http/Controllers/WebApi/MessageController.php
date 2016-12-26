@@ -52,7 +52,7 @@ class MessageController extends WebApiController
             $message = $this->messageRepository->create(
                 $request->input('conversation_id'),
                 $request->input('content'),
-                $request->isAuth,
+                $request->isAuth(),
                 deviceRealId()
             );
 
@@ -89,15 +89,15 @@ class MessageController extends WebApiController
 
         if ($conversation->isDirect) {
             $users = $conversation->users;
-            if (!$request->isAuth
+            if (!$request->isAuth()
                 || $users->count() != 2
-                || $users->where('id', $request->authUser->id)->count() <= 0
+                || $users->where('id', $request->authUser()->id)->count() <= 0
             ) {
                 abort(404);
             }
         } elseif ($conversation->isGroup) {
-            if (!$request->isAuth
-                || $conversation->users()->where('id', $request->authUser->id)->count() <= 0
+            if (!$request->isAuth()
+                || $conversation->users()->where('id', $request->authUser()->id)->count() <= 0
             ) {
                 abort(404);
             }

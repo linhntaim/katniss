@@ -103,6 +103,19 @@ class DefaultSeeder extends Seeder
         ));
         $tester->attachRole($tester_role);
 
+        AppOption::create([
+            'key' => 'admin_theme',
+            'rawValue' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
+            'data_type' => 'string',
+            'registered_by' => 'theme:admin',
+        ]);
+        AppOption::create([
+            'key' => 'home_theme',
+            'rawValue' => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME,
+            'data_type' => 'string',
+            'registered_by' => 'theme:home',
+        ]);
+
         $locales = ['en', 'vi'];
         $category = new Category();
         $category->type = Category::TYPE_ARTICLE;

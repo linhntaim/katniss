@@ -64,7 +64,8 @@ class Handler extends ExceptionHandler
     {
         $e = parent::prepareException($e);
         if ($e instanceof MethodNotAllowedHttpException
-        || $e instanceof ReflectionException) {
+            || $e instanceof ReflectionException
+        ) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
@@ -80,7 +81,7 @@ class Handler extends ExceptionHandler
     protected function renderHttpException(HttpException $e)
     {
         // firstly, try to render error by theme
-        $checkPath = checkPath();
+        $checkPath = request()->getUrlPathInfo();
         if (!$checkPath->api && !$checkPath->webApi && $checkPath->locale) {
             $response = $this->renderHttpExceptionByTheme($e, $checkPath->admin);
             if (!empty($response->getContent())) {

@@ -9,7 +9,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <iframe src="{{ webApiUrl('conversations/1') }}?messages=1"></iframe>
+                    <iframe src="{{ addThemeUrl(webApiUrl('conversations/1') . '?messages=1', 'conversation') }}"></iframe>
                 </div>
             </div>
         </div>

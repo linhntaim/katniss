@@ -6,7 +6,7 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 
 class WidgetController extends ApiController
 {
@@ -22,7 +22,7 @@ class WidgetController extends ApiController
     public function sort(Request $request)
     {
         if (!$this->customValidate($request, [
-            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
+            'placeholder' => 'required|in:' . implode(',', array_keys(ThemeFacade::placeholders())),
             'widget_ids' => 'required|array|exists:theme_widgets,id',
         ])
         ) {

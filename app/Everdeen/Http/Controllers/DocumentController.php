@@ -81,7 +81,7 @@ class DocumentController extends ViewController
 
     public function getConnector(Request $request)
     {
-        $ownDirectory = $request->authUser->ownDirectory;
+        $ownDirectory = $request->authUser()->ownDirectory;
         $uploadAllow = [
             'image/jpeg',
             'image/png',

@@ -8,10 +8,7 @@ use Katniss\Everdeen\Utils\DataStructure\Pagination\PaginationRender;
 
 class ViewController extends KatnissController
 {
-    /**
-     * @var string
-     */
-    protected $viewPath;
+    use ViewControllerTrait;
 
     protected $paginationRender;
 
@@ -19,109 +16,11 @@ class ViewController extends KatnissController
     {
         parent::__construct();
 
-        $this->middleware('view');
+        $this->middleware('theme');
 
         $this->viewPath = '';
         $this->paginationRender = new PaginationRender();
     }
-
-    #region Theme
-    /**
-     * Get global view params
-     *
-     * @return array
-     */
-    protected function _params()
-    {
-        return $this->currentRequest->theme()->viewParams();
-    }
-
-    protected function _title($title, $use_root = true, $separator = '&raquo;')
-    {
-        return $this->currentRequest->theme()->title($title, $use_root, $separator);
-    }
-
-    protected function _description($description = '')
-    {
-        return $this->currentRequest->theme()->description($description);
-    }
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    protected function _page($name)
-    {
-        return $this->currentRequest->theme()->page($name);
-    }
-
-    protected function _pageExists($view)
-    {
-        return view()->exists($this->_page($this->viewPath . '.' . $view));
-    }
-
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _view($data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath), $data, $mergeData);
-    }
-
-    /**
-     * @param $view
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _any($view, $data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath . '.' . $view), $data, $mergeData);
-    }
-
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _index($data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath . '.index'), $data, $mergeData);
-    }
-
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _create($data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath . '.create'), $data, $mergeData);
-    }
-
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _edit($data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath . '.edit'), $data, $mergeData);
-    }
-
-    /**
-     * @param array $data
-     * @param array $mergeData
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    protected function _show($data = [], $mergeData = [])
-    {
-        return view($this->_page($this->viewPath . '.show'), $data, $mergeData);
-    }
-
-    #endregion
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
     {
@@ -152,7 +51,7 @@ class ViewController extends KatnissController
             $params['message'] = trans('error.unknown');
         }
 
-        $view = $request->theme()->resolveErrorView($code, $params['original_path']);
+        $view = $request->getTheme()->resolveErrorView($code, $params['original_path']);
         if ($view !== false) {
             return response()->view($view, $params, $code, $headers);
         }

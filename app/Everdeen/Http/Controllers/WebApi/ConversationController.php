@@ -8,32 +8,24 @@
 
 namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
-use Closure;
 use Illuminate\Database\Eloquent\Collection;
+use Katniss\Everdeen\Http\Controllers\ViewControllerTrait;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ConversationRepository;
-use Katniss\Everdeen\Themes\ConversationTheme;
 use Katniss\Everdeen\Themes\Queue\JsQueue;
-use Katniss\Everdeen\Themes\Theme;
 
 class ConversationController extends WebApiController
 {
+    use ViewControllerTrait;
+
     protected $conversationRepository;
 
     public function __construct()
     {
-        $this->middleware(function (Request $request, Closure $next) {
-            Theme::$overridden = new ConversationTheme();
-            $app = app();
-            $app['home_theme'] = $app->share(function () {
-                return Theme::$overridden;
-            });
-            return $next($request);
-        })->only('show');
-
         parent::__construct();
 
+        $this->viewPath = 'conversation';
         $this->conversationRepository = new ConversationRepository();
 
         $this->middleware('device');
@@ -59,23 +51,23 @@ class ConversationController extends WebApiController
             $devices = $conversation->devices()->get();
         } elseif ($conversation->isDirect) {
             $users = $conversation->users;
-            if (!$request->isAuth
+            if (!$request->isAuth()
                 || $users->count() != 2
-                || $users->where('id', $request->authUser->id)->count() <= 0
+                || $users->where('id', $request->authUser()->id)->count() <= 0
             ) {
                 abort(404);
             }
         } elseif ($conversation->isGroup) {
             $users = $conversation->users;
-            if (!$request->isAuth
-                || $users->where('id', $request->authUser->id)->count() <= 0
+            if (!$request->isAuth()
+                || $users->where('id', $request->authUser()->id)->count() <= 0
             ) {
                 abort(404);
             }
         }
 
-        if ($request->isAuth) {
-            $users = $this->changeFirstPosition($users, $request->authUser->id);
+        if ($request->isAuth()) {
+            $users = $this->changeFirstPosition($users, $request->authUser()->id);
         } else {
             $devices = $this->changeFirstPosition($devices, deviceRealId());
         }
@@ -97,7 +89,7 @@ class ConversationController extends WebApiController
         ], JsQueue::TYPE_VAR, ['CONVERSATION_USERS', 'CONVERSATION_DEVICES']);
         $jsQueue = $jsQueue->flush(false);
 
-        return view('conversation', [
+        return $this->_any('messages', [
             'conversation' => $conversation,
             'conversation_users' => $users,
             'conversation_devices' => $devices,

@@ -2,15 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: Nguyen Tuan Linh
- * Date: 2015-10-28
- * Time: 02:57
+ * Date: 2016-12-27
+ * Time: 00:33
  */
 
-namespace Katniss\Everdeen\Themes\AdminThemes;
+namespace Katniss\Everdeen\Themes;
 
 use Illuminate\Support\Facades\Facade;
 
-class AdminThemeFacade extends Facade
+class ThemeFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -19,6 +19,6 @@ class AdminThemeFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'admin_theme';
+        return 'theme';
     }
 }

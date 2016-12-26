@@ -33,7 +33,7 @@ class PollAdminController extends AdminController
     {
         $polls = $this->pollRepository->getPaged();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.index', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
@@ -47,7 +47,7 @@ class PollAdminController extends AdminController
 
     public function create(Request $request)
     {
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.create', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc')
@@ -99,7 +99,7 @@ class PollAdminController extends AdminController
         $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_links_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.edit', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
@@ -165,7 +165,7 @@ class PollAdminController extends AdminController
         $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
         $this->_description(trans('pages.admin_link_categories_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             'plugins.polls.admin.poll.sort',
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),

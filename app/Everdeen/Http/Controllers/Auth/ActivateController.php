@@ -21,8 +21,8 @@ class ActivateController extends ViewController
 
     public function getInactive(Request $request)
     {
-        if ($request->authUser->active) {
-            return redirect(redirectUrlAfterLogin($request->authUser));
+        if ($request->authUser()->active) {
+            return redirect(redirectUrlAfterLogin($request->authUser()));
         }
 
         $this->_title(trans('pages.account_inactive_title'));
@@ -33,22 +33,23 @@ class ActivateController extends ViewController
 
     public function postInactive(Request $request)
     {
+        $authUser = $request->authUser();
         MailHelper::sendTemplate('welcome', array_merge([
             MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-            MailHelper::EMAIL_TO => $request->authUser->email,
-            MailHelper::EMAIL_TO_NAME => $request->authUser->display_name,
+            MailHelper::EMAIL_TO => $authUser->email,
+            MailHelper::EMAIL_TO_NAME => $authUser->display_name,
 
-            'id' => $request->authUser->id,
-            'display_name' => $request->authUser->display_name,
-            'name' => $request->authUser->name,
-            'email' => $request->authUser->email,
+            'id' => $authUser->id,
+            'display_name' => $authUser->display_name,
+            'name' => $authUser->name,
+            'email' => $authUser->email,
             'password' => '******',
-            'activation_code' => $request->authUser->activation_code,
+            'activation_code' => $authUser->activation_code,
             'url_activate' => homeUrl(
                 'auth/activate/{id}/{activation_code}',
                 [
-                    'id' => $request->authUser->id,
-                    'activation_code' => $request->authUser->activation_code
+                    'id' => $authUser->id,
+                    'activation_code' => $authUser->activation_code
                 ]
             ),
         ], $this->_params()));
@@ -77,7 +78,7 @@ class ActivateController extends ViewController
 
         return $this->_any('activate', [
             'active' => $active,
-            'url' => $request->isAuth ? redirectUrlAfterLogin($request->authUser) : homeUrl('auth/login'),
+            'url' => $request->isAuth() ? redirectUrlAfterLogin($request->authUser()) : homeUrl('auth/login'),
         ]);
     }
 }

@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Plugin
@@ -194,8 +194,8 @@ abstract class Plugin
     public function view($name)
     {
         return !$this::THEME_ONLY ?
-            HomeThemeFacade::commonPluginPath($this::NAME, $name)
-            : HomeThemeFacade::pluginPath($this::NAME, $name);
+            ThemeFacade::commonPluginPath($this::NAME, $name)
+            : ThemeFacade::pluginPath($this::NAME, $name);
     }
 
     public function viewAdmin()

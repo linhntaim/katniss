@@ -33,7 +33,7 @@ class ContactFormAdminController extends AdminController
     {
         $contactForms = $this->contactFormRepository->getPaged();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('index', Extension::NAME),
             trans('contact_form.page_contact_forms_title'),
             trans('contact_form.page_contact_forms_desc'),
