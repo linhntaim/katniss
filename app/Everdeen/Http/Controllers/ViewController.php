@@ -50,6 +50,9 @@ class ViewController extends KatnissController
         if (!isset($params['message'])) {
             $params['message'] = trans('error.unknown');
         }
+        if (!isset($params['original_path'])) {
+            $params['original_path'] = null;
+        }
 
         $view = $request->getTheme()->resolveErrorView($code, $params['original_path']);
         if ($view !== false) {

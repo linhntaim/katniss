@@ -24,21 +24,6 @@ abstract class Theme
     const TYPE_ADMIN = 'admin_themes';
     const TYPE_HOME = 'home_themes';
 
-    public static $isAdmin = false;
-    public static $onWebApi = false;
-
-    /**
-     * @var Theme
-     */
-    public static $overridden;
-
-    /**
-     * @return Theme
-     */
-    public static function byRequest()
-    {
-    }
-
     protected $name;
     protected $view;
     protected $type;

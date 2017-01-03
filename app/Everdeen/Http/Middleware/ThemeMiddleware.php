@@ -20,6 +20,13 @@ class ThemeMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
+        $this->initTheme($request);
+
+        return $next($request);
+    }
+
+    public function initTheme(Request $request)
+    {
         $theme = $this->checkForceTheme($request);
         if ($theme === false) {
             $theme = $this->getDefaultTheme($request);
@@ -31,8 +38,6 @@ class ThemeMiddleware
         $request->setTheme($theme);
         $this->bootingTheme($request);
         $this->prepareTheme($request);
-
-        return $next($request);
     }
 
     /**

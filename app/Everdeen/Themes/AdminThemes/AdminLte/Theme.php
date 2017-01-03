@@ -69,12 +69,15 @@ class Theme extends AdminTheme
 
     public function resolveErrorView($code, $originalPath = null)
     {
-        $onAuthPath = beginsWith($originalPath, homePath('auth')) || beginsWith($originalPath, homePath('me'));
+        $onAuthViewPath = empty($originalPath)
+            || beginsWith($originalPath, homePath('auth'))
+            || beginsWith($originalPath, homePath('me'))
+            || !isAuth();
 
         $viewInstance = view();
-        $view = $this->error($onAuthPath ? 'auth.' . $code : $code);
+        $view = $this->error($onAuthViewPath ? 'auth.' . $code : $code);
         if (!$viewInstance->exists($view)) {
-            $view = $this->error($onAuthPath ? 'auth.common' : 'common');
+            $view = $this->error($onAuthViewPath ? 'auth.common' : 'common');
             if (!$viewInstance->exists($view)) {
                 $view = 'errors.' . $code;
                 if (!$viewInstance->exists($view)) {

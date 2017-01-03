@@ -28,6 +28,7 @@ class ConversationController extends WebApiController
         $this->viewPath = 'conversation';
         $this->conversationRepository = new ConversationRepository();
 
+        $this->middleware('theme')->only('show');
         $this->middleware('device');
     }
 

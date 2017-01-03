@@ -44,7 +44,7 @@ class Request extends BaseRequest
         return $this->authUser;
     }
 
-    public function setAuth($isAuth, $authUser)
+    public function setAuth($isAuth = false, User $authUser = null)
     {
         $this->isAuth = $isAuth;
         $this->authUser = $isAuth ? $authUser : null;
@@ -53,6 +53,11 @@ class Request extends BaseRequest
     public function getUrlPathInfo()
     {
         return $this->urlPathInfo;
+    }
+
+    public function checkUrlPathInfo()
+    {
+        return !empty($this->urlPathInfo);
     }
 
     public function resolveUrlPathInfo()
@@ -99,5 +104,10 @@ class Request extends BaseRequest
     public function setTheme(Theme $theme)
     {
         $this->theme = $theme;
+    }
+
+    public function checkTheme()
+    {
+        return !empty($this->theme);
     }
 }

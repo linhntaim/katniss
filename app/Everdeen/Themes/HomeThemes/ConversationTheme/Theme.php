@@ -22,6 +22,11 @@ class Theme extends HomeTheme
         parent::__construct();
     }
 
+    protected function registerWidgets($is_auth = false)
+    {
+        // make widgets not available
+    }
+
     protected function registerExtScripts($is_auth = false)
     {
         parent::registerExtScripts($is_auth);
