@@ -10,7 +10,7 @@
 | contains the "web_api" middleware group. Now create something great!
 |
 */
-Route::any('extra', 'KatnissController@extra');
+Route::any('extra', 'WebApiController@extra');
 
 Route::group([
     'namespace' => 'WebApi',
