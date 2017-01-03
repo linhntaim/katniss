@@ -86,7 +86,6 @@
     </div>
 </div>
 <script>
-    {!! cdataOpen() !!}
     function x_modal_confirm(title, content, callback) {
         var confirmModal = $('#x-confirm-modal');
         confirmModal.find('#x-confirm-modal-title').html(title);
@@ -185,5 +184,4 @@
             return false;
         });
     });
-    {!! cdataClose() !!}
 </script>

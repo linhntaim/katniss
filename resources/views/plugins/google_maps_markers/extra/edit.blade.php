@@ -9,7 +9,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             var mapMarker = createGoogleMapsMarker($('#map'), {
                 center: {
@@ -43,7 +42,6 @@
                 }
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addRdrUrl(addExtraUrl('admin/google-maps-markers/id', adminUrl('extra')) . '&id=' . $map_marker->id) }}">

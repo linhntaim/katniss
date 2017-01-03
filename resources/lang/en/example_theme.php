@@ -18,6 +18,7 @@ return [
     'social_sharing' => 'Social Sharing',
     'facebook_comment' => 'Facebook Comments',
     'example_widget' => 'Example Widgets',
+    'public_conversation' => 'Public Conversation',
     'must_activate_extensions_for_contact_template' =>
         'Must activate Contact Form and Google Maps Markers extension for fully functionality',
 ];

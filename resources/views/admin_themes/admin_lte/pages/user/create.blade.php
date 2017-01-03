@@ -25,7 +25,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             $('[type=checkbox]').iCheck({
@@ -34,7 +33,6 @@
                 increaseArea: '20%' // optional
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')

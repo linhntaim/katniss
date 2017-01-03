@@ -19,6 +19,8 @@ class ViewController extends KatnissController
     {
         parent::__construct();
 
+        $this->middleware('view');
+
         $this->viewPath = '';
         $this->paginationRender = new PaginationRender();
     }

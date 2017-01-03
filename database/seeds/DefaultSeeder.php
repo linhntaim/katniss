@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Katniss\Everdeen\Models\AppOption;
 use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Conversation;
 use Katniss\Everdeen\Models\Link;
 use Katniss\Everdeen\Models\Permission;
 use Katniss\Everdeen\Models\Role;
@@ -10,6 +11,7 @@ use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserApp;
 use Katniss\Everdeen\Models\UserSetting;
+use Katniss\Everdeen\Repositories\ConversationRepository;
 
 class DefaultSeeder extends Seeder
 {
@@ -221,5 +223,10 @@ class DefaultSeeder extends Seeder
             'active' => true,
             'order' => 2
         ]);
+
+        $conversationRepository = new ConversationRepository();
+        $conversationRepository->create();
+        $conversation = $conversationRepository->create(Conversation::TYPE_DIRECT);
+        $conversation->users()->attach([2, 3]);
     }
 }

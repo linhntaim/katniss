@@ -9,7 +9,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             var mapMarker = createGoogleMapsMarker($('#map'));
             mapMarker.enableClickToAddress(function () {
@@ -36,7 +35,6 @@
                 }
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addErrorUrl(addRdrUrl(addExtraUrl('admin/google-maps-markers', adminUrl('extra')), addExtraUrl('admin/google-maps-markers', adminUrl('extra')))) }}">

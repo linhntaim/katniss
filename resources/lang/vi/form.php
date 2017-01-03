@@ -75,4 +75,5 @@ return [
     'action_start' => 'Bắt đầu',
     'action_go_to' => 'Đi đến',
     'action_generate' => 'Khởi tạo',
+    'action_press_enter' => 'Enter',
 ];

@@ -17,12 +17,10 @@
 @section('extended_scripts')
     @include('file_manager.open_documents_script')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')

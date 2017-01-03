@@ -14,6 +14,9 @@ class CreatePosts extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             $table->string('template')->nullable();

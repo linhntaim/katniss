@@ -23,7 +23,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
 
@@ -74,7 +73,6 @@
                 return false;
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('modals')

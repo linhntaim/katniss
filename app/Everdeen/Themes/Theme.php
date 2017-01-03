@@ -28,17 +28,26 @@ abstract class Theme
     public static $onWebApi = false;
 
     /**
+     * @var Theme
+     */
+    public static $overridden;
+
+    /**
      * @return Theme
      */
     public static function byRequest()
     {
-        $checkPath = checkPath();
-        if ($checkPath->api) {
-            return null;
+        if (empty(self::$overridden)) {
+            $checkPath = checkPath();
+            if ($checkPath->api) {
+                return null;
+            }
+            self::$onWebApi = $checkPath->webApi;
+            self::$isAdmin = $checkPath->admin;
+            $theme = self::$isAdmin ? app('admin_theme') : app('home_theme');
+        } else {
+            $theme = self::$overridden;
         }
-        self::$onWebApi = $checkPath->webApi;
-        self::$isAdmin = $checkPath->admin;
-        $theme = self::$isAdmin ? app('admin_theme') : app('home_theme');
         $theme->register(isAuth());
         return $theme;
     }
@@ -95,6 +104,11 @@ abstract class Theme
         $this->extJsQueue = new JsQueue();
         $this->libCssQueue = new CssQueue();
         $this->extCssQueue = new CssQueue();
+    }
+
+    public function extensions()
+    {
+        return [];
     }
 
     public function getName()

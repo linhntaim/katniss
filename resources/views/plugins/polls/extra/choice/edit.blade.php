@@ -6,12 +6,10 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addRdrUrl(addExtraUrl('admin/poll-choices/id', adminUrl('extra')) . '&id=' . $choice->id) }}">

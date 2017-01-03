@@ -6,7 +6,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('[type=checkbox]').iCheck({
                 checkboxClass: 'icheckbox_square-blue',
@@ -15,7 +14,6 @@
             });
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 <form method="post" action="{{ addRdrUrl(addExtraUrl('admin/polls/id', adminUrl('extra')) . '&id=' . $poll->id) }}">

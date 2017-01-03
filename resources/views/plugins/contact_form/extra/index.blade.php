@@ -15,7 +15,6 @@
         <p><strong>{{ trans('label.content') }}:</strong><br>@{{{ message }}}</p>
     </script>
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             var _detailTemplate = Handlebars.compile(jQuery("#detail-template").html());
             var _$detailModal = $('#detail-modal');
@@ -46,7 +45,6 @@
             });
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('modals')

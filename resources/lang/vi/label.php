@@ -70,6 +70,8 @@ return [
     'longitude' => 'Kinh độ',
     'copyright' => 'Bản quyền',
     'type' => 'Kiểu',
+    'anonymous' => 'Khách ghé thăm',
+    'you' => 'Bạn',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -120,6 +122,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     '_member_since' => 'Là thành viên từ :time',
     'enter_password_for_session' => 'Nhập mật khẩu của bạn để tiếp tục',
     'or_different_sign_in' => 'Hoặc đăng nhập với tài khoản khác tại đây',
+    'function_enter_to_send' => 'Tích vào đây sẽ cho phép nhấn Enter để gửi',
+    'is_typing' => 'Đang gõ...',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
@@ -144,6 +148,7 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'media_lc' => 'nghe nhìn',
     'photo' => 'Ảnh',
     'video' => 'Video',
+    'message' => 'Tin nhắn',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
