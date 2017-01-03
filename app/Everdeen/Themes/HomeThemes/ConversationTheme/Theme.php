@@ -6,16 +6,25 @@
  * Time: 14:29
  */
 
-namespace Katniss\Everdeen\Themes;
+namespace Katniss\Everdeen\Themes\HomeThemes\ConversationTheme;
 
-
+use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
 use Katniss\Everdeen\Themes\Queue\JsQueue;
 
-class ConversationTheme extends Theme
+class Theme extends HomeTheme
 {
+    const NAME = 'conversation';
+    const DISPLAY_NAME = 'Conversation Theme';
+    const VIEW = 'conversation';
+
     public function __construct()
     {
-        parent::__construct(null);
+        parent::__construct();
+    }
+
+    protected function registerWidgets($is_auth = false)
+    {
+        // make widgets not available
     }
 
     protected function registerExtScripts($is_auth = false)

@@ -26,8 +26,14 @@ return [
     'admin_themes' => [
         Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
+    'admin_except_themes' => [
+    ],
     'home_themes' => [
         Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::class,
+        Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::class,
+    ],
+    'home_except_themes' => [
+        Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::NAME,
     ],
     'widgets' => [
         Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::class,

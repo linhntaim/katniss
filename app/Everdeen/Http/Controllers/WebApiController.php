@@ -15,7 +15,5 @@ class WebApiController extends KatnissController
     public function __construct()
     {
         parent::__construct();
-
-        $this->middleware('webApi');
     }
 }

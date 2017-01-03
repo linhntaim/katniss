@@ -16,7 +16,12 @@ class AppOptionHelper
     /**
      * @var \Illuminate\Database\Eloquent\Collection
      */
-    private static $appOptions;
+    private static $appOptions = null;
+
+    public static function check()
+    {
+        return self::$appOptions != null;
+    }
 
     public static function load()
     {

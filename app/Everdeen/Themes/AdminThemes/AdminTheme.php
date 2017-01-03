@@ -8,7 +8,7 @@
 
 namespace Katniss\Everdeen\Themes\AdminThemes;
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Themes\Theme;
 
@@ -21,7 +21,7 @@ abstract class AdminTheme extends Theme
 
     public function register($isAuth = false)
     {
-        HomeThemeFacade::mockAdmin(); // make home themes can extend admin functionality
+        homeThemeMockAdmin();
 
         parent::register($isAuth);
     }

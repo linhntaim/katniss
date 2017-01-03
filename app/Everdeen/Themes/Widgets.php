@@ -9,9 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 use Illuminate\Support\HtmlString;
-use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 
 class Widgets extends Plugins
 {
@@ -19,7 +17,7 @@ class Widgets extends Plugins
 
     public function __construct()
     {
-        parent::__construct(array_merge(_kWidgets(), HomeThemeFacade::widgets()));
+        parent::__construct(array_merge(_kWidgets(), homeThemeWidgets()));
     }
 
     public function init()

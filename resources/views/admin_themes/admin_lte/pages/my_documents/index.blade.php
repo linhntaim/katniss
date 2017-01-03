@@ -8,8 +8,7 @@
     </ol>
 @endsection
 @section('lib_styles')
-    <link rel="stylesheet" href="{{ libraryAsset('jquery.ui-1.11.4/jquery-ui.min.css') }}">
-    <link rel="stylesheet" href="{{ libraryAsset('jquery.ui-1.11.4/themes/smoothness/jquery-ui.min.css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('jquery-ui-theme-smoothness') }}">
     <link rel="stylesheet" href="{{ libraryAsset('elfinder/css/elfinder.min.css') }}">
     <link rel="stylesheet" href="{{ libraryAsset('elfinder/css/theme.css') }}">
 @endsection

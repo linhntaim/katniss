@@ -8,7 +8,7 @@ use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 
 class ArticleController extends AdminController
 {
@@ -55,7 +55,7 @@ class ArticleController extends AdminController
 
         return $this->_create([
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => HomeThemeFacade::articleTemplates(),
+            'templates' => ThemeFacade::articleTemplates(),
         ]);
     }
 
@@ -90,7 +90,7 @@ class ArticleController extends AdminController
 
         try {
             $this->articleRepository->create(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs(),
@@ -132,7 +132,7 @@ class ArticleController extends AdminController
             'article' => $article,
             'article_categories' => $article->categories,
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => HomeThemeFacade::articleTemplates(),
+            'templates' => ThemeFacade::articleTemplates(),
         ]);
     }
 
@@ -169,7 +169,7 @@ class ArticleController extends AdminController
 
         try {
             $this->articleRepository->update(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs(),

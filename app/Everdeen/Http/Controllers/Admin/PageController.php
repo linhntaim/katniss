@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\PageRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 
 class PageController extends AdminController
 {
@@ -50,7 +50,7 @@ class PageController extends AdminController
         $this->_description(trans('pages.admin_pages_desc'));
 
         return $this->_create([
-            'templates' => HomeThemeFacade::pageTemplates(),
+            'templates' => ThemeFacade::pageTemplates(),
         ]);
     }
 
@@ -84,7 +84,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->create(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()
@@ -122,7 +122,7 @@ class PageController extends AdminController
 
         return $this->_edit([
             'page' => $page,
-            'templates' => HomeThemeFacade::pageTemplates(),
+            'templates' => ThemeFacade::pageTemplates(),
         ]);
     }
 
@@ -158,7 +158,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->update(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()

@@ -5,7 +5,7 @@ namespace Katniss\Everdeen\Http\Controllers\Home;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Repositories\ArticleRepository;
 use Katniss\Everdeen\Repositories\PageRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 
@@ -87,7 +87,7 @@ class ExampleController extends ViewController
         $this->_title([trans_choice('label.page', 1), $page->title]);
         $this->_description(htmlShorten($page->content));
 
-        return $this->_any(HomeThemeFacade::pageTemplateView($page->template, 'page'), [
+        return $this->_any(ThemeFacade::pageTemplateView($page->template, 'page'), [
             'page' => $page,
         ]);
     }
@@ -117,7 +117,7 @@ class ExampleController extends ViewController
         $this->_title([trans_choice('label.article', 1), $article->title]);
         $this->_description(htmlShorten($article->content));
 
-        return $this->_any(HomeThemeFacade::articleTemplateView($article->template, 'article'), [
+        return $this->_any(ThemeFacade::articleTemplateView($article->template, 'article'), [
             'article' => $article,
             'article_categories' => $article->categories,
         ]);

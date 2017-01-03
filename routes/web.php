@@ -14,7 +14,7 @@ Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localize']
 ], function () {
-    Route::any(homeRoute('extra'), 'KatnissController@extra');
+    Route::any(homeRoute('extra'), 'ViewController@extra');
 
     Route::get(homeRoute('errors/{code}'), 'ViewController@error');
     Route::get(adminRoute('errors/{code}'), 'ViewController@error');
@@ -68,7 +68,7 @@ Route::group([
     Route::group([
         'middleware' => 'auth'
     ], function () {
-        Route::any(adminRoute('extra'), 'KatnissController@extra');
+        Route::any(adminRoute('extra'), 'ViewController@extra');
         // my account
         Route::get(homeRoute('me/account'), 'Admin\AccountController@index');
         Route::put(homeRoute('me/account'), 'Admin\AccountController@update');

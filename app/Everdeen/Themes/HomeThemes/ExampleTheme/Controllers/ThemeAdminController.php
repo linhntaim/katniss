@@ -48,7 +48,7 @@ class ThemeAdminController extends AdminController
             $defaultMapMarkerId = empty($options['default_map_marker_id']) ? 0 : $options['default_map_marker_id'];
         }
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             'home_themes.example.admin.options',
             trans('example_theme.page_options_title'),
             trans('example_theme.page_options_desc'),

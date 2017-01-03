@@ -34,7 +34,7 @@ class ChoiceAdminController extends AdminController
     {
         $choices = $this->choiceRepository->getPaged();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('choice.index', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),
@@ -50,7 +50,7 @@ class ChoiceAdminController extends AdminController
     {
         $pollRepository = new PollRepository();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('choice.create', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),
@@ -107,7 +107,7 @@ class ChoiceAdminController extends AdminController
         $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_links_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('choice.edit', Extension::NAME),
             trans('polls.page_poll_choices_title'),
             trans('polls.page_poll_choices_desc'),

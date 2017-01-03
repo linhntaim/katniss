@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::group([
     'prefix' => 'v1',
 ], function () {
-    Route::any('extra', 'KatnissController@extra');
+    Route::any('extra', 'ApiController@extra');
 
     Route::group([
         'namespace' => 'Api\V1',

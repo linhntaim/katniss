@@ -11,13 +11,13 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
-use Katniss\Everdeen\Themes\AdminThemes\AdminThemeFacade;
 use Katniss\Everdeen\Themes\ExtensionsFacade;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
 use Katniss\Everdeen\Themes\Theme;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Themes\WidgetsFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\AppOptionHelper;
@@ -28,6 +28,7 @@ use Katniss\Everdeen\Utils\ExtraActions\ActionContentFilter;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentPlace;
 use Katniss\Everdeen\Utils\ExtraActions\ActionTrigger;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
+use Katniss\Everdeen\Utils\HtmlTag\Html5;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -289,38 +290,7 @@ function currentFullLocaleCode($separator = '_')
 #region Generate URL
 function checkPath($request = null)
 {
-    if (empty($request)) {
-        $request = request();
-    }
 
-    $return = new stdClass();
-    $return->locale = in_array($request->segment(1), allSupportedLocaleCodes());
-    $return->api = false;
-    $return->webApi = false;
-    $return->admin = false;
-    $return->home = false;
-
-    $apiPath = 'api'; // can be changed
-    if ($request->is($apiPath, $apiPath . '/*')) {
-        $return->api = true;
-        return $return;
-    }
-    $webApiPath = 'web-api'; // can be changed
-
-    $return->webApi = $request->is($webApiPath, $webApiPath . '/*');
-
-    $adminPaths = _k('paths_use_admin_theme');
-    foreach ($adminPaths as $adminPath) {
-        $adminPath = !$return->webApi ? homePath($adminPath) : $webApiPath . '/' . $adminPath;
-        if ($request->is($adminPath, $adminPath . '/*')) {
-            $return->admin = true;
-            break;
-        }
-    }
-
-    $return->home = !$return->admin;
-
-    return $return;
 }
 
 function transRoute($route)
@@ -466,6 +436,14 @@ function addErrorUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
     if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
     $parsed = parse_url($mainUrl);
     return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
+}
+
+function addThemeUrl($mainUrl, $theme, $separatedChar = '')
+{
+    $themeParam = AppConfig::KEY_FORCE_THEME . '=' . $theme;
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $themeParam;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $themeParam : $mainUrl . '&' . $themeParam;
 }
 
 function redirectUrlAfterLogin(User $user)
@@ -1034,6 +1012,11 @@ function contentPlace($id, array $params = [])
 #endregion
 
 #region Theme
+function embedConversation($id)
+{
+    return new HtmlString(Html5::frame(addThemeUrl(webApiUrl('conversations/' . $id) . '?messages=1', 'conversation')));
+}
+
 /**
  * @param string $file_path
  * @return string
@@ -1075,64 +1058,52 @@ function isStaticExtension($extension)
 
 function themeTitle($titles = '', $use_root = true, $separator = '&raquo;')
 {
-    return inAdmin() ?
-        AdminThemeFacade::title($titles, $use_root, $separator)
-        : HomeThemeFacade::title($titles, $use_root, $separator);
+    return ThemeFacade::title($titles, $use_root, $separator);
 }
 
 function themeDescription($description = '')
 {
-    return inAdmin() ?
-        AdminThemeFacade::description($description)
-        : HomeThemeFacade::description($description);
+    return ThemeFacade::description($description);
 }
 
 function themeAuthor($author = '')
 {
-    return inAdmin() ?
-        AdminThemeFacade::author($author)
-        : HomeThemeFacade::author($author);
+    return ThemeFacade::author($author);
 }
 
 function themeApplicationName($applicationName = '')
 {
-    return inAdmin() ?
-        AdminThemeFacade::applicationName($applicationName)
-        : HomeThemeFacade::applicationName($applicationName);
+    return ThemeFacade::applicationName($applicationName);
 }
 
 function themeGenerator($generator = '')
 {
-    return inAdmin() ?
-        AdminThemeFacade::generator($generator)
-        : HomeThemeFacade::generator($generator);
+    return ThemeFacade::generator($generator);
 }
 
 function themeKeywords($keywords = '')
 {
-    return inAdmin() ?
-        AdminThemeFacade::keywords($keywords)
-        : HomeThemeFacade::keywords($keywords);
+    return ThemeFacade::keywords($keywords);
 }
 
 function libStyles()
 {
-    return inAdmin() ? AdminThemeFacade::getLibCss() : HomeThemeFacade::getLibCss();
+    return ThemeFacade::getLibCss();
 }
 
 function extStyles()
 {
-    return inAdmin() ? AdminThemeFacade::getExtCss() : HomeThemeFacade::getExtCss();
+    return ThemeFacade::getExtCss();
 }
 
 function libScripts()
 {
-    return inAdmin() ? AdminThemeFacade::getLibJs() : HomeThemeFacade::getLibJs();
+    return ThemeFacade::getLibJs();
 }
 
 function extScripts()
 {
-    return inAdmin() ? AdminThemeFacade::getExtJs() : HomeThemeFacade::getExtJs();
+    return ThemeFacade::getExtJs();
 }
 
 /**
@@ -1141,17 +1112,17 @@ function extScripts()
  */
 function enqueueThemeHeader($output, $key = null)
 {
-    return HomeThemeFacade::addHeader($output, $key);
+    return ThemeFacade::addHeader($output, $key);
 }
 
 function dequeueThemeHeader($key)
 {
-    return HomeThemeFacade::removeHeader($key);
+    return ThemeFacade::removeHeader($key);
 }
 
 function themeHeader()
 {
-    return HomeThemeFacade::getHeader();
+    return ThemeFacade::getHeader();
 }
 
 /**
@@ -1160,22 +1131,93 @@ function themeHeader()
  */
 function enqueueThemeFooter($output, $key = null)
 {
-    return HomeThemeFacade::addFooter($output, $key);
+    return ThemeFacade::addFooter($output, $key);
 }
 
 function dequeueThemeFooter($key)
 {
-    return HomeThemeFacade::removeFooter($key);
+    return ThemeFacade::removeFooter($key);
 }
 
 function themeFooter()
 {
-    return HomeThemeFacade::getFooter();
+    return ThemeFacade::getFooter();
 }
 
+/**
+ * @return bool
+ */
 function inAdmin()
 {
-    return Theme::$isAdmin;
+    return request()->getUrlPathInfo()->admin;
+}
+
+/**
+ * @return bool|\Katniss\Everdeen\Themes\HomeThemes\HomeTheme
+ */
+function homeTheme()
+{
+    static $theme = null;
+
+    if ($theme == null) {
+        if (!inAdmin()) {
+            $theme = request()->getTheme();
+        } else {
+            $themeDefines = _k('home_themes');
+            $themeName = getOption('home_theme', _k('home_theme'));
+            if (array_key_exists($themeName, $themeDefines)) {
+                $themeClass = $themeDefines[$themeName];
+                $theme = new $themeClass();
+            } else {
+                $theme = false;
+            }
+        }
+    }
+    return $theme;
+}
+
+function homeThemePlaceholders()
+{
+    $homeTheme = homeTheme();
+    return $homeTheme !== false ? $homeTheme->placeholders() : [];
+}
+
+function homeThemeWidgets()
+{
+    $homeTheme = homeTheme();
+    return $homeTheme !== false ? $homeTheme->widgets() : [];
+}
+
+function homeThemeMockAdmin()
+{
+    $homeTheme = homeTheme();
+    if ($homeTheme !== false) {
+        $homeTheme->mockAdmin();
+    }
+}
+
+/**
+ * @return bool|\Katniss\Everdeen\Themes\AdminThemes\AdminTheme
+ */
+function adminTheme()
+{
+    static $theme = null;
+
+    if ($theme == null) {
+        if (inAdmin()) {
+            $theme = request()->getTheme();
+        } else {
+            $themeDefines = _k('admin_themes');
+            $themeName = getOption('admin_theme', _k('admin_theme'));
+            if (array_key_exists($themeName, $themeDefines)) {
+                $themeClass = $themeDefines[$themeName];
+                $theme = new $themeClass();
+            } else {
+                $theme = false;
+            }
+        }
+    }
+    return $theme;
 }
 
 #endregion
