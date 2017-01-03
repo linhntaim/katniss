@@ -11,6 +11,7 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Jenssegers\Agent\Facades\Agent;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
@@ -27,6 +28,7 @@ use Katniss\Everdeen\Utils\ExtraActions\ActionContentFilter;
 use Katniss\Everdeen\Utils\ExtraActions\ActionContentPlace;
 use Katniss\Everdeen\Utils\ExtraActions\ActionTrigger;
 use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
+use Katniss\Everdeen\Utils\HtmlTag\Html5;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -1010,6 +1012,11 @@ function contentPlace($id, array $params = [])
 #endregion
 
 #region Theme
+function embedConversation($id)
+{
+    return new HtmlString(Html5::frame(addThemeUrl(webApiUrl('conversations/' . $id) . '?messages=1', 'conversation')));
+}
+
 /**
  * @param string $file_path
  * @return string

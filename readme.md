@@ -277,7 +277,7 @@ Requests share sessions & cookies between connections (stateful).
 
 Request flow:
 
-- Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
+- Request > Web Middleware (`WebApiMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
 
 ### Action Hooking
 
@@ -305,7 +305,7 @@ Based on action hooking of Trigger.
 
 For processing extra routes defined by theme or plugins.
 
-See coding of extensions `Contact Form` or `Polls` for more.
+See coding of theme `Example Theme` or extensions `Contact Form`, `Polls` or `Google Maps Marker` for more.
 
 ### Short Codes
 
@@ -324,6 +324,8 @@ To store/retrieve runtime application's options in database.
 #### Theme
 
 To organize templates into themes for easily developing/extending.
+
+Themes can be extended by plugins.
 
 Request flow:
 
@@ -345,7 +347,7 @@ Sample Themes:
 
 Themes for business.
 
-Home themes are easily extended with plugins.
+Can extend admin themes by Extra Routes.
 
 Request flow:
 
@@ -371,6 +373,8 @@ Widgets can be extension-based.
 ##### Extension
 
 Define extensions for adding extra functions/features to themes (or even the system).
+
+Can extend admin themes by Extra Routes.
 
 Extensions can share its data to other components.
 
@@ -409,7 +413,7 @@ Sample Extensions:
 
 ##### Widget
 
-Define widgets of content for inserting into placeholders of any theme.
+Define widgets of content for inserting into placeholders of home themes.
 
 Widgets in a placeholder are sortable; their orders can be changed.
 
@@ -543,3 +547,18 @@ There's always a default category needs to be set for articles.
 Manage media (photos, videos) and categories of them.
 
 Media in a category can be sorted.
+
+### Conversation
+
+Users can send message to each others in a conversation.
+
+Support real-time messaging, based on [Realtime.co Messaging Service](https://framework.realtime.co/messaging/).
+
+Conversation is designed to easily embed into view (through HTML tag: `iframe`).
+
+Conversation can be type of:
+
+- 1-to-1: Messaging between 2 users.
+- Group: Messaging among a group of users.
+- Public: Messaging among everyone.
+- Support: Messaging between 1 anonymous vs 1 user

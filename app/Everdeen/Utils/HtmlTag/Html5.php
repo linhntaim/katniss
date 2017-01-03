@@ -49,4 +49,9 @@ class Html5
     {
         return '<title>' . $title . '</title>';
     }
+
+    public static function frame($src)
+    {
+        return '<iframe src="' . $src . '"></iframe>';
+    }
 }
