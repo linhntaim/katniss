@@ -54,8 +54,8 @@ class Theme extends AdminTheme
         parent::registerLibScripts($is_auth);
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, _kExternalLink(JsQueue::LIB_JQUERY_NAME));
-        $this->libJsQueue->add(JsQueue::LIB_JQUERY_UI_NAME, _kExternalLink(JsQueue::LIB_JQUERY_UI_NAME));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, _kExternalLink(JsQueue::LIB_BOOTSTRAP_NAME));
+        $this->libJsQueue->add(JsQueue::LIB_JQUERY_UI_NAME, _kExternalLink(JsQueue::LIB_JQUERY_UI_NAME));
         $this->libJsQueue->add('slim-scroll', libraryAsset('slimScroll/jquery.slimscroll.min.js'));
         $this->libJsQueue->add('fast-click', libraryAsset('fastclick/fastclick.min.js'));
     }

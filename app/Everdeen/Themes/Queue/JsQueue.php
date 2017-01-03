@@ -53,6 +53,13 @@ class JsQueue extends AssetQueue
                 $this->rawValueNames = $rawValueNames;
             }
         }
+        if ($name == self::LIB_JQUERY_UI_NAME && $this->existed(self::LIB_BOOTSTRAP_NAME)) {
+            parent::add(
+                self::LIB_JQUERY_UI_BOOTSTRAP_NAME,
+                _kExternalLink(self::LIB_JQUERY_UI_BOOTSTRAP_NAME),
+                self::TYPE_RAW
+            );
+        }
     }
 
     public function flush($echo = true)
