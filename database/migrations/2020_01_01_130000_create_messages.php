@@ -15,7 +15,6 @@ class CreateMessages extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->integer('conversation_id')->unsigned();

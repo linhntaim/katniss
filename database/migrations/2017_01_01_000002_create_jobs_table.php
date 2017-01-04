@@ -15,7 +15,6 @@ class CreateJobsTable extends Migration
     {
         Schema::create('sys_jobs', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->string('queue');

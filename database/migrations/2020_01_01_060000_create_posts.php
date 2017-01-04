@@ -15,7 +15,6 @@ class CreatePosts extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
@@ -31,7 +30,6 @@ class CreatePosts extends Migration
 
         Schema::create('post_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->bigInteger('post_id')->unsigned();

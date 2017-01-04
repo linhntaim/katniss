@@ -34,12 +34,12 @@ elixir(function (mix) {
     //     'gui.jquery.js'
     // ], 'public/assets/libraries/katniss.admin.js');
 
-    mix.scripts([
-        'realtime.pusher.js',
-        'sounds.js',
-        'conversation.js'
-    ], 'public/assets/libraries/katniss.conversation.js');
-    mix.styles('conversation.css', 'public/assets/libraries/katniss.conversation.css');
+    // mix.scripts([
+    //     'realtime.pusher.js',
+    //     'sounds.js',
+    //     'conversation.js'
+    // ], 'public/assets/libraries/katniss.conversation.js');
+    // mix.styles('conversation.css', 'public/assets/libraries/katniss.conversation.css');
 
     // mix.styles('modal_cropper_image.css', 'public/assets/libraries/modal_cropper_image.css');
     // mix.scripts('modal_cropper_image.js', 'public/assets/libraries/modal_cropper_image.js');
@@ -47,4 +47,13 @@ elixir(function (mix) {
     // mix.scripts([
     //     'google_maps_markers.js'
     // ], 'public/assets/libraries/google_maps_markers.js');
+
+    mix.styles([
+        'wow_skype/common.css',
+        'wow_skype/header.css',
+        'wow_skype/main.css',
+        'wow_skype/footer.css',
+        'wow_skype/page.sign_up.css',
+        'wow_skype/page.teacher_sign_up.css'
+    ], 'public/assets/home_themes/wow_skype/css/style.css');
 });

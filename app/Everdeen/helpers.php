@@ -1026,6 +1026,11 @@ function libraryAsset($file_path = '')
     return Theme::libraryAsset($file_path);
 }
 
+function themeImageAsset($file_path = '')
+{
+    return ThemeFacade::imageAsset($file_path);
+}
+
 function cdataOpen()
 {
     return '//<![CDATA[';
@@ -1337,7 +1342,7 @@ function callingCodesAsOptions($selected_country = 'VN')
     foreach (allCountries() as $code => $properties) {
         $options .= '<option value="' . $code . '"' . ($selected_country == $code ? ' selected' : '') . '>(+' . $properties['calling_code'] . ') ' . $properties['name'] . '</option>';
     }
-    return $options;
+    return new HtmlString($options);
 }
 
 function allCurrencies()

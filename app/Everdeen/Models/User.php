@@ -44,6 +44,17 @@ class User extends Authenticatable
         'url_avatar',
         'url_avatar_thumb',
         'activation_code',
+
+        'gender',
+        'skype_id',
+        'facebook',
+        'phone_code',
+        'phone_number',
+        'date_of_birth',
+        'address',
+        'city',
+        'nationality',
+
         'active',
         'setting_id',
         'channel',

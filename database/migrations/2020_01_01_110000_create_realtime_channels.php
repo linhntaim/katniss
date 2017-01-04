@@ -15,7 +15,6 @@ class CreateRealTimeChannels extends Migration
     {
         Schema::create('realtime_channels', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->uuid('code');

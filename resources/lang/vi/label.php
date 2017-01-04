@@ -72,6 +72,8 @@ return [
     'type' => 'Kiểu',
     'anonymous' => 'Khách ghé thăm',
     'you' => 'Bạn',
+    'calling_code' => 'Mã vùng quốc tế',
+    'calling_code_lc' => 'mã vùng quốc tế',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -122,8 +124,12 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     '_member_since' => 'Là thành viên từ :time',
     'enter_password_for_session' => 'Nhập mật khẩu của bạn để tiếp tục',
     'or_different_sign_in' => 'Hoặc đăng nhập với tài khoản khác tại đây',
+    'or_sign_up_here' => 'hoặc <strong>Đăng ký tại đây</strong>',
     'function_enter_to_send' => 'Tích vào đây sẽ cho phép nhấn Enter để gửi',
     'is_typing' => 'Đang gõ...',
+    'help_sign_up_student' => 'Nói tiếng anh trôi chảy cùng mô hình trực tuyến một thầy kèm một trò.',
+    'help_sign_up_teacher' => 'Tăng thu nhập và kết nối cùng hàng ngàn giáo viên tiếng Anh trên toàn thế giới.',
+    'application_form' => 'Đơn đăng ký',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
@@ -149,6 +155,8 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'photo' => 'Ảnh',
     'video' => 'Video',
     'message' => 'Tin nhắn',
+    'teacher' => 'Giáo viên',
+    'student' => 'Học viên',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

@@ -15,7 +15,6 @@ class CreateCategories extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('parent_id')->unsigned()->nullable();
@@ -30,7 +29,6 @@ class CreateCategories extends Migration
 
         Schema::create('category_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('category_id')->unsigned();

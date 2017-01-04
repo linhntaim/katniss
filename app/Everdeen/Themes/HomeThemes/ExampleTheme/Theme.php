@@ -96,7 +96,6 @@ class Theme extends HomeTheme
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, $this->jsAsset('jquery.js'));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
-        $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
         $this->libJsQueue->add('jquery-easing', $this->jsAsset('jquery.easing.min.js'));
     }
 

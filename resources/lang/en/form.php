@@ -76,4 +76,5 @@ return [
     'action_go_to' => 'Go to',
     'action_generate' => 'Generate',
     'action_press_enter' => 'Enter',
+    'action_sign_up' => 'Sign up',
 ];

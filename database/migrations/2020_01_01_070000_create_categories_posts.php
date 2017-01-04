@@ -15,7 +15,6 @@ class CreateCategoriesPosts extends Migration
     {
         Schema::create('categories_posts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->integer('category_id')->unsigned();
             $table->bigInteger('post_id')->unsigned();

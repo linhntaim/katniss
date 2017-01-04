@@ -15,7 +15,6 @@ class CreateMedia extends Migration
     {
         Schema::create('media', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->string('url');
@@ -27,7 +26,6 @@ class CreateMedia extends Migration
 
         Schema::create('media_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->bigInteger('media_id')->unsigned();

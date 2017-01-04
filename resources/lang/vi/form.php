@@ -76,4 +76,5 @@ return [
     'action_go_to' => 'Đi đến',
     'action_generate' => 'Khởi tạo',
     'action_press_enter' => 'Enter',
+    'action_sign_up' => 'Đăng ký',
 ];

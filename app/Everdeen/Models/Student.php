@@ -1,0 +1,35 @@
+<?php
+
+namespace Katniss\Everdeen\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Student extends Model
+{
+    const REQUESTED = 0;
+    const APPROVED = 1;
+    const REJECTED = -1;
+
+    protected $table = 'students';
+
+    protected $primaryKey = 'user_id';
+
+    protected $fillable = [
+        'user_id', 'approving_user_id', 'approving_at', 'status',
+    ];
+
+    public function userProfile()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function approvingUser()
+    {
+        return $this->belongsTo(User::class, 'approving_user_id', 'id');
+    }
+
+    public function classrooms()
+    {
+        return $this->hasMany(Classroom::class, 'user_id', 'teacher_id');
+    }
+}

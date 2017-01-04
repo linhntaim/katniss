@@ -15,7 +15,6 @@ class CreateThemeWidgets extends Migration
     {
         Schema::create('theme_widgets', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->string('widget_name');
