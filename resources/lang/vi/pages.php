@@ -71,6 +71,16 @@ return [
     'admin_media_items_title' => 'Nghe nhìn',
     'admin_media_items_desc' => 'Quản lý nghe nhìn',
 
+    'admin_learning_title' => 'Learning',
+    'admin_topics_title' => 'Chủ đề',
+    'admin_topics_desc' => 'Quản lý chủ đề',
+    'admin_teachers_title' => 'Giáo viên',
+    'admin_teachers_desc' => 'Quản lý giáo viên',
+    'admin_students_title' => 'Học viên',
+    'admin_students_desc' => 'Quản lý học viên',
+    'admin_classrooms_title' => 'Lớp học',
+    'admin_classrooms_desc' => 'Quản lý lớp học',
+
     'admin_error_title' => 'Lỗi :code',
     'admin_error_desc' => 'Trang truy cập gặp lỗi :code',
 ];

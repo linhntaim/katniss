@@ -74,6 +74,19 @@ return [
     'you' => 'You',
     'calling_code' => 'Calling code',
     'calling_code_lc' => 'calling code',
+    'gender' => 'Gender',
+    'gender_male' => 'Male',
+    'gender_female' => 'Female',
+    'gender_other' => 'Other',
+    'nationality' => 'Nationality',
+    'birthday' => 'Date of birth',
+    'age' => 'Age',
+    'city' => 'City',
+    'about_me' => 'About me',
+    'teaching_experience' => 'Teaching experience',
+    'teaching_methodology' => 'Teaching methodology',
+    'have_any_english_certificates' => 'Do you have any English certificates?',
+    'my_profile' => 'My profile',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -130,6 +143,37 @@ click the button below to get another welcome email from us.',
     'help_sign_up_student' => 'Become fluent in English with One-on-One online learning.',
     'help_sign_up_teacher' => 'Earn a new source of income and join our global English teachers community.',
     'application_form' => 'Application form',
+    'become_our_teacher' => 'Become our teacher',
+    'become_our_teacher_help' => 'Follow the two 2 steps to join our Teacher Community',
+    'personal_information' => 'Personal information',
+    'teacher_information' => 'Teacher information',
+    'teacher_about_me_eg' => '<div class="small">
+<div class="h6"><strong>You should write a short yet informative introduction. For example:</strong></div>
+<p><strong>- Background:</strong> Graduated from the Foreign Trade University in 2000 and Got 02 full scholarships 
+to study IT in Germany and MBA in the Netherlands (IELTS required)</p>
+<p><strong>- Working experience:</strong> Working in a multi-culture, international environment for more than 14 years 
+where English is heavily used for communication.</p>
+<p><strong>- Personality and hobby:</strong> I’m a very outgoing and friendly person. I love travelling, reading, 
+playing music, watching American movies and taking photography and of course English, naturally. I’ve traveled to 
+more than 20 countries in Asia, Europe and North America.</p>
+<p><strong>- Motivation to become a teacher:</strong> I love English and always want to share my love with everyone. 
+When I see my students improve in English, I’m even happier than them. When they finish the course with me 
+and gain good result, I feel like I have gained a big achievement!</p></div>',
+    'teacher_experience_eg' => '<div class="small">
+<div class="h6"><strong>You should list out your teaching experience as a timeline and show your students’ improvement 
+as a proof for your teaching ability. For example:</strong></div>
+<p>- July 2013 – July 2014: be teacher for a student, helping him pass the university entrance exam with 
+the English score: 8.5.</p>
+<p>- Aug 2014 – now: be a teacher for some language centers and be a home-based teacher for some elementary students. 
+The languages centers and the elementary students’ parents give me good comment about my teaching ability.</p></div>',
+    'teacher_methodology_eg' => '<div class="small">
+<div class="h6"><strong>Write out your most preferable teaching method. For example:</strong></div>
+<p><em>Natural aproach:</em></p>
+<p>I work with real materials (For example: Newspapers, radio, broadcasts, Interviews, ...) to bring up vocabulary 
+and extract grammar issues to work.</p>
+<p>I ask my learners to use english 100% of the time. This develops a better understanding of the language at work.
+Also, learners learn without actually feeling they are doing so, and see improvements much faster than with 
+other methods.</p></div>',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',
@@ -156,7 +200,11 @@ click the button below to get another welcome email from us.',
     'video' => 'Video|Videos',
     'message' => 'Message|Messages',
     'teacher' => 'Teacher|Teachers',
+    'teacher_lc' => 'teacher|teachers',
     'student' => 'Student|Students',
+    'student_lc' => 'student|students',
+    'topic' => 'Topic|Topics',
+    'topic_lc' => 'topic|topics',
 
     'no_widget' => 'No widget is placed here',
 

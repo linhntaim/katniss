@@ -24,8 +24,16 @@ Route::group([
     ], function () {
         Route::get('/', 'HomepageController@index');
         Route::get(homeRoute('user/sign-up'), 'UserController@signUp');
-        Route::get(homeRoute('teacher/sign-up'), 'TeacherController@signUp');
+        Route::get(homeRoute('teacher/sign-up'), 'TeacherController@getSignUp');
+        Route::post(homeRoute('teacher/sign-up'), 'TeacherController@postSignUp');
         Route::get(homeRoute('student/sign-up'), 'StudentController@signUp');
+
+        Route::group([
+            'middleware' => ['auth', 'entrust:teacher']
+        ], function () {
+            Route::get(homeRoute('teacher/sign-up/step/{step}'), 'TeacherController@getSignUpStep');
+            Route::post(homeRoute('teacher/sign-up/step/{step}'), 'TeacherController@postSignUpStep');
+        });
     });
 
 
@@ -161,6 +169,20 @@ Route::group([
                 Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+                //Topic
+                Route::get(adminRoute('topics'), 'TopicController@index');
+                Route::get(adminRoute('topics/create'), 'TopicController@create');
+                Route::post(adminRoute('topics'), 'TopicController@store');
+                Route::get(adminRoute('topics/{id}/edit'), 'TopicController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('topics/{id}'), 'TopicController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('topics/{id}'), 'TopicController@destroy')->where('id', '[0-9]+');
+                //Teacher
+                Route::get(adminRoute('teachers'), 'TeacherController@index');
+                Route::get(adminRoute('teachers/create'), 'TeacherController@create');
+                Route::post(adminRoute('teachers'), 'TeacherController@store');
+                Route::get(adminRoute('teachers/{id}/edit'), 'TeacherController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('teachers/{id}'), 'TeacherController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('teachers/{id}'), 'TeacherController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

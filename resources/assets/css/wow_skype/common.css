@@ -4,12 +4,25 @@ body {
     line-height: 16px;
 }
 
-a:hover {
+a:hover,
+a:active {
     text-decoration: none;
 }
 
 .uppercase {
     text-transform: uppercase;
+}
+
+.width-30 {
+    width: 30px;
+}
+
+.width-40 {
+    width: 40px;
+}
+
+.width-50 {
+    width: 50px;
 }
 
 .margin-none {

@@ -77,4 +77,7 @@ return [
     'action_generate' => 'Generate',
     'action_press_enter' => 'Enter',
     'action_sign_up' => 'Sign up',
+    'action_continue' => 'Continue',
+    'action_complete' => 'Complete',
+    'action_upload_avatar' => 'Upload an avatar',
 ];

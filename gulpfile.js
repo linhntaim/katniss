@@ -50,6 +50,7 @@ elixir(function (mix) {
 
     mix.styles([
         'wow_skype/common.css',
+        'wow_skype/nav_wizard.css',
         'wow_skype/header.css',
         'wow_skype/main.css',
         'wow_skype/footer.css',

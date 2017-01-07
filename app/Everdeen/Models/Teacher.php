@@ -18,7 +18,7 @@ class Teacher extends Model
         'user_id', 'approving_user_id', 'approving_at', 'status',
         'video_teaching_url', 'video_introduce_url',
         'about_me', 'experience', 'methodology',
-        'available_times', 'payment_info',
+        'available_times', 'certificates', 'payment_info',
     ];
 
     public function getHtmlAboutMeAttribute()
@@ -27,6 +27,30 @@ class Teacher extends Model
             return '';
         }
         return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->attributes['about_me']))) . '</p>';
+    }
+
+    public function getHtmlExperienceAttribute()
+    {
+        if (empty($this->attributes['experience'])) {
+            return '';
+        }
+        return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->attributes['experience']))) . '</p>';
+    }
+
+    public function getHtmlMethodologyAttribute()
+    {
+        if (empty($this->attributes['methodology'])) {
+            return '';
+        }
+        return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->attributes['methodology']))) . '</p>';
+    }
+
+    public function getCertificatesAttribute()
+    {
+        if (empty($this->attributes['certificates'])) {
+            return [];
+        }
+        return unserialize($this->attributes['certificates']);
     }
 
     public function userProfile()

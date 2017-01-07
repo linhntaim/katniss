@@ -97,7 +97,7 @@ class UserRepository extends ModelRepository
 
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, !empty($social),
-                    array_merge(request()->theme()->viewParams(), [
+                    array_merge(request()->getTheme()->viewParams(), [
                         MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,
@@ -141,7 +141,7 @@ class UserRepository extends ModelRepository
 
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
-                    array_merge(request()->theme()->viewParams(), [
+                    array_merge(request()->getTheme()->viewParams(), [
                         MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,
@@ -185,6 +185,18 @@ class UserRepository extends ModelRepository
             return $user;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateAttributes(array $attributes)
+    {
+        $user = $this->model();
+
+        try {
+            $user->update($attributes);
+            return $user;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
         }
     }
 

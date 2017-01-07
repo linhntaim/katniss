@@ -52,8 +52,15 @@
                     <div class="panel-body">
                         <form method="post">
                             {{ csrf_field() }}
+                            @if (count($errors) > 0)
+                                <div class="alert alert-danger">
+                                    @foreach ($errors->all() as $error)
+                                        <p>{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
                             <div class="form-group has-feedback">
-                                <input class="form-control" id="name" type="text" placeholder="{{ trans('label.full_name') }}" name="name" required value="{{ old('name') }}">
+                                <input class="form-control" id="name" type="text" placeholder="{{ trans('label.full_name') }}" name="display_name" required value="{{ old('display_name') }}">
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">

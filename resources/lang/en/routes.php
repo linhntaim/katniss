@@ -14,6 +14,7 @@ return [
 
     'user/sign-up'                                  => 'user/sign-up',
     'teacher/sign-up'                               => 'teacher/sign-up',
+    'teacher/sign-up/step/{step}'                   => 'teacher/sign-up/step/{step}',
     'student/sign-up'                               => 'student/sign-up',
 
     'me'                                            => 'me',
@@ -89,4 +90,20 @@ return [
     'admin/media-items/create'                      => 'admin/media-items/create',
     'admin/media-items/{id}'                        => 'admin/media-items/{id}',
     'admin/media-items/{id}/edit'                   => 'admin/media-items/{id}/edit',
+    'admin/topics'                                  => 'admin/topics',
+    'admin/topics/create'                           => 'admin/topics/create',
+    'admin/topics/{id}'                             => 'admin/topics/{id}',
+    'admin/topics/{id}/edit'                        => 'admin/topics/{id}/edit',
+    'admin/teachers'                                => 'admin/teachers',
+    'admin/teachers/create'                         => 'admin/teachers/create',
+    'admin/teachers/{id}'                           => 'admin/teachers/{id}',
+    'admin/teachers/{id}/edit'                      => 'admin/teachers/{id}/edit',
+    'admin/students'                                => 'admin/students',
+    'admin/students/create'                         => 'admin/students/create',
+    'admin/students/{id}'                           => 'admin/students/{id}',
+    'admin/students/{id}/edit'                      => 'admin/students/{id}/edit',
+    'admin/classrooms'                              => 'admin/classrooms',
+    'admin/classrooms/create'                       => 'admin/classrooms/create',
+    'admin/classrooms/{id}'                         => 'admin/classrooms/{id}',
+    'admin/classrooms/{id}/edit'                    => 'admin/classrooms/{id}/edit',
 ];

@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\UserRepository;
 
 class UserController extends ViewController
@@ -23,8 +24,12 @@ class UserController extends ViewController
         $this->userRepository = new UserRepository();
     }
 
-    public function signUp()
+    public function signUp(Request $request)
     {
+        if ($request->isAuth() && $request->authUser()->hasRole(['teacher', 'student'])) {
+            return redirect(homeUrl());
+        }
+
         return $this->_any('sign_up');
     }
 }

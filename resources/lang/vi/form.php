@@ -77,4 +77,7 @@ return [
     'action_generate' => 'Khởi tạo',
     'action_press_enter' => 'Enter',
     'action_sign_up' => 'Đăng ký',
+    'action_continue' => 'Tiếp tục',
+    'action_complete' => 'Hoàn thành',
+    'action_upload_avatar' => 'Tải lên hình đại diện',
 ];

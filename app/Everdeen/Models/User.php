@@ -98,6 +98,18 @@ class User extends Authenticatable
         return DateTimeHelper::getInstance()->shortDate($this->attributes['created_at']);
     }
 
+    public function getBirthdayAttribute()
+    {
+        return empty($this->attributes['date_of_birth']) ?
+            '' : DateTimeHelper::getInstance()->shortDate($this->attributes['date_of_birth']);
+    }
+
+    public function getPhoneAttribute()
+    {
+        return empty($this->attributes['phone_code']) || empty($this->attributes['phone_number']) ?
+            '' : '(+' . allCountry($this->attributes['phone_code'], 'calling_code') . ') ' . $this->attributes['phone_number'];
+    }
+
     public function socialProviders()
     {
         return $this->hasMany(UserSocial::class, 'user_id', 'id');
@@ -121,8 +133,8 @@ class User extends Authenticatable
         return $this->hasOne(UserSetting::class, 'id', 'setting_id');
     }
 
-    public static function create(array $attributes = [])
+    public function teacherProfile()
     {
-        return parent::create($attributes);
+        return $this->hasOne(Teacher::class, 'user_id', 'id');
     }
 }

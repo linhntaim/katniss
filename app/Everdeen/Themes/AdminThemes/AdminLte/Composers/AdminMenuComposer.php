@@ -206,6 +206,36 @@ class AdminMenuComposer
                 );
                 $menu->addSubMenu($subMenu);
             }
+
+            if ($user->hasRole(['admin', 'manager'])) {
+                $menu->add(  // add an example menu item which have sub menu
+                    '#',
+                    trans('pages.admin_learning_title'),
+                    '<i class="fa fa-graduation-cap"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu($currentUrl);
+                $subMenu->add( //add a menu item
+                    adminUrl('topics'),
+                    trans('pages.admin_topics_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('teachers'),
+                    trans('pages.admin_teachers_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('students'),
+                    trans('pages.admin_students_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('classrooms'),
+                    trans('pages.admin_classrooms_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $menu->addSubMenu($subMenu);
+            }
         }
         $extraMenu = $this->getExtraMenu();
         if ($extraMenu->has()) {

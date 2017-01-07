@@ -25,15 +25,15 @@
 <header>
     <div class="wrapper">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-sm-2">
                 <div class="logo">
                     <a href="{{ homeUrl() }}"><img src="{{ themeImageAsset('logo.png') }}"></a>
                 </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-sm-7">
                 <nav></nav>
             </div>
-            <div class="col-md-3">
+            <div class="col-sm-3">
                 <div class="switch-locale text-right">
                     @foreach(allSupportedLocaleCodes() as $localeCode)
                         <a class="btn {{ $localeCode == $site_locale ? 'btn-success' : 'btn-default' }}" href="{{ currentUrl($localeCode) }}">
@@ -41,13 +41,29 @@
                         </a>
                     @endforeach
                 </div>
-                <div class="login-action text-center">
-                    <a class="btn btn-primary btn-block"
-                       href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a>
-                </div>
-                <div class="sign-up-action text-center">
-                    <a href="{{ homeUrl('user/sign-up') }}">{!! trans('label.or_sign_up_here') !!}</a>
-                </div>
+                @if($is_auth)
+                    <div class="user-action margin-top-10 margin-bottom-10 clearfix">
+                        <div class="dropdown pull-right">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <img class="img-circle width-40" src="{{ $auth_user->url_avatar_thumb }}">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                <li><a href="{{ homeUrl('profile') }}">{{ trans('label.my_profile') }}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                @else
+                    <div class="login-action text-center">
+                        <a class="btn btn-primary btn-block"
+                           href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a>
+                    </div>
+                    <div class="sign-up-action text-center">
+                        <a href="{{ homeUrl('user/sign-up') }}">{!! trans('label.or_sign_up_here') !!}</a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

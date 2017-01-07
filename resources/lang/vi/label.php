@@ -74,6 +74,19 @@ return [
     'you' => 'Bạn',
     'calling_code' => 'Mã vùng quốc tế',
     'calling_code_lc' => 'mã vùng quốc tế',
+    'gender' => 'Giới tính',
+    'gender_male' => 'Nam',
+    'gender_female' => 'Nữ',
+    'gender_other' => 'Khác',
+    'nationality' => 'Quốc tịch',
+    'birthday' => 'Ngày sinh',
+    'age' => 'Tuổi',
+    'city' => 'Thành phố',
+    'about_me' => 'Về tôi',
+    'teaching_experience' => 'King nghiệm giảng dạy',
+    'teaching_methodology' => 'Phương pháp giảng dạy',
+    'have_any_english_certificates' => 'Bạn có chứng chỉ tiếng Anh nào không?',
+    'my_profile' => 'Hồ sơ cá nhân',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -130,6 +143,37 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'help_sign_up_student' => 'Nói tiếng anh trôi chảy cùng mô hình trực tuyến một thầy kèm một trò.',
     'help_sign_up_teacher' => 'Tăng thu nhập và kết nối cùng hàng ngàn giáo viên tiếng Anh trên toàn thế giới.',
     'application_form' => 'Đơn đăng ký',
+    'become_our_teacher' => 'Trở thành giáo viên của chúng tôi',
+    'become_our_teacher_help' => 'Hoàn thành 2 bước tiếp theo để tham gia vào Cộng đồng Giáo viên của chúng tôi',
+    'personal_information' => 'Thông tin cá nhân',
+    'teacher_information' => 'Thông tin giáo viên',
+    'teacher_about_me_eg' => '<div class="small">
+<div class="h6"><strong>You should write a short yet informative introduction. For example:</strong></div>
+<p><strong>- Background:</strong> Graduated from the Foreign Trade University in 2000 and Got 02 full scholarships 
+to study IT in Germany and MBA in the Netherlands (IELTS required)</p>
+<p><strong>- Working experience:</strong> Working in a multi-culture, international environment for more than 14 years 
+where English is heavily used for communication.</p>
+<p><strong>- Personality and hobby:</strong> I’m a very outgoing and friendly person. I love travelling, reading, 
+playing music, watching American movies and taking photography and of course English, naturally. I’ve traveled to 
+more than 20 countries in Asia, Europe and North America.</p>
+<p><strong>- Motivation to become a teacher:</strong> I love English and always want to share my love with everyone. 
+When I see my students improve in English, I’m even happier than them. When they finish the course with me 
+and gain good result, I feel like I have gained a big achievement!</p></div>',
+    'teacher_experience_eg' => '<div class="small">
+<div class="h6"><strong>You should list out your teaching experience as a timeline and show your students’ improvement 
+as a proof for your teaching ability. For example:</strong></div>
+<p>- July 2013 – July 2014: be teacher for a student, helping him pass the university entrance exam with 
+the English score: 8.5.</p>
+<p>- Aug 2014 – now: be a teacher for some language centers and be a home-based teacher for some elementary students. 
+The languages centers and the elementary students’ parents give me good comment about my teaching ability.</p></div>',
+    'teacher_methodology_eg' => '<div class="small">
+<div class="h6"><strong>Write out your most preferable teaching method. For example:</strong></div>
+<p><em>Natural aproach:</em></p>
+<p>I work with real materials (For example: Newspapers, radio, broadcasts, Interviews, ...) to bring up vocabulary 
+and extract grammar issues to work.</p>
+<p>I ask my learners to use english 100% of the time. This develops a better understanding of the language at work.
+Also, learners learn without actually feeling they are doing so, and see improvements much faster than with 
+other methods.</p></div>',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
@@ -156,7 +200,11 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'video' => 'Video',
     'message' => 'Tin nhắn',
     'teacher' => 'Giáo viên',
+    'teacher_lc' => 'giáo viên',
     'student' => 'Học viên',
+    'student_lc' => 'học viên',
+    'topic' => 'Chủ đề',
+    'topic_lc' => 'chủ đề',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

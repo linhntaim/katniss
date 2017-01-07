@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Utils;
 
 
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Illuminate\Session\Store;
 
@@ -311,11 +312,15 @@ class Settings
     {
         if (isAuth()) {
             if (count($this->changingDataStore) > 0) {
-                $userSettings = authUser()->settings;
-                foreach ($this->changingDataStore as $key => $value) {
-                    $userSettings->{$key} = $value;
+                try {
+                    $userSettings = authUser()->settings;
+                    foreach ($this->changingDataStore as $key => $value) {
+                        $userSettings->{$key} = $value;
+                    }
+                    $userSettings->save();
+                } catch (\Exception $exception) {
+                    throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
                 }
-                $userSettings->save();
             }
         }
     }

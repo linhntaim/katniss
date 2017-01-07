@@ -72,6 +72,16 @@ return [
     'admin_media_items_title' => 'Media Items',
     'admin_media_items_desc' => 'Manage media items',
 
+    'admin_learning_title' => 'Learning',
+    'admin_topics_title' => 'Topics',
+    'admin_topics_desc' => 'Manage topics',
+    'admin_teachers_title' => 'Teachers',
+    'admin_teachers_desc' => 'Manage teachers',
+    'admin_students_title' => 'Students',
+    'admin_students_desc' => 'Manage students',
+    'admin_classrooms_title' => 'Classrooms',
+    'admin_classrooms_desc' => 'Manage classrooms',
+
     'admin_error_title' => ':code Error',
     'admin_error_desc' => ':code Error Page',
 ];

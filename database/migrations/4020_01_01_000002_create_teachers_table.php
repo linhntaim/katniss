@@ -28,6 +28,7 @@ class CreateTeachersTable extends Migration
             $table->longText('methodology')->nullable();
 
             $table->string('available_times')->nullable();
+            $table->string('certificates')->nullable();
             $table->longText('payment_info')->nullable();
 
             $table->tinyInteger('status')->default(0);
