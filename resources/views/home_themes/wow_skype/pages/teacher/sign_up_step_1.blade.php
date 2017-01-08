@@ -13,7 +13,7 @@
 @section('extended_scripts')
     <script>
         $(function () {
-            jQuery('.date-picker').datepicker({
+            $('.date-picker').datepicker({
                 format: '{{ $date_js_format }}',
                 language: '{{ $site_locale }}',
                 enableOnReadonly : false

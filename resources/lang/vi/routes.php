@@ -18,6 +18,11 @@ return [
     'student/sign-up'                               => 'hoc-vien/dang-ky',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
+    'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',
+    'profile/educations-and-works'                  => 'tai-khoan/hoc-van-va-nghe-nghiep',
+    'profile/teacher-information'                   => 'tai-khoan/thong-tin-giao-vien',
+    'profile/teaching-time'                         => 'tai-khoan/thoi-gian-giang-day',
+    'profile/payment-information'                   => 'tai-khoan/thong-tin-thanh-toan',
 
     'me'                                            => 'ca-nhan-toi',
     'me/settings'                                   => 'ca-nhan-toi/thiet-lap',

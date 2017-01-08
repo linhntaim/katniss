@@ -18,6 +18,11 @@ return [
     'student/sign-up'                               => 'student/sign-up',
 
     'profile/account-information'                   => 'profile/account-information',
+    'profile/user-information'                      => 'profile/user-information',
+    'profile/educations-and-works'                  => 'profile/educations-and-works',
+    'profile/teacher-information'                   => 'profile/teacher-information',
+    'profile/teaching-time'                         => 'profile/teaching-time',
+    'profile/payment-information'                   => 'profile/payment-information',
 
     'me'                                            => 'me',
     'me/settings'                                   => 'me/settings',

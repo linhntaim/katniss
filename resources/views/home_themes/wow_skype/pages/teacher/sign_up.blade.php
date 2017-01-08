@@ -60,7 +60,7 @@
                                 </div>
                             @endif
                             <div class="form-group has-feedback">
-                                <input class="form-control" id="name" type="text" placeholder="{{ trans('label.full_name') }}" name="display_name" required value="{{ old('display_name') }}">
+                                <input class="form-control" id="inputDisplayName" type="text" placeholder="{{ trans('label.full_name') }}" name="display_name" required value="{{ old('display_name') }}">
                                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                             </div>
                             <div class="form-group has-feedback">

@@ -32,17 +32,16 @@ Route::group([
             'middleware' => 'auth'
         ], function () {
             Route::get(homeRoute('profile/account-information'), 'UserController@getAccountInformation');
-            Route::post(homeRoute('profile/account-information'), 'UserController@postAccountInformation');
             Route::get(homeRoute('profile/user-information'), 'UserController@getUserInformation');
-            Route::post(homeRoute('profile/user-information'), 'UserController@postUserInformation');
+            Route::put(homeRoute('profile/user-information'), 'UserController@updateUserInformation');
             Route::get(homeRoute('profile/educations-and-works'), 'UserController@getEducationsAndWorks');
             Route::post(homeRoute('profile/educations-and-works'), 'UserController@postEducationsAndWorks');
-            Route::get(homeRoute('profile/teaching-information'), 'TeacherController@getTeachingInformation');
-            Route::post(homeRoute('profile/teaching-information'), 'TeacherController@postTeachingInformation');
+            Route::get(homeRoute('profile/teacher-information'), 'TeacherController@getTeachingInformation');
+            Route::post(homeRoute('profile/teacher-information'), 'TeacherController@postTeachingInformation');
             Route::get(homeRoute('profile/teaching-time'), 'TeacherController@getTeachingTime');
             Route::post(homeRoute('profile/teaching-time'), 'TeacherController@postTeachingTime');
-            Route::get(homeRoute('profile/payment-info'), 'TeacherController@getPaymentInfo');
-            Route::post(homeRoute('profile/payment-info'), 'TeacherController@postPaymentInfo');
+            Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInfo');
+            Route::post(homeRoute('profile/payment-information'), 'TeacherController@postPaymentInfo');
 
             Route::group([
                 'middleware' => 'entrust:teacher'

@@ -106,60 +106,60 @@
     </div>
 @endsection
 @section('profile_content')
-        <div class="form-group">
-            <div class="row img-edit-wrapper">
-                <div class="col-sm-4 text-center">
-                    <img id="profile-user-img" class="profile-user-img full-width" src="{{ $auth_user->url_avatar }}" alt="{{ $auth_user->display_name }}">
-                </div>
-                <div class="col-sm-8">
-                    <p>{{ trans('label.profile_account_avatar_help') }}</p>
-                    <button type="button" class="btn btn-success cropper-image-view" data-img="#profile-user-img">{{ trans('form.action_upload_avatar') }}</button>
-                </div>
+    <div class="form-group">
+        <div class="row img-edit-wrapper">
+            <div class="col-sm-4 text-center">
+                <img id="profile-user-img" class="profile-user-img full-width" src="{{ $auth_user->url_avatar }}" alt="{{ $auth_user->display_name }}">
+            </div>
+            <div class="col-sm-8">
+                <p>{{ trans('label.profile_account_avatar_help') }}</p>
+                <button type="button" class="btn btn-success cropper-image-view" data-img="#profile-user-img">{{ trans('form.action_upload_avatar') }}</button>
             </div>
         </div>
-        <hr>
-        <div class="row">
-            <div class="col-sm-6">
-                <i class="fa fa-envelope-o"></i> &nbsp;
-                {{ $auth_user->email }}
-            </div>
-            <div class="col-sm-6">
-                <hr class="visible-xs">
-                <a href="#" data-toggle="modal" data-target="#change-password-modal">
-                    <i class="fa fa-lock"></i> &nbsp;
-                    {{ trans('form.action_change') }} {{ trans('label.password') }}
-                </a>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-6">
+            <i class="fa fa-envelope-o"></i> &nbsp;
+            {{ $auth_user->email }}
+        </div>
+        <div class="col-sm-6">
+            <hr class="visible-xs">
+            <a href="#" data-toggle="modal" data-target="#change-password-modal">
+                <i class="fa fa-lock"></i> &nbsp;
+                {{ trans('form.action_change') }} {{ trans('label.password') }}
+            </a>
+        </div>
+    </div>
+    <hr>
+    <div class="alert alert-danger hide"></div>
+    <div class="media">
+        <div class="media-left">
+            <img class="width-35" src="{{ themeImageAsset('skype.png') }}" alt="Skype">
+        </div>
+        <div class="media-body">
+            <div class="input-group">
+                <input type="text" placeholder="Skype ID" value="{{ $auth_user->skype_id }}"
+                       class="form-control" id="inputSkypeId" name="skype_id">
+                <span class="input-group-btn">
+                    <button id="submitSkypeId" type="button" class="btn btn-primary">{{ trans('form.action_save') }}</button>
+                </span>
             </div>
         </div>
-        <hr>
-        <div class="alert alert-danger hide"></div>
-        <div class="media">
-            <div class="media-left">
-                <img class="width-35" src="{{ themeImageAsset('skype.png') }}" alt="Skype">
-            </div>
-            <div class="media-body">
-                <div class="input-group">
-                    <input type="text" placeholder="Skype ID" value="{{ $auth_user->skype_id }}"
-                           class="form-control" id="inputSkypeId" name="skype_id">
-                    <span class="input-group-btn">
-                        <button id="submitSkypeId" type="button" class="btn btn-primary">{{ trans('form.action_save') }}</button>
-                    </span>
-                </div>
+    </div>
+    <div class="alert alert-danger hide"></div>
+    <div class="media">
+        <div class="media-left">
+            <img class="width-35" src="{{ themeImageAsset('facebook.png') }}" alt="Facebook">
+        </div>
+        <div class="media-body">
+            <div class="input-group">
+                <input type="text" placeholder="{{ trans('form.action_connect') }} Facebook" value="{{ trans('label.status_not_connected') }}"
+                       class="form-control" id="inputFacebookConnect" name="facebook_connect" readonly>
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary">{{ trans('form.action_connect') }}</button>
+                </span>
             </div>
         </div>
-        <div class="alert alert-danger hide"></div>
-        <div class="media">
-            <div class="media-left">
-                <img class="width-35" src="{{ themeImageAsset('facebook.png') }}" alt="Facebook">
-            </div>
-            <div class="media-body">
-                <div class="input-group">
-                    <input type="text" placeholder="{{ trans('form.action_connect') }} Facebook" value="{{ trans('label.status_not_connected') }}"
-                           class="form-control" id="inputFacebookConnect" name="facebook_connect" readonly>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-primary">{{ trans('form.action_connect') }}</button>
-                    </span>
-                </div>
-            </div>
-        </div>
+    </div>
 @endsection

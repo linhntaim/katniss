@@ -143,7 +143,7 @@ class TeacherController extends ViewController
             'facebook' => 'required|max:255|url',
         ]);;
 
-        $errorRdr = redirect(homeUrl('teacher/sign-up/step/1'))->withInput();
+        $errorRdr = redirect(homeUrl('teacher/sign-up/step/{step}', ['step' => 1]))->withInput();
 
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
