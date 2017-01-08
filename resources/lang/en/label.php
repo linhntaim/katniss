@@ -91,6 +91,7 @@ return [
     'my_profile' => 'My profile',
     'video_introduce_url' => 'Video for introducing yourself',
     'video_teaching_url' => 'Video for introducing how you teach',
+    'available_times' => 'Available times',
 
     'settings' => 'Settings',
     'country' => 'Country',

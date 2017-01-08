@@ -269,6 +269,45 @@ class TeacherController extends ViewController
             ->with('successes', [trans('error.success')]);
     }
 
+    public function getTeachingTime(Request $request)
+    {
+        $teacher = $request->authUser()->teacherProfile;
+
+        return $this->_any('teaching_time', [
+            'teacher' => $teacher,
+            'available_times' => $teacher->available_times,
+        ]);
+    }
+
+    public function updateTeachingTime(Request $request)
+    {
+        $errorRdr = redirect(homeUrl('profile/teaching-time'))->withInput();
+
+        $validator = Validator::make($request->all(), [
+            'timezone' => 'required',
+            'times' => 'required|array|in:0,1,2,3,4,5,6',
+        ]);
+        if ($validator->fails()) {
+            return $errorRdr->withErrors($validator);
+        }
+
+        $this->teacherRepository->model($request->authUser()->teacherProfile);
+
+        try {
+            $this->teacherRepository->updateAvailableTimes($request->input('times'));
+
+            $settings = settings();
+            $settings->setTimezone($request->input('timezone'));
+            $settings->storeUser();
+            $settings->storeSession();
+        } catch (KatnissException $exception) {
+            return $errorRdr->withErrors([$exception->getMessage()]);
+        }
+
+        return $settings->storeCookie(redirect(homeUrl('profile/teaching-time')))
+            ->with('successes', [trans('error.success')]);
+    }
+
     public function getPaymentInformation(Request $request)
     {
         $teacher = $request->authUser()->teacherProfile;

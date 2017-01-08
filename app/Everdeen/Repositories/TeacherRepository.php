@@ -160,4 +160,18 @@ class TeacherRepository extends ModelRepository
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
+
+    public function updateAvailableTimes(array $times)
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'available_times' => serialize($times),
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
 }

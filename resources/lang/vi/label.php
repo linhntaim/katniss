@@ -91,6 +91,7 @@ return [
     'my_profile' => 'Hồ sơ cá nhân',
     'video_introduce_url' => 'Video giới thiệu bản thân',
     'video_teaching_url' => 'Video giảng dạy của bạn',
+    'available_times' => 'Thời điểm có thể giảng dạy',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

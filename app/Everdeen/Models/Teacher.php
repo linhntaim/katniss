@@ -53,6 +53,14 @@ class Teacher extends Model
         return unserialize($this->attributes['certificates']);
     }
 
+    public function getAvailableTimesAttribute()
+    {
+        if (empty($this->attributes['available_times'])) {
+            return [];
+        }
+        return unserialize($this->attributes['available_times']);
+    }
+
     public function getPaymentInfoAttribute()
     {
         if (empty($this->attributes['payment_info'])) {
