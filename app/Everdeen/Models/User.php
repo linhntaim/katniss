@@ -93,6 +93,13 @@ class User extends Authenticatable
         return $dir;
     }
 
+    public function getCertificateDirectoryAttribute()
+    {
+        $dir = concatDirectories('user_' . $this->id, 'certificates');
+        makeUserPublicPath($dir);
+        return $dir;
+    }
+
     public function getMemberSinceAttribute()
     {
         return DateTimeHelper::getInstance()->shortDate($this->attributes['created_at']);
@@ -140,6 +147,21 @@ class User extends Authenticatable
 
     public function professionalSkills()
     {
-        return $this->belongsToMany(ProfessionalSkill::class, 'user_id', 'skill_id');
+        return $this->belongsToMany(ProfessionalSkill::class, 'professional_skills_users', 'user_id', 'skill_id');
+    }
+
+    public function educations()
+    {
+        return $this->hasMany(UserEducation::class, 'user_id', 'id');
+    }
+
+    public function certificates()
+    {
+        return $this->hasMany(UserCertificate::class, 'user_id', 'id');
+    }
+
+    public function works()
+    {
+        return $this->hasMany(UserWork::class, 'user_id', 'id');
     }
 }

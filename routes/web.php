@@ -35,6 +35,16 @@ Route::group([
             Route::get(homeRoute('profile/user-information'), 'UserController@getUserInformation');
             Route::put(homeRoute('profile/user-information'), 'UserController@updateUserInformation');
             Route::get(homeRoute('profile/educations-and-works'), 'UserController@getEducationsAndWorks');
+            Route::post(homeRoute('profile/professional-skills'), 'UserController@postProfessionalSkills');
+            Route::post(homeRoute('profile/user-works'), 'UserController@storeWork');
+            Route::put(homeRoute('profile/user-works/{id}'), 'UserController@updateWork');
+            Route::delete(homeRoute('profile/user-works/{id}'), 'UserController@destroyWork');
+            Route::post(homeRoute('profile/user-educations'), 'UserController@storeEducation');
+            Route::put(homeRoute('profile/user-educations/{id}'), 'UserController@updateEducation');
+            Route::delete(homeRoute('profile/user-educations/{id}'), 'UserController@destroyEducation');
+            Route::post(homeRoute('profile/user-certificates'), 'UserController@storeCertificate');
+            Route::put(homeRoute('profile/user-certificates/{id}'), 'UserController@updateCertificate');
+            Route::delete(homeRoute('profile/user-certificates/{id}'), 'UserController@destroyCertificate');
 
             Route::group([
                 'middleware' => 'entrust:teacher'

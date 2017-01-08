@@ -91,7 +91,7 @@
 @yield('lib_scripts')
 {!! extScripts() !!}
 @yield('extended_scripts')
-@include('admin_themes.admin_lte.master.common_modals')
+@include('home_themes.wow_skype.master.common_modals')
 @yield('modals')
 {!! themeFooter() !!}
 </body>

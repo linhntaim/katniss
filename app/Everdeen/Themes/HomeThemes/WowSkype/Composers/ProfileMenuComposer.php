@@ -56,7 +56,7 @@ class ProfileMenuComposer
             trans('label.user_information'), '<strong>', '</strong>'
         );
         $menu->add( // add a menu item
-            homeUrl('profile/educations_and_works'),
+            homeUrl('profile/educations-and-works'),
             trans('label.educations_and_works'), '<strong>', '</strong>'
         );
         $menu->add( // add a menu item

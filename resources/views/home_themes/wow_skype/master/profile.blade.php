@@ -14,6 +14,7 @@
                         @yield('profile_content')
                     </div>
                 </div>
+                @yield('profile_content_extra')
             </div>
         </div>
     </div>

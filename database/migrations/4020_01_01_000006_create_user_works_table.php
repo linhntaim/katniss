@@ -21,9 +21,10 @@ class CreateUserWorksTable extends Migration
             $table->string('company');
             $table->string('position')->nullable();
             $table->text('description')->nullable();
-            $table->dateTime('start')->nullable();
-            $table->dateTime('end')->nullable();
-            $table->boolean('current')->default(false);
+            $table->tinyInteger('start_month')->unsigned()->nullable();
+            $table->integer('start_year')->unsigned()->nullable();
+            $table->tinyInteger('end_month')->unsigned()->nullable();
+            $table->integer('end_year')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -8,6 +8,7 @@
 
 return [
     'certificates' => ['IELTS', 'TESOL', 'TOEIC', 'TEFL', 'TOEFL', 'CELTA', 'Others'],
+    'certificate_types' => ['TOEIC', 'TOEFL', 'IELTS', 'TESOL', 'Others'],
 
     'settings' => [
         'city' => 'LA',

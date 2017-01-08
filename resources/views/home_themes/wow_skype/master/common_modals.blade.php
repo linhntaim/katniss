@@ -14,7 +14,7 @@
                 <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">
                     {{ trans('form.action_cancel') }}
                 </button>
-                <button id="x-confirm-modal-button" type="button" class="btn btn-outline" data-dismiss="modal">
+                <button id="x-confirm-modal-button" type="button" class="btn btn-success" data-dismiss="modal">
                     {{ trans('form.action_confirm') }}
                 </button>
             </div>

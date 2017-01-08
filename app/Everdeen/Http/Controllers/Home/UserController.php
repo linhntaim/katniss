@@ -12,7 +12,11 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Repositories\ProfessionalSkillRepository;
+use Katniss\Everdeen\Repositories\UserCertificateRepository;
+use Katniss\Everdeen\Repositories\UserEducationRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
+use Katniss\Everdeen\Repositories\UserWorkRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class UserController extends ViewController
@@ -94,5 +98,300 @@ class UserController extends ViewController
 
         return $settings->storeCookie(redirect(homeUrl('profile/user-information')))
             ->with('successes', [trans('error.success')]);
+    }
+
+    public function getEducationsAndWorks(Request $request)
+    {
+        $user = $request->authUser();
+        $professionalSkillRepository = new ProfessionalSkillRepository();
+
+        return $this->_any('educations_and_works', [
+            'professional_skills' => $professionalSkillRepository->getAll(),
+            'user_professional_skill_ids' => $user->professionalSkills->pluck('id')->all(),
+            'user_educations' => $user->educations,
+            'user_certificates' => $user->certificates,
+            'user_works' => $user->works,
+            'certificate_types' => _k('certificate_types'),
+            'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
+        ]);
+    }
+
+    public function postProfessionalSkills(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'professional_skills' => 'required|array|exists:professional_skills,id',
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works'));
+        if ($validator->fails()) {
+            return $redirect->withInput()->withErrors($validator, 'professional_skills');
+        }
+
+        try {
+            $user = $request->authUser();
+            if ($user->professionalSkills()->count() > 0) {
+                $user->professionalSkills()->sync($request->input('professional_skills'));
+            } else {
+                $user->professionalSkills()->attach($request->input('professional_skills'));
+            }
+
+            return redirect(homeUrl('profile/educations-and-works'));
+        } catch (\Exception $exception) {
+            return $redirect->withInput()->withErrors([$exception->getMessage()], 'professional_skills');
+        }
+    }
+
+    public function storeWork(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'company' => 'required|max:255',
+            'position' => 'sometimes|max:255',
+            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
+            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#fresh-works');
+        if ($validator->fails()) {
+            return $redirect->withInput()->withErrors($validator, 'work');
+        }
+
+        try {
+            $workRepository = new UserWorkRepository();
+            $work = $workRepository->create(
+                $request->authUser()->id,
+                $request->input('company'),
+                $request->input('position', ''),
+                $request->input('start_month', 0),
+                $request->input('start_year', 0),
+                $request->input('end_month', 0),
+                $request->input('end_year', 0),
+                $request->input('description', '')
+            );
+
+            return redirect(homeUrl('profile/educations-and-works') . '#work-' . $work->id);
+        } catch (KatnissException $exception) {
+            return $redirect->withInput()->withErrors([$exception->getMessage()], 'work');
+        }
+    }
+
+    public function updateWork(Request $request, $id)
+    {
+        $workRepository = new UserWorkRepository($id);
+
+        $validator = Validator::make($request->all(), [
+            'company' => 'required|max:255',
+            'position' => 'sometimes|max:255',
+            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
+            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#work-' . $id);
+        if ($validator->fails()) {
+            return $redirect->withErrors($validator, 'work_' . $id);
+        }
+
+        try {
+            $workRepository->update(
+                $request->authUser()->id,
+                $request->input('company'),
+                $request->input('position', ''),
+                $request->input('start_month', 0),
+                $request->input('start_year', 0),
+                $request->input('end_month', 0),
+                $request->input('end_year', 0),
+                $request->input('description', '')
+            );
+        } catch (KatnissException $exception) {
+            return $redirect->withErrors([$exception->getMessage()], 'work_' . $id);
+        }
+
+        return $redirect;
+    }
+
+    public function destroyWork(Request $request, $id)
+    {
+        $workRepository = new UserWorkRepository($id);
+
+        $this->_rdrUrl($request, null, $rdrUrl, $errorRdrUrl);
+
+        try {
+            $workRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
+    }
+
+    public function storeEducation(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'school' => 'required|max:255',
+            'field' => 'sometimes|max:255',
+            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
+            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#fresh-educations');
+        if ($validator->fails()) {
+            return $redirect->withInput()->withErrors($validator, 'education');
+        }
+
+        try {
+            $educationRepository = new UserEducationRepository();
+            $education = $educationRepository->create(
+                $request->authUser()->id,
+                $request->input('school'),
+                $request->input('field', ''),
+                $request->input('start_month', 0),
+                $request->input('start_year', 0),
+                $request->input('end_month', 0),
+                $request->input('end_year', 0),
+                $request->input('description', '')
+            );
+
+            return redirect(homeUrl('profile/educations-and-works') . '#education-' . $education->id);
+        } catch (KatnissException $exception) {
+            return $redirect->withInput()->withErrors([$exception->getMessage()], 'education');
+        }
+    }
+
+    public function updateEducation(Request $request, $id)
+    {
+        $educationRepository = new UserEducationRepository($id);
+
+        $validator = Validator::make($request->all(), [
+            'school' => 'required|max:255',
+            'field' => 'sometimes|max:255',
+            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
+            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#education-' . $id);
+        if ($validator->fails()) {
+            return $redirect->withErrors($validator, 'education_' . $id);
+        }
+
+        try {
+            $educationRepository->update(
+                $request->authUser()->id,
+                $request->input('school'),
+                $request->input('field', ''),
+                $request->input('start_month', 0),
+                $request->input('start_year', 0),
+                $request->input('end_month', 0),
+                $request->input('end_year', 0),
+                $request->input('description', '')
+            );
+        } catch (KatnissException $exception) {
+            return $redirect->withErrors([$exception->getMessage()], 'education_' . $id);
+        }
+
+        return $redirect;
+    }
+
+    public function destroyEducation(Request $request, $id)
+    {
+        $educationRepository = new UserEducationRepository($id);
+
+        $this->_rdrUrl($request, null, $rdrUrl, $errorRdrUrl);
+
+        try {
+            $educationRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
+    }
+
+    public function storeCertificate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|in:' . implode(',', _k('certificate_types')),
+            'meta' => 'sometimes|array',
+            'provided_by' => 'required|max:255',
+            'provided_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'image' => 'sometimes|image',
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#fresh-certificates');
+        if ($validator->fails()) {
+            return $redirect->withInput()->withErrors($validator, 'certificate');
+        }
+
+        try {
+            $certificateRepository = new UserCertificateRepository();
+            $certificate = $certificateRepository->create(
+                $request->authUser()->id,
+                $request->input('type'),
+                $request->input('provided_by'),
+                $request->input('provided_at', null),
+                $request->hasFile('image') ? $request->file('image')->getRealPath() : null,
+                $request->input('meta', []),
+                $request->input('description', '')
+            );
+
+            return redirect(homeUrl('profile/educations-and-works') . '#certificate-' . $certificate->id);
+        } catch (KatnissException $exception) {
+            return $redirect->withInput()->withErrors([$exception->getMessage()], 'certificate');
+        }
+    }
+
+    public function updateCertificate(Request $request, $id)
+    {
+        $certificateRepository = new UserCertificateRepository($id);
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|in:' . implode(',', _k('certificate_types')),
+            'meta' => 'sometimes|array',
+            'provided_by' => 'required|max:255',
+            'provided_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'image' => 'sometimes|image',
+        ]);
+
+        $redirect = redirect(homeUrl('profile/educations-and-works') . '#certificate-' . $id);
+        if ($validator->fails()) {
+            return $redirect->withErrors($validator, 'certificate_' . $id);
+        }
+
+        try {
+            $certificateRepository->update(
+                $request->authUser()->id,
+                $request->input('type'),
+                $request->input('provided_by'),
+                $request->input('provided_at', null),
+                $request->hasFile('image') ? $request->file('image')->getRealPath() : null,
+                $request->input('meta', []),
+                $request->input('description', '')
+            );
+        } catch (KatnissException $exception) {
+            return $redirect->withErrors([$exception->getMessage()], 'certificate_' . $id);
+        }
+
+        return $redirect;
+    }
+
+    public function destroyCertificate(Request $request, $id)
+    {
+        $certificationRepository = new UserCertificateRepository($id);
+
+        $this->_rdrUrl($request, null, $rdrUrl, $errorRdrUrl);
+
+        try {
+            $certificationRepository->delete();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
     }
 }
