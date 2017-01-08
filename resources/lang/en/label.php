@@ -92,6 +92,7 @@ return [
     'video_introduce_url' => 'Video for introducing yourself',
     'video_teaching_url' => 'Video for introducing how you teach',
     'available_times' => 'Available times',
+    'user_professional_skill' => 'Professional skills',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -217,6 +218,8 @@ learn about each other. Please upload a photo that clearly shows your face.',
     'student_lc' => 'student|students',
     'topic' => 'Topic|Topics',
     'topic_lc' => 'topic|topics',
+    'professional_skill' => 'Professional skill|Professional skills',
+    'professional_skill_lc' => 'professional skill|professional skills',
 
     'no_widget' => 'No widget is placed here',
 

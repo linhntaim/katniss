@@ -35,18 +35,19 @@ Route::group([
             Route::get(homeRoute('profile/user-information'), 'UserController@getUserInformation');
             Route::put(homeRoute('profile/user-information'), 'UserController@updateUserInformation');
             Route::get(homeRoute('profile/educations-and-works'), 'UserController@getEducationsAndWorks');
-            Route::get(homeRoute('profile/teacher-information'), 'TeacherController@getTeacherInformation');
-            Route::put(homeRoute('profile/teacher-information'), 'TeacherController@updateTeacherInformation');
-            Route::get(homeRoute('profile/teaching-time'), 'TeacherController@getTeachingTime');
-            Route::put(homeRoute('profile/teaching-time'), 'TeacherController@updateTeachingTime');
-            Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInformation');
-            Route::put(homeRoute('profile/payment-information'), 'TeacherController@updatePaymentInformation');
 
             Route::group([
                 'middleware' => 'entrust:teacher'
             ], function () {
                 Route::get(homeRoute('teacher/sign-up/step/{step}'), 'TeacherController@getSignUpStep');
                 Route::post(homeRoute('teacher/sign-up/step/{step}'), 'TeacherController@postSignUpStep');
+
+                Route::get(homeRoute('profile/teacher-information'), 'TeacherController@getTeacherInformation');
+                Route::put(homeRoute('profile/teacher-information'), 'TeacherController@updateTeacherInformation');
+                Route::get(homeRoute('profile/teaching-time'), 'TeacherController@getTeachingTime');
+                Route::put(homeRoute('profile/teaching-time'), 'TeacherController@updateTeachingTime');
+                Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInformation');
+                Route::put(homeRoute('profile/payment-information'), 'TeacherController@updatePaymentInformation');
             });
         });
     });
@@ -184,6 +185,13 @@ Route::group([
                 Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+                //Professional Skills
+                Route::get(adminRoute('professional-skills'), 'ProfessionalSkillController@index');
+                Route::get(adminRoute('professional-skills/create'), 'ProfessionalSkillController@create');
+                Route::post(adminRoute('professional-skills'), 'ProfessionalSkillController@store');
+                Route::get(adminRoute('professional-skills/{id}/edit'), 'ProfessionalSkillController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('professional-skills/{id}'), 'ProfessionalSkillController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('professional-skills/{id}'), 'ProfessionalSkillController@destroy')->where('id', '[0-9]+');
                 //Topic
                 Route::get(adminRoute('topics'), 'TopicController@index');
                 Route::get(adminRoute('topics/create'), 'TopicController@create');

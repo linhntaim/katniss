@@ -215,6 +215,11 @@ class AdminMenuComposer
                 );
                 $subMenu = new Menu($currentUrl);
                 $subMenu->add( //add a menu item
+                    adminUrl('professional-skills'),
+                    trans('pages.admin_professional_skills_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
                     adminUrl('topics'),
                     trans('pages.admin_topics_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'

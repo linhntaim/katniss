@@ -4,37 +4,37 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
-use Katniss\Everdeen\Repositories\TopicRepository;
+use Katniss\Everdeen\Repositories\ProfessionalSkillRepository;
 
-class TopicController extends AdminController
+class ProfessionalSkillController extends AdminController
 {
-    protected $topicRepository;
+    protected $professionalSkillRepository;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->viewPath = 'topic';
-        $this->topicRepository = new TopicRepository();
+        $this->viewPath = 'professional_skill';
+        $this->professionalSkillRepository = new ProfessionalSkillRepository();
     }
 
     public function index(Request $request)
     {
-        $topics = $this->topicRepository->getPaged();
-        $this->_title(trans('pages.admin_topics_title'));
-        $this->_description(trans('pages.admin_topics_desc'));
+        $professionalSkills = $this->professionalSkillRepository->getPaged();
+        $this->_title(trans('pages.admin_professional_skills_title'));
+        $this->_description(trans('pages.admin_professional_skills_desc'));
 
         return $this->_index([
-            'topics' => $topics,
-            'pagination' => $this->paginationRender->renderByPagedModels($topics),
+            'professional_skills' => $professionalSkills,
+            'pagination' => $this->paginationRender->renderByPagedModels($professionalSkills),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 
     public function create()
     {
-        $this->_title([trans('pages.admin_topics_title'), trans('form.action_add')]);
-        $this->_description(trans('pages.admin_topics_desc'));
+        $this->_title([trans('pages.admin_professional_skills_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_professional_skills_desc'));
 
         return $this->_create();
     }
@@ -45,7 +45,7 @@ class TopicController extends AdminController
             'name' => 'required|max:255',
         ]);
 
-        $errorRedirect = redirect(adminUrl('topics/create'))
+        $errorRedirect = redirect(adminUrl('professional-skills/create'))
             ->withInput();
 
         if ($validateResult->isFailed()) {
@@ -53,12 +53,12 @@ class TopicController extends AdminController
         }
 
         try {
-            $this->topicRepository->create($validateResult->getLocalizedInputs());
+            $this->professionalSkillRepository->create($validateResult->getLocalizedInputs());
         } catch (KatnissException $ex) {
             return $errorRedirect->withErrors([$ex->getMessage()]);
         }
 
-        return redirect(adminUrl('topics'));
+        return redirect(adminUrl('professional-skills'));
     }
 
     /**
@@ -74,21 +74,21 @@ class TopicController extends AdminController
 
     public function edit(Request $request, $id)
     {
-        $topic = $this->topicRepository->model($id);
+        $professionalSkill = $this->professionalSkillRepository->model($id);
 
-        $this->_title([trans('pages.admin_topics_title'), trans('form.action_edit')]);
-        $this->_description(trans('pages.admin_topics_desc'));
+        $this->_title([trans('pages.admin_professional_skills_title'), trans('form.action_edit')]);
+        $this->_description(trans('pages.admin_professional_skills_desc'));
 
         return $this->_edit([
-            'topic' => $topic,
+            'professional_skill' => $professionalSkill,
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $topic = $this->topicRepository->model($id);
+        $professionalSkill = $this->professionalSkillRepository->model($id);
 
-        $redirect = redirect(adminUrl('topics/{id}/edit', ['id' => $topic->id]));
+        $redirect = redirect(adminUrl('professional-skills/{id}/edit', ['id' => $professionalSkill->id]));
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
@@ -99,7 +99,7 @@ class TopicController extends AdminController
         }
 
         try {
-            $this->topicRepository->update($validateResult->getLocalizedInputs());
+            $this->professionalSkillRepository->update($validateResult->getLocalizedInputs());
         } catch (KatnissException $ex) {
             return $redirect->withErrors([$ex->getMessage()]);
         }
@@ -109,12 +109,12 @@ class TopicController extends AdminController
 
     public function destroy(Request $request, $id)
     {
-        $this->topicRepository->model($id);
+        $this->professionalSkillRepository->model($id);
 
-        $this->_rdrUrl($request, adminUrl('topics'), $rdrUrl, $errorRdrUrl);
+        $this->_rdrUrl($request, adminUrl('professional-skills'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->topicRepository->delete();
+            $this->professionalSkillRepository->delete();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

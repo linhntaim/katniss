@@ -73,6 +73,8 @@ return [
     'admin_media_items_desc' => 'Manage media items',
 
     'admin_learning_title' => 'Learning',
+    'admin_professional_skills_title' => 'Professional Skills',
+    'admin_professional_skills_desc' => 'Manage professional skills',
     'admin_topics_title' => 'Topics',
     'admin_topics_desc' => 'Manage topics',
     'admin_teachers_title' => 'Teachers',

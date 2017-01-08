@@ -137,4 +137,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Teacher::class, 'user_id', 'id');
     }
+
+    public function professionalSkills()
+    {
+        return $this->belongsToMany(ProfessionalSkill::class, 'user_id', 'skill_id');
+    }
 }

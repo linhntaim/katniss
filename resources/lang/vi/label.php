@@ -92,6 +92,7 @@ return [
     'video_introduce_url' => 'Video giới thiệu bản thân',
     'video_teaching_url' => 'Video giảng dạy của bạn',
     'available_times' => 'Thời điểm có thể giảng dạy',
+    'user_professional_skill' => 'Chuyên ngành và kỹ năng',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -217,6 +218,8 @@ learn about each other. Please upload a photo that clearly shows your face.',
     'student_lc' => 'học viên',
     'topic' => 'Chủ đề',
     'topic_lc' => 'chủ đề',
+    'professional_skill' => 'Kỹ năng chuyên môn',
+    'professional_skill_lc' => 'kỹ năng chuyên môn',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
