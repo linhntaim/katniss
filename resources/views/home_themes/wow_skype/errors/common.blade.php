@@ -1,13 +1,13 @@
 @extends('home_themes.wow_skype.master.master')
-@section('extra_sections')
-    <section id="404" class="odd-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="text-uppercase">{{ $site_name }}</h1>
-                    <p>{{ trans('label.error') }}: {{ $code }}{{ empty($message) ? '' : ' - ' . $message }}.</p>
-                </div>
+@section('main_content')
+    <div id="page-error">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <h2>{{ trans('label.error') }} {{ $code }}</h2>
+                @if(!empty($message))
+                    <p class="help-block">{{ $message }}</p>
+                @endif
             </div>
         </div>
-    </section>
+    </div>
 @endsection

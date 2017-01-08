@@ -180,7 +180,7 @@ class DefaultSeeder extends Seeder
         $category->save();
         AppOption::create([
             'key' => 'extension_app_settings',
-            'rawValue' => '{"register_enable":"1","default_article_category":"' . $category->id . '"}',
+            'rawValue' => '{"register_enable":"0","default_article_category":"' . $category->id . '"}',
             'data_type' => 'array',
             'registered_by' => 'ext:app_settings',
         ]);

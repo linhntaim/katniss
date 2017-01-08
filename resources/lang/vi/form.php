@@ -80,4 +80,5 @@ return [
     'action_continue' => 'Tiếp tục',
     'action_complete' => 'Hoàn thành',
     'action_upload_avatar' => 'Tải lên hình đại diện',
+    'action_connect' => 'Kết nối',
 ];

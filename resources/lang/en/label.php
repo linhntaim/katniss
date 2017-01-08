@@ -30,6 +30,8 @@ return [
     'status_normal' => 'Normal',
     'status_enabled' => 'Enabled',
     'status_disabled' => 'Disabled',
+    'status_connected' => 'Connected',
+    'status_not_connected' => 'Not connected',
 
     'wanna_delete' => 'Do you really want to delete :name ?',
     'wanna_verify' => 'Do you really want to verify :name ?',
@@ -147,6 +149,11 @@ click the button below to get another welcome email from us.',
     'become_our_teacher_help' => 'Follow the two 2 steps to join our Teacher Community',
     'personal_information' => 'Personal information',
     'teacher_information' => 'Teacher information',
+    'account_information' => 'Account information',
+    'user_information' => 'User information',
+    'educations_and_works' => 'Educations and Works',
+    'teaching_time' => 'Teaching time',
+    'payment_info' => 'Payment information',
     'teacher_about_me_eg' => '<div class="small">
 <div class="h6"><strong>You should write a short yet informative introduction. For example:</strong></div>
 <p><strong>- Background:</strong> Graduated from the Foreign Trade University in 2000 and Got 02 full scholarships 
@@ -174,6 +181,8 @@ and extract grammar issues to work.</p>
 <p>I ask my learners to use english 100% of the time. This develops a better understanding of the language at work.
 Also, learners learn without actually feeling they are doing so, and see improvements much faster than with 
 other methods.</p></div>',
+    'profile_account_avatar_help' => 'Clear frontal face photos are an important way for teachers and learners to 
+learn about each other. Please upload a photo that clearly shows your face.',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

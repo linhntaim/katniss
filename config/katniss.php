@@ -43,7 +43,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
         Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::class,
         Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
-        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
+//        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
     ],
     'extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,
@@ -54,7 +54,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
         Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
         Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
-        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
+//        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,

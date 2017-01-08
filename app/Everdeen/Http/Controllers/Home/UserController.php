@@ -32,4 +32,9 @@ class UserController extends ViewController
 
         return $this->_any('sign_up');
     }
+
+    public function getAccountInformation(Request $request)
+    {
+        return $this->_any('account_information');
+    }
 }

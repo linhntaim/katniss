@@ -34,13 +34,13 @@ class Theme extends HomeTheme
             if (authUser()->hasRole('admin')) {
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
-                    trans('example_theme.page_theme_title'),
+                    trans('wow_skype_theme.page_theme_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
                 $subMenu = new Menu(currentFullUrl());
                 $subMenu->add( // add a menu item
                     addExtraUrl('admin/themes/wow_skype/options', adminUrl('extra')),
-                    trans('example_theme.page_options_title'),
+                    trans('wow_skype_theme.page_options_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
@@ -68,7 +68,10 @@ class Theme extends HomeTheme
     protected function registerComposers($is_auth = false)
     {
         view()->composer(
-            $this->masterPath('index'), Composers\MainMenuComposer::class
+            $this->masterPath('master'), Composers\MainMenuComposer::class
+        );
+        view()->composer(
+            $this->masterPath('profile'), Composers\ProfileMenuComposer::class
         );
     }
 

@@ -49,7 +49,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                                <li><a href="{{ homeUrl('profile') }}">{{ trans('label.my_profile') }}</a></li>
+                                <li><a href="{{ homeUrl('profile/account-information') }}">{{ trans('label.my_profile') }}</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a></li>
                             </ul>

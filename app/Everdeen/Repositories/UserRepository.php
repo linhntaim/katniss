@@ -142,7 +142,8 @@ class UserRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . ']' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,
                     ])
@@ -153,6 +154,41 @@ class UserRepository extends ModelRepository
         } catch (\Exception $ex) {
             DB::rollBack();
 
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updatePassword($password)
+    {
+        $user = $this->model();
+        DB::beginTransaction();
+        try {
+            $user->password = bcrypt($password);
+            $user->save();
+            event(new PasswordChanged($user, $password,
+                array_merge(request()->getTheme()->viewParams(), [
+                    MailHelper::EMAIL_SUBJECT => '[' . appName() . ']' .
+                        trans('form.action_change') . ' ' . trans('label.password'),
+                    MailHelper::EMAIL_TO => $user->email,
+                    MailHelper::EMAIL_TO_NAME => $user->display_name,
+                ])
+            ));
+
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateSkypeId($skypeId)
+    {
+        $user = $this->model();
+        try {
+            $user->skype_id = $skypeId;
+            $user->save();
+        } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }

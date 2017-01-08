@@ -28,23 +28,6 @@
                             @endforeach
                         </div>
                     @endif
-                    @if($is_map_marker_enable)
-                        <div class="form-group">
-                            <label for="inputDefaultMapMarker">{{ trans('example_theme.default_map_marker') }}</label>
-                            <select id="inputDefaultMapMarker" class="form-control select2" name="default_map_marker_id" style="width: 100%;">
-                                <option value="0">[{{ trans('label.not_set') }}]</option>
-                                @foreach($map_markers as $map_marker)
-                                    <option value="{{ $map_marker->id }}"{{ $default_map_marker_id == $map_marker->id ? ' selected' : '' }}>
-                                        {{ !empty($map_marker->name) ? $map_marker->name : $map_marker->data->address }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @else
-                        <div>
-                            {!! trans('example_theme.need_activate_map_marker', ['url' => adminUrl('extensions')]) !!}
-                        </div>
-                    @endif
                 </div>
                 <div class="box-footer">
                     <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>

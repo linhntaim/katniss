@@ -80,4 +80,5 @@ return [
     'action_continue' => 'Continue',
     'action_complete' => 'Complete',
     'action_upload_avatar' => 'Upload an avatar',
+    'action_connect' => 'Connect',
 ];

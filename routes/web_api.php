@@ -26,4 +26,11 @@ Route::group([
     Route::get('conversations/{id}', 'ConversationController@show');
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
+
+    Route::group([
+        'middleware' => 'auth'
+    ], function () {
+        Route::put('me/account/password', 'AccountController@updatePassword');
+        Route::put('me/account/skype-id', 'AccountController@updateSkypeId');
+    });
 });

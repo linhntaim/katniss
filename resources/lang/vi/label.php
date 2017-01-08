@@ -30,6 +30,8 @@ return [
     'status_normal' => 'Bình thường',
     'status_enabled' => 'Cho phép',
     'status_disabled' => 'Không cho phép',
+    'status_connected' => 'Đã kết nối',
+    'status_not_connected' => 'Chưa kết nối',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',
@@ -147,6 +149,11 @@ hãy bấm vào nút bên dưới để nhận một thư khác từ chúng tôi
     'become_our_teacher_help' => 'Hoàn thành 2 bước tiếp theo để tham gia vào Cộng đồng Giáo viên của chúng tôi',
     'personal_information' => 'Thông tin cá nhân',
     'teacher_information' => 'Thông tin giáo viên',
+    'account_information' => 'Thông tin tài khoản',
+    'user_information' => 'Thông tin cá nhân',
+    'educations_and_works' => 'Học vấn và Nghề nghiệp',
+    'teaching_time' => 'Thời gian giảng dạy',
+    'payment_info' => 'Thông tin thanh toán',
     'teacher_about_me_eg' => '<div class="small">
 <div class="h6"><strong>You should write a short yet informative introduction. For example:</strong></div>
 <p><strong>- Background:</strong> Graduated from the Foreign Trade University in 2000 and Got 02 full scholarships 
@@ -174,6 +181,8 @@ and extract grammar issues to work.</p>
 <p>I ask my learners to use english 100% of the time. This develops a better understanding of the language at work.
 Also, learners learn without actually feeling they are doing so, and see improvements much faster than with 
 other methods.</p></div>',
+    'profile_account_avatar_help' => 'Clear frontal face photos are an important way for teachers and learners to 
+learn about each other. Please upload a photo that clearly shows your face.',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
