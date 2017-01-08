@@ -27,4 +27,5 @@ return [
     'category_delete_default' => 'Cannot delete default category',
     'default_locale_inputs_must_be_set' => 'If you don\'t fill multiple locale form for all languages, please fill in default tab',
     'elfinder_rm_not_allowed' => 'You are not allowed to delete it',
+    'payment_info' => 'Please fill all required fields',
 ];

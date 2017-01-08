@@ -117,7 +117,7 @@ class TeacherRepository extends ModelRepository
             }
             return $teacher;
         } catch (\Exception $ex) {
-            throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
 
@@ -140,7 +140,24 @@ class TeacherRepository extends ModelRepository
             }
             return $teacher;
         } catch (\Exception $ex) {
-            throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updatePaymentInfo($country, array $data)
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'payment_info' => serialize([
+                    'country' => $country,
+                    'data' => $data,
+                ]),
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
 }

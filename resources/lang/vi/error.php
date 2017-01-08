@@ -27,4 +27,5 @@ return [
     'category_delete_default' => 'Không thể xóa bỏ chuyên mục mặc định',
     'default_locale_inputs_must_be_set' => 'Nếu bạn không nhập liệu cho tất cả các ngôn ngữ, hãy nhập dữ liệu ở phần thẻ Mặc định.',
     'elfinder_rm_not_allowed' => 'Bạn không được phép xóa nó',
+    'payment_info' => 'Hãy điền hết các mục có yêu cầu không được để trống',
 ];

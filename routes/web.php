@@ -38,9 +38,9 @@ Route::group([
             Route::get(homeRoute('profile/teacher-information'), 'TeacherController@getTeacherInformation');
             Route::put(homeRoute('profile/teacher-information'), 'TeacherController@updateTeacherInformation');
             Route::get(homeRoute('profile/teaching-time'), 'TeacherController@getTeachingTime');
-            Route::post(homeRoute('profile/teaching-time'), 'TeacherController@postTeachingTime');
-            Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInfo');
-            Route::post(homeRoute('profile/payment-information'), 'TeacherController@postPaymentInfo');
+            Route::put(homeRoute('profile/teaching-time'), 'TeacherController@updateTeachingTime');
+            Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInformation');
+            Route::put(homeRoute('profile/payment-information'), 'TeacherController@updatePaymentInformation');
 
             Route::group([
                 'middleware' => 'entrust:teacher'

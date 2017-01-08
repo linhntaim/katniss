@@ -64,8 +64,12 @@ class ProfileMenuComposer
             trans('label.teacher_information'), '<strong>', '</strong>'
         );
         $menu->add( // add a menu item
+            homeUrl('profile/teaching-time'),
+            trans('label.teaching_time'), '<strong>', '</strong>'
+        );
+        $menu->add( // add a menu item
             homeUrl('profile/payment-information'),
-            trans('label.payment_info'), '<strong>', '</strong>'
+            trans('label.payment_information'), '<strong>', '</strong>'
         );
         $menu = contentFilter('profile_menu', $menu);
         return $menu;

@@ -53,6 +53,14 @@ class Teacher extends Model
         return unserialize($this->attributes['certificates']);
     }
 
+    public function getPaymentInfoAttribute()
+    {
+        if (empty($this->attributes['payment_info'])) {
+            return [];
+        }
+        return unserialize($this->attributes['payment_info']);
+    }
+
     public function userProfile()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

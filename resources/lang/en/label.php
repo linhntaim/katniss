@@ -155,7 +155,7 @@ click the button below to get another welcome email from us.',
     'user_information' => 'User information',
     'educations_and_works' => 'Educations and Works',
     'teaching_time' => 'Teaching time',
-    'payment_info' => 'Payment information',
+    'payment_information' => 'Payment information',
     'teacher_about_me_eg' => '<div class="small">
 <div class="h6"><strong>You should write a short yet informative introduction. For example:</strong></div>
 <p><strong>- Background:</strong> Graduated from the Foreign Trade University in 2000 and Got 02 full scholarships 
@@ -222,4 +222,46 @@ learn about each other. Please upload a photo that clearly shows your face.',
     'max_upload_file_size' => 'Maximum size of upload file: :size',
 
     'default' => 'Default',
+    'optional' => 'optional',
+    'required' => 'required',
+
+    'bank_account' => 'Bank account',
+    'bank_account_full_name' => 'Account holder\'s full name',
+    'bank_recipient_phone_number' => 'Recipient\'s local phone number',
+    'bank_name' => 'Bank name',
+    'bank_swift_code' => 'Bank\'s SWIFT/BIC code',
+    'bank_clearing_code' => 'Local clearing code',
+    'bank_clearing_code_help' => 'e.g. Sort Code, BSB Code, IFSC Code, ABA/Routing Number, etc. and 
+Account Type - if applicable',
+    'bank_account_number' => 'Bank account number / IBAN number',
+    'bank_account_number_help' => 'for SEPA countries in Europe, as well as the United Kingdom, 
+please provide a bank account in EUR currency that has IBAN Number; for all other countries in the world, 
+please provide a bank account in your LOCAL currency',
+    'bank_other_info' => 'Other information (if any)',
+    'bank_currency' => 'Account currency',
+    'bank_own_name' => 'The bank account above is under your own name or the name of your relative/friend?',
+    'bank_own_name_1' => 'It is under my own name',
+    'bank_own_name_2' => 'It is under the name of my relative/friend',
+
+    'paypal_email' => 'Your PayPal\'s email address',
+    'paypal_full_name' => 'Recipient\'s full name',
+    'paypal_country' => 'Recipient\'s country of residence',
+
+    'skrill_email' => 'Your Skrill\'s email address',
+    'skrill_full_name' => 'Recipient\'s full name',
+    'skrill_country' => 'Recipient\'s country of residence',
+
+    'payoneer_benificiary_name' => 'Benificiary Name (as displayed in Payoneer)',
+    'payoneer_account_number' => 'Bank Account Number / IBAN Number (as displayed in Payoneer)',
+
+    'other_payment_methods' => 'Other payment methods',
+    'other_payment_methods_help' => 'We are willing to consider other payment methods as well (so if you have 
+any suggestions, please type in the box below). But please note that, due to regulatory issues, we can NOT 
+send payment via Western Union or MoneyGram.',
+
+    'vn_account_number' => 'Bank account number (Vietnam Dong only)',
+    'vn_account_number_help' => 'Please provide a bank account in Vietnamese Dong - VND',
+    'vn_account_name' => 'Full name of bank account owner',
+    'vn_city' => 'Bank\'s province/city',
+    'vn_branch' => 'Bank\'s branch',
 ];

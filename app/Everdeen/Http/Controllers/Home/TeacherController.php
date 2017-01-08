@@ -218,6 +218,7 @@ class TeacherController extends ViewController
 
         return redirect(homeUrl());
     }
+
     #endregion
 
     public function getTeacherInformation(Request $request)
@@ -265,6 +266,273 @@ class TeacherController extends ViewController
         }
 
         return redirect(homeUrl('profile/teacher-information'))
+            ->with('successes', [trans('error.success')]);
+    }
+
+    public function getPaymentInformation(Request $request)
+    {
+        $teacher = $request->authUser()->teacherProfile;
+        $paymentInfo = $teacher->payment_info;
+        $hasPaymentVn = false;
+        $paymentVn = [
+            'vn_account_number' => '',
+            'vn_bank_name' => '',
+            'vn_account_name' => '',
+            'vn_city' => '',
+            'vn_branch' => '',
+            'vn_account_own_name' => '',
+        ];
+        $hasPaymentBankAccount = false;
+        $paymentBankAccount = [
+            'bank_account_full_name' => '',
+            'bank_account_address' => '',
+            'bank_account_city' => '',
+            'bank_account_country' => '',
+            'bank_account_recipient_phone_number' => '',
+            'bank_account_bank_name' => '',
+            'bank_account_swift_code' => '',
+            'bank_account_clearing_code' => '',
+            'bank_account_number' => '',
+            'bank_account_other_info' => '',
+            'bank_account_currency' => '',
+            'bank_account_own_name' => '',
+        ];
+        $hasPaymentPaypal = false;
+        $paymentPaypal = [
+            'paypal_email' => '',
+            'paypal_full_name' => '',
+            'paypal_country' => '',
+        ];
+        $hasPaymentSkrill = false;
+        $paymentSkrill = [
+            'skrill_email' => '',
+            'skrill_full_name' => '',
+            'skrill_country' => '',
+        ];
+        $hasPaymentPayoneer = false;
+        $paymentPayoneer = [
+            'payoneer_benificiary_name' => '',
+            'payoneer_address' => '',
+            'payoneer_bank_name' => '',
+            'payoneer_country' => '',
+            'payoneer_clearing_code' => '',
+            'payoneer_account_number' => '',
+            'payoneer_currency' => '',
+            'payoneer_other_info' => '',
+        ];
+        $hasPaymentOthers = false;
+        $paymentOthers = [
+            'others_content' => '',
+        ];
+        if (!empty($paymentInfo)) {
+            if ($paymentInfo['country'] == 'VN') {
+                $hasPaymentVn = true;
+                $paymentVn = array_merge($paymentVn, $paymentInfo['data']['vn']);
+            } else {
+                if (!empty($paymentInfo['data']['bank_account'])) {
+                    $hasPaymentBankAccount = true;
+                    $paymentBankAccount = array_merge($paymentBankAccount, $paymentInfo['data']['bank_account']);
+                }
+                if (!empty($paymentInfo['data']['paypal'])) {
+                    $hasPaymentPaypal = true;
+                    $paymentPaypal = array_merge($paymentPaypal, $paymentInfo['data']['paypal']);
+                }
+                if (!empty($paymentInfo['data']['skrill'])) {
+                    $hasPaymentSkrill = true;
+                    $paymentSkrill = array_merge($paymentSkrill, $paymentInfo['data']['skrill']);
+                }
+                if (!empty($paymentInfo['data']['payoneer'])) {
+                    $hasPaymentPayoneer = true;
+                    $paymentPayoneer = array_merge($paymentPayoneer, $paymentInfo['data']['payoneer']);
+                }
+                if (!empty($paymentInfo['data']['others'])) {
+                    $hasPaymentOthers = true;
+                    $paymentOthers = array_merge($paymentOthers, $paymentInfo['data']['others']);
+                }
+            }
+        }
+
+        return $this->_any('payment_information', [
+            'payment_info' => $teacher->payment_info,
+            'payment_vn' => $paymentVn,
+            'has_payment_vn' => $hasPaymentVn,
+            'payment_bank_account' => $paymentBankAccount,
+            'has_payment_bank_account' => $hasPaymentBankAccount,
+            'payment_paypal' => $paymentPaypal,
+            'has_payment_paypal' => $hasPaymentPaypal,
+            'payment_skrill' => $paymentSkrill,
+            'has_payment_skrill' => $hasPaymentSkrill,
+            'payment_payoneer' => $paymentPayoneer,
+            'has_payment_payoneer' => $hasPaymentPayoneer,
+            'payment_others' => $paymentOthers,
+            'has_payment_others' => $hasPaymentOthers,
+        ]);
+    }
+
+    public function updatePaymentInformation(Request $request)
+    {
+        $errorRdr = redirect(homeUrl('profile/payment-information'))->withInput();
+
+        $validator = Validator::make($request->all(), [
+            'country' => 'required|in:' . implode(',', allCountryCodes()),
+        ]);
+        if ($validator->fails()) {
+            return $errorRdr->withErrors($validator);
+        }
+
+        $paymentData = [];
+        if ($request->input('country') == 'VN') {
+            $validator = Validator::make($request->all(), [
+                'vn_account_number' => 'required',
+                'vn_bank_name' => 'required',
+                'vn_account_name' => 'required',
+                'vn_city' => 'required',
+                'vn_branch' => 'required',
+            ], [
+                'vn_account_number' => trans('error.payment_info'),
+                'vn_bank_name' => trans('error.payment_info'),
+                'vn_account_name' => trans('error.payment_info'),
+                'vn_city' => trans('error.payment_info_vn'),
+                'vn_branch' => trans('error.payment_info'),
+            ]);
+            if ($validator->fails()) {
+                return $errorRdr->withErrors($validator);
+            }
+            $paymentData['vn'] = $request->only([
+                'vn_account_number',
+                'vn_bank_name',
+                'vn_account_name',
+                'vn_city',
+                'vn_branch',
+                'vn_account_own_name',
+            ]);
+        } else {
+            if ($request->has('bank_account')) {
+                $validator = Validator::make($request->all(), [
+                    'bank_account_full_name' => 'required',
+                    'bank_account_city' => 'required',
+                    'bank_account_country' => 'required',
+                    'bank_account_recipient_phone_number' => 'required',
+                    'bank_account_bank_name' => 'required',
+                    'bank_account_number' => 'required',
+                    'bank_account_currency' => 'required',
+                ], [
+                    'bank_account_full_name' => trans('error.payment_info'),
+                    'bank_account_city' => trans('error.payment_info'),
+                    'bank_account_country' => trans('error.payment_info'),
+                    'bank_account_recipient_phone_number' => trans('error.payment_info'),
+                    'bank_account_bank_name' => trans('error.payment_info'),
+                    'bank_account_number' => trans('error.payment_info'),
+                    'bank_account_currency' => trans('error.payment_info'),
+                ]);
+                if ($validator->fails()) {
+                    return $errorRdr->withErrors($validator);
+                }
+                $paymentData['bank_account'] = $request->only([
+                    'bank_account_full_name',
+                    'bank_account_address',
+                    'bank_account_city',
+                    'bank_account_country',
+                    'bank_account_recipient_phone_number',
+                    'bank_account_bank_name',
+                    'bank_account_swift_code',
+                    'bank_account_clearing_code',
+                    'bank_account_number',
+                    'bank_account_other_info',
+                    'bank_account_currency',
+                    'bank_account_own_name',
+                ]);
+            }
+            if ($request->has('paypal')) {
+                $validator = Validator::make($request->all(), [
+                    'paypal_email' => 'required',
+                    'paypal_full_name' => 'required',
+                    'paypal_country' => 'required',
+                ], [
+                    'paypal_email' => trans('error.payment_info'),
+                    'paypal_full_name' => trans('error.payment_info'),
+                    'paypal_country' => trans('error.payment_info'),
+                ]);
+                if ($validator->fails()) {
+                    return $errorRdr->withErrors($validator);
+                }
+                $paymentData['paypal'] = $request->only([
+                    'paypal_email',
+                    'paypal_full_name',
+                    'paypal_country',
+                ]);
+            }
+            if ($request->has('skrill')) {
+                $validator = Validator::make($request->all(), [
+                    'skrill_email' => 'required',
+                    'skrill_full_name' => 'required',
+                    'skrill_country' => 'required',
+                ], [
+                    'skrill_email' => trans('error.payment_info'),
+                    'skrill_full_name' => trans('error.payment_info'),
+                    'skrill_country' => trans('error.payment_info'),
+                ]);
+                if ($validator->fails()) {
+                    return $errorRdr->withErrors($validator);
+                }
+                $paymentData['skrill'] = $request->only([
+                    'skrill_email',
+                    'skrill_full_name',
+                    'skrill_country',
+                ]);
+            }
+            if ($request->has('payoneer')) {
+                $validator = Validator::make($request->all(), [
+                    'payoneer_benificiary_name' => 'required',
+                    'payoneer_bank_name' => 'required',
+                    'payoneer_country' => 'required',
+                    'payoneer_account_number' => 'required',
+                    'payoneer_currency' => 'required',
+                ], [
+                    'payoneer_benificiary_name' => trans('error.payment_info'),
+                    'payoneer_bank_name' => trans('error.payment_info'),
+                    'payoneer_country' => trans('error.payment_info'),
+                    'payoneer_account_number' => trans('error.payment_info'),
+                    'payoneer_currency' => trans('error.payment_info'),
+                ]);
+                if ($validator->fails()) {
+                    return $errorRdr->withErrors($validator);
+                }
+                $paymentData['payoneer'] = $request->only([
+                    'payoneer_benificiary_name',
+                    'payoneer_address',
+                    'payoneer_bank_name',
+                    'payoneer_country',
+                    'payoneer_clearing_code',
+                    'payoneer_account_number',
+                    'payoneer_currency',
+                    'payoneer_other_info',
+                ]);
+            }
+            if ($request->has('others')) {
+                $validator = Validator::make($request->all(), [
+                    'others_content' => 'required',
+                ], [
+                    'others_content' => trans('error.payment_info'),
+                ]);
+                if ($validator->fails()) {
+                    return $errorRdr->withErrors($validator);
+                }
+                $paymentData['others'] = $request->only([
+                    'others_content',
+                ]);
+            }
+        }
+
+        $this->teacherRepository->model($request->authUser()->teacherProfile);
+
+        try {
+            $this->teacherRepository->updatePaymentInfo($request->input('country'), $paymentData);
+        } catch (KatnissException $exception) {
+            return $errorRdr->withErrors([$exception->getMessage()]);
+        }
+
+        return redirect(homeUrl('profile/payment-information'))
             ->with('successes', [trans('error.success')]);
     }
 }
