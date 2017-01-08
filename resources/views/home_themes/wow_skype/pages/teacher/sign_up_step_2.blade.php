@@ -111,7 +111,7 @@
                 <input id="inputOtherCertificates" type="text" class="form-control{{ empty($teacher_other_certificates) ? ' hide' : '' }}" name="other_certificates" value="{{ $teacher_other_certificates }}">
             </div>
             <div class="form-group">
-                <label for="inputVideoIntroduceUrl" class="control-label">Video for introducing yourself</label>
+                <label for="inputVideoIntroduceUrl" class="control-label">{{ trans('label.video_introduce_url') }}</label>
                 <input type="text" placeholder="Youtube URL" value="{{ $teacher->video_introduce_url }}"
                        class="form-control" id="inputVideoIntroduceUrl" name="video_introduce_url" required>
             </div>

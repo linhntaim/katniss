@@ -89,6 +89,8 @@ return [
     'teaching_methodology' => 'Phương pháp giảng dạy',
     'have_any_english_certificates' => 'Bạn có chứng chỉ tiếng Anh nào không?',
     'my_profile' => 'Hồ sơ cá nhân',
+    'video_introduce_url' => 'Video giới thiệu bản thân',
+    'video_teaching_url' => 'Video giảng dạy của bạn',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

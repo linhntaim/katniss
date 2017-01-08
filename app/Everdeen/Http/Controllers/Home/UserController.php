@@ -92,6 +92,7 @@ class UserController extends ViewController
             return $errorRdr->withErrors([$exception->getMessage()]);
         }
 
-        return $settings->storeCookie(redirect(homeUrl('profile/user-information')));
+        return $settings->storeCookie(redirect(homeUrl('profile/user-information')))
+            ->with('successes', [trans('error.success')]);
     }
 }

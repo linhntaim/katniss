@@ -60,13 +60,7 @@
     <form method="post">
         {{ csrf_field() }}
         {{ method_field('put') }}
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
-        @endif
+        @include('messages_after_action')
         <div class="form-group">
             <label for="inputDisplayName" class="control-label">{{ trans('label.full_name') }}</label>
             <input type="text" placeholder="{{ trans('label.full_name') }}" value="{{ $auth_user->display_name }}"

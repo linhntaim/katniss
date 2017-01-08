@@ -120,4 +120,27 @@ class TeacherRepository extends ModelRepository
             throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
         }
     }
+
+    public function updateInformation($topics, $aboutMe, $experience, $methodology, $videoIntroduceUrl, $videoTeachingUrl)
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'about_me' => $aboutMe,
+                'experience' => $experience,
+                'methodology' => $methodology,
+                'video_introduce_url' => $videoIntroduceUrl,
+                'video_teaching_url' => $videoTeachingUrl,
+            ]);
+            if ($teacher->topics()->count() > 0) {
+                $teacher->topics()->sync($topics);
+            } else {
+                $teacher->topics()->attach($topics);
+            }
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
+        }
+    }
 }

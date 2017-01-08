@@ -89,6 +89,8 @@ return [
     'teaching_methodology' => 'Teaching methodology',
     'have_any_english_certificates' => 'Do you have any English certificates?',
     'my_profile' => 'My profile',
+    'video_introduce_url' => 'Video for introducing yourself',
+    'video_teaching_url' => 'Video for introducing how you teach',
 
     'settings' => 'Settings',
     'country' => 'Country',

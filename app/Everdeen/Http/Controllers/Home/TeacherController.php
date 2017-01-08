@@ -219,4 +219,52 @@ class TeacherController extends ViewController
         return redirect(homeUrl());
     }
     #endregion
+
+    public function getTeacherInformation(Request $request)
+    {
+        $topicRepository = new TopicRepository();
+        $teacher = $request->authUser()->teacherProfile;
+
+        return $this->_any('teacher_information', [
+            'teacher' => $teacher,
+            'topics' => $topicRepository->getAll(),
+            'teacher_topic_ids' => $teacher->topics->pluck('id')->all(),
+        ]);
+    }
+
+    public function updateTeacherInformation(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'topics' => 'required|array|exists:topics,id',
+            'about_me' => 'required',
+            'experience' => 'required',
+            'methodology' => 'required',
+            'video_introduce_url' => 'required|max:255|url',
+            'video_teaching_url' => 'required|max:255|url',
+        ]);
+
+        $errorRdr = redirect(homeUrl('profile/teacher-information'))->withInput();
+
+        if ($validator->fails()) {
+            return $errorRdr->withErrors($validator);
+        }
+
+        $this->teacherRepository->model($request->authUser()->teacherProfile);
+
+        try {
+            $this->teacherRepository->updateInformation(
+                $request->input('topics'),
+                $request->input('about_me'),
+                $request->input('experience'),
+                $request->input('methodology'),
+                $request->input('video_introduce_url'),
+                $request->input('video_teaching_url')
+            );
+        } catch (KatnissException $exception) {
+            return $errorRdr->withErrors([$exception->getMessage()]);
+        }
+
+        return redirect(homeUrl('profile/teacher-information'))
+            ->with('successes', [trans('error.success')]);
+    }
 }
