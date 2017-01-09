@@ -69,6 +69,11 @@ class Teacher extends Model
         return unserialize($this->attributes['payment_info']);
     }
 
+    public function getIsApprovedAttribute()
+    {
+        return $this->attributes['status'] == self::APPROVED;
+    }
+
     public function userProfile()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

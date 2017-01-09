@@ -16,6 +16,7 @@ return [
     'teacher/sign-up'                               => 'giao-vien/dang-ky',
     'teacher/sign-up/step/{step}'                   => 'giao-vien/dang-ky/buoc/{step}',
     'student/sign-up'                               => 'hoc-vien/dang-ky',
+    'student/sign-up/step/{step}'                   => 'hoc-vien/dang-ky/buoc/{step}',
     'teachers'                                      => 'danh-sach-giao-vien',
     'teachers/{id}'                                 => 'giao-vien/{id}',
 

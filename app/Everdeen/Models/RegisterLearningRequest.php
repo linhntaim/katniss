@@ -1,0 +1,68 @@
+<?php
+
+namespace Katniss\Everdeen\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Katniss\Everdeen\Utils\DateTimeHelper;
+
+class RegisterLearningRequest extends Model
+{
+    const NEWLY = 0;
+    const PROCESSED = 1;
+
+    protected $table = 'register_learning_requests';
+
+    protected $fillable = [
+        'student_id', 'teacher_id',
+        'for_children', 'age_range',
+        'learning_targets', 'learning_forms',
+        'children_full_name',
+        'status',
+    ];
+
+    public function getLearningTargetsAttribute()
+    {
+        if (empty($this->attributes['learning_targets'])) {
+            return [];
+        }
+        return unserialize($this->attributes['learning_targets']);
+    }
+
+    public function getLearningFormsAttribute()
+    {
+        if (empty($this->attributes['learning_forms'])) {
+            return [];
+        }
+        return unserialize($this->attributes['learning_forms']);
+    }
+
+    public function studentProfile()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'user_id');
+    }
+
+    public function studentUserProfile()
+    {
+        return $this->belongsTo(User::class, 'student_id', 'id');
+    }
+
+    public function teacherProfile()
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_id', 'user_id');
+    }
+
+    public function teacherUserProfile()
+    {
+        return $this->belongsTo(User::class, 'teacher_id', 'id');
+    }
+
+    public function scopeNewly($query)
+    {
+        return $query->where('status', self::NEWLY);
+    }
+
+    public function scopeProcessed($query)
+    {
+        return $query->where('status', self::PROCESSED);
+    }
+}

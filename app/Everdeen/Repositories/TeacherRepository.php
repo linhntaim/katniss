@@ -59,10 +59,11 @@ class TeacherRepository extends ModelRepository
 
     protected function generateNameFromEmail($email)
     {
-        $name = strtok($email, '@');
+        $emailName = strtok($email, '@');
+        $name = $emailName;
         $i = 0;
         while (User::where('name', $name)->count() > 0) {
-            $name = $name . '-' . (++$i);
+            $name = $emailName . '-' . (++$i);
         }
         return $name;
     }

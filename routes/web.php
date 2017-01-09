@@ -26,7 +26,10 @@ Route::group([
         Route::get(homeRoute('user/sign-up'), 'UserController@signUp');
         Route::get(homeRoute('teacher/sign-up'), 'TeacherController@getSignUp');
         Route::post(homeRoute('teacher/sign-up'), 'TeacherController@postSignUp');
-        Route::get(homeRoute('student/sign-up'), 'StudentController@signUp');
+        Route::get(homeRoute('student/sign-up'), 'StudentController@getSignUp');
+        Route::post(homeRoute('student/sign-up'), 'StudentController@postSignUp');
+        Route::get(homeRoute('student/sign-up/step/{step}'), 'StudentController@getSignUpStep');
+        Route::post(homeRoute('student/sign-up/step/{step}'), 'StudentController@postSignUpStep');
 
         Route::get(homeRoute('teachers'), 'TeacherController@index');
         Route::get(homeRoute('teachers/{id}'), 'TeacherController@show');

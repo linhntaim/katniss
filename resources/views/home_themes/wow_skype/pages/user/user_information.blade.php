@@ -94,7 +94,7 @@
             <label for="inputPhoneNumber" class="control-label">{{ trans('label.phone') }}</label>
             <div class="input-group">
                 <span class="input-group-addon padding-none">
-                    <div style="width: 82px">
+                    <div style="width: 94px">
                         <label for="inputPhoneCode" class="sr-only">{{ trans('label.calling_code') }}</label>
                         <select id="inputPhoneCode" name="phone_code" class="form-control select2" data-placeholder="{{ trans('form.action_select') }} {{ trans('label.calling_code_lc') }}" style="width: 100%">
                             {{ callingCodesAsOptions($auth_user->phone_code) }}

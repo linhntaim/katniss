@@ -427,6 +427,17 @@ function addRdrUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
     return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
 }
 
+function addWizardUrl($mainUrl, $name, $key, $separatedChar = '')
+{
+    if (empty($mainUrl)) {
+        $mainUrl = request()->fullUrl();
+    }
+    $wizardParams = AppConfig::KEY_WIZARD_NAME . '=' . $name . '&' . AppConfig::KEY_WIZARD_KEY . '=' . $key;
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $wizardParams;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $wizardParams : $mainUrl . '&' . $wizardParams;
+}
+
 function addErrorUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
 {
     if (empty($rdrUrl)) {

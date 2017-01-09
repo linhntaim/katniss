@@ -9,6 +9,12 @@
 return [
     'certificates' => ['IELTS', 'TESOL', 'TOEIC', 'TEFL', 'TOEFL', 'CELTA', 'Others'],
     'certificate_types' => ['TOEIC', 'TOEFL', 'IELTS', 'TESOL', 'Others'],
+    'age_ranges' => [1, 2, 3, 4, 5],
+    'age_ranges_children' => [11, 12, 13, 14],
+    'learning_targets' => [1, 2, 3, 4, 5, 6, 100],
+    'learning_targets_children' => [11, 12, 13, 101],
+    'learning_forms' => [1, 2, 3, 4, 5, 100],
+    'learning_forms_children' => [11, 12, 13, 14, 15, 101],
 
     'settings' => [
         'city' => 'LA',

@@ -13,6 +13,8 @@ class AppConfig
     const KEY_REDIRECT_URL = 'x_rdr';
     const KEY_REDIRECT_ON_ERROR_URL = 'x_rdr_error';
     const KEY_WIZARD = 'x_wizard';
+    const KEY_WIZARD_NAME = 'x_wizard_name';
+    const KEY_WIZARD_KEY = 'x_wizard_key';
     const KEY_FORCE_LOCALE = 'x_force_locale';
     const KEY_FORCE_THEME = 'x_force_theme';
     const KEY_HTML_INPUTS = 'x_html_inputs';

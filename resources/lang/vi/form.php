@@ -82,4 +82,5 @@ return [
     'action_upload_avatar' => 'Tải lên hình đại diện',
     'action_connect' => 'Kết nối',
     'action_register_class' => 'Đăng ký học',
+    'action_go_profile' => 'Đến trang cá nhân',
 ];

@@ -60,7 +60,7 @@ class ProfileMenuComposer
             homeUrl('profile/educations-and-works'),
             trans('label.educations_and_works'), '<strong>', '</strong>'
         );
-        if ($authUser->hasRole('teacher')) {
+        if ($authUser->hasRole('teacher') && $authUser->teacherProfile->isApproved) {
             $menu->add( // add a menu item
                 homeUrl('profile/teacher-information'),
                 trans('label.teacher_information'), '<strong>', '</strong>'
