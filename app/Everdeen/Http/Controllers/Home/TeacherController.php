@@ -38,6 +38,9 @@ class TeacherController extends ViewController
             return redirect(homeUrl());
         }
 
+        $this->_title(trans('pages.home_teacher_sign_up_title'));
+        $this->_description(trans('pages.home_teacher_sign_up_desc'));
+
         return $this->_any('sign_up', [
             'skype_id' => 'skype_id',
             'skype_name' => 'Skype',
@@ -99,6 +102,9 @@ class TeacherController extends ViewController
 
     public function getSignUpStep1(Request $request)
     {
+        $this->_title([trans('pages.home_teacher_sign_up_title'), trans('label._step', ['step' => 1])]);
+        $this->_description(trans('pages.home_teacher_sign_up_desc'));
+
         return $this->_any('sign_up_step_1', [
             'teacher' => $request->authUser()->teacherProfile,
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
@@ -110,6 +116,9 @@ class TeacherController extends ViewController
         $topicRepository = new TopicRepository();
         $teacher = $request->authUser()->teacherProfile;
         $teacherCertificates = $teacher->certificates;
+
+        $this->_title([trans('pages.home_teacher_sign_up_title'), trans('label._step', ['step' => 2])]);
+        $this->_description(trans('pages.home_teacher_sign_up_desc'));
 
         return $this->_any('sign_up_step_2', [
             'teacher' => $teacher,
@@ -228,6 +237,9 @@ class TeacherController extends ViewController
         $topicRepository = new TopicRepository();
         $teacher = $request->authUser()->teacherProfile;
 
+        $this->_title(trans('label.teacher_information'));
+        $this->_description(trans('label.teacher_information'));
+
         return $this->_any('teacher_information', [
             'teacher' => $teacher,
             'topics' => $topicRepository->getAll(),
@@ -274,6 +286,9 @@ class TeacherController extends ViewController
     public function getTeachingTime(Request $request)
     {
         $teacher = $request->authUser()->teacherProfile;
+
+        $this->_title(trans('label.teaching_time'));
+        $this->_description(trans('label.teaching_time'));
 
         return $this->_any('teaching_time', [
             'teacher' => $teacher,
@@ -392,6 +407,9 @@ class TeacherController extends ViewController
                 }
             }
         }
+
+        $this->_title(trans('label.payment_information'));
+        $this->_description(trans('label.payment_information'));
 
         return $this->_any('payment_information', [
             'payment_info' => $teacher->payment_info,
@@ -593,6 +611,9 @@ class TeacherController extends ViewController
         );
         $paginationRender = new PaginationRender();
 
+        $this->_title(trans('pages.home_teachers_title'));
+        $this->_description(trans('pages.home_teachers_desc'));
+
         return $this->_index([
             'topics' => $topicRepository->getAll(),
             'teachers' => $teachers,
@@ -608,6 +629,9 @@ class TeacherController extends ViewController
     public function show(Request $request, $id)
     {
         $teacher = $this->teacherRepository->model($id);
+
+        $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);
+        $this->_description(shorten($teacher->about_me));
 
         return $this->_show([
             'teacher' => $teacher,

@@ -18,6 +18,11 @@ class Student extends Model
         'user_id', 'approving_user_id', 'approving_at', 'status',
     ];
 
+    public function getIsApprovedAttribute()
+    {
+        return $this->attributes['status'] == self::APPROVED;
+    }
+
     public function userProfile()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

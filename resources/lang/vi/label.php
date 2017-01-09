@@ -14,6 +14,9 @@ return [
     'status_newly' => 'Mới',
     'status_processed' => 'Đã xử lý',
     'status_approved' => 'Đã chấp nhận',
+    'status_not_approved' => 'Chưa được chấp nhận',
+    'status_student_not_approved' => 'Tài khoản học viên của bạn chưa được duyệt',
+    'status_teacher_not_approved' => 'Tài khoản giáo viên của bạn chưa được duyệt',
     'status_requested' => 'Đã gửi yêu cầu',
     'status_verified' => 'Đã xác thực',
     'status_not_verified' => 'Chưa xác thực',
@@ -159,6 +162,7 @@ return [
     'your_children_age_range' => 'Độ tuổi của con bạn',
     'your_children_learning_targets' => 'Mục đích học tiếng Anh của con bạn là gì?',
     'your_children_learning_forms' => 'Con bạn đã từng học tiếng Anh ở đâu?',
+    '_step' => 'Bước :step',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

@@ -2,6 +2,7 @@
 @section('lib_styles')
     <link rel="stylesheet" href="{{ libraryAsset('cropperjs/cropper.min.css') }}">
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-bootstrap-css') }}">
     <link rel="stylesheet" href="{{ libraryAsset('bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('lib_scripts')
@@ -18,7 +19,9 @@
                 language: '{{ $site_locale }}',
                 enableOnReadonly : false
             });
-            $('.select2').select2();
+            $('.select2').select2({
+                theme: 'bootstrap'
+            });
             new CropImageModal($('body'), 1, 'user/{{ $auth_user->id }}/avatar/cropper-js');
         });
     </script>

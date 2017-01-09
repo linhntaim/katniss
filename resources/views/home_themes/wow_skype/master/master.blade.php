@@ -52,6 +52,9 @@
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                        @if($auth_user->can('access-admin'))
+                                            <li><a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a></li>
+                                        @endif
                                         <li><a href="{{ homeUrl('profile/account-information') }}">{{ trans('label.my_profile') }}</a></li>
                                         <li role="separator" class="divider"></li>
                                         <li><a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a></li>

@@ -8,6 +8,16 @@
 return [
     'home_title' => 'Home',
 
+    'home_user_sign_up_title' => 'User Sign Up',
+    'home_user_sign_up_desc' => 'Become our member',
+    'home_teacher_sign_up_title' => 'Teacher Sign Up',
+    'home_teacher_sign_up_desc' => 'Become our teacher',
+    'home_student_sign_up_title' => 'Student Sign Up',
+    'home_student_sign_up_desc' => 'Become our student',
+    'home_teachers_title' => 'Teachers',
+    'home_teachers_desc' => 'Our brilliant teachers',
+    'home_teacher_title' => 'Teacher',
+
     'user_profile_title' => 'User Profile',
 
     'my_dashboard_title' => 'My Dashboard',

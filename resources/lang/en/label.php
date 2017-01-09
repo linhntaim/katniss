@@ -14,6 +14,9 @@ return [
     'status_newly' => 'Newly',
     'status_processed' => 'Processed',
     'status_approved' => 'Approved',
+    'status_not_approved' => 'Not approved',
+    'status_student_not_approved' => 'Your student account has not been approved',
+    'status_teacher_not_approved' => 'Your teacher account has not been approved',
     'status_requested' => 'Requested',
     'status_verified' => 'Verified',
     'status_not_verified' => 'Not verified',
@@ -159,6 +162,7 @@ return [
     'your_children_age_range' => 'Your child\'s age range',
     'your_children_learning_targets' => 'Your child\'s learning target',
     'your_children_learning_forms' => 'Has your child ever learnt English before?',
+    '_step' => 'Step :step',
 
     'settings' => 'Settings',
     'country' => 'Country',

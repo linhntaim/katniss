@@ -154,6 +154,11 @@ class User extends Authenticatable
         return $this->hasOne(Teacher::class, 'user_id', 'id');
     }
 
+    public function studentProfile()
+    {
+        return $this->hasOne(Student::class, 'user_id', 'id');
+    }
+
     public function professionalSkills()
     {
         return $this->belongsToMany(ProfessionalSkill::class, 'professional_skills_users', 'user_id', 'skill_id');

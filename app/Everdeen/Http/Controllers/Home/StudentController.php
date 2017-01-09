@@ -36,6 +36,9 @@ class StudentController extends ViewController
             return redirect(homeUrl());
         }
 
+        $this->_title(trans('pages.home_student_sign_up_title'));
+        $this->_description(trans('pages.home_student_sign_up_desc'));
+
         return $this->_any('sign_up');
     }
 
@@ -102,6 +105,9 @@ class StudentController extends ViewController
 
         $professionalSkillRepository = new ProfessionalSkillRepository();
 
+        $this->_title([trans('pages.home_student_sign_up_title'), trans('label._step', ['step' => 2])]);
+        $this->_description(trans('pages.home_student_sign_up_desc'));
+
         return $this->_any('sign_up_step_2', [
             'professional_skills' => $professionalSkillRepository->getAll(),
             'age_ranges' => _k('age_ranges'),
@@ -123,6 +129,9 @@ class StudentController extends ViewController
             return redirect(homeUrl());
         }
         $this->endWizard();
+
+        $this->_title([trans('pages.home_student_sign_up_title'), trans('label._step', ['step' => 3])]);
+        $this->_description(trans('pages.home_student_sign_up_desc'));
 
         return $this->_any('sign_up_step_3');
     }

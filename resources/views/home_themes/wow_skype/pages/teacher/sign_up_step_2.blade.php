@@ -1,6 +1,7 @@
 @extends('home_themes.wow_skype.master.simple')
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-bootstrap-css') }}">
 @endsection
 @section('extended_styles')
     <style>
@@ -13,7 +14,9 @@
 @section('extended_scripts')
     <script>
         $(function () {
-            $('.select2').select2();
+            $('.select2').select2({
+                theme: 'bootstrap'
+            });
             $('#inputOtherCertificate').on('change', function () {
                 if($(this).is(':checked')) {
                     $('#inputOtherCertificates').removeClass('hide').prop('required', true);

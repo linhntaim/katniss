@@ -3,6 +3,12 @@
     <div id="{{ $html_page_id }}" class="page-profile">
         <div class="row">
             <div class="col-md-4">
+                @if($auth_user->hasRole('teacher') && !$auth_user->teacherProfile->isApproved)
+                    <div class="alert alert-danger">{{ trans('label.status_teacher_not_approved') }}</div>
+                @endif
+                @if($auth_user->hasRole('student') && !$auth_user->studentProfile->isApproved)
+                    <div class="alert alert-danger">{{ trans('label.status_student_not_approved') }}</div>
+                @endif
                 {{ $profile_menu }}
             </div>
             <div class="col-md-8">

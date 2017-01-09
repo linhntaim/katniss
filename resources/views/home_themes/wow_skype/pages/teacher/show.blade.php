@@ -75,7 +75,7 @@
                         {!! $teacher->html_about_me !!}
                     </div>
                 </div>
-                <hr>
+                <hr class="margin-top-10">
                 <div class="row">
                     <div class="col-md-3">
                         <label>{{ trans_choice('label.topic', 2) }}</label>
@@ -95,7 +95,7 @@
                         {!! $teacher->html_experience !!}
                     </div>
                 </div>
-                <hr>
+                <hr class="margin-top-10">
                 <div class="row">
                     <div class="col-md-3">
                         <label>{{ trans('label.teaching_methodology') }}</label>
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 @if($teacher->userProfile->educations->count() > 0)
-                    <hr>
+                    <hr class="margin-top-10">
                     <div class="row">
                         <div class="col-md-3">
                             <label>{{ trans('label.education_history') }}</label>
@@ -158,14 +158,16 @@
                 @endif
             </div>
             <div class="col-md-4">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <a role="button" class="btn btn-danger btn-block uppercase"
-                           href="{{ homeUrl('register-class') }}?teacher={{ $teacher->user_id }}">
-                            {{ trans('form.action_register_class') }}
-                        </a>
+                @if(!$is_auth || !$auth_user->hasRole('student'))
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <a role="button" class="btn btn-danger btn-block uppercase"
+                               href="{{ homeUrl('student/sign-up') }}?teacher={{ $teacher->user_id }}">
+                                {{ trans('form.action_register_class') }}
+                            </a>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h4 class="margin-top-none margin-bottom-15">{{ trans('label.need_help') }}</h4>

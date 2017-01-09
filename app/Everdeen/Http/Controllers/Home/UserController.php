@@ -37,16 +37,25 @@ class UserController extends ViewController
             return redirect(homeUrl());
         }
 
+        $this->_title(trans('pages.home_user_sign_up_title'));
+        $this->_description(trans('pages.home_user_sign_up_desc'));
+
         return $this->_any('sign_up');
     }
 
     public function getAccountInformation(Request $request)
     {
+        $this->_title(trans('label.account_information'));
+        $this->_description(trans('label.account_information'));
+
         return $this->_any('account_information');
     }
 
     public function getUserInformation(Request $request)
     {
+        $this->_title(trans('label.user_information'));
+        $this->_description(trans('label.user_information'));
+
         return $this->_any('user_information', [
             'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
@@ -104,6 +113,9 @@ class UserController extends ViewController
     {
         $user = $request->authUser();
         $professionalSkillRepository = new ProfessionalSkillRepository();
+
+        $this->_title(trans('label.educations_and_works'));
+        $this->_description(trans('label.educations_and_works'));
 
         return $this->_any('educations_and_works', [
             'professional_skills' => $professionalSkillRepository->getAll(),
