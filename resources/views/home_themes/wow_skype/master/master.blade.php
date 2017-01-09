@@ -36,7 +36,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="main-menu">
                     {{ $main_menu }}
-                    <div class="pull-right">
+                    <div class="navbar-right">
                         <div class="switch-locale text-right">
                             @foreach(allSupportedLocaleCodes() as $localeCode)
                                 <a class="btn {{ $localeCode == $site_locale ? 'btn-success' : 'btn-default' }}" href="{{ currentUrl($localeCode) }}">
@@ -63,7 +63,7 @@
                                 <a class="btn btn-primary btn-block"
                                    href="{{ homeUrl('auth/login') }}">{{ trans('form.action_login') }}</a>
                             </div>
-                            <div class="sign-up-action">
+                            <div class="sign-up-action text-center">
                                 <a href="{{ homeUrl('user/sign-up') }}">{!! trans('label.or_sign_up_here') !!}</a>
                             </div>
                         @endif

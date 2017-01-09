@@ -16,6 +16,7 @@ use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\TeacherRepository;
 use Katniss\Everdeen\Repositories\TopicRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
+use Katniss\Everdeen\Utils\DataStructure\Pagination\PaginationRender;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class TeacherController extends ViewController
@@ -580,6 +581,27 @@ class TeacherController extends ViewController
 
     public function index(Request $request)
     {
-        return $this->_index();
+        $topicRepository = new TopicRepository();
+
+        $searchTopics = $request->input('topics', []);
+        $searchNationality = $request->input('nationality', null);
+        $searchGender = $request->input('gender', null);
+        $teachers = $this->teacherRepository->getHomeSearchPaged(
+            $searchTopics,
+            $searchNationality,
+            $searchGender
+        );
+        $paginationRender = new PaginationRender();
+
+        return $this->_index([
+            'topics' => $topicRepository->getAll(),
+            'teachers' => $teachers,
+            'pagination' => $paginationRender->renderByPagedModels($teachers),
+            'start_order' => $paginationRender->getRenderedPagination()['start_order'],
+
+            'search_topics' => $searchTopics,
+            'search_nationality' => $searchNationality,
+            'search_gender' => $searchGender,
+        ]);
     }
 }

@@ -1,0 +1,11 @@
+#page-teachers #teachers-sidebar h4 {
+    margin: 0;
+}
+
+#page-teachers .media-list.teacher-list .media-body h5 {
+    margin-top: 0;
+}
+
+#page-teachers .pagination {
+    margin-bottom: 0;
+}

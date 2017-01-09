@@ -92,6 +92,12 @@ header .wrapper .bar.pull-right {
     border-left: 8px solid #fff;
 }
 
+@media (min-width: 768px) {
+    header .navbar-right {
+        margin-right: -30px;
+    }
+}
+
 @media (max-width: 767px) {
 
     header > .wrapper {

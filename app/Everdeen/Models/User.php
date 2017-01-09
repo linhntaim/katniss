@@ -21,8 +21,8 @@ class User extends Authenticatable
     }
     use Notifiable;
 
-    const AVATAR_THUMB_WIDTH = 100; // pixels
-    const AVATAR_THUMB_HEIGHT = 100; // pixels
+    const AVATAR_THUMB_WIDTH = 150; // pixels
+    const AVATAR_THUMB_HEIGHT = 150; // pixels
 
     /**
      * The database table used by the model.

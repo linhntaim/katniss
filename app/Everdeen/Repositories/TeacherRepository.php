@@ -29,6 +29,29 @@ class TeacherRepository extends ModelRepository
         return Teacher::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getHomeSearchPaged(array $topics = null, $nationality = null, $gender = null)
+    {
+        $teachers = Teacher::approved()->orderBy('created_at', 'asc');
+
+        if (!empty($topics)) {
+            $teachers->whereHas('topics', function ($query) use ($topics) {
+                $query->whereIn('id', $topics);
+            });
+        }
+        if (!empty($nationality) || !empty($gender)) {
+            $teachers->whereHas('userProfile', function ($query) use ($nationality, $gender) {
+                if (!empty($nationality)) {
+                    $query->where('nationality', $nationality);
+                }
+                if (!empty($gender)) {
+                    $query->where('gender', $gender);
+                }
+            });
+        }
+
+        return $teachers->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getAll()
     {
         return Teacher::all();

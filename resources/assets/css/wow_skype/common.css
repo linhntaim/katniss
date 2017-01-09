@@ -13,6 +13,11 @@ a:active {
     text-transform: uppercase;
 }
 
+.big {
+    font-size: 110%;
+    line-height: 120%;
+}
+
 .width-30 {
     width: 30px;
 }
@@ -31,6 +36,18 @@ a:active {
 
 .width-50 {
     width: 50px;
+}
+
+.width-100 {
+    width: 100px;
+}
+
+.width-120 {
+    width: 120px;
+}
+
+.width-150 {
+    width: 150px;
 }
 
 .margin-none {
@@ -232,7 +249,55 @@ a:active {
     padding: 0 20px;
 }
 
-@media all and (max-width: 800px){
+.media-list.step-list .media {
+    margin: 0;
+}
+
+.media-list.step-list .media .media-line {
+    border-left: 1px solid #dedede;
+    display: table-cell;
+    position: relative;
+    left: 12px;
+    z-index: 1;
+}
+
+.media-list.step-list .media:last-child .media-line {
+    display: none;
+}
+
+.media-list.step-list .media .media-left span {
+    border-radius: 50%;
+    background-color: #337ab7;
+    padding: 3px 5px;
+    display: block;
+    height: 23px;
+    width: 23px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+    z-index: 2;
+    position: relative;
+}
+
+.media-list.step-list .media:last-child .media-left,
+.media-list.step-list .media:last-child .media-body {
+    padding-bottom: 0;
+}
+
+.media-list.step-list .media .media-left,
+.media-list.step-list .media .media-body {
+    padding-bottom: 15px;
+}
+
+.media-list.step-list .media .media-body {
+    padding-top: 3px;
+}
+
+.media-list.step-list .media .media-heading {
+    font-weight: 700;
+}
+
+@media all and (max-width: 960px) {
     .wrapper {
         width: 100%;
     }
