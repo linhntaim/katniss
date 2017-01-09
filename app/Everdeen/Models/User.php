@@ -111,6 +111,15 @@ class User extends Authenticatable
             '' : DateTimeHelper::getInstance()->shortDate($this->attributes['date_of_birth']);
     }
 
+    public function getAgeAttribute()
+    {
+        if (empty($this->attributes['date_of_birth']) || $this->attributes['date_of_birth'] == '0000-00-00 00:00:00') {
+            return '0';
+        }
+
+        return DateTimeHelper::diffYear($this->attributes['date_of_birth']);
+    }
+
     public function getPhoneAttribute()
     {
         return empty($this->attributes['phone_code']) || empty($this->attributes['phone_number']) ?

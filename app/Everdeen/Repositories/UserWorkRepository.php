@@ -30,7 +30,7 @@ class UserWorkRepository extends ModelRepository
         return UserWork::all();
     }
 
-    public function create($userId, $company, $position = '',
+    public function create($userId, $company, $position,
                            $startMonth = 0, $startYear = 0,
                            $endMonth = 0, $endYear = 0,
                            $description = '')
@@ -53,7 +53,7 @@ class UserWorkRepository extends ModelRepository
         }
     }
 
-    public function update($userId, $company, $position = '',
+    public function update($userId, $company, $position,
                            $startMonth = 0, $startYear = 0,
                            $endMonth = 0, $endYear = 0,
                            $description = '')

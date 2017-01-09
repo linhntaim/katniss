@@ -604,4 +604,18 @@ class TeacherController extends ViewController
             'search_gender' => $searchGender,
         ]);
     }
+
+    public function show(Request $request, $id)
+    {
+        $teacher = $this->teacherRepository->model($id);
+
+        return $this->_show([
+            'teacher' => $teacher,
+
+            'skype_id' => 'skype_id',
+            'skype_name' => 'Skype',
+            'hot_line' => '1900 1000',
+            'email' => 'example@example.com',
+        ]);
+    }
 }

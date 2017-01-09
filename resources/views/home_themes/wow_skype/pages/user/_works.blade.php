@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="inputWorkPosition-{{ $work->id }}" class="control-label">{{ trans('label.position') }}</label>
-            <input type="text" class="form-control" id="inputWorkPosition-{{ $work->id }}" name="position" placeholder="{{ trans('label.position') }}" value="{{ $work->position }}">
+            <input type="text" class="form-control" id="inputWorkPosition-{{ $work->id }}" name="position" required placeholder="{{ trans('label.position') }}" value="{{ $work->position }}">
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-3">
@@ -96,7 +96,7 @@
             </div>
             <div class="form-group">
                 <label for="inputFreshWorkPosition" class="control-label">{{ trans('label.position') }}</label>
-                <input type="text" class="form-control" id="inputFreshWorkPosition" name="position" placeholder="{{ trans('label.position') }}">
+                <input type="text" class="form-control" id="inputFreshWorkPosition" name="position" required placeholder="{{ trans('label.position') }}">
             </div>
             <div class="row">
                 <div class="col-xs-6 col-sm-3">

@@ -145,7 +145,7 @@ class UserController extends ViewController
     {
         $validator = Validator::make($request->all(), [
             'company' => 'required|max:255',
-            'position' => 'sometimes|max:255',
+            'position' => 'required|max:255',
             'start_month' => 'sometimes|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
             'end_month' => 'sometimes|integer|min:0|max:12',
@@ -162,7 +162,7 @@ class UserController extends ViewController
             $work = $workRepository->create(
                 $request->authUser()->id,
                 $request->input('company'),
-                $request->input('position', ''),
+                $request->input('position'),
                 $request->input('start_month', 0),
                 $request->input('start_year', 0),
                 $request->input('end_month', 0),
@@ -182,7 +182,7 @@ class UserController extends ViewController
 
         $validator = Validator::make($request->all(), [
             'company' => 'required|max:255',
-            'position' => 'sometimes|max:255',
+            'position' => 'required|max:255',
             'start_month' => 'sometimes|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
             'end_month' => 'sometimes|integer|min:0|max:12',
@@ -198,7 +198,7 @@ class UserController extends ViewController
             $workRepository->update(
                 $request->authUser()->id,
                 $request->input('company'),
-                $request->input('position', ''),
+                $request->input('position'),
                 $request->input('start_month', 0),
                 $request->input('start_year', 0),
                 $request->input('end_month', 0),
@@ -231,7 +231,7 @@ class UserController extends ViewController
     {
         $validator = Validator::make($request->all(), [
             'school' => 'required|max:255',
-            'field' => 'sometimes|max:255',
+            'field' => 'required|max:255',
             'start_month' => 'sometimes|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
             'end_month' => 'sometimes|integer|min:0|max:12',
@@ -248,7 +248,7 @@ class UserController extends ViewController
             $education = $educationRepository->create(
                 $request->authUser()->id,
                 $request->input('school'),
-                $request->input('field', ''),
+                $request->input('field'),
                 $request->input('start_month', 0),
                 $request->input('start_year', 0),
                 $request->input('end_month', 0),
@@ -268,7 +268,7 @@ class UserController extends ViewController
 
         $validator = Validator::make($request->all(), [
             'school' => 'required|max:255',
-            'field' => 'sometimes|max:255',
+            'field' => 'required|max:255',
             'start_month' => 'sometimes|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
             'end_month' => 'sometimes|integer|min:0|max:12',
@@ -284,7 +284,7 @@ class UserController extends ViewController
             $educationRepository->update(
                 $request->authUser()->id,
                 $request->input('school'),
-                $request->input('field', ''),
+                $request->input('field'),
                 $request->input('start_month', 0),
                 $request->input('start_year', 0),
                 $request->input('end_month', 0),

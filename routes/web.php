@@ -29,6 +29,7 @@ Route::group([
         Route::get(homeRoute('student/sign-up'), 'StudentController@signUp');
 
         Route::get(homeRoute('teachers'), 'TeacherController@index');
+        Route::get(homeRoute('teachers/{id}'), 'TeacherController@show');
 
         Route::group([
             'middleware' => 'auth'

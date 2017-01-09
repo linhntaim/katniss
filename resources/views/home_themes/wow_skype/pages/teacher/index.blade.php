@@ -76,13 +76,13 @@
                                 @foreach($teachers as $teacher)
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="{{ homeUrl('teachers/{id}', ['id' => $teacher->id]) }}">
+                                            <a target="_blank" href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">
                                                 <img class="width-120" src="{{ $teacher->userProfile->url_avatar_thumb }}" alt="{{ $teacher->userProfile->display_name }}">
                                             </a>
                                         </div>
                                         <div class="media-body">
                                             <h5>
-                                                <a href="{{ homeUrl('teachers/{id}', ['id' => $teacher->id]) }}">
+                                                <a target="_blank" href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">
                                                     <strong>{{ $teacher->userProfile->display_name }}</strong>
                                                 </a>
                                             </h5>

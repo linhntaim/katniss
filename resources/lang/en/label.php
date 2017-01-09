@@ -115,6 +115,10 @@ return [
     'score_cefr' => 'CEFR Level',
     'knowledge' => 'Knowledge',
     'about_us' => 'About us',
+    'teaching_video' => 'Teaching video',
+    'self_introduction_video' => 'Self introduction video',
+    'year_old' => 'year old|years old',
+    'self_introduction' => 'Introduction',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -134,6 +138,8 @@ return [
     'to' => 'To',
     'from_lc' => 'from',
     'to_lc' => 'to',
+    'at' => 'At',
+    'at_lc' => 'at',
 
     'not_set' => 'Not set',
     'success' => 'Success',
@@ -209,6 +215,8 @@ Also, learners learn without actually feeling they are doing so, and see improve
 other methods.</p></div>',
     'profile_account_avatar_help' => 'Clear frontal face photos are an important way for teachers and learners to 
 learn about each other. Please upload a photo that clearly shows your face.',
+    'need_help' => 'You need help?',
+    'living_in' => 'Currently lives in',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

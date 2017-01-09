@@ -115,6 +115,10 @@ return [
     'score_cefr' => 'CEFR Level',
     'knowledge' => 'Kiến thức',
     'about_us' => 'Về chúng tôi',
+    'teaching_video' => 'Video giảng dạy',
+    'self_introduction_video' => 'Video giới thiệu',
+    'year_old' => 'tuổi',
+    'self_introduction' => 'Giới thiệu',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -134,6 +138,8 @@ return [
     'to' => 'Đến',
     'from_lc' => 'từ',
     'to_lc' => 'đến',
+    'at' => 'Tại',
+    'at_lc' => 'tại',
 
     'not_set' => 'Chưa thiết lập',
     'success' => 'Thành công',
@@ -209,6 +215,8 @@ Also, learners learn without actually feeling they are doing so, and see improve
 other methods.</p></div>',
     'profile_account_avatar_help' => 'Clear frontal face photos are an important way for teachers and learners to 
 learn about each other. Please upload a photo that clearly shows your face.',
+    'need_help' => 'Bạn cần trợ giúp?',
+    'living_in' => 'Đang sống tại',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',

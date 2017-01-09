@@ -32,6 +32,7 @@ class DateTimeHelper
 
     private $transLongDate;
     private $transShortDate;
+    private $transShortMonth;
     private $transLongTime;
     private $transShortTime;
 
@@ -46,6 +47,7 @@ class DateTimeHelper
 
         $this->transLongDate = 'datetime.long_date_' . $settings->getLongDateFormat();
         $this->transShortDate = 'datetime.short_date_' . $settings->getShortDateFormat();
+        $this->transShortMonth = 'datetime.short_month_' . $settings->getShortDateFormat();
         $this->transLongTime = 'datetime.long_time_' . $settings->getLongTimeFormat();
         $this->transShortTime = 'datetime.short_time_' . $settings->getShortTimeFormat();
 
@@ -190,6 +192,11 @@ class DateTimeHelper
         return $this->shortDateFromBags($this->getBags($time, $no_offset));
     }
 
+    public function shortMonth($time = 'now', $no_offset = false)
+    {
+        return $this->shortMonthFromBags($this->getBags($time, $no_offset));
+    }
+
     public function longTime($time = 'now', $no_offset = false)
     {
         return $this->longTimeFromBags($this->getBags($time, $no_offset));
@@ -208,6 +215,11 @@ class DateTimeHelper
     public function shortDateFromBags(array $bags)
     {
         return trans($this->transShortDate, $bags);
+    }
+
+    public function shortMonthFromBags(array $bags)
+    {
+        return trans($this->transShortMonth, $bags);
     }
 
     public function longTimeFromBags(array $bags)

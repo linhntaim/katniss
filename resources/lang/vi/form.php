@@ -81,4 +81,5 @@ return [
     'action_complete' => 'Hoàn thành',
     'action_upload_avatar' => 'Tải lên hình đại diện',
     'action_connect' => 'Kết nối',
+    'action_register_class' => 'Đăng ký học',
 ];

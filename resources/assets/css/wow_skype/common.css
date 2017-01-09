@@ -218,12 +218,32 @@ a:active {
     padding-bottom: 30px;
 }
 
+.bold-300 {
+    font-weight: 300;
+}
+
+.bold-400 {
+    font-weight: 400;
+}
+
+.bold-700 {
+    font-weight: 700;
+}
+
 .color-master {
     color: #337ab7;
 }
 
 .color-slave {
     color: #5cb85c;
+}
+
+.color-lighter {
+    color: #999;
+}
+
+.color-darker {
+    color: #000;
 }
 
 .bg-master {
@@ -247,6 +267,19 @@ a:active {
     margin: auto;
     background: #fff;
     padding: 0 20px;
+}
+
+.sausage-item {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+
+.sausage-item-default {
+    color: #000;
+    background: rgba(235,235,235,.5);
 }
 
 .media-list.step-list .media {
