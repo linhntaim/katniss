@@ -158,7 +158,7 @@
                 @endif
             </div>
             <div class="col-md-4">
-                @if(!$is_auth || !$auth_user->hasRole('student'))
+                @if(!$is_auth)
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <a role="button" class="btn btn-danger btn-block uppercase"
