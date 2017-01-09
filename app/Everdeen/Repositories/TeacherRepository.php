@@ -29,6 +29,51 @@ class TeacherRepository extends ModelRepository
         return Teacher::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $teacher = Teacher::approved()->orderBy('created_at', 'desc');
+        if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
+            $teacher->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
+                if (!empty($displayName)) {
+                    $query->where('display_name', 'like', '%' . $displayName . '%');
+                }
+                if (!empty($email)) {
+                    $query->where('email', 'like', '%' . $email . '%');
+                }
+                if (!empty($skypeId)) {
+                    $query->where('skype_id', 'like', '%' . $skypeId . '%');
+                }
+                if (!empty($phoneNumber)) {
+                    $query->where('phone_number', 'like', '%' . $phoneNumber . '%');
+                }
+            });
+        }
+        return $teacher->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $teacher = Teacher::where('status', '<>', Teacher::APPROVED)
+            ->orderBy('created_at', 'desc');
+        if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
+            $teacher->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
+                if (!empty($displayName)) {
+                    $query->where('display_name', 'like', '%' . $displayName . '%');
+                }
+                if (!empty($email)) {
+                    $query->where('email', 'like', '%' . $email . '%');
+                }
+                if (!empty($skypeId)) {
+                    $query->where('skype_id', 'like', '%' . $skypeId . '%');
+                }
+                if (!empty($phoneNumber)) {
+                    $query->where('phone_number', 'like', '%' . $phoneNumber . '%');
+                }
+            });
+        }
+        return $teacher->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getHomeSearchPaged(array $topics = null, $nationality = null, $gender = null)
     {
         $teachers = Teacher::approved()->orderBy('created_at', 'asc');
@@ -192,6 +237,34 @@ class TeacherRepository extends ModelRepository
         try {
             $teacher->update([
                 'available_times' => serialize($times),
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function reject()
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'status' => Teacher::REJECTED,
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function approve()
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'status' => Teacher::APPROVED,
             ]);
             return $teacher;
         } catch (\Exception $ex) {

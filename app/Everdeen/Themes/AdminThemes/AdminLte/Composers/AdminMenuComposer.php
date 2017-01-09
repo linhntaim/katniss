@@ -163,6 +163,27 @@ class AdminMenuComposer
                 );
                 $menu->addSubMenu($subMenu);
 
+                //Media
+//                $menu->add(  // add an example menu item which have sub menu
+//                    '#',
+//                    trans('pages.admin_media_title'),
+//                    '<i class="fa fa-photo"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+//                );
+//                $subMenu = new Menu($currentUrl);
+//                $subMenu->add( //add a menu item
+//                    adminUrl('media-categories'),
+//                    trans('pages.admin_media_categories_title'),
+//                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+//                );
+//                $subMenu->add( //add a menu item
+//                    adminUrl('media-items'),
+//                    trans('pages.admin_media_items_title'),
+//                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+//                );
+//                $menu->addSubMenu($subMenu);
+            }
+
+            if ($user->hasRole(['admin', 'editor'])) {
                 //Posts
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
@@ -186,25 +207,6 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
-
-                //Media
-//                $menu->add(  // add an example menu item which have sub menu
-//                    '#',
-//                    trans('pages.admin_media_title'),
-//                    '<i class="fa fa-photo"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
-//                );
-//                $subMenu = new Menu($currentUrl);
-//                $subMenu->add( //add a menu item
-//                    adminUrl('media-categories'),
-//                    trans('pages.admin_media_categories_title'),
-//                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-//                );
-//                $subMenu->add( //add a menu item
-//                    adminUrl('media-items'),
-//                    trans('pages.admin_media_items_title'),
-//                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-//                );
-//                $menu->addSubMenu($subMenu);
             }
 
             if ($user->hasRole(['admin', 'manager'])) {
@@ -224,16 +226,40 @@ class AdminMenuComposer
                     trans('pages.admin_topics_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
-                $subMenu->add( //add a menu item
-                    adminUrl('teachers'),
+                $subMenu->add(  // add an example menu item which have sub menu
+                    '#',
                     trans('pages.admin_teachers_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subSubMenu = new Menu($currentUrl);
+                $subSubMenu->add( // add a menu item
+                    adminUrl('approved-teachers'),
+                    trans('pages.admin_approved_teachers_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
-                $subMenu->add( //add a menu item
-                    adminUrl('students'),
+                $subSubMenu->add( // add a menu item
+                    adminUrl('registering-teachers'),
+                    trans('pages.admin_registering_teachers_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->addSubMenu($subSubMenu);
+                $subMenu->add(  // add an example menu item which have sub menu
+                    '#',
                     trans('pages.admin_students_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subSubMenu = new Menu($currentUrl);
+                $subSubMenu->add( // add a menu item
+                    adminUrl('approved-students'),
+                    trans('pages.admin_approved_students_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
+                $subSubMenu->add( // add a menu item
+                    adminUrl('registering-students'),
+                    trans('pages.admin_registering_students_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->addSubMenu($subSubMenu);
                 $subMenu->add( //add a menu item
                     adminUrl('classrooms'),
                     trans('pages.admin_classrooms_title'),

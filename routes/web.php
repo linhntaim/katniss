@@ -165,6 +165,26 @@ Route::group([
                 Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('links/{id}'), 'LinkController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('links/{id}'), 'LinkController@destroy')->where('id', '[0-9]+');
+                //Media Categories
+//                Route::get(adminRoute('media-categories'), 'MediaCategoryController@index');
+//                Route::get(adminRoute('media-categories/create'), 'MediaCategoryController@create');
+//                Route::post(adminRoute('media-categories'), 'MediaCategoryController@store');
+//                Route::get(adminRoute('media-categories/{id}/edit'), 'MediaCategoryController@edit')->where('id', '[0-9]+');
+//                Route::put(adminRoute('media-categories/{id}'), 'MediaCategoryController@update');
+//                Route::delete(adminRoute('media-categories/{id}'), 'MediaCategoryController@destroy')->where('id', '[0-9]+');
+//                Route::get(adminRoute('media-categories/{id}/sort'), 'MediaCategoryController@sort')->where('id', '[0-9]+');
+                //Media
+//                Route::get(adminRoute('media-items'), 'MediaController@index');
+//                Route::get(adminRoute('media-items/create'), 'MediaController@create');
+//                Route::post(adminRoute('media-items'), 'MediaController@store');
+//                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
+//                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
+//                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:admin|editor'
+            ], function () {
                 //Pages
                 Route::get(adminRoute('pages'), 'PageController@index');
                 Route::get(adminRoute('pages/create'), 'PageController@create');
@@ -186,21 +206,11 @@ Route::group([
                 Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('articles/{id}'), 'ArticleController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('articles/{id}'), 'ArticleController@destroy')->where('id', '[0-9]+');
-                //Media Categories
-                Route::get(adminRoute('media-categories'), 'MediaCategoryController@index');
-                Route::get(adminRoute('media-categories/create'), 'MediaCategoryController@create');
-                Route::post(adminRoute('media-categories'), 'MediaCategoryController@store');
-                Route::get(adminRoute('media-categories/{id}/edit'), 'MediaCategoryController@edit')->where('id', '[0-9]+');
-                Route::put(adminRoute('media-categories/{id}'), 'MediaCategoryController@update');
-                Route::delete(adminRoute('media-categories/{id}'), 'MediaCategoryController@destroy')->where('id', '[0-9]+');
-                Route::get(adminRoute('media-categories/{id}/sort'), 'MediaCategoryController@sort')->where('id', '[0-9]+');
-                //Media
-                Route::get(adminRoute('media-items'), 'MediaController@index');
-                Route::get(adminRoute('media-items/create'), 'MediaController@create');
-                Route::post(adminRoute('media-items'), 'MediaController@store');
-                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
-                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
-                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:admin|manager'
+            ], function () {
                 //Professional Skills
                 Route::get(adminRoute('professional-skills'), 'ProfessionalSkillController@index');
                 Route::get(adminRoute('professional-skills/create'), 'ProfessionalSkillController@create');
@@ -216,12 +226,21 @@ Route::group([
                 Route::put(adminRoute('topics/{id}'), 'TopicController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('topics/{id}'), 'TopicController@destroy')->where('id', '[0-9]+');
                 //Teacher
-                Route::get(adminRoute('teachers'), 'TeacherController@index');
+                Route::get(adminRoute('approved-teachers'), 'TeacherController@indexApproved');
+                Route::get(adminRoute('registering-teachers'), 'TeacherController@indexRegistering');
                 Route::get(adminRoute('teachers/create'), 'TeacherController@create');
                 Route::post(adminRoute('teachers'), 'TeacherController@store');
                 Route::get(adminRoute('teachers/{id}/edit'), 'TeacherController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('teachers/{id}'), 'TeacherController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('teachers/{id}'), 'TeacherController@destroy')->where('id', '[0-9]+');
+                //Student
+                Route::get(adminRoute('approved-students'), 'StudentController@indexApproved');
+                Route::get(adminRoute('registering-students'), 'StudentController@indexRegistering');
+                Route::get(adminRoute('students/create'), 'StudentController@create');
+                Route::post(adminRoute('students'), 'StudentController@store');
+                Route::get(adminRoute('students/{id}/edit'), 'StudentController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('students/{id}'), 'StudentController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('students/{id}'), 'StudentController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

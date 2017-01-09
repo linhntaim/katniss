@@ -4,18 +4,18 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
-use Katniss\Everdeen\Repositories\TeacherRepository;
+use Katniss\Everdeen\Repositories\StudentRepository;
 
-class TeacherController extends AdminController
+class StudentController extends AdminController
 {
-    protected $teacherRepository;
+    protected $studentRepository;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->viewPath = 'teacher';
-        $this->teacherRepository = new TeacherRepository();
+        $this->viewPath = 'student';
+        $this->studentRepository = new StudentRepository();
     }
 
     public function indexApproved(Request $request)
@@ -24,19 +24,19 @@ class TeacherController extends AdminController
         $searchEmail = $request->input('email', null);
         $searchSkypeId = $request->input('skype_id', null);
         $searchPhoneNumber = $request->input('phone_number', null);
-        $teachers = $this->teacherRepository->getSearchApprovedPaged(
+        $students = $this->studentRepository->getSearchApprovedPaged(
             $searchDisplayName,
             $searchEmail,
             $searchSkypeId,
             $searchPhoneNumber
         );
 
-        $this->_title(trans('pages.admin_approved_teachers_title'));
-        $this->_description(trans('pages.admin_approved_teachers_desc'));
+        $this->_title(trans('pages.admin_approved_students_title'));
+        $this->_description(trans('pages.admin_approved_students_desc'));
 
         return $this->_any('index_approved', [
-            'teachers' => $teachers,
-            'pagination' => $this->paginationRender->renderByPagedModels($teachers),
+            'students' => $students,
+            'pagination' => $this->paginationRender->renderByPagedModels($students),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
             'search_display_name' => $searchDisplayName,
@@ -52,19 +52,19 @@ class TeacherController extends AdminController
         $searchEmail = $request->input('email', null);
         $searchSkypeId = $request->input('skype_id', null);
         $searchPhoneNumber = $request->input('phone_number', null);
-        $teachers = $this->teacherRepository->getSearchRegisteringPaged(
+        $students = $this->studentRepository->getSearchRegisteringPaged(
             $searchDisplayName,
             $searchEmail,
             $searchSkypeId,
             $searchPhoneNumber
         );
 
-        $this->_title(trans('pages.admin_registering_teachers_title'));
-        $this->_description(trans('pages.admin_registering_teachers_desc'));
+        $this->_title(trans('pages.admin_registering_students_title'));
+        $this->_description(trans('pages.admin_registering_students_desc'));
 
         return $this->_any('index_registering', [
-            'teachers' => $teachers,
-            'pagination' => $this->paginationRender->renderByPagedModels($teachers),
+            'students' => $students,
+            'pagination' => $this->paginationRender->renderByPagedModels($students),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
             'search_display_name' => $searchDisplayName,
@@ -88,12 +88,12 @@ class TeacherController extends AdminController
 
     protected function reject(Request $request, $id)
     {
-        $this->teacherRepository->model($id);
+        $this->studentRepository->model($id);
 
-        $this->_rdrUrl($request, adminUrl('approved-teachers'), $rdrUrl, $errorRdrUrl);
+        $this->_rdrUrl($request, adminUrl('approved-students'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->teacherRepository->reject();
+            $this->studentRepository->reject();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }
@@ -103,12 +103,12 @@ class TeacherController extends AdminController
 
     protected function approve(Request $request, $id)
     {
-        $this->teacherRepository->model($id);
+        $this->studentRepository->model($id);
 
-        $this->_rdrUrl($request, adminUrl('registering-teachers'), $rdrUrl, $errorRdrUrl);
+        $this->_rdrUrl($request, adminUrl('registering-students'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->teacherRepository->approve();
+            $this->studentRepository->approve();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

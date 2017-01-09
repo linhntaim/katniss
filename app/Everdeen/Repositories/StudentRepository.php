@@ -29,6 +29,51 @@ class StudentRepository extends ModelRepository
         return Student::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $student = Student::approved()->orderBy('created_at', 'desc');
+        if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
+            $student->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
+                if (!empty($displayName)) {
+                    $query->where('display_name', 'like', '%' . $displayName . '%');
+                }
+                if (!empty($email)) {
+                    $query->where('email', 'like', '%' . $email . '%');
+                }
+                if (!empty($skypeId)) {
+                    $query->where('skype_id', 'like', '%' . $skypeId . '%');
+                }
+                if (!empty($phoneNumber)) {
+                    $query->where('phone_number', 'like', '%' . $phoneNumber . '%');
+                }
+            });
+        }
+        return $student->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $student = Student::where('status', '<>', Student::APPROVED)
+            ->orderBy('created_at', 'desc');
+        if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
+            $student->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
+                if (!empty($displayName)) {
+                    $query->where('display_name', 'like', '%' . $displayName . '%');
+                }
+                if (!empty($email)) {
+                    $query->where('email', 'like', '%' . $email . '%');
+                }
+                if (!empty($skypeId)) {
+                    $query->where('skype_id', 'like', '%' . $skypeId . '%');
+                }
+                if (!empty($phoneNumber)) {
+                    $query->where('phone_number', 'like', '%' . $phoneNumber . '%');
+                }
+            });
+        }
+        return $student->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getAll()
     {
         return Student::all();
@@ -92,13 +137,27 @@ class StudentRepository extends ModelRepository
         }
     }
 
-    public function updateWhenSigningUp($skypeId)
+    public function reject()
     {
         $student = $this->model();
 
         try {
-            $student->userProfile->update([
-                'skype_id' => $skypeId,
+            $student->update([
+                'status' => Student::REJECTED,
+            ]);
+            return $student;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function approve()
+    {
+        $student = $this->model();
+
+        try {
+            $student->update([
+                'status' => Student::APPROVED,
             ]);
             return $student;
         } catch (\Exception $ex) {

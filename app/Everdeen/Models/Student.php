@@ -37,4 +37,19 @@ class Student extends Model
     {
         return $this->hasMany(Classroom::class, 'user_id', 'teacher_id');
     }
+
+    public function scopeApproved($query)
+    {
+        return $query->where('status', Student::APPROVED);
+    }
+
+    public function scopeRequested($query)
+    {
+        return $query->where('status', Student::REQUESTED);
+    }
+
+    public function scopeRejected($query)
+    {
+        return $query->where('status', Student::REJECTED);
+    }
 }
