@@ -9,4 +9,5 @@ return [
     'page_theme_title' => 'Wow Skype Theme',
     'page_options_title' => 'Options',
     'page_options_desc' => 'Manage theme options',
+    'world' => 'World of WowSkype',
 ];

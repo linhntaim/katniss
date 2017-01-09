@@ -16,6 +16,7 @@ return [
     'teacher/sign-up'                               => 'teacher/sign-up',
     'teacher/sign-up/step/{step}'                   => 'teacher/sign-up/step/{step}',
     'student/sign-up'                               => 'student/sign-up',
+    'teachers'                                      => 'teachers',
 
     'profile/account-information'                   => 'profile/account-information',
     'profile/user-information'                      => 'profile/user-information',

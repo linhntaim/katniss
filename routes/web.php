@@ -28,6 +28,8 @@ Route::group([
         Route::post(homeRoute('teacher/sign-up'), 'TeacherController@postSignUp');
         Route::get(homeRoute('student/sign-up'), 'StudentController@signUp');
 
+        Route::get(homeRoute('teachers'), 'TeacherController@index');
+
         Route::group([
             'middleware' => 'auth'
         ], function () {

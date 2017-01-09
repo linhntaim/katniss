@@ -113,6 +113,8 @@ return [
     'score_speaking' => 'Speaking',
     'score_overall' => 'Overall band score',
     'score_cefr' => 'CEFR Level',
+    'knowledge' => 'Kiến thức',
+    'about_us' => 'Về chúng tôi',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

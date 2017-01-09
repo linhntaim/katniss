@@ -24,13 +24,13 @@
 <body>
 <header>
     <div class="wrapper">
-        <div class="row">
-            <div class="col-md-2">
-                <div class="logo">
-                    <a href="{{ homeUrl() }}"><img src="{{ themeImageAsset('logo.png') }}"></a>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ homeUrl() }}"><img class="logo" src="{{ themeImageAsset('logo.png') }}"></a>
                 </div>
             </div>
-        </div>
+        </nav>
     </div>
     <div class="bars clearfix">
         <div class="bar bg-master bar-50 pull-left"></div>

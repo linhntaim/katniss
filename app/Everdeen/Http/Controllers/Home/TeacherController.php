@@ -221,6 +221,7 @@ class TeacherController extends ViewController
 
     #endregion
 
+    #region Profile
     public function getTeacherInformation(Request $request)
     {
         $topicRepository = new TopicRepository();
@@ -573,5 +574,12 @@ class TeacherController extends ViewController
 
         return redirect(homeUrl('profile/payment-information'))
             ->with('successes', [trans('error.success')]);
+    }
+
+    #endregion
+
+    public function index(Request $request)
+    {
+        return $this->_index();
     }
 }

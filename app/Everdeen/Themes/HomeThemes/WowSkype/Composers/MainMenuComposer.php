@@ -51,32 +51,20 @@ class MainMenuComposer
             trans('pages.home_title'), '', '', 'hidden'
         );
         $menu->add(
-            homeUrl('example/social-sharing'),
-            trans('example_theme.social_sharing')
+            homeUrl('teachers'),
+            trans_choice('label.teacher', 2)
         );
         $menu->add(
-            homeUrl('example/facebook-comments'),
-            trans('example_theme.facebook_comment')
+            '#',
+            trans('label.knowledge')
         );
         $menu->add(
-            homeUrl('example/widgets'),
-            trans('example_theme.example_widget')
+            '#',
+            trans('wow_skype_theme.world')
         );
         $menu->add(
-            homeUrl('example/my-settings'),
-            trans('pages.my_settings_title')
-        );
-        $menu->add(
-            homeUrl('example/pages'),
-            trans_choice('label.page', 2)
-        );
-        $menu->add(
-            homeUrl('example/articles'),
-            trans_choice('label.article', 2)
-        );
-        $menu->add(
-            homeUrl('example/public-conversation'),
-            trans('example_theme.public_conversation')
+            '#',
+            trans('label.about_us')
         );
         $menu = contentFilter('main_menu', $menu);
         return $menu;

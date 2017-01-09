@@ -9,4 +9,5 @@ return [
     'page_theme_title' => 'Giao diện Wow Skype',
     'page_options_title' => 'Tùy chọn',
     'page_options_desc' => 'Quản lý tùy chọn giao diện',
+    'world' => 'Thế giới WowSkype',
 ];

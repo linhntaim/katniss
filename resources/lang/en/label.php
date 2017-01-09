@@ -113,6 +113,8 @@ return [
     'score_speaking' => 'Speaking',
     'score_overall' => 'Overall band score',
     'score_cefr' => 'CEFR Level',
+    'knowledge' => 'Knowledge',
+    'about_us' => 'About us',
 
     'settings' => 'Settings',
     'country' => 'Country',

@@ -1,3 +1,45 @@
+header .navbar {
+    margin-bottom: 0;
+    border: none;
+}
+
+header .navbar-default {
+    margin-bottom: 0;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+header .navbar-default .navbar-nav > li > a {
+    color: #333;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 700;
+    border-bottom: 2px solid transparent;
+}
+
+header .navbar-default .navbar-nav > .active > a,
+header .navbar-default .navbar-nav > .active > a:focus,
+header .navbar-default .navbar-nav > .active > a:hover,
+header .navbar-default .navbar-nav > li > a:focus,
+header .navbar-default .navbar-nav > li > a:hover {
+    color: #337ab7;
+    background-color: transparent;
+    border-bottom-color: #337ab7;
+}
+
+header .navbar-toggle {
+    margin-right: 20px;
+}
+
+header .navbar-nav {
+    margin: 25px 0 15px 0;
+}
+
+header .navbar-brand {
+    padding: 0 15px 0 0;
+    height: auto;
+}
+
 header .logo {
     margin: 20px 0;
 }
@@ -21,7 +63,8 @@ header .switch-locale a {
 }
 
 header .bars .wrapper {
-    margin-top: -8px;
+    position: relative;
+    top: -8px;
     padding: 0;
 }
 
@@ -35,14 +78,37 @@ header .bar-50 {
 
 header .wrapper .bar.pull-left {
     width: 90%;
-    font-size: 0; line-height: 0;
+    font-size: 0;
+    line-height: 0;
     border-top: 8px solid #337ab7;
     border-right: 8px solid #fff;
 }
 
 header .wrapper .bar.pull-right {
     width: 10%;
-    font-size: 0; line-height: 0;
+    font-size: 0;
+    line-height: 0;
     border-bottom: 8px solid #5cb85c;
     border-left: 8px solid #fff;
+}
+
+@media (max-width: 767px) {
+
+    header > .wrapper {
+        padding: 0;
+    }
+
+    header .logo {
+        height: 30px;
+        margin: 10px 0 10px 20px;
+    }
+
+    header .navbar-nav {
+        margin: 0;
+    }
+
+    header .navbar-collapse {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

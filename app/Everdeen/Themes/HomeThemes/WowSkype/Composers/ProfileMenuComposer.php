@@ -45,6 +45,7 @@ class ProfileMenuComposer
 
     protected function getMenu()
     {
+        $authUser = authUser();
         $currentUrl = currentUrl();
         $menu = new Menu($currentUrl);
         $menu->add( // add a menu item
@@ -59,18 +60,20 @@ class ProfileMenuComposer
             homeUrl('profile/educations-and-works'),
             trans('label.educations_and_works'), '<strong>', '</strong>'
         );
-        $menu->add( // add a menu item
-            homeUrl('profile/teacher-information'),
-            trans('label.teacher_information'), '<strong>', '</strong>'
-        );
-        $menu->add( // add a menu item
-            homeUrl('profile/teaching-time'),
-            trans('label.teaching_time'), '<strong>', '</strong>'
-        );
-        $menu->add( // add a menu item
-            homeUrl('profile/payment-information'),
-            trans('label.payment_information'), '<strong>', '</strong>'
-        );
+        if ($authUser->hasRole('teacher')) {
+            $menu->add( // add a menu item
+                homeUrl('profile/teacher-information'),
+                trans('label.teacher_information'), '<strong>', '</strong>'
+            );
+            $menu->add( // add a menu item
+                homeUrl('profile/teaching-time'),
+                trans('label.teaching_time'), '<strong>', '</strong>'
+            );
+            $menu->add( // add a menu item
+                homeUrl('profile/payment-information'),
+                trans('label.payment_information'), '<strong>', '</strong>'
+            );
+        }
         $menu = contentFilter('profile_menu', $menu);
         return $menu;
     }

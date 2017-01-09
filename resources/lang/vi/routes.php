@@ -16,6 +16,7 @@ return [
     'teacher/sign-up'                               => 'giao-vien/dang-ky',
     'teacher/sign-up/step/{step}'                   => 'giao-vien/dang-ky/buoc/{step}',
     'student/sign-up'                               => 'hoc-vien/dang-ky',
+    'teachers'                                      => 'danh-sach-giao-vien',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
     'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',
