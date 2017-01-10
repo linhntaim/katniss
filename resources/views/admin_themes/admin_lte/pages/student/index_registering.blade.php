@@ -73,7 +73,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-primary" href="{{ adminUrl('students/create') }}">
+                <a class="btn btn-primary" href="{{ addRdrUrl(adminUrl('students/create')) }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.student_lc', 1) }}
                 </a>
             </div>
@@ -94,8 +94,8 @@
                     </div>
                 </div><!-- /.box-header -->
                 @if($students->count()>0)
-                    <div class="box-body">
-                        <table class="table table-bordered table-hover">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>
@@ -127,9 +127,9 @@
                                         <td>{{ $student->userProfile->skype_id }}</td>
                                         <td>{{ $student->userProfile->phone }}</td>
                                         <td>
-                                            @if($student->status == \Katniss\Everdeen\Models\Student::REQUESTED)
+                                            @if($student->status == \Katniss\Everdeen\Models\Teacher::REQUESTED)
                                                 <span class="label label-warning">{{ trans('label.status_requested') }}</span>
-                                            @elseif($student->status == \Katniss\Everdeen\Models\Student::REJECTED)
+                                            @elseif($student->status == \Katniss\Everdeen\Models\Teacher::REJECTED)
                                                 <span class="label label-danger">{{ trans('label.status_rejected') }}</span>
                                             @endif
                                         </td>

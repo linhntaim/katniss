@@ -3,6 +3,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Role;
@@ -62,11 +63,21 @@ class UserController extends AdminController
     protected function validator(array $data, array $extra_rules = [])
     {
         return Validator::make($data, array_merge([
-            'display_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'name' => 'required|max:255',
-            'password' => 'required|min:6',
             'roles' => 'sometimes|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
+            'display_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'name' => 'required|max:255|unique:users,name',
+            'password' => 'required|min:6',
+            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'gender' => 'required|in:' . implode(',', allGenders()),
+            'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
+            'phone_number' => 'required|max:255',
+            'address' => 'sometimes|max:255',
+            'city' => 'required|max:255',
+            'country' => 'required|in:' . implode(',', allCountryCodes()),
+            'nationality' => 'required|in:' . implode(',', allCountryCodes()),
+            'skype_id' => 'sometimes|max:255',
+            'facebook' => 'sometimes|max:255|url',
         ], $extra_rules));
     }
 
@@ -87,11 +98,23 @@ class UserController extends AdminController
         }
 
         try {
-            $this->userRepository->create(
-                $request->input('name'),
-                $request->input('display_name'),
-                $request->input('email'),
-                $request->input('password'),
+            $this->userRepository->createAdmin([
+                'display_name' => $request->input('display_name'),
+                'email' => $request->input('email'),
+                'name' => $request->input('name'),
+                'password' => $request->input('password'),
+                'date_of_birth' => DateTimeHelper::getInstance()
+                    ->convertToDatabaseFormat(DateTimeHelper::shortDateFormat(), $request->input('date_of_birth'), true),
+                'gender' => $request->input('gender'),
+                'phone_code' => $request->input('phone_code'),
+                'phone_number' => $request->input('phone_number'),
+                'address' => $request->input('address', ''),
+                'city' => $request->input('city'),
+                'nationality' => $request->input('nationality'),
+                'skype_id' => $request->input('skype_id', ''),
+                'facebook' => $request->input('facebook', ''),
+            ],
+                $request->input('country'),
                 $request->input('roles'),
                 $request->has('send_welcomed_mail')
             );
@@ -151,7 +174,8 @@ class UserController extends AdminController
 
         $validator = $this->validator($request->all(), [
             'password' => 'sometimes|min:6',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'name' => ['required', 'max:255', Rule::unique('users', 'name')->ignore($user->id, 'id')],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id, 'id')],
         ]);
 
         if ($validator->fails()) {
@@ -159,11 +183,23 @@ class UserController extends AdminController
         }
 
         try {
-            $this->userRepository->update(
-                $request->input('name'),
-                $request->input('display_name'),
-                $request->input('email'),
-                $request->input('password', ''),
+            $this->userRepository->updateAdmin([
+                'display_name' => $request->input('display_name'),
+                'email' => $request->input('email'),
+                'name' => $request->input('name'),
+                'password' => $request->input('password', ''),
+                'date_of_birth' => DateTimeHelper::getInstance()
+                    ->convertToDatabaseFormat(DateTimeHelper::shortDateFormat(), $request->input('date_of_birth'), true),
+                'gender' => $request->input('gender'),
+                'phone_code' => $request->input('phone_code'),
+                'phone_number' => $request->input('phone_number'),
+                'address' => $request->input('address', ''),
+                'city' => $request->input('city'),
+                'nationality' => $request->input('nationality'),
+                'skype_id' => $request->input('skype_id', ''),
+                'facebook' => $request->input('facebook', ''),
+            ],
+                $request->input('country'),
                 $request->input('roles')
             );
         } catch (KatnissException $ex) {

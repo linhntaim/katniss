@@ -28,4 +28,6 @@ return [
     'default_locale_inputs_must_be_set' => 'If you don\'t fill multiple locale form for all languages, please fill in default tab',
     'elfinder_rm_not_allowed' => 'You are not allowed to delete it',
     'payment_info' => 'Please fill all required fields',
+    'cannot_remove_current_student_role' => 'Cannot remove student role. Please delete the student profile first.',
+    'cannot_remove_current_teacher_role' => 'Cannot remove teacher role. Please delete the teacher profile first.',
 ];

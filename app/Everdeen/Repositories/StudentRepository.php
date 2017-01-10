@@ -9,8 +9,10 @@
 namespace Katniss\Everdeen\Repositories;
 
 use Illuminate\Support\Facades\DB;
+use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\Student;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSetting;
@@ -137,6 +139,104 @@ class StudentRepository extends ModelRepository
         }
     }
 
+    public function createAdmin(array $userAttributes, $country,
+                                $isApproved, $approvingUserId, $sendWelcomeMail)
+    {
+        DB::beginTransaction();
+        try {
+            $settings = UserSetting::create([
+                'country' => $country,
+            ]);
+
+            $password = $userAttributes['password'];
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $userAttributes = array_merge([
+                'url_avatar' => appDefaultUserProfilePicture(),
+                'url_avatar_thumb' => appDefaultUserProfilePicture(),
+                'activation_code' => str_random(32),
+                'active' => true,
+                'setting_id' => $settings->id,
+            ], $userAttributes);
+            $userAttributes['password'] = bcrypt($userAttributes['password']);
+
+            $user = User::create($userAttributes);
+            $roleRepository = new RoleRepository();
+            $roles = $roleRepository->getByNames(['user', 'student'])->pluck('id')->all();
+            $user->attachRoles($roles);
+
+            $studentAttributes = ['user_id' => $user->id];
+            if ($isApproved) {
+                $studentAttributes['status'] = Student::APPROVED;
+                $studentAttributes['approving_user_id'] = $approvingUserId;
+                $studentAttributes['approving_at'] = date('Y-m-d');
+            } else {
+                $studentAttributes['status'] = Student::REQUESTED;
+            }
+            $student = Student::create($studentAttributes);
+
+            if ($sendWelcomeMail) {
+                event(new UserCreated($user, $password, false,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $student;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateAdmin(array $userAttributes, $country)
+    {
+        $student = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $passwordChanged = false;
+            $password = $userAttributes['password'];
+            if (!empty($password)) {
+                $userAttributes['password'] = bcrypt($userAttributes['password']);
+            } else {
+                unset($userAttributes['password']);
+            }
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $user = $student->userProfile;
+            $user->update($userAttributes);
+            $user->settings()->update([
+                'country' => $country,
+            ]);
+
+            if ($passwordChanged) {
+                event(new PasswordChanged($user, $password,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $student;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function reject()
     {
         $student = $this->model();
@@ -151,17 +251,33 @@ class StudentRepository extends ModelRepository
         }
     }
 
-    public function approve()
+    public function approve($approvingUserId)
     {
         $student = $this->model();
 
         try {
             $student->update([
                 'status' => Student::APPROVED,
+                'approving_user_id' => $approvingUserId,
+                'approving_at' => date('Y-m-d H:i:s'),
             ]);
             return $student;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function delete()
+    {
+        $student = $this->model();
+
+        try {
+            $roleRepository = new RoleRepository();
+            $student->userProfile->detachRole($roleRepository->getByName('student')->id);
+            $student->delete();
+            return true;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');
         }
     }
 }

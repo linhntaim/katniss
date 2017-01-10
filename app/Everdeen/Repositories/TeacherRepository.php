@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Repositories;
 
 use Illuminate\Support\Facades\DB;
+use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Teacher;
@@ -133,7 +134,6 @@ class TeacherRepository extends ModelRepository
                 'phone_code' => $phoneCode,
                 'phone_number' => $phoneNumber,
             ));
-            $user->save();
 
             $roleRepository = new RoleRepository();
             $roles = $roleRepository->getByNames(['user', 'teacher'])->pluck('id')->all();
@@ -158,6 +158,112 @@ class TeacherRepository extends ModelRepository
             DB::rollBack();
 
             throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function createAdmin(array $userAttributes, array $teacherAttributes, array $topics, $country,
+                                $isApproved, $approvingUserId, $sendWelcomeMail)
+    {
+        DB::beginTransaction();
+        try {
+            $settings = UserSetting::create([
+                'country' => $country,
+            ]);
+
+            $password = $userAttributes['password'];
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $userAttributes = array_merge([
+                'url_avatar' => appDefaultUserProfilePicture(),
+                'url_avatar_thumb' => appDefaultUserProfilePicture(),
+                'activation_code' => str_random(32),
+                'active' => true,
+                'setting_id' => $settings->id,
+            ], $userAttributes);
+            $userAttributes['password'] = bcrypt($userAttributes['password']);
+
+            $user = User::create($userAttributes);
+            $roleRepository = new RoleRepository();
+            $roles = $roleRepository->getByNames(['user', 'teacher'])->pluck('id')->all();
+            $user->attachRoles($roles);
+
+            $teacherAttributes['user_id'] = $user->id;
+            if ($isApproved) {
+                $teacherAttributes['status'] = Teacher::APPROVED;
+                $teacherAttributes['approving_user_id'] = $approvingUserId;
+                $teacherAttributes['approving_at'] = date('Y-m-d');
+            } else {
+                $teacherAttributes['status'] = Teacher::REQUESTED;
+            }
+            $teacher = Teacher::create($teacherAttributes);
+            $teacher->topics()->attach($topics);
+
+            if ($sendWelcomeMail) {
+                event(new UserCreated($user, $password, false,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $teacher;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateAdmin(array $userAttributes, array $teacherAttributes, array $topics, $country)
+    {
+        $teacher = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $teacher->update($teacherAttributes);
+            if ($teacher->topics()->count() > 0) {
+                $teacher->topics()->sync($topics);
+            } else {
+                $teacher->topics()->attach($topics);
+            }
+
+            $passwordChanged = false;
+            $password = $userAttributes['password'];
+            if (!empty($password)) {
+                $userAttributes['password'] = bcrypt($userAttributes['password']);
+            } else {
+                unset($userAttributes['password']);
+            }
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $user = $teacher->userProfile;
+            $user->update($userAttributes);
+            $user->settings()->update([
+                'country' => $country,
+            ]);
+
+            if ($passwordChanged) {
+                event(new PasswordChanged($user, $password,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $teacher;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
 
@@ -258,17 +364,33 @@ class TeacherRepository extends ModelRepository
         }
     }
 
-    public function approve()
+    public function approve($approvingUserId)
     {
         $teacher = $this->model();
 
         try {
             $teacher->update([
                 'status' => Teacher::APPROVED,
+                'approving_user_id' => $approvingUserId,
+                'approving_at' => date('Y-m-d H:i:s'),
             ]);
             return $teacher;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function delete()
+    {
+        $teacher = $this->model();
+
+        try {
+            $roleRepository = new RoleRepository();
+            $teacher->userProfile->detachRole($roleRepository->getByName('teacher')->id);
+            $teacher->delete();
+            return true;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');
         }
     }
 }

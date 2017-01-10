@@ -73,7 +73,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="margin-bottom">
-                <a class="btn btn-primary" href="{{ adminUrl('teachers/create') }}">
+                <a class="btn btn-primary" href="{{ addRdrUrl(adminUrl('teachers/create')) }}">
                     {{ trans('form.action_add') }} {{ trans_choice('label.teacher_lc', 1) }}
                 </a>
             </div>
@@ -94,11 +94,12 @@
                     </div>
                 </div><!-- /.box-header -->
                 @if($teachers->count()>0)
-                    <div class="box-body">
-                        <table class="table table-bordered table-hover">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.display_name') }}</th>
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
@@ -109,6 +110,7 @@
                             <tfoot>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.display_name') }}</th>
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
@@ -120,6 +122,11 @@
                                 @foreach($teachers as $teacher)
                                     <tr>
                                         <td class="order-col-2">{{ ++$start_order }}</td>
+                                        <td class="order-col-1 text-center">
+                                            <a target="_blank" href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>
+                                        </td>
                                         <td>{{ $teacher->userProfile->display_name }}</td>
                                         <td>{{ $teacher->userProfile->email }}</td>
                                         <td>{{ $teacher->userProfile->skype_id }}</td>

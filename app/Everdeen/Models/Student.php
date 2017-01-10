@@ -14,6 +14,8 @@ class Student extends Model
 
     protected $primaryKey = 'user_id';
 
+    public $incrementing = false;
+
     protected $fillable = [
         'user_id', 'approving_user_id', 'approving_at', 'status',
     ];
