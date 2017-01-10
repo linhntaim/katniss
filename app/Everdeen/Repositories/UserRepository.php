@@ -34,6 +34,24 @@ class UserRepository extends ModelRepository
         return User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $users = User::orderBy('created_at', 'desc');
+        if (!empty($displayName)) {
+            $users->where('display_name', 'like', '%' . $displayName . '%');
+        }
+        if (!empty($email)) {
+            $users->where('email', 'like', '%' . $email . '%');
+        }
+        if (!empty($skypeId)) {
+            $users->where('skype_id', 'like', '%' . $skypeId . '%');
+        }
+        if (!empty($phoneNumber)) {
+            $users->where('phone_number', 'like', '%' . $phoneNumber . '%');
+        }
+        return $users->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getSupporterSearchCommonPaged($term = null)
     {
         $users = User::whereHas('roles', function ($query) {

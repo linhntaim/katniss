@@ -84,4 +84,5 @@ return [
     'action_register_class' => 'Register class',
     'action_go_profile' => 'Go to your profile',
     'action_open' => 'Open',
+    'action_clear_search' => 'Clear search',
 ];

@@ -59,9 +59,10 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline" data-dismiss="modal">
-                            Close
-                        </button>
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ trans('form.action_close') }}</button>
+                        <a role="button" class="btn btn-warning {{ $on_searching ? '' : 'hide' }}" href="{{ $clear_search_url }}">
+                            {{ trans('form.action_clear_search') }}
+                        </a>
                         <button type="submit" class="btn btn-primary">{{ trans('form.action_search') }}</button>
                     </div>
                 </form>
@@ -88,7 +89,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.teacher_lc', 2)]) }}</h3>
                     <div class="box-tools">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#search-modal">
+                        <button type="button" class="btn {{ $on_searching ? 'btn-warning' : 'btn-primary' }} btn-sm" data-toggle="modal" data-target="#search-modal">
                             <i class="fa fa-search"></i> {{ trans('form.action_search') }}
                         </button>
                     </div>

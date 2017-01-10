@@ -30,7 +30,16 @@ class UserController extends AdminController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->getPaged();
+        $searchDisplayName = $request->input('display_name', null);
+        $searchEmail = $request->input('email', null);
+        $searchSkypeId = $request->input('skype_id', null);
+        $searchPhoneNumber = $request->input('phone_number', null);
+        $users = $this->userRepository->getSearchPaged(
+            $searchDisplayName,
+            $searchEmail,
+            $searchSkypeId,
+            $searchPhoneNumber
+        );
 
         $this->_title(trans('pages.admin_users_title'));
         $this->_description(trans('pages.admin_users_desc'));
@@ -39,6 +48,13 @@ class UserController extends AdminController
             'users' => $users,
             'pagination' => $this->paginationRender->renderByPagedModels($users),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchDisplayName) || !empty($searchEmail) || !empty($searchSkypeId) || !empty($searchPhoneNumber),
+            'search_display_name' => $searchDisplayName,
+            'search_email' => $searchEmail,
+            'search_skype_id' => $searchSkypeId,
+            'search_phone_number' => $searchPhoneNumber,
         ]);
     }
 

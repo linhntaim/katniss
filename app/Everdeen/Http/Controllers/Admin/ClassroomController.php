@@ -42,6 +42,8 @@ class ClassroomController extends AdminController
             'pagination' => $this->paginationRender->renderByPagedModels($classrooms),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchName) || !empty($searchTeacher) || !empty($searchStudent) || !empty($searchSupporter),
             'search_name' => $searchName,
             'search_teacher' => $searchTeacher,
             'search_student' => $searchStudent,
@@ -70,6 +72,8 @@ class ClassroomController extends AdminController
             'pagination' => $this->paginationRender->renderByPagedModels($classrooms),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchName) || !empty($searchTeacher) || !empty($searchStudent) || !empty($searchSupporter),
             'search_name' => $searchName,
             'search_teacher' => $searchTeacher,
             'search_student' => $searchStudent,

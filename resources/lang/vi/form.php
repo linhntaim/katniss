@@ -84,4 +84,5 @@ return [
     'action_register_class' => 'Đăng ký học',
     'action_go_profile' => 'Đến trang cá nhân',
     'action_open' => 'Mở',
+    'action_clear_search' => 'Xóa tìm kiếm',
 ];

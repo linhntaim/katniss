@@ -44,6 +44,8 @@ class TeacherController extends AdminController
             'pagination' => $this->paginationRender->renderByPagedModels($teachers),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchDisplayName) || !empty($searchEmail) || !empty($searchSkypeId) || !empty($searchPhoneNumber),
             'search_display_name' => $searchDisplayName,
             'search_email' => $searchEmail,
             'search_skype_id' => $searchSkypeId,
@@ -72,6 +74,8 @@ class TeacherController extends AdminController
             'pagination' => $this->paginationRender->renderByPagedModels($teachers),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchDisplayName) || !empty($searchEmail) || !empty($searchSkypeId) || !empty($searchPhoneNumber),
             'search_display_name' => $searchDisplayName,
             'search_email' => $searchEmail,
             'search_skype_id' => $searchSkypeId,
