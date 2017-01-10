@@ -83,4 +83,5 @@ return [
     'action_connect' => 'Kết nối',
     'action_register_class' => 'Đăng ký học',
     'action_go_profile' => 'Đến trang cá nhân',
+    'action_open' => 'Mở',
 ];

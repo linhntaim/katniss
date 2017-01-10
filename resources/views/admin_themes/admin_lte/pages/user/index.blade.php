@@ -32,7 +32,7 @@
                 <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.user_lc', 2)]) }}</h3>
             </div><!-- /.box-header -->
             @if($users->count()>0)
-                <div class="box-body">
+                <div class="box-body table-responsive no-padding">
                     <table class="table table-bordered">
                         <thead>
                             <tr>

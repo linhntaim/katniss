@@ -12,8 +12,18 @@ class Classroom extends Model
     protected $table = 'classrooms';
 
     protected $fillable = [
-        'student_id', 'teacher_id', 'supporter_id', 'status'
+        'student_id', 'teacher_id', 'supporter_id', 'status', 'hours', 'name'
     ];
+
+    public function getIsOpeningAttribute()
+    {
+        return $this->attributes['status'] == self::STATUS_OPENING;
+    }
+
+    public function getDurationAttribute()
+    {
+        return toFormattedNumber($this->attributes['hours']);
+    }
 
     public function teacherProfile()
     {
@@ -37,6 +47,21 @@ class Classroom extends Model
 
     public function supporter()
     {
-        return $this->belongsTo(User::class, 'teacher_id', 'id');
+        return $this->belongsTo(User::class, 'supporter_id', 'id');
+    }
+
+    public function classTimes()
+    {
+        return $this->hasMany(ClassTime::class, 'classroom_id', 'id');
+    }
+
+    public function scopeOpening($query)
+    {
+        return $query->where('status', self::STATUS_OPENING);
+    }
+
+    public function scopeClosed($query)
+    {
+        return $query->where('status', self::STATUS_CLOSED);
     }
 }

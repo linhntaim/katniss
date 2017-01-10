@@ -30,6 +30,22 @@ class TeacherRepository extends ModelRepository
         return Teacher::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchCommonPaged($term = null)
+    {
+        $teacher = Teacher::approved()->orderBy('created_at', 'desc');
+        if (!empty($term)) {
+            $teacher->whereHas('userProfile', function ($query) use ($term) {
+                $query->where('users.id', $term);
+                $query->orWhere('users.display_name', 'like', '%' . $term . '%');
+                $query->orWhere('users.name', 'like', '%' . $term . '%');
+                $query->orWhere('users.email', 'like', '%' . $term . '%');
+                $query->orWhere('users.skype_id', 'like', '%' . $term . '%');
+                $query->orWhere('users.phone_number', 'like', '%' . $term . '%');
+            });
+        }
+        return $teacher->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
         $teacher = Teacher::approved()->orderBy('created_at', 'desc');

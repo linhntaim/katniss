@@ -164,7 +164,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputFacebook" class="control-label">Facebook URL</label>
-                            <input type="text" placeholder="{{ trans('label.address') }}" value="{{ old('facebook') }}"
+                            <input type="text" placeholder="Facebook URL" value="{{ old('facebook') }}"
                                    class="form-control" id="inputFacebook" name="facebook">
                         </div>
                         <div class="form-group">

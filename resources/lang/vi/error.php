@@ -21,6 +21,7 @@ return [
     'is_current_user' => 'Bạn đang là người dùng hiện tại',
     'is_role_owner' => 'Người dùng này là người sở hữu hệ thống',
     'is_not_author' => 'Bạn không phải là tác giả',
+    'is_not_role_supporter' => 'Không phải tư vấn viên',
     '_is_not_author' => 'Bạn không phải là tác giả của :object',
     '_cannot_delete' => 'Không thể xoa vì: :reason',
     'category_not_empty' => 'Chuyên mục không trống',

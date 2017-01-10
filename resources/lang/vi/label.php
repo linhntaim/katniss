@@ -44,6 +44,8 @@ return [
     'wanna_display' => 'Bạn có muốn hiển thị :name ?',
     'wanna_activate' => 'Bạn có muốn kích hoạt :name ?',
     'wanna_deactivate' => 'Bạn có muốn bỏ kích hoạt :name ?',
+    'wanna_close' => 'Bạn có muốn đóng :name ?',
+    'wanna_open' => 'Bạn có muốn mở :name ?',
 
     'name' => 'Tên',
     'display_name' => 'Tên hiển thị',
@@ -163,6 +165,9 @@ return [
     'your_children_learning_targets' => 'Mục đích học tiếng Anh của con bạn là gì?',
     'your_children_learning_forms' => 'Con bạn đã từng học tiếng Anh ở đâu?',
     '_step' => 'Bước :step',
+    'class_duration' => 'Sẽ học',
+    'class_spent_time' => 'Đã học',
+    '_current' => ':current hiện tại',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -303,6 +308,11 @@ lộ trình học tập và học phí.',
     'professional_skill_lc' => 'kỹ năng chuyên môn',
     'certificate' => 'Chứng chỉ',
     'certificate_lc' => 'chứng chỉ',
+    'classroom' => 'Lớp học',
+    'classroom_lc' => 'lớp học',
+    'supporter' => 'Tư vấn viên',
+    'supporter_lc' => 'tư vấn viên',
+    'hour_lc' => 'giờ',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

@@ -101,6 +101,10 @@ return [
     'admin_registering_students_desc' => 'Manage registering students',
     'admin_classrooms_title' => 'Classrooms',
     'admin_classrooms_desc' => 'Manage classrooms',
+    'admin_opening_classrooms_title' => 'Opening Classrooms',
+    'admin_opening_classrooms_desc' => 'Manage opening classrooms',
+    'admin_closed_classrooms_title' => 'Closed Classrooms',
+    'admin_closed_classrooms_desc' => 'Manage closed classrooms',
 
     'admin_error_title' => ':code Error',
     'admin_error_desc' => ':code Error Page',

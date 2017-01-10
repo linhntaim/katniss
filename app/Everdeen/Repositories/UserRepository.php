@@ -34,6 +34,24 @@ class UserRepository extends ModelRepository
         return User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSupporterSearchCommonPaged($term = null)
+    {
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('roles.name', 'supporter');
+        });
+        if (!empty($term)) {
+            $users->where(function ($query) use ($term) {
+                $query->where('id', $term)
+                    ->orWhere('display_name', 'like', '%' . $term . '%')
+                    ->orWhere('name', 'like', '%' . $term . '%')
+                    ->orWhere('email', 'like', '%' . $term . '%')
+                    ->orWhere('skype_id', 'like', '%' . $term . '%')
+                    ->orWhere('phone_number', 'like', '%' . $term . '%');
+            });
+        }
+        return $users->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getAll()
     {
         return User::all();

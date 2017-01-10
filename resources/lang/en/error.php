@@ -21,6 +21,7 @@ return [
     'is_current_user' => 'You are this current user',
     'is_role_owner' => 'This user is owner of the system',
     'is_not_author' => 'You are not the author',
+    'is_not_role_supporter' => 'The user is not a supporter',
     '_is_not_author' => 'You are not the author of :object',
     '_cannot_delete' => 'Cannot delete due to: :reason',
     'category_not_empty' => 'Category is not empty',

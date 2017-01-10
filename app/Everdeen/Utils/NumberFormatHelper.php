@@ -140,6 +140,46 @@ class NumberFormatHelper
         }
     }
 
+    public function getRegEx($totalLength, $pointLength)
+    {
+        $restLength = $totalLength - $pointLength;
+        $groupMax = $restLength % 3 == 0 ? intval($restLength / 3 - 1) : intval($restLength / 3);
+        $chars = $this->getCharsForRegEx();
+        return "/^(\d{0,3}|\d{1,3}($chars[1]\d{3}){1,$groupMax})($chars[0]\d{0,$pointLength}){0,1}$/";
+    }
+
+    public function getChars()
+    {
+        switch ($this->type) {
+            case 'comma_point':
+                return [',', '.'];
+            case 'comma_space':
+                return [',', ' '];
+            case 'point_comma':
+                return ['.', ','];
+            case 'point_space':
+                return ['.', ' '];
+            default:
+                return ['.', ','];
+        }
+    }
+
+    public function getCharsForRegEx()
+    {
+        switch ($this->type) {
+            case 'comma_point':
+                return ['\,', '\.'];
+            case 'comma_space':
+                return ['\,', '[ ]'];
+            case 'point_comma':
+                return ['\.', '\,'];
+            case 'point_space':
+                return ['\.', '[ ]'];
+            default:
+                return ['\.', '\,'];
+        }
+    }
+
     /**
      * @param float $number
      * @return string

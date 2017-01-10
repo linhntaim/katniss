@@ -241,6 +241,14 @@ Route::group([
                 Route::get(adminRoute('students/{id}/edit'), 'StudentController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('students/{id}'), 'StudentController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('students/{id}'), 'StudentController@destroy')->where('id', '[0-9]+');
+                //Classroom
+                Route::get(adminRoute('opening-classrooms'), 'ClassroomController@indexOpening');
+                Route::get(adminRoute('closed-classrooms'), 'ClassroomController@indexClosed');
+                Route::get(adminRoute('classrooms/create'), 'ClassroomController@create');
+                Route::post(adminRoute('classrooms'), 'ClassroomController@store');
+                Route::get(adminRoute('classrooms/{id}/edit'), 'ClassroomController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('classrooms/{id}'), 'ClassroomController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('classrooms/{id}'), 'ClassroomController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

@@ -67,7 +67,7 @@ class PaginationRender
 
     public function renderByPagedModels($pagedCollection, $maxPageShow = AppConfig::DEFAULT_PAGINATION_ITEMS)
     {
-        return $this->render(new Pagination($pagedCollection), $maxPageShow);
+        return $this->render(new Pagination($pagedCollection, $maxPageShow));
     }
 
     public function render(Pagination $pagination, $reset = true)

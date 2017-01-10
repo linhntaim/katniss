@@ -44,6 +44,8 @@ return [
     'wanna_display' => 'Do you really want to display :name ?',
     'wanna_activate' => 'Do you really want to activate :name ?',
     'wanna_deactivate' => 'Do you really want to deactivate :name ?',
+    'wanna_close' => 'Do you really want to close :name ?',
+    'wanna_open' => 'Do you really want to open :name ?',
 
     'name' => 'Name',
     'display_name' => 'Display name',
@@ -163,6 +165,9 @@ return [
     'your_children_learning_targets' => 'Your child\'s learning target',
     'your_children_learning_forms' => 'Has your child ever learnt English before?',
     '_step' => 'Step :step',
+    'class_duration' => 'Duration',
+    'class_spent_time' => 'Spent time',
+    '_current' => 'Current :current',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -303,6 +308,11 @@ about your classes.',
     'professional_skill_lc' => 'professional skill|professional skills',
     'certificate' => 'Certificate|Certificates',
     'certificate_lc' => 'certificate|certificates',
+    'classroom' => 'Classroom|Classrooms',
+    'classroom_lc' => 'classroom|classrooms',
+    'supporter' => 'Supporter|Supporters',
+    'supporter_lc' => 'supporter|supporters',
+    'hour_lc' => 'hour|hours',
 
     'no_widget' => 'No widget is placed here',
 

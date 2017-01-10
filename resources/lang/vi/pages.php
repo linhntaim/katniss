@@ -101,6 +101,10 @@ return [
     'admin_registering_students_desc' => 'Quản lý học viên đăng ký',
     'admin_classrooms_title' => 'Lớp học',
     'admin_classrooms_desc' => 'Quản lý lớp học',
+    'admin_opening_classrooms_title' => 'Lớp đang học',
+    'admin_opening_classrooms_desc' => 'Quản lý lớp đang học',
+    'admin_closed_classrooms_title' => 'Lớp đã học xong',
+    'admin_closed_classrooms_desc' => 'Quản lý lớp đã học xong',
 
     'admin_error_title' => 'Lỗi :code',
     'admin_error_desc' => 'Trang truy cập gặp lỗi :code',

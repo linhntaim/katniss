@@ -27,6 +27,10 @@ Route::group([
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
 
+    Route::get('teachers', 'TeacherController@index');
+    Route::get('students', 'StudentController@index');
+    Route::get('supporters', 'UserController@indexSupporter');
+
     Route::group([
         'middleware' => 'auth'
     ], function () {

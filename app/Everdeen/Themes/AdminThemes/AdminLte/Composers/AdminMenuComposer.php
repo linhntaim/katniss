@@ -260,11 +260,23 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subMenu->addSubMenu($subSubMenu);
-                $subMenu->add( //add a menu item
-                    adminUrl('classrooms'),
+                $subMenu->add(  // add an example menu item which have sub menu
+                    '#',
                     trans('pages.admin_classrooms_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subSubMenu = new Menu($currentUrl);
+                $subSubMenu->add( // add a menu item
+                    adminUrl('opening-classrooms'),
+                    trans('pages.admin_opening_classrooms_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
+                $subSubMenu->add( // add a menu item
+                    adminUrl('closed-classrooms'),
+                    trans('pages.admin_closed_classrooms_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->addSubMenu($subSubMenu);
                 $menu->addSubMenu($subMenu);
             }
         }

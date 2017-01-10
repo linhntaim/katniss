@@ -177,7 +177,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputFacebook" class="control-label">Facebook URL</label>
-                                <input type="text" placeholder="{{ trans('label.address') }}" value="{{ $user->facebook }}"
+                                <input type="text" placeholder="Facebook URL" value="{{ $user->facebook }}"
                                        class="form-control" id="inputFacebook" name="facebook">
                             </div>
                         </div><!-- /.tab-pane -->
@@ -187,8 +187,7 @@
                     <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
                     <div class="pull-right">
                         <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                        <a role="button" class="btn btn-warning"
-                           href="{{ $redirect_url }}">
+                        <a role="button" class="btn btn-warning" href="{{ $redirect_url }}">
                             {{ trans('form.action_cancel') }}
                         </a>
                     </div>
