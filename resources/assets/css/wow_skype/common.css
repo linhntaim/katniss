@@ -269,6 +269,10 @@ a:active {
     padding: 0 20px;
 }
 
+.role-button {
+    cursor: pointer;
+}
+
 .sausage-item {
     display: inline-block;
     margin-right: 10px;
@@ -279,7 +283,7 @@ a:active {
 
 .sausage-item-default {
     color: #000;
-    background: rgba(235,235,235,.5);
+    background: rgba(235, 235, 235, .5);
 }
 
 .media-list.step-list .media {
@@ -301,7 +305,7 @@ a:active {
 .media-list.step-list .media .media-left span {
     border-radius: 50%;
     background-color: #337ab7;
-    padding: 3px 5px;
+    padding: 4px 0;
     display: block;
     height: 23px;
     width: 23px;
@@ -310,6 +314,27 @@ a:active {
     font-weight: 700;
     z-index: 2;
     position: relative;
+}
+
+.media-list.step-list .media .media-left span.success {
+    background-color: #5cb85c;
+}
+
+.media-list.step-list .media .media-left span.info {
+    background-color: #5bc0de;
+}
+
+.media-list.step-list .media .media-left span.warning {
+    background-color: #f0ad4e;
+}
+
+.media-list.step-list .media .media-left span.danger {
+    background-color: #d9534f;
+}
+
+.media-list.step-list .media .media-left span.default {
+    background-color: #fff;
+    border: 1px solid #ccc;
 }
 
 .media-list.step-list .media:last-child .media-left,

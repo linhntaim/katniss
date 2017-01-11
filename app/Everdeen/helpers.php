@@ -1426,6 +1426,14 @@ function shortTimeFormatsAsOptions($selected)
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
 }
 
+function transMonthYear($dateString, $hideCurrentYear = true)
+{
+    $time = strtotime($dateString);
+    $year = date('Y', $time);
+    $return = trans('datetime.month_' . date('n', $time));
+    return $return . ($hideCurrentYear && $year == date('Y') ? '' : ', ' . $year);
+}
+
 #endregion
 
 #region CurrentDevice

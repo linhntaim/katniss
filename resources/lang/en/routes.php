@@ -19,6 +19,9 @@ return [
     'student/sign-up/step/{step}'                   => 'student/sign-up/step/{step}',
     'teachers'                                      => 'teachers',
     'teachers/{id}'                                 => 'teachers/{id}',
+    'opening-classrooms'                            => 'opening-classrooms',
+    'closed-classrooms'                             => 'closed-classrooms',
+    'classrooms/{id}'                               => 'classrooms/{id}',
 
     'profile/account-information'                   => 'profile/account-information',
     'profile/user-information'                      => 'profile/user-information',

@@ -25,6 +25,16 @@ class Classroom extends Model
         return toFormattedNumber($this->attributes['hours']);
     }
 
+    public function getSpentTimeAttribute()
+    {
+        return 0;
+    }
+
+    public function getSpentTimeDurationAttribute()
+    {
+        return 0;
+    }
+
     public function teacherProfile()
     {
         return $this->belongsTo(Teacher::class, 'teacher_id', 'user_id');
@@ -55,6 +65,20 @@ class Classroom extends Model
         return $this->hasMany(ClassTime::class, 'classroom_id', 'id');
     }
 
+    public function getLastClassTimeAttribute()
+    {
+        return $this->classTimes()->orderBy('start_at', 'desc')->take(1)->first();
+    }
+
+    public function getClassTimesOfLastMonthAttribute()
+    {
+        $lastClassTime = $this->lastClassTime;
+        if (empty($lastClassTime)) return collect([]);
+
+        $time = strtotime($lastClassTime->start_at);
+        return $this->getClassTimesOfMonth(date('Y', $time), date('m', $time));
+    }
+
     public function scopeOpening($query)
     {
         return $query->where('status', self::STATUS_OPENING);
@@ -63,5 +87,30 @@ class Classroom extends Model
     public function scopeClosed($query)
     {
         return $query->where('status', self::STATUS_CLOSED);
+    }
+
+    public function getClassTimesOfMonth($year, $month)
+    {
+        return $this->classTimes()
+            ->orderBy('start_at', 'desc')
+            ->whereYear('start_at', $year)
+            ->whereMonth('start_at', $month)
+            ->get();
+    }
+
+    public function getCountClassTimesOfMonth($year, $month)
+    {
+        return $this->classTimes()
+            ->whereYear('start_at', $year)
+            ->whereMonth('start_at', $month)
+            ->count();
+    }
+
+    public function getCountTillClassTimesOfMonth($year, $month)
+    {
+        return $this->classTimes()
+            ->whereYear('start_at', '<=', $year)
+            ->whereMonth('start_at', '<=', $month)
+            ->count();
     }
 }

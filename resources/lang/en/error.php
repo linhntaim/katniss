@@ -31,4 +31,6 @@ return [
     'payment_info' => 'Please fill all required fields',
     'cannot_remove_current_student_role' => 'Cannot remove student role. Please delete the student profile first.',
     'cannot_remove_current_teacher_role' => 'Cannot remove teacher role. Please delete the teacher profile first.',
+    'change_password_failed' => 'Failed to change password. Try again.',
+    'add_class_time_failed' => 'Failed to add class time. Try again.',
 ];

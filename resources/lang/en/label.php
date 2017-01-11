@@ -168,6 +168,11 @@ return [
     'class_duration' => 'Duration',
     'class_spent_time' => 'Spent time',
     '_current' => 'Current :current',
+    'subject' => 'Subject',
+    'start_at' => 'Start at',
+    'previous_month_lc' => 'previous month',
+    'statistics' => 'Statistics',
+    'total' => 'Total',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -313,6 +318,8 @@ about your classes.',
     'supporter' => 'Supporter|Supporters',
     'supporter_lc' => 'supporter|supporters',
     'hour_lc' => 'hour|hours',
+    'class_time' => 'Class time|Class times',
+    'class_time_lc' => 'class time|class times',
 
     'no_widget' => 'No widget is placed here',
 

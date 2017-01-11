@@ -19,6 +19,9 @@ return [
     'student/sign-up/step/{step}'                   => 'hoc-vien/dang-ky/buoc/{step}',
     'teachers'                                      => 'danh-sach-giao-vien',
     'teachers/{id}'                                 => 'giao-vien/{id}',
+    'opening-classrooms'                            => 'lop-dang-hoc',
+    'closed-classrooms'                             => 'lop-da-hoc-xong',
+    'classrooms/{id}'                               => 'lop-hoc/{id}',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
     'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',

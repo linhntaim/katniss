@@ -168,6 +168,11 @@ return [
     'class_duration' => 'Sẽ học',
     'class_spent_time' => 'Đã học',
     '_current' => ':current hiện tại',
+    'subject' => 'Chủ đề',
+    'start_at' => 'Bắt đầu vào lúc',
+    'previous_month_lc' => 'tháng trước',
+    'statistics' => 'Thống kê',
+    'total' => 'Tổng số',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -313,6 +318,8 @@ lộ trình học tập và học phí.',
     'supporter' => 'Tư vấn viên',
     'supporter_lc' => 'tư vấn viên',
     'hour_lc' => 'giờ',
+    'class_time' => 'Buổi học',
+    'class_time_lc' => 'buổi học',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

@@ -116,6 +116,21 @@ class ClassroomRepository extends ModelRepository
         }
     }
 
+    public function updateName($name)
+    {
+        $classroom = $this->model();
+
+        try {
+            $classroom->update([
+                'name' => $name,
+            ]);
+
+            return $classroom;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function open()
     {
         $classroom = $this->model();

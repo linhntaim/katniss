@@ -21,8 +21,6 @@ Route::group([
     Route::get('user/csrf-token', 'UserController@getCsrfToken');
     Route::get('user/quick-login', 'UserController@getQuickLogin');
 
-    Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
-
     Route::get('conversations/{id}', 'ConversationController@show');
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
@@ -34,7 +32,23 @@ Route::group([
     Route::group([
         'middleware' => 'auth'
     ], function () {
+        Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
+
         Route::put('me/account/password', 'AccountController@updatePassword');
         Route::put('me/account/skype-id', 'AccountController@updateSkypeId');
+
+        Route::group([
+            'middleware' => 'entrust:teacher|manager|admin'
+        ], function () {
+            Route::put('classrooms/{id}', 'ClassroomController@update');
+            Route::post('class-times', 'ClassTimeController@store');
+            Route::put('class-times/{id}', 'ClassTimeController@update');
+        });
+
+        Route::group([
+            'middleware' => 'entrust:teacher|student|supporter|manager|admin'
+        ], function () {
+            Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
+        });
     });
 });

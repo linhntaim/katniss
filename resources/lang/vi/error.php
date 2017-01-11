@@ -31,4 +31,6 @@ return [
     'payment_info' => 'Hãy điền hết các mục có yêu cầu không được để trống',
     'cannot_remove_current_student_role' => 'Không thể bỏ vai trò học viên. Hãy xóa hồ sơ học viên trước.',
     'cannot_remove_current_teacher_role' => 'Không thể bỏ vai trò giáo viên. Hãy xóa hồ sơ giáo viên trước.',
+    'change_password_failed' => 'Không thể đổi mật khẩu. Hãy thử lại.',
+    'add_class_time_failed' => 'Không thể thêm buổi học. Hãy thử lại.',
 ];

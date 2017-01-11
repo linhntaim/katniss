@@ -114,9 +114,9 @@ class TeacherController extends AdminController
             'facebook' => 'sometimes|max:255|url',
             // teacher
             'topics' => 'required|array|exists:topics,id',
-            'about_me' => 'required|min:200',
-            'experience' => 'required|min:100',
-            'methodology' => 'required|min:100',
+            'about_me' => 'sometimes|min:200',
+            'experience' => 'sometimes|min:100',
+            'methodology' => 'sometimes|min:100',
             'video_introduce_url' => 'sometimes|max:255|url',
             'video_teaching_url' => 'sometimes|max:255|url',
         ]);
@@ -206,9 +206,9 @@ class TeacherController extends AdminController
             'facebook' => 'sometimes|max:255|url',
             // teacher
             'topics' => 'required|array|exists:topics,id',
-            'about_me' => 'required|min:200',
-            'experience' => 'required|min:100',
-            'methodology' => 'required|min:100',
+            'about_me' => 'sometimes|min:200',
+            'experience' => 'sometimes|min:100',
+            'methodology' => 'sometimes|min:100',
             'video_introduce_url' => 'sometimes|max:255|url',
             'video_teaching_url' => 'sometimes|max:255|url',
         ]);

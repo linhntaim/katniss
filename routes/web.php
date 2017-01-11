@@ -65,6 +65,19 @@ Route::group([
                 Route::get(homeRoute('profile/payment-information'), 'TeacherController@getPaymentInformation');
                 Route::put(homeRoute('profile/payment-information'), 'TeacherController@updatePaymentInformation');
             });
+
+            Route::group([
+                'middleware' => 'entrust:teacher|student|supporter'
+            ], function () {
+                Route::get(homeRoute('opening-classrooms'), 'ClassroomController@indexOpening');
+                Route::get(homeRoute('closed-classrooms'), 'ClassroomController@indexClosed');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:teacher|student|supporter|manager|admin'
+            ], function () {
+                Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
+            });
         });
     });
 
