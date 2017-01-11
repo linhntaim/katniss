@@ -278,6 +278,8 @@ tư vấn lộ trình học tập và học phí cho bạn',
     'thank_you_for_registering_to_learn' => 'Cảm ơn bạn đã đăng ký học tiếng Anh với chúng tôi',
     'thank_you_for_registering_to_learn_help' => 'Chuyên viên tư vấn sẽ liên hệ với bạn sớm để tư vấn về 
 lộ trình học tập và học phí.',
+    'classroom_ready_to_close_message' => 'Lớp học đã đủ điều kiện để kết thúc. Hãy bấm vào đây để đóng lớp học.',
+    'classroom_was_closed' => 'Lớp học đã kết thúc.',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',

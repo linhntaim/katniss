@@ -278,6 +278,8 @@ online learning with us',
     'thank_you_for_registering_to_learn' => 'Thank you for registering to learn English with us',
     'thank_you_for_registering_to_learn_help' => 'We are going to contact you soon for discussing 
 about your classes.',
+    'classroom_ready_to_close_message' => 'This classroom is ready to end. Click me to close it now.',
+    'classroom_was_closed' => 'This classroom was closed.',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

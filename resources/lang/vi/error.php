@@ -33,4 +33,6 @@ return [
     'cannot_remove_current_teacher_role' => 'Không thể bỏ vai trò giáo viên. Hãy xóa hồ sơ giáo viên trước.',
     'change_password_failed' => 'Không thể đổi mật khẩu. Hãy thử lại.',
     'add_class_time_failed' => 'Không thể thêm buổi học. Hãy thử lại.',
+    'new_class_time_must_before_last_class_time' => 'Buổi học đang thêm phải có thời điểm bắt đầu học sau buổi học cuối cùng.',
+    'classroom_has_enough_time' => 'Lớp học hiện tại đã học đủ số giờ.',
 ];

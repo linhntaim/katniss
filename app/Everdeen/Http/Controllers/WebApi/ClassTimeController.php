@@ -47,6 +47,10 @@ class ClassTimeController extends WebApiController
             }
         }
 
+        if($classroom->spentTime >= $classroom->hours) {
+            return $this->responseFail(trans('error.classroom_has_enough_time'));
+        }
+
         if (!$this->customValidate($request, [
             'subject' => 'required|max:255',
             'duration' => ['required', 'regex:' . NumberFormatHelper::getInstance()->getRegEx(8, 2)],

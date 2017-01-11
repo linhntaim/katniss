@@ -249,6 +249,8 @@
                     $previousMonthClassTimesLoading.addClass('hide');
                 });
             });
+
+            x_modal_put($('.classroom-close'), '{{ trans('form.action_close') }}', '{{ trans('label.wanna_close', ['name' => '']) }}');
         });
     </script>
 @endsection
@@ -379,7 +381,7 @@
                         </div>
                     </li>
             @endif
-            @if($can_classroom_edit)
+            @if($can_classroom_edit && $classroom->spentTime < $classroom->hours)
                 <li class="media class-time-add">
                     <div class="media-line"></div>
                     <div class="media-left">
@@ -397,6 +399,16 @@
                 </li>
             @endif
         </ul>
+        @if($can_classroom_close)
+            <div class="bg-warning text-warning padding-15 text-center margin-top-30 role-button classroom-close"
+                 data-put="{{ addRdrUrl(homeUrl('classrooms/{id}', ['id'=> $classroom->id]) . '?close=1') }}">
+                {{ trans('label.classroom_ready_to_close_message') }}
+            </div>
+        @elseif(!$classroom->isOpening)
+            <div class="bg-danger text-danger padding-15 text-center margin-top-30">
+                {{ trans('label.classroom_was_closed') }}
+            </div>
+        @endif
     </div>
 @endsection
 @section('modals')

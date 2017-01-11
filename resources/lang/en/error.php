@@ -33,4 +33,6 @@ return [
     'cannot_remove_current_teacher_role' => 'Cannot remove teacher role. Please delete the teacher profile first.',
     'change_password_failed' => 'Failed to change password. Try again.',
     'add_class_time_failed' => 'Failed to add class time. Try again.',
+    'new_class_time_must_before_last_class_time' => 'Current adding class time must start after the last class time.',
+    'classroom_has_enough_time' => 'Current classroom has been spent all of its time.',
 ];

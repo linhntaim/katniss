@@ -77,6 +77,7 @@ Route::group([
                 'middleware' => 'entrust:teacher|student|supporter|manager|admin'
             ], function () {
                 Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
+                Route::put(homeRoute('classrooms/{id}'), 'ClassroomController@update');
             });
         });
     });

@@ -216,7 +216,7 @@
                                         <td>{{ $classroom->studentUserProfile->display_name }}</td>
                                         <td>{{ $classroom->supporter->display_name }}</td>
                                         <td>{{ $classroom->duration }}</td>
-                                        <td>0</td>
+                                        <td>{{ $classroom->spentTimeDuration }}</td>
                                         <td>
                                             <a href="{{ adminUrl('classrooms/{id}/edit', ['id'=> $classroom->id]) }}">
                                                 {{ trans('form.action_edit') }}

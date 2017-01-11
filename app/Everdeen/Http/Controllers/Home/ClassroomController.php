@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
 
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
@@ -17,14 +18,14 @@ use Katniss\Everdeen\Utils\NumberFormatHelper;
 
 class ClassroomController extends ViewController
 {
-    protected $classRoomRepository;
+    protected $classroomRepository;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->viewPath = 'classroom';
-        $this->classRoomRepository = new ClassroomRepository();
+        $this->classroomRepository = new ClassroomRepository();
     }
 
     public function indexOpening(Request $request)
@@ -67,10 +68,11 @@ class ClassroomController extends ViewController
 
     public function show(Request $request, $id)
     {
-        $classroom = $this->classRoomRepository->model($id);
+        $classroom = $this->classroomRepository->model($id);
         $user = $request->authUser();
         $isOwner = false;
         $canClassroomEdit = false;
+        $userCanCloseClassroom = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 abort(404);
@@ -87,9 +89,14 @@ class ClassroomController extends ViewController
                 abort(404);
             }
             $isOwner = true;
+            $userCanCloseClassroom = true;
         } elseif ($user->hasRole(['manager', 'admin'])) {
             $canClassroomEdit = true;
+            $userCanCloseClassroom = true;
         }
+        $canClassroomClose = $userCanCloseClassroom
+            && $classroom->isOpening
+            && $classroom->spentTime >= $classroom->hours;
 
         $lastMonthClassTimes = $classroom->classTimesOfLastMonth;
         $countLastMonthClassTimes = $lastMonthClassTimes->count();
@@ -116,11 +123,53 @@ class ClassroomController extends ViewController
             'previous_year' => $previousYear,
             'previous_month' => $previousMonth,
             'can_classroom_edit' => $canClassroomEdit,
+            'can_classroom_close' => $canClassroomClose,
             'teacher' => $classroom->teacherProfile,
             'student' => $classroom->studentProfile,
             'supporter' => $classroom->supporter,
             'date_js_format' => DateTimeHelper::compoundJsFormat('shortDate', ' ', 'shortTime'),
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        if ($request->has('close')) {
+            return $this->close($request, $id);
+        }
+
+        abort(404);
+        return '';
+    }
+
+    protected function close(Request $request, $id)
+    {
+        $classroom = $this->classroomRepository->model($id);
+        $user = $request->authUser();
+        $userCanCloseClassroom = false;
+        if ($user->hasRole('supporter')) {
+            if ($classroom->supporter_id != $user->id) {
+                abort(404);
+            }
+            $userCanCloseClassroom = true;
+        } elseif ($user->hasRole(['manager', 'admin'])) {
+            $userCanCloseClassroom = true;
+        }
+        if (!$userCanCloseClassroom
+            || !$classroom->isOpening
+            || $classroom->spentTime < $classroom->hours
+        ) {
+            abort(404);
+        }
+
+        $this->_rdrUrl($request, homeUrl('classrooms'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->classroomRepository->close();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
     }
 }

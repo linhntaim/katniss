@@ -27,12 +27,12 @@ class Classroom extends Model
 
     public function getSpentTimeAttribute()
     {
-        return 0;
+        return $this->classTimes()->sum('hours');
     }
 
     public function getSpentTimeDurationAttribute()
     {
-        return 0;
+        return toFormattedNumber($this->spentTime);
     }
 
     public function teacherProfile()
