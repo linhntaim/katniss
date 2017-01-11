@@ -22,6 +22,7 @@ class CreateClassTimesTable extends Migration
             $table->dateTime('start_at');
             $table->decimal('hours');
             $table->longText('content');
+            $table->tinyInteger('type')->default(0);
             $table->timestamps();
 
             $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');

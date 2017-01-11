@@ -7,6 +7,9 @@ use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class ClassTime extends Model
 {
+    const TYPE_NORMAL = 0;
+    const TYPE_EXTRA = 1;
+
     protected $table = 'class_times';
 
     protected $fillable = [
