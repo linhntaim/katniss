@@ -27,6 +27,33 @@ class ClassroomRepository extends ModelRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getByTeacherPaged($teacherId, $status = Classroom::STATUS_OPENING)
+    {
+        return Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->ofTeacher($teacherId)
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getByStudentPaged($studentId, $status = Classroom::STATUS_OPENING)
+    {
+        return Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->ofStudent($studentId)
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getBySupporterPaged($supporterId, $status = Classroom::STATUS_OPENING)
+    {
+        return Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->ofSupporter($supporterId)
+            ->where('status', $status)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getSearchOpeningPaged($name = null, $teacher = null, $student = null, $supporter = null)
     {
         $classrooms = Classroom::opening()->orderBy('created_at', 'desc');

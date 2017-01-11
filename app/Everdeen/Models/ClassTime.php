@@ -25,6 +25,12 @@ class ClassTime extends Model
             '' : DateTimeHelper::getInstance()->compound('longDate', ' ', 'shortTime', $this->attributes['start_at']);
     }
 
+    public function getFullFormattedStartAtDateAttribute()
+    {
+        return empty($this->attributes['start_at']) ?
+            '' : DateTimeHelper::getInstance()->longDate($this->attributes['start_at']);
+    }
+
     public function getInverseFullFormattedStartAtAttribute()
     {
         return empty($this->attributes['start_at']) ?

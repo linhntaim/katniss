@@ -12,6 +12,7 @@ namespace Katniss\Everdeen\Http\Controllers\Home;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\Classroom;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
@@ -32,18 +33,20 @@ class ClassroomController extends ViewController
     {
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
-
+            $classrooms = $this->classroomRepository->getByTeacherPaged($user->id);
         } elseif ($user->hasRole('student')) {
-
+            $classrooms = $this->classroomRepository->getByStudentPaged($user->id);
         } elseif ($user->hasRole('supporter')) {
-
+            $classrooms = $this->classroomRepository->getBySupporterPaged($user->id);
         } else {
             abort(404);
             die();
         }
 
         return $this->_any('index_opening', [
-
+            'classrooms' => $classrooms,
+            'pagination' => $this->paginationRender->renderByPagedModels($classrooms),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 
@@ -51,18 +54,20 @@ class ClassroomController extends ViewController
     {
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
-
+            $classrooms = $this->classroomRepository->getByTeacherPaged($user->id, Classroom::STATUS_CLOSED);
         } elseif ($user->hasRole('student')) {
-
+            $classrooms = $this->classroomRepository->getByStudentPaged($user->id, Classroom::STATUS_CLOSED);
         } elseif ($user->hasRole('supporter')) {
-
+            $classrooms = $this->classroomRepository->getBySupporterPaged($user->id, Classroom::STATUS_CLOSED);
         } else {
             abort(404);
             die();
         }
 
         return $this->_any('index_closed', [
-
+            'classrooms' => $classrooms,
+            'pagination' => $this->paginationRender->renderByPagedModels($classrooms),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
         ]);
     }
 
@@ -114,7 +119,9 @@ class ClassroomController extends ViewController
 
         return $this->_show([
             'classrooms_url' => $isOwner ?
-                homeUrl('classrooms') : ($classroom->isOpening ?
+                ($classroom->isOpening ?
+                    homeUrl('opening-classrooms') : homeUrl('closed-classrooms'))
+                : ($classroom->isOpening ?
                     adminUrl('opening-classrooms') : adminUrl('closed-classrooms')),
             'classroom' => $classroom,
             'class_times' => $lastMonthClassTimes->sortBy('start_at'), // need sorted again

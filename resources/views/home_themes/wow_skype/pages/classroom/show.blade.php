@@ -272,8 +272,14 @@
         </ol>
         <div class="row">
             <div class="col-xs-12 col-md-3 margin-bottom-10">
-                <div><strong>{{ trans('label.class_duration') }}:</strong> {{ $classroom->duration }} {{ trans_choice('label.hour_lc', $classroom->hours) }}</div>
-                <div><strong>{{ trans('label.class_spent_time') }}:</strong> {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}</div>
+                <div>
+                    <strong>{{ trans('label.class_duration') }}:</strong>
+                    {{ $classroom->duration }} {{ trans_choice('label.hour_lc', $classroom->hours) }}
+                </div>
+                <div>
+                    <strong>{{ trans('label.class_spent_time') }}:</strong>
+                    {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}
+                </div>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-3 margin-bottom-10">
                 <div class="media">

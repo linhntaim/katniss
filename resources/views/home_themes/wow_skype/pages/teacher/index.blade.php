@@ -97,7 +97,7 @@
                                 {{ $pagination }}
                             </div>
                         @else
-                            <div class="box-body">
+                            <div>
                                 {{ trans('label.list_empty') }}
                             </div>
                         @endif

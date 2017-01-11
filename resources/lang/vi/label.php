@@ -35,6 +35,8 @@ return [
     'status_disabled' => 'Không cho phép',
     'status_connected' => 'Đã kết nối',
     'status_not_connected' => 'Chưa kết nối',
+    'status_closed' => 'Đã đóng',
+    'status_opening' => 'Đang mở',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',
@@ -173,6 +175,7 @@ return [
     'previous_month_lc' => 'tháng trước',
     'statistics' => 'Thống kê',
     'total' => 'Tổng số',
+    'my_classrooms' => 'Lớp học của tôi',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

@@ -35,6 +35,8 @@ return [
     'status_disabled' => 'Disabled',
     'status_connected' => 'Connected',
     'status_not_connected' => 'Not connected',
+    'status_closed' => 'Closed',
+    'status_opening' => 'Opening',
 
     'wanna_delete' => 'Do you really want to delete :name ?',
     'wanna_verify' => 'Do you really want to verify :name ?',
@@ -173,6 +175,7 @@ return [
     'previous_month_lc' => 'previous month',
     'statistics' => 'Statistics',
     'total' => 'Total',
+    'my_classrooms' => 'My classrooms',
 
     'settings' => 'Settings',
     'country' => 'Country',

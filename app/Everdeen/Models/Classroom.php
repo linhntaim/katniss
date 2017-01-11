@@ -70,6 +70,11 @@ class Classroom extends Model
         return $this->classTimes()->orderBy('start_at', 'desc')->take(1)->first();
     }
 
+    public function getFirstClassTimeAttribute()
+    {
+        return $this->classTimes()->orderBy('start_at', 'asc')->take(1)->first();
+    }
+
     public function getClassTimesOfLastMonthAttribute()
     {
         $lastClassTime = $this->lastClassTime;
@@ -87,6 +92,21 @@ class Classroom extends Model
     public function scopeClosed($query)
     {
         return $query->where('status', self::STATUS_CLOSED);
+    }
+
+    public function scopeOfTeacher($query, $teacherId)
+    {
+        return $query->where('teacher_id', $teacherId);
+    }
+
+    public function scopeOfStudent($query, $studentId)
+    {
+        return $query->where('student_id', $studentId);
+    }
+
+    public function scopeOfSupporter($query, $supporterId)
+    {
+        return $query->where('supporter_id', $supporterId);
     }
 
     public function getClassTimesOfMonth($year, $month)

@@ -44,6 +44,7 @@ return [
     'action_upload' => 'Upload',
     'action_send_again' => 'Send it again',
     'action_see' => 'See',
+    'action_see_detail' => 'See detail',
     'action_see_all' => 'See all',
     'action_see_more' => 'See more',
     'action_show' => 'Show',

@@ -44,6 +44,7 @@ return [
     'action_upload' => 'Tải lên',
     'action_send_again' => 'Gửi lại lần nữa',
     'action_see' => 'Xem',
+    'action_see_detail' => 'Xem chi tiết',
     'action_see_all' => 'Xem tất cả',
     'action_see_more' => 'Xem thêm',
     'action_show' => 'Hiển thị',

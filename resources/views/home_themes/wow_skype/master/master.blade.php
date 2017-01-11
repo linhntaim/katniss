@@ -56,6 +56,9 @@
                                             <li><a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a></li>
                                         @endif
                                         <li><a href="{{ homeUrl('profile/account-information') }}">{{ trans('label.my_profile') }}</a></li>
+                                        @if($auth_user->hasRole(['teacher', 'student', 'supporter']))
+                                            <li><a href="{{ homeUrl('opening-classrooms') }}">{{ trans('label.my_classrooms') }}</a></li>
+                                        @endif
                                         <li role="separator" class="divider"></li>
                                         <li><a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a></li>
                                     </ul>
