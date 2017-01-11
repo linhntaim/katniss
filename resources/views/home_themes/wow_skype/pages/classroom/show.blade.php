@@ -299,7 +299,7 @@
                     </div>
                     <div class="media-body">
                         <div><strong>{{ $student->userProfile->display_name }}</strong></div>
-                        <div>{{ trans_choice('label.teacher', 1) }}</div>
+                        <div>{{ trans_choice('label.student', 1) }}</div>
                     </div>
                 </div>
             </div>
@@ -310,7 +310,7 @@
                     </div>
                     <div class="media-body">
                         <div><strong>{{ $supporter->display_name }}</strong></div>
-                        <div>{{ trans_choice('label.teacher', 1) }}</div>
+                        <div>{{ trans_choice('label.supporter', 1) }}</div>
                     </div>
                 </div>
             </div>
