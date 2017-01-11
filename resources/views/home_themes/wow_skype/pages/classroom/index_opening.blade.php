@@ -66,11 +66,13 @@
                                             <strong>{{ trans('label.class_spent_time') }}:</strong>
                                             {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}
                                         </span>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <span>
-                                            <strong>{{ trans('label.start_at') }}:</strong>
-                                            {{ $classroom->firstClassTime->fullFormattedStartAtDate }}
-                                        </span>
+                                        @if(!empty($classroom->firstClassTime))
+                                            &nbsp; &nbsp; &nbsp;
+                                            <span>
+                                                <strong>{{ trans('label.start_at') }}:</strong>
+                                                {{ $classroom->firstClassTime->fullFormattedStartAtDate }}
+                                            </span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
