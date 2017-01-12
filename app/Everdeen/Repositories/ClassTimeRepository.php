@@ -47,6 +47,24 @@ class ClassTimeRepository extends ModelRepository
         }
     }
 
+    public function createReview($userId, $rate, $review = null)
+    {
+        $classTime = $this->model();
+
+        try {
+            $review = $classTime->reviews()->create([
+                'user_id' => $userId,
+                'rate' => $rate,
+                'rates' => serialize([]),
+                'review' => $review,
+            ]);
+
+            return $review;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function update($subject, $content = null)
     {
         $classTime = $this->model();

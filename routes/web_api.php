@@ -43,6 +43,7 @@ Route::group([
             Route::put('classrooms/{id}', 'ClassroomController@update');
             Route::post('class-times', 'ClassTimeController@store');
             Route::put('class-times/{id}', 'ClassTimeController@update');
+            Route::post('class-times/{id}/reviews', 'ClassTimeController@storeReviews');
         });
 
         Route::group([

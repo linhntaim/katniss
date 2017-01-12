@@ -5,6 +5,8 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\Student;
+use Katniss\Everdeen\Models\Teacher;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
@@ -95,8 +97,8 @@ class ClassroomController extends AdminController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'teacher' => 'required|exists:teachers,user_id',
-            'student' => 'required|exists:students,user_id',
+            'teacher' => 'required|exists:teachers,user_id,status,' . Teacher::APPROVED,
+            'student' => 'required|exists:students,user_id,status,' . Student::APPROVED,
             'supporter' => 'required|exists:users,id',
             'name' => 'required|max:255',
             'duration' => ['required', 'regex:' . NumberFormatHelper::getInstance()->getRegEx(8, 2)],
@@ -159,8 +161,8 @@ class ClassroomController extends AdminController
         $redirect = redirect(adminUrl('classrooms/{id}/edit', ['id' => $id]));
 
         $validator = Validator::make($request->all(), [
-            'teacher' => 'sometimes|exists:teachers,user_id',
-            'student' => 'sometimes|exists:students,user_id',
+            'teacher' => 'sometimes|exists:teachers,user_id,status,' . Teacher::APPROVED,
+            'student' => 'sometimes|exists:students,user_id,status,' . Student::APPROVED,
             'supporter' => 'sometimes|exists:users,id',
             'name' => 'required|max:255',
             'duration' => ['required', 'regex:' . NumberFormatHelper::getInstance()->getRegEx(8, 2)],

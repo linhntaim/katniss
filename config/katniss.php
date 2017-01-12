@@ -15,6 +15,8 @@ return [
     'learning_targets_children' => [11, 12, 13, 101],
     'learning_forms' => [1, 2, 3, 4, 5, 100],
     'learning_forms_children' => [11, 12, 13, 14, 15, 101],
+    'periodic_class_time' => 4,
+    'rates' => ['poor', 'fair', 'good', 'very_good', 'excellent'],
 
     'settings' => [
         'city' => 'LA',

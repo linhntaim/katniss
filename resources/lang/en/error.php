@@ -35,4 +35,6 @@ return [
     'add_class_time_failed' => 'Failed to add class time. Try again.',
     'new_class_time_must_before_last_class_time' => 'Current adding class time must start after the last class time.',
     'classroom_has_enough_time' => 'Current classroom has been spent all of its time.',
+    'teacher_add_review_failed' => 'Cannot add teacher feedback',
+    'student_add_review_failed' => 'Cannot add student rating',
 ];

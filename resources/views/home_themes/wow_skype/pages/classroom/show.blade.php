@@ -1,6 +1,17 @@
 @extends('home_themes.wow_skype.master.master')
 @section('lib_styles')
     <link rel="stylesheet" href="{{ libraryAsset('bootstrap-datetimepicker/css/bootstrap-datetimepicker.css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('barrating/themes/fontawesome-stars.css') }}">
+@endsection
+@section('extended_styles')
+    <style>
+        .br-theme-fontawesome-stars .br-widget .br-current-rating {
+            display: inline-block;
+            vertical-align: middle;
+            margin-top: -6px;
+            margin-left: 6px;
+        }
+    </style>
 @endsection
 @section('lib_scripts')
     <script src="{{ libraryAsset('moment/moment.min.js') }}"></script>
@@ -8,27 +19,44 @@
     <script src="{{ libraryAsset('bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ libraryAsset('inputmask/jquery.inputmask.bundle.min.js') }}"></script>
     <script src="{{ libraryAsset('inputmask/inputmask.binding.js') }}"></script>
+    <script src="{{ libraryAsset('barrating/jquery.barrating.min.js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
         $(function () {
-            function renderClassTime(classTime) {
+            function renderClassTime(classTime, maxRate) {
                 return '<li id="class-time-' + classTime.id + '" class="media class-time-item month-' + classTime.month_year_start_at + '" ' +
                     'data-id="' + classTime.id + '" data-subject="' + classTime.subject + '" data-content="' + classTime.content + '">' +
                     '<div class="media-line"></div>' +
                     '<div class="media-left"><span>' + classTime.order + '</span></div>' +
                     '<div class="media-body">' +
-                    '<div class="media-heading">' +
-                    @if($can_classroom_edit)
-                        '<a class="edit-class-time big pull-right" title="{{ trans('form.action_edit') }} {{ trans_choice('label.class_time', 1) }}" href="#">' +
-                        '<i class="fa fa-edit"></i>' +
-                        '</a>' +
-                    @endif
-                    '<span class="class-time-subject">' + classTime.subject + '</span>' +
-                    '</div>' +
-                    '<div class="help-block">' + classTime.duration + ' - {{ trans('label.start_at') }} ' + classTime.start_at + '</div>' +
-                    '<div class="bg-warning padding-10 class-time-content' + (classTime.content != '' ? '' : ' hide') + '">' +
-                    classTime.html_content +
+                    '<div class="row">'+
+                        '<div class="col-sm-6">'+
+                            '<div class="media-heading">' +
+                            @if($can_classroom_edit)
+                                '<a class="edit-class-time big pull-right" title="{{ trans('form.action_edit') }} {{ trans_choice('label.class_time', 1) }}" href="#">' +
+                                '<i class="fa fa-edit"></i>' +
+                                '</a>' +
+                            @endif
+                            '<span class="class-time-subject">' + classTime.subject + '</span>' +
+                            '</div>' +
+                            '<div class="help-block">' + classTime.duration + ' - {{ trans('label.start_at') }} ' + classTime.start_at + '</div>' +
+                            '<div class="bg-warning padding-10 class-time-content' + (classTime.content != '' ? '' : ' hide') + '">' +
+                            classTime.html_content +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="col-sm-3">'+
+                            '<div class="h6 margin-top-none"><strong>{{ trans('label.teacher_feedback') }}</strong></div>'+
+                            (classTime.teacher_review == null ?
+                                '<button type="button" class="btn btn-success btn-block margin-bottom-10 teacher-add-review">{{ trans('form.action_add_feedback') }}</button>'
+                                    : renderReview(classTime.teacher_review, maxRate)) +
+                        '</div>' +
+                        '<div class="col-sm-3">'+
+                            '<div class="h6 margin-top-none"><strong>{{ trans('label.student_rating') }}</strong></div>'+
+                            (classTime.student_review == null ?
+                                '<button type="button" class="btn btn-success btn-block margin-bottom-10 student-add-review">{{ trans('form.action_add_rating') }}</button>'
+                                    : renderReview(classTime.student_review, maxRate)) +
+                        '</div>' +
                     '</div>' +
                     '</div>' +
                     '</li>';
@@ -55,6 +83,21 @@
                     '</li>';
             }
 
+            function renderReview(review, maxRate) {
+                var str = '<div class="help-block color-star" title="' + review.trans_rate + '">';
+                for (var i = 0; i < maxRate; ++i) {
+                    str += '<i class="fa ' + (i < review.rate ? 'fa-star' : 'fa-star-o') + '"></i>';
+                }
+                str += '</div>';
+                if (review.content != '') {
+                    str += '<div>' + review.html_review + '</div>';
+                }
+                return str;
+            }
+
+            $('.rating').barrating({
+                theme: 'fontawesome-stars'
+            });
             $('.date-time-picker').datetimepicker({
                 format: '{{ $date_js_format }}'
             });
@@ -72,6 +115,12 @@
             var $updateClassTimeForm = $('#update-class-time-form');
             var $updateClassTimeFormLoading = $updateClassroomNameForm.find('.update-class-time-form-loading');
             var $updateClassTimeModal = $('#update-class-time-modal');
+            var $teacherAddReviewForm = $('#teacher-add-review-form');
+            var $teacherAddReviewFormLoading = $teacherAddReviewForm.find('.teacher-add-review-form-loading');
+            var $teacherAddReviewModal = $('#teacher-add-review-modal');
+            var $studentAddReviewForm = $('#student-add-review-form');
+            var $studentAddReviewFormLoading = $studentAddReviewForm.find('.student-add-review-form-loading');
+            var $studentAddReviewModal = $('#student-add-review-modal');
 
             $updateClassroomNameModal.on('show.bs.modal', function () {
                 $updateClassroomNameForm.find('[name="name"]').val($classroomName.text());
@@ -145,7 +194,7 @@
                             );
                         }
                         else {
-                            $addClassTimeLastItem.before(renderClassTime(data.class_time));
+                            $addClassTimeLastItem.before(renderClassTime(data.class_time, data.max_rate));
                             $addClassTimeLastItem.before(renderTotal(
                                 data.class_time.hours,
                                 data.class_time.month_year_start_at,
@@ -211,6 +260,92 @@
                 });
             });
 
+            $(document).on('click', '.teacher-add-review', function (e) {
+                e.preventDefault();
+
+                var $classTime = $(this).closest('.class-time-item');
+                $teacherAddReviewForm.find('[name="class_time_id"]').val($classTime.attr('data-id'));
+
+                $teacherAddReviewModal.modal('show');
+            });
+            $teacherAddReviewForm.on('submit', function (e) {
+                e.preventDefault();
+
+                $teacherAddReviewFormLoading.removeClass('hide');
+
+                var $alert = $teacherAddReviewForm.find('.alert');
+                var $submit = $teacherAddReviewForm.find('[type="submit"]');
+                $alert.addClass('hide');
+                $submit.prop('disabled', true);
+                var api = new KatnissApi(true);
+                api.post('class-times/' + $teacherAddReviewForm.find('[name="class_time_id"]').val() + '/reviews', {
+                    teacher: 1,
+                    rate: $teacherAddReviewForm.find('[name="rate"]').val(),
+                    review: $teacherAddReviewForm.find('[name="feedback"]').val()
+                }, function (failed, data, messages) {
+                    if (failed) {
+                        $alert.removeClass('hide').html(messages.all().join('<br>'));
+                    }
+                    else {
+                        $teacherAddReviewModal.modal('hide');
+
+                        var $classTime = $('#class-time-' + data.review.class_time_id);
+                        var $button = $classTime.find('.teacher-add-review');
+                        var $heading = $button.prev();
+                        $button.remove();
+                        $heading.after(renderReview(data.review, data.max_rate));
+                    }
+                }, function () {
+                    $alert.removeClass('hide').html('{{ trans('error.teacher_add_review_failed') }}');
+                }, function () {
+                    $submit.prop('disabled', false);
+                    $teacherAddReviewFormLoading.addClass('hide');
+                });
+            });
+
+            $(document).on('click', '.student-add-review', function (e) {
+                e.preventDefault();
+
+                var $classTime = $(this).closest('.class-time-item');
+                $studentAddReviewForm.find('[name="class_time_id"]').val($classTime.attr('data-id'));
+
+                $studentAddReviewModal.modal('show');
+            });
+            $studentAddReviewForm.on('submit', function (e) {
+                e.preventDefault();
+
+                $studentAddReviewFormLoading.removeClass('hide');
+
+                var $alert = $studentAddReviewForm.find('.alert');
+                var $submit = $studentAddReviewForm.find('[type="submit"]');
+                $alert.addClass('hide');
+                $submit.prop('disabled', true);
+                var api = new KatnissApi(true);
+                api.post('class-times/' + $studentAddReviewForm.find('[name="class_time_id"]').val() + '/reviews', {
+                    student: 1,
+                    rate: $studentAddReviewForm.find('[name="rate"]').val(),
+                    review: $studentAddReviewForm.find('[name="review"]').val()
+                }, function (failed, data, messages) {
+                    if (failed) {
+                        $alert.removeClass('hide').html(messages.all().join('<br>'));
+                    }
+                    else {
+                        $studentAddReviewModal.modal('hide');
+
+                        var $classTime = $('#class-time-' + data.review.class_time_id);
+                        var $button = $classTime.find('.student-add-review');
+                        var $heading = $button.prev();
+                        $button.remove();
+                        $heading.after(renderReview(data.review, data.max_rate));
+                    }
+                }, function () {
+                    $alert.removeClass('hide').html('{{ trans('error.student_add_review_failed') }}');
+                }, function () {
+                    $submit.prop('disabled', false);
+                    $studentAddReviewFormLoading.addClass('hide');
+                });
+            });
+
             var $previousMonthClassTimes = $('.previous-month-class-times');
             var $previousMonthClassTimesLoading = $('.previous-month-class-times-loading');
             $previousMonthClassTimes.on('click', function (e) {
@@ -235,7 +370,7 @@
                         for (var i in data.class_times) {
                             classTime = data.class_times[i];
                             classTime.order = data.class_time_order_end--;
-                            $addClassTimeFirstItem.after(renderClassTime(classTime));
+                            $addClassTimeFirstItem.after(renderClassTime(classTime, data.max_rate));
                         }
                         if (data.has_previous_month_class_times) {
                             $previousMonthClassTimes.attr('data-year', data.previous_year)
@@ -348,21 +483,64 @@
                             <span>{{ $class_time_order_start++ }}</span>
                         </div>
                         <div class="media-body">
-                            <div class="media-heading">
-                                @if($can_classroom_edit)
-                                    <a class="edit-class-time big pull-right"
-                                       title="{{ trans('form.action_edit') }} {{ trans_choice('label.class_time', 1) }}" href="#">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                @endif
-                                <span class="class-time-subject">{{ $class_time->subject }}</span>
-                            </div>
-                            <div class="help-block">
-                                {{ $class_time->duration }} {{ trans_choice('label.hour_lc', $class_time->hours) }}
-                                - {{ trans('label.start_at') }} {{ $class_time->inverseFullFormattedStartAt }}
-                            </div>
-                            <div class="bg-warning padding-10 class-time-content{{ !empty($class_time->content) ? '' : ' hide' }}">
-                                {!! $class_time->htmlContent !!}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="media-heading">
+                                        @if($can_classroom_edit)
+                                            <a class="edit-class-time big pull-right"
+                                               title="{{ trans('form.action_edit') }} {{ trans_choice('label.class_time', 1) }}" href="#">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endif
+                                        <span class="class-time-subject">{{ $class_time->subject }}</span>
+                                    </div>
+                                    <div class="help-block">
+                                        {{ $class_time->duration }} {{ trans_choice('label.hour_lc', $class_time->hours) }}
+                                        - {{ trans('label.start_at') }} {{ $class_time->inverseFullFormattedStartAt }}
+                                    </div>
+                                    <div class="bg-warning padding-10 class-time-content{{ !empty($class_time->content) ? '' : ' hide' }}">
+                                        {!! $class_time->htmlContent !!}
+                                    </div>
+                                </div>
+                                <?php
+                                    $reviews = $class_time->reviews;
+                                    $teacherReview = $reviews->where('user_id', $classroom->teacher_id)->first();
+                                    $studentReview = $reviews->where('user_id', $classroom->student_id)->first();
+                                ?>
+                                <div class="col-sm-3">
+                                    <div class="h6 margin-top-none"><strong>{{ trans('label.teacher_feedback') }}</strong></div>
+                                    @if(empty($teacherReview))
+                                        <button type="button" class="btn btn-success btn-block margin-bottom-10 teacher-add-review">
+                                            {{ trans('form.action_add_feedback') }}
+                                        </button>
+                                    @else
+                                        <div class="help-block color-star" title="{{ transRate($teacherReview->rate) }}">
+                                            @for($i = 0; $i < $max_rate; ++$i)
+                                                <i class="fa {{ $i < $teacherReview->rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                            @endfor
+                                        </div>
+                                        @if(!empty($teacherReview->review))
+                                            <div>{!! $teacherReview->htmlReview !!}</div>
+                                        @endif
+                                    @endif
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="h6 margin-top-none"><strong>{{ trans('label.student_rating') }}</strong></div>
+                                    @if(empty($studentReview))
+                                        <button type="button" class="btn btn-success btn-block margin-bottom-10 student-add-review">
+                                            {{ trans('form.action_add_rating') }}
+                                        </button>
+                                    @else
+                                        <div class="help-block color-star" title="{{ transRate($studentReview->rate) }}">
+                                            @for($i = 0; $i < $max_rate; ++$i)
+                                                <i class="fa {{ $i < $studentReview->rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                            @endfor
+                                        </div>
+                                        @if(!empty($studentReview->review))
+                                            <div>{!! $studentReview->htmlReview !!}</div>
+                                        @endif
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </li>
@@ -489,7 +667,7 @@
                                 <div class="form-group">
                                     <label for="inputStartAt" class="control-label required">{{ trans('label.start_at') }} ({{ $date_js_format }})</label>
                                     <input type="text" placeholder="{{ trans('label.start_at') }}" value="{{ old('start_at') }}"
-                                           data-inputmask="'mask':'9999-99-99 99:99'"
+                                           data-inputmask="'mask':'{{ preg_replace('/[^-:\/\s]/', '9', $date_js_format) }}'"
                                            class="form-control date-time-picker" name="start_at" id="inputStartAt" required>
                                 </div>
                             </div>
@@ -545,6 +723,82 @@
                             <i class="fa fa-refresh fa-spin fa-fw"></i>
                         </span>
                         <button type="submit" class="btn btn-success">{{ trans('form.action_save') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="teacher-add-review-modal" tabindex="-1" role="dialog" aria-labelledby="teacher-add-review-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="teacher-add-review-modal-title">
+                        {{ trans('form.action_add') }} {{ trans('label.teacher_feedback') }}
+                    </h4>
+                </div>
+                <form id="teacher-add-review-form" method="post">
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
+                    <input type="hidden" name="class_time_id">
+                    <div id="teacher-add-review-modal-content" class="modal-body">
+                        <div class="alert alert-danger hide"></div>
+                        <div class="form-group">
+                            <label for="inputRate" class="control-label required">{{ trans('label.rate') }}</label>
+                            {{ htmlRateSelection('rate', 'inputRate', 'rating', true, 3) }}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFeedback" class="control-label">{{ trans('label.feedback') }}</label>
+                            <textarea rows="6" class="form-control" id="inputFeedback" name="feedback"
+                                      placeholder="{{ trans('label.feedback') }}"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ trans('form.action_cancel') }}</button>
+                        <span class="teacher-add-review-form-loading hide">
+                            <i class="fa fa-refresh fa-spin fa-fw"></i>
+                        </span>
+                        <button type="submit" class="btn btn-success">{{ trans('form.action_add') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="student-add-review-modal" tabindex="-1" role="dialog" aria-labelledby="student-add-review-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="student-add-review-modal-title">
+                        {{ trans('form.action_add') }} {{ trans('label.student_rating') }}
+                    </h4>
+                </div>
+                <form id="student-add-review-form" method="post">
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
+                    <input type="hidden" name="class_time_id">
+                    <div id="student-add-review-modal-content" class="modal-body">
+                        <div class="alert alert-danger hide"></div>
+                        <div class="form-group">
+                            <label for="inputRate" class="control-label required">{{ trans('label.rate') }}</label>
+                            {{ htmlRateSelection('rate', 'inputRate', 'rating', true, 3) }}
+                        </div>
+                        <div class="form-group">
+                            <label for="inputReview" class="control-label">{{ trans('label.review') }}</label>
+                            <textarea rows="6" class="form-control" id="inputReview" name="review"
+                                      placeholder="{{ trans('label.review') }}"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ trans('form.action_cancel') }}</button>
+                        <span class="student-add-review-form-loading hide">
+                            <i class="fa fa-refresh fa-spin fa-fw"></i>
+                        </span>
+                        <button type="submit" class="btn btn-success">{{ trans('form.action_add') }}</button>
                     </div>
                 </form>
             </div>

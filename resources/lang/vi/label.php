@@ -49,6 +49,13 @@ return [
     'wanna_close' => 'Bạn có muốn đóng :name ?',
     'wanna_open' => 'Bạn có muốn mở :name ?',
 
+    'rate' => 'Đánh giá',
+    'rate_poor' => 'Không tốt',
+    'rate_fair' => 'Bình thường',
+    'rate_good' => 'Tốt',
+    'rate_very_good' => 'Rất tốt',
+    'rate_excellent' => 'Tuyệt vời',
+
     'name' => 'Tên',
     'display_name' => 'Tên hiển thị',
     'full_name' => 'Tên đầy đủ',
@@ -176,6 +183,11 @@ return [
     'statistics' => 'Thống kê',
     'total' => 'Tổng số',
     'my_classrooms' => 'Lớp học của tôi',
+    'review' => 'Nhận xét',
+    'teacher_feedback' => 'Phản hồi của giáo viên',
+    'feedback' => 'Phản hồi',
+    'student_rating' => 'Đánh giá của học viên',
+    'rating' => 'Đánh giá',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

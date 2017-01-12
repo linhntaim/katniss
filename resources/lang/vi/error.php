@@ -35,4 +35,6 @@ return [
     'add_class_time_failed' => 'Không thể thêm buổi học. Hãy thử lại.',
     'new_class_time_must_before_last_class_time' => 'Buổi học đang thêm phải có thời điểm bắt đầu học sau buổi học cuối cùng.',
     'classroom_has_enough_time' => 'Lớp học hiện tại đã học đủ số giờ.',
+    'teacher_add_review_failed' => 'Không thể thêm phản hồi của giáo viên',
+    'student_add_review_failed' => 'Không thể thêm đánh giá của học viên',
 ];

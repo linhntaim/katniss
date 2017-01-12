@@ -47,7 +47,7 @@ class ClassTimeController extends WebApiController
             }
         }
 
-        if($classroom->spentTime >= $classroom->hours) {
+        if ($classroom->spentTime >= $classroom->hours) {
             return $this->responseFail(trans('error.classroom_has_enough_time'));
         }
 
@@ -88,6 +88,8 @@ class ClassTimeController extends WebApiController
                     'trans_month_year_start_at' => transMonthYear($classTime->start_at),
                     'content' => $classTime->content,
                     'html_content' => $classTime->html_content,
+                    'teacher_review' => null,
+                    'student_review' => null,
                 ]
             ]);
         } catch (KatnissException $exception) {
@@ -136,6 +138,66 @@ class ClassTimeController extends WebApiController
                     'content' => $classTime->content,
                     'html_content' => $classTime->html_content,
                 ]
+            ]);
+        } catch (KatnissException $exception) {
+            return $this->responseFail($exception->getMessage());
+        }
+    }
+
+    public function storeReviews(Request $request, $id)
+    {
+        $review = $this->classTimeRepository->model($id);
+
+        $classroom = $review->classroom;
+        if (!$classroom->isOpening) {
+            abort(404);
+        }
+        $user = $request->authUser();
+        $reviewUserId = null;
+        if ($user->hasRole('teacher')) {
+            if ($classroom->teacher_id != $user->id) {
+                abort(404);
+            }
+            $reviewUserId = $classroom->teacher_id;
+        } elseif ($user->hasRole('student')) {
+            if ($classroom->student_id != $user->id) {
+                abort(404);
+            }
+            $reviewUserId = $classroom->student_id;
+        } else {
+            if ($request->has('teacher')) {
+                $reviewUserId = $classroom->teacher_id;
+            } elseif ($request->has('student')) {
+                $reviewUserId = $classroom->student_id;
+            }
+        }
+        if (empty($reviewUserId)) abort(404);
+
+        if (!$this->customValidate($request, [
+            'rate' => 'required|integer|min:1|max:' . count(_k('rates')),
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
+        }
+
+        try {
+            $review = $this->classTimeRepository->createReview(
+                $reviewUserId,
+                $request->input('rate'),
+                $request->input('review', '')
+            );
+
+            return $this->responseSuccess([
+                'review' => [
+                    'id' => $review->id,
+                    'class_time_id' => $id,
+                    'user_id' => $review->user_id,
+                    'rate' => $review->rate,
+                    'trans_rate' => transRate($review->rate),
+                    'review' => $review->review,
+                    'html_review' => $review->htmlReview,
+                ],
+                'max_rate' => count(_k('rates')),
             ]);
         } catch (KatnissException $exception) {
             return $this->responseFail($exception->getMessage());

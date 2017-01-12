@@ -86,4 +86,6 @@ return [
     'action_go_profile' => 'Đến trang cá nhân',
     'action_open' => 'Mở',
     'action_clear_search' => 'Xóa tìm kiếm',
+    'action_add_feedback' => 'Thêm phản hồi',
+    'action_add_rating' => 'Thêm nhận xét',
 ];

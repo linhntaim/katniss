@@ -3,15 +3,13 @@
 use Illuminate\Database\Seeder;
 use Katniss\Everdeen\Models\AppOption;
 use Katniss\Everdeen\Models\Category;
-use Katniss\Everdeen\Models\Conversation;
-use Katniss\Everdeen\Models\Link;
 use Katniss\Everdeen\Models\Permission;
 use Katniss\Everdeen\Models\Role;
-use Katniss\Everdeen\Models\ThemeWidget;
+use Katniss\Everdeen\Models\Student;
+use Katniss\Everdeen\Models\Teacher;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserApp;
 use Katniss\Everdeen\Models\UserSetting;
-use Katniss\Everdeen\Repositories\ConversationRepository;
 
 class DefaultSeeder extends Seeder
 {
@@ -141,6 +139,82 @@ class DefaultSeeder extends Seeder
             'setting_id' => $setting->id,
         ));
         $tester->attachRole($tester_role);
+
+        $setting = UserSetting::create();
+        $editor = User::create(array(
+            'display_name' => 'Editor',
+            'name' => 'editor',
+            'email' => 'editor@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $editor->attachRole($editor_role);
+
+        $setting = UserSetting::create();
+        $manager = User::create(array(
+            'display_name' => 'Manager',
+            'name' => 'manager',
+            'email' => 'manager@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $manager->attachRole($manager_role);
+
+        $setting = UserSetting::create();
+        $supporter = User::create(array(
+            'display_name' => 'Supporter',
+            'name' => 'supporter',
+            'email' => 'supporter@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $supporter->attachRole($supporter_role);
+
+        $setting = UserSetting::create();
+        $teacher = User::create(array(
+            'display_name' => 'Teacher',
+            'name' => 'teacher',
+            'email' => 'teacher@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $teacher->attachRole($teacher_role);
+        Teacher::create([
+            'user_id' => $teacher->id,
+        ]);
+
+        $setting = UserSetting::create();
+        $student = User::create(array(
+            'display_name' => 'Student',
+            'name' => 'student',
+            'email' => 'student@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $student->attachRole($student_role);
+        Student::create([
+            'user_id' => $student->id,
+        ]);
 
         AppOption::create([
             'key' => 'admin_theme',

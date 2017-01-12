@@ -86,4 +86,6 @@ return [
     'action_go_profile' => 'Go to your profile',
     'action_open' => 'Open',
     'action_clear_search' => 'Clear search',
+    'action_add_feedback' => 'Add feedback',
+    'action_add_rating' => 'Add rating',
 ];

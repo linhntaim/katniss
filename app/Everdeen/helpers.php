@@ -1434,6 +1434,29 @@ function transMonthYear($dateString, $hideCurrentYear = true)
     return $return . ($hideCurrentYear && $year == date('Y') ? '' : ', ' . $year);
 }
 
+function htmlRateSelection($name, $id = null, $class = null, $required = true, $selected = 0)
+{
+    $name = ' name="' . $name . '"';
+    if (!empty($id)) $id = ' id="' . $id . '"';
+    if (!empty($class)) $class = ' class="' . $class . '"';
+    $required = $required ? ' required' : '';
+    $select = '<select' . $id . $class . $name . $required . '>';
+    $i = 0;
+    foreach (_k('rates') as $rate) {
+        ++$i;
+        $select .= '<option value="' . $i . '" data-html="' . trans('label.rate_' . $rate) . '"' .
+            ($selected == $i ? ' selected' : '') . '>' .
+            $id . '</option>';
+    }
+    $select .= '</select>';
+    return new HtmlString($select);
+}
+
+function transRate($rate)
+{
+    return trans('label.rate_' . _k('rates')[$rate - 1]);
+}
+
 #endregion
 
 #region CurrentDevice

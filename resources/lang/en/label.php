@@ -49,6 +49,13 @@ return [
     'wanna_close' => 'Do you really want to close :name ?',
     'wanna_open' => 'Do you really want to open :name ?',
 
+    'rate' => 'Rate',
+    'rate_poor' => 'Poor',
+    'rate_fair' => 'Fair',
+    'rate_good' => 'Good',
+    'rate_very_good' => 'Very good',
+    'rate_excellent' => 'Excellent',
+
     'name' => 'Name',
     'display_name' => 'Display name',
     'full_name' => 'Full name',
@@ -176,6 +183,11 @@ return [
     'statistics' => 'Statistics',
     'total' => 'Total',
     'my_classrooms' => 'My classrooms',
+    'review' => 'Review',
+    'teacher_feedback' => 'Teacher feedback',
+    'feedback' => 'Feedback',
+    'student_rating' => 'Student rating',
+    'rating' => 'Rating',
 
     'settings' => 'Settings',
     'country' => 'Country',

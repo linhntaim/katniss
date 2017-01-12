@@ -136,6 +136,7 @@ class ClassroomController extends ViewController
             'supporter' => $classroom->supporter,
             'date_js_format' => DateTimeHelper::compoundJsFormat('shortDate', ' ', 'shortTime'),
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
+            'max_rate' => count(_k('rates')),
         ]);
     }
 

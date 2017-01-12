@@ -79,7 +79,10 @@ class ClassroomController extends WebApiController
         }
 
         return $this->responseSuccess([
-            'class_times' => $classTimesOfMonth->map(function (ClassTime $classTime) {
+            'class_times' => $classTimesOfMonth->map(function (ClassTime $classTime) use ($classroom) {
+                $reviews = $classTime->reviews;
+                $teacherReview = $reviews->where('user_id', $classroom->teacher_id)->first();
+                $studentReview = $reviews->where('user_id', $classroom->student_id)->first();
                 return [
                     'id' => $classTime->id,
                     'subject' => $classTime->subject,
@@ -90,8 +93,27 @@ class ClassroomController extends WebApiController
                     'trans_month_year_start_at' => transMonthYear($classTime->start_at),
                     'content' => $classTime->content,
                     'html_content' => $classTime->html_content,
+                    'teacher_review' => empty($teacherReview) ? null : [
+                        'id' => $teacherReview->id,
+                        'class_time_id' => $classTime->id,
+                        'user_id' => $teacherReview->user_id,
+                        'rate' => $teacherReview->rate,
+                        'trans_rate' => transRate($teacherReview->rate),
+                        'review' => $teacherReview->review,
+                        'html_review' => $teacherReview->htmlReview,
+                    ],
+                    'student_review' => empty($studentReview) ? null : [
+                        'id' => $studentReview->id,
+                        'class_time_id' => $classTime->id,
+                        'user_id' => $studentReview->user_id,
+                        'rate' => $studentReview->rate,
+                        'trans_rate' => transRate($studentReview->rate),
+                        'review' => $studentReview->review,
+                        'html_review' => $studentReview->htmlReview,
+                    ],
                 ];
             }),
+            'max_rate' => count(_k('rates')),
             'stats' => [
                 'sum_hours' => $classTimesOfMonth->sum('hours'),
                 'month_year' => date('m-Y', strtotime($classTimesOfMonth[0]->start_at)),

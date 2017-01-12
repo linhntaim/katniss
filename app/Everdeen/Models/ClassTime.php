@@ -9,6 +9,8 @@ class ClassTime extends Model
 {
     const TYPE_NORMAL = 0;
     const TYPE_EXTRA = 1;
+    const TYPE_SUMMARY = 2;
+    const TYPE_PERIODIC = 3;
 
     protected $table = 'class_times';
 
@@ -56,5 +58,10 @@ class ClassTime extends Model
     public function classroom()
     {
         return $this->belongsTo(Classroom::class, 'classroom_id', 'id');
+    }
+
+    public function reviews()
+    {
+        return $this->belongsToMany(Review::class, 'class_times_reviews', 'class_time_id', 'review_id');
     }
 }
