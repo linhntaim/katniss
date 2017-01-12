@@ -37,4 +37,6 @@ return [
     'classroom_has_enough_time' => 'Lớp học hiện tại đã học đủ số giờ.',
     'teacher_add_review_failed' => 'Không thể thêm phản hồi của giáo viên',
     'student_add_review_failed' => 'Không thể thêm đánh giá của học viên',
+    'teacher_add_rich_review_failed' => 'Không thể thêm nhận xét cho học viên',
+    'student_add_rich_review_failed' => 'Không thể thêm nhận xét cho giáo viên',
 ];

@@ -8,14 +8,12 @@ use Katniss\Everdeen\Utils\DateTimeHelper;
 class ClassTime extends Model
 {
     const TYPE_NORMAL = 0;
-    const TYPE_EXTRA = 1;
-    const TYPE_SUMMARY = 2;
-    const TYPE_PERIODIC = 3;
+    const TYPE_PERIODIC = 1;
 
     protected $table = 'class_times';
 
     protected $fillable = [
-        'classroom_id', 'subject', 'content', 'hours', 'start_at'
+        'classroom_id', 'subject', 'content', 'hours', 'start_at', 'type',
     ];
 
     public function getFormattedStartAtAttribute()
@@ -45,6 +43,11 @@ class ClassTime extends Model
     public function getDurationAttribute()
     {
         return toFormattedNumber($this->attributes['hours']);
+    }
+
+    public function getIsPeriodicAttribute()
+    {
+        return $this->attributes['type'] == self::TYPE_PERIODIC;
     }
 
     public function getHtmlContentAttribute()

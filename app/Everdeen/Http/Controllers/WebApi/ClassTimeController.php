@@ -11,6 +11,7 @@ namespace Katniss\Everdeen\Http\Controllers\WebApi;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\ClassTime;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
 use Katniss\Everdeen\Repositories\ClassTimeRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
@@ -68,7 +69,7 @@ class ClassTimeController extends WebApiController
         }
 
         try {
-            $classTime = $this->classTimeRepository->create(
+            $classTimes = $this->classTimeRepository->create(
                 $classroom->id,
                 $request->input('subject'),
                 NumberFormatHelper::getInstance()->fromFormat($request->input('duration')),
@@ -76,9 +77,17 @@ class ClassTimeController extends WebApiController
                 $request->input('content', '')
             );
 
+            if ($classTimes instanceof ClassTime) {
+                $classTime = $classTimes;
+                $classTimePeriodic = null;
+            } else {
+                $classTime = $classTimes[0];
+                $classTimePeriodic = $classTimes[1];
+            }
+
             return $this->responseSuccess([
                 'class_time' => [
-                    'order' => $classroom->classTimes()->count(),
+                    'order' => $classroom->countClassTimes,
                     'id' => $classTime->id,
                     'subject' => $classTime->subject,
                     'hours' => $classTime->hours,
@@ -90,7 +99,15 @@ class ClassTimeController extends WebApiController
                     'html_content' => $classTime->html_content,
                     'teacher_review' => null,
                     'student_review' => null,
-                ]
+                ],
+                'class_time_periodic' => empty($classTimePeriodic) ? null : [
+                    'id' => $classTimePeriodic->id,
+                    'is_periodic' => $classTimePeriodic->isPeriodic,
+                    'trans_after' => trans('label._periodic_class_review', ['after' => $classTimePeriodic->subject]),
+                    'month_year_start_at' => date('m-Y', strtotime($classTimePeriodic->start_at)),
+                    'teacher_review' => null,
+                    'student_review' => null
+                ],
             ]);
         } catch (KatnissException $exception) {
             return $this->responseFail($exception->getMessage());
@@ -194,6 +211,67 @@ class ClassTimeController extends WebApiController
                     'user_id' => $review->user_id,
                     'rate' => $review->rate,
                     'trans_rate' => transRate($review->rate),
+                    'review' => $review->review,
+                    'html_review' => $review->htmlReview,
+                ],
+                'max_rate' => count(_k('rates')),
+            ]);
+        } catch (KatnissException $exception) {
+            return $this->responseFail($exception->getMessage());
+        }
+    }
+
+    public function storeRichReviews(Request $request, $id)
+    {
+        $review = $this->classTimeRepository->model($id);
+
+        $classroom = $review->classroom;
+        if (!$classroom->isOpening) {
+            abort(404);
+        }
+        $user = $request->authUser();
+        $reviewUserId = null;
+        if ($user->hasRole('teacher')) {
+            if ($classroom->teacher_id != $user->id) {
+                abort(404);
+            }
+            $reviewUserId = $classroom->teacher_id;
+        } elseif ($user->hasRole('student')) {
+            if ($classroom->student_id != $user->id) {
+                abort(404);
+            }
+            $reviewUserId = $classroom->student_id;
+        } else {
+            if ($request->has('teacher')) {
+                $reviewUserId = $classroom->teacher_id;
+            } elseif ($request->has('student')) {
+                $reviewUserId = $classroom->student_id;
+            }
+        }
+        if (empty($reviewUserId)) abort(404);
+
+        if (!$this->customValidate($request, [
+            'rate' => 'required|array',
+            'rate.*' => 'required|integer|min:1|max:' . count(_k('rates')),
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
+        }
+
+        try {
+            $review = $this->classTimeRepository->createRichReview(
+                $reviewUserId,
+                $request->input('rate'),
+                $request->input('review', '')
+            );
+
+            return $this->responseSuccess([
+                'review' => [
+                    'id' => $review->id,
+                    'class_time_id' => $id,
+                    'user_id' => $review->user_id,
+                    'rates' => $review->rates,
+                    'trans_rates' => transRate($review->rates),
                     'review' => $review->review,
                     'html_review' => $review->htmlReview,
                 ],

@@ -88,4 +88,6 @@ return [
     'action_clear_search' => 'Xóa tìm kiếm',
     'action_add_feedback' => 'Thêm phản hồi',
     'action_add_rating' => 'Thêm nhận xét',
+    'action_review_student' => 'Nhận xét về học viên',
+    'action_review_teacher' => 'Nhận xét về giáo viên viên',
 ];

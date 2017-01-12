@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\ClassTime;
 use Katniss\Everdeen\Utils\AppConfig;
@@ -32,6 +33,7 @@ class ClassTimeRepository extends ModelRepository
 
     public function create($classroomId, $subject, $hours, $startAt, $content = null)
     {
+        DB::beginTransaction();
         try {
             $classTime = ClassTime::create([
                 'classroom_id' => $classroomId,
@@ -41,8 +43,23 @@ class ClassTimeRepository extends ModelRepository
                 'start_at' => $startAt,
             ]);
 
-            return $classTime;
+            $countClassTimes = $classTime->classroom->countClassTimes;
+            if ($countClassTimes % _k('periodic_class_time') == 0) {
+                $classTimePeriodic = ClassTime::create([
+                    'classroom_id' => $classroomId,
+                    'subject' => $countClassTimes,
+                    'content' => '',
+                    'hours' => 0,
+                    'start_at' => $startAt,
+                    'type' => ClassTime::TYPE_PERIODIC,
+                ]);
+            }
+
+            DB::commit();
+            return empty($classTimePeriodic) ? $classTime : [$classTime, $classTimePeriodic];
         } catch (\Exception $ex) {
+            DB::rollBack();
+
             throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
         }
     }
@@ -56,6 +73,23 @@ class ClassTimeRepository extends ModelRepository
                 'user_id' => $userId,
                 'rate' => $rate,
                 'rates' => serialize([]),
+                'review' => $review,
+            ]);
+
+            return $review;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function createRichReview($userId, array $rates, $review = null)
+    {
+        $classTime = $this->model();
+
+        try {
+            $review = $classTime->reviews()->create([
+                'user_id' => $userId,
+                'rates' => serialize($rates),
                 'review' => $review,
             ]);
 

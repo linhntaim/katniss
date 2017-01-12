@@ -37,4 +37,6 @@ return [
     'classroom_has_enough_time' => 'Current classroom has been spent all of its time.',
     'teacher_add_review_failed' => 'Cannot add teacher feedback',
     'student_add_review_failed' => 'Cannot add student rating',
+    'teacher_add_rich_review_failed' => 'Cannot add review for student',
+    'student_add_rich_review_failed' => 'Cannot add review for teacher',
 ];

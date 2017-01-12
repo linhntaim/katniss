@@ -88,4 +88,6 @@ return [
     'action_clear_search' => 'Clear search',
     'action_add_feedback' => 'Add feedback',
     'action_add_rating' => 'Add rating',
+    'action_review_student' => 'Review the student',
+    'action_review_teacher' => 'Review the teacher',
 ];

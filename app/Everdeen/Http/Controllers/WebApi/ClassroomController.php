@@ -83,8 +83,9 @@ class ClassroomController extends WebApiController
                 $reviews = $classTime->reviews;
                 $teacherReview = $reviews->where('user_id', $classroom->teacher_id)->first();
                 $studentReview = $reviews->where('user_id', $classroom->student_id)->first();
-                return [
+                return !$classTime->isPeriodic ? [
                     'id' => $classTime->id,
+                    'is_periodic' => $classTime->isPeriodic,
                     'subject' => $classTime->subject,
                     'hours' => $classTime->hours,
                     'duration' => $classTime->duration . ' ' . trans_choice('label.hour_lc', $classTime->hours),
@@ -108,6 +109,29 @@ class ClassroomController extends WebApiController
                         'user_id' => $studentReview->user_id,
                         'rate' => $studentReview->rate,
                         'trans_rate' => transRate($studentReview->rate),
+                        'review' => $studentReview->review,
+                        'html_review' => $studentReview->htmlReview,
+                    ],
+                ] : [
+                    'id' => $classTime->id,
+                    'is_periodic' => $classTime->isPeriodic,
+                    'trans_after' => trans('label._periodic_class_review', ['after' => $classTime->subject]),
+                    'month_year_start_at' => date('m-Y', strtotime($classTime->start_at)),
+                    'teacher_review' => empty($teacherReview) ? null : [
+                        'id' => $teacherReview->id,
+                        'class_time_id' => $classTime->id,
+                        'user_id' => $teacherReview->user_id,
+                        'rates' => $teacherReview->rates,
+                        'trans_rates' => transRate($teacherReview->rates),
+                        'review' => $teacherReview->review,
+                        'html_review' => $teacherReview->htmlReview,
+                    ],
+                    'student_review' => empty($studentReview) ? null : [
+                        'id' => $studentReview->id,
+                        'class_time_id' => $classTime->id,
+                        'user_id' => $studentReview->user_id,
+                        'rates' => $studentReview->rates,
+                        'trans_rates' => transRate($studentReview->rates),
                         'review' => $studentReview->review,
                         'html_review' => $studentReview->htmlReview,
                     ],

@@ -13,6 +13,7 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Classroom;
+use Katniss\Everdeen\Models\ClassTime;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
@@ -78,17 +79,21 @@ class ClassroomController extends ViewController
         $isOwner = false;
         $canClassroomEdit = false;
         $userCanCloseClassroom = false;
+        $canAddTeacherReview = false;
+        $canAddStudentReview = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 abort(404);
             }
             $isOwner = true;
             $canClassroomEdit = true;
+            $canAddTeacherReview = true;
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
                 abort(404);
             }
             $isOwner = true;
+            $canAddStudentReview = true;
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
                 abort(404);
@@ -98,13 +103,15 @@ class ClassroomController extends ViewController
         } elseif ($user->hasRole(['manager', 'admin'])) {
             $canClassroomEdit = true;
             $userCanCloseClassroom = true;
+            $canAddTeacherReview = true;
+            $canAddStudentReview = true;
         }
         $canClassroomClose = $userCanCloseClassroom
             && $classroom->isOpening
             && $classroom->spentTime >= $classroom->hours;
 
         $lastMonthClassTimes = $classroom->classTimesOfLastMonth;
-        $countLastMonthClassTimes = $lastMonthClassTimes->count();
+        $countLastMonthClassTimes = $lastMonthClassTimes->where('type', ClassTime::TYPE_NORMAL)->count();
         $hasPreviousMonthClassTimes = false;
         $previousYear = false;
         $previousMonth = false;
@@ -115,7 +122,7 @@ class ClassroomController extends ViewController
             $previousMonth = $datetime->format('m');
             $hasPreviousMonthClassTimes = $classroom->getCountClassTimesOfMonth($previousYear, $previousMonth) > 0;
         }
-        $countAllClassTimes = $classroom->classTimes()->count();
+        $countAllClassTimes = $classroom->countClassTimes;
 
         return $this->_show([
             'classrooms_url' => $isOwner ?
@@ -131,6 +138,8 @@ class ClassroomController extends ViewController
             'previous_month' => $previousMonth,
             'can_classroom_edit' => $canClassroomEdit,
             'can_classroom_close' => $canClassroomClose,
+            'can_add_teacher_review' => $canAddTeacherReview,
+            'can_add_student_review' => $canAddStudentReview,
             'teacher' => $classroom->teacherProfile,
             'student' => $classroom->studentProfile,
             'supporter' => $classroom->supporter,

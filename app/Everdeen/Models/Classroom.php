@@ -75,6 +75,11 @@ class Classroom extends Model
         return $this->classTimes()->orderBy('start_at', 'asc')->take(1)->first();
     }
 
+    public function getCountClassTimesAttribute()
+    {
+        return $this->classTimes()->where('type', ClassTime::TYPE_NORMAL)->count();
+    }
+
     public function getClassTimesOfLastMonthAttribute()
     {
         $lastClassTime = $this->lastClassTime;
@@ -121,6 +126,7 @@ class Classroom extends Model
     public function getCountClassTimesOfMonth($year, $month)
     {
         return $this->classTimes()
+            ->where('type', ClassTime::TYPE_NORMAL)
             ->whereYear('start_at', $year)
             ->whereMonth('start_at', $month)
             ->count();
@@ -129,6 +135,7 @@ class Classroom extends Model
     public function getCountTillClassTimesOfMonth($year, $month)
     {
         return $this->classTimes()
+            ->where('type', ClassTime::TYPE_NORMAL)
             ->whereYear('start_at', '<=', $year)
             ->whereMonth('start_at', '<=', $month)
             ->count();

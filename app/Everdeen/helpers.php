@@ -1454,6 +1454,13 @@ function htmlRateSelection($name, $id = null, $class = null, $required = true, $
 
 function transRate($rate)
 {
+    if (is_array($rate)) {
+        $ret = [];
+        foreach ($rate as $key => $value) {
+            $ret[$key] = trans('label.rate_' . _k('rates')[$value - 1]);
+        }
+        return $ret;
+    }
     return trans('label.rate_' . _k('rates')[$rate - 1]);
 }
 
