@@ -140,8 +140,8 @@
                 var str = '<div class="row">';
                 for (var name in review.rates) {
                     str += '<div class="col-sm-4">';
-                    str += '<div>' + review.trans_rates[name] + '</div>';
-                    str += '<div class="help-block color-star" title="' + review.trans_rate + '">';
+                    str += '<div>' + review.trans_rate_names[name] + '</div>';
+                    str += '<div class="help-block color-star" title="' + review.trans_rates[name] + '">';
                     for (var i = 0; i < maxRate; ++i) {
                         str += '<i class="fa ' + (i < review.rates[name] ? 'fa-star' : 'fa-star-o') + '"></i>';
                     }

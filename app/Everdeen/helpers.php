@@ -1464,6 +1464,19 @@ function transRate($rate)
     return trans('label.rate_' . _k('rates')[$rate - 1]);
 }
 
+function transRateName($rate, $teacher = true)
+{
+    $teacher = $teacher ? 'student' : 'teacher';
+    if (is_array($rate)) {
+        $ret = [];
+        foreach ($rate as $key => $value) {
+            $ret[$key] = trans('label.' . $teacher . '_' . $key . '_rate');
+        }
+        return $ret;
+    }
+    return trans('label.' . $teacher . '_' . $rate . '_rate');
+}
+
 #endregion
 
 #region CurrentDevice

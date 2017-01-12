@@ -231,11 +231,13 @@ class ClassTimeController extends WebApiController
         }
         $user = $request->authUser();
         $reviewUserId = null;
+        $forTeacher = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 abort(404);
             }
             $reviewUserId = $classroom->teacher_id;
+            $forTeacher = true;
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
                 abort(404);
@@ -244,6 +246,7 @@ class ClassTimeController extends WebApiController
         } else {
             if ($request->has('teacher')) {
                 $reviewUserId = $classroom->teacher_id;
+                $forTeacher = true;
             } elseif ($request->has('student')) {
                 $reviewUserId = $classroom->student_id;
             }
@@ -272,6 +275,7 @@ class ClassTimeController extends WebApiController
                     'user_id' => $review->user_id,
                     'rates' => $review->rates,
                     'trans_rates' => transRate($review->rates),
+                    'trans_rate_names' => transRateName($review->rates, $forTeacher),
                     'review' => $review->review,
                     'html_review' => $review->htmlReview,
                 ],
