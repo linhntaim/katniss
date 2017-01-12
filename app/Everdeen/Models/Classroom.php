@@ -118,6 +118,7 @@ class Classroom extends Model
     {
         return $this->classTimes()
             ->orderBy('start_at', 'desc')
+            ->orderBy('id', 'desc')
             ->whereYear('start_at', $year)
             ->whereMonth('start_at', $month)
             ->get();

@@ -131,7 +131,12 @@ class ClassroomController extends ViewController
                 : ($classroom->isOpening ?
                     adminUrl('opening-classrooms') : adminUrl('closed-classrooms')),
             'classroom' => $classroom,
-            'class_times' => $lastMonthClassTimes->sortBy('start_at'), // need sorted again
+            'class_times' => $lastMonthClassTimes->sort(function ($a, $b) {
+                if ($a->start_at == $b->start_at) {
+                    return $a->id > $b->id;
+                }
+                return $a->start_at > $b->start_at;
+            }), // need sorted again
             'class_time_order_start' => $countAllClassTimes - $countLastMonthClassTimes + 1,
             'has_previous_month_class_times' => $hasPreviousMonthClassTimes,
             'previous_year' => $previousYear,

@@ -93,7 +93,7 @@
                             '<div class="col-sm-6">'+
                                 '<div class="h6 margin-top-none"><strong>{{ trans('label.student_review') }}</strong></div>'+
                                 (classTime.student_review == null ?
-                                    (_canAddTeacherReview == 1 ?
+                                    (_canAddStudentReview == 1 ?
                                         '<button type="button" class="btn btn-warning margin-bottom-10 student-add-rich-review">{{ trans('form.action_review_teacher') }}</button>'
                                             : '<div>{{ trans('label.no_student_review_yet') }}</div>')
                                         : renderRichReview(classTime.student_review, maxRate)) +
@@ -541,7 +541,9 @@
                         var classTime;
                         for (var i in data.class_times) {
                             classTime = data.class_times[i];
-                            classTime.order = data.class_time_order_end--;
+                            if(!classTime.is_periodic) {
+                                classTime.order = data.class_time_order_end--;
+                            }
                             $addClassTimeFirstItem.after(renderClassTime(classTime, data.max_rate));
                         }
                         if (data.has_previous_month_class_times) {
