@@ -163,6 +163,7 @@
             });
 
             var $classroomName = $('#classroom-name');
+            var $classroomSpentTime = $('#spent-time-total');
             var $updateClassroomNameForm = $('#update-classroom-name-form');
             var $updateClassroomNameFormLoading = $updateClassroomNameForm.find('.update-classroom-name-form-loading');
             var $updateClassroomNameModal = $('#update-classroom-name-modal');
@@ -249,6 +250,7 @@
                     else {
                         $addClassTimeModal.modal('hide');
 
+                        var formatter = new NumberFormatHelper();
                         var monthYearStartAt = data.class_time.month_year_start_at;
                         if ($('.class-time-item.month-' + monthYearStartAt).length > 0) {
                             var $prev = $addClassTimeLastItem.prev();
@@ -257,7 +259,6 @@
                                 $prev.before(renderPeriodicClassTime(data.class_time_periodic, data.max_rate));
                             }
                             var hours = parseFloat($prev.attr('data-hours')) + data.class_time.hours;
-                            var formatter = new NumberFormatHelper();
                             $prev.attr('data-hours', hours).find('.sum-hours').text(
                                 formatter.format(hours) + (hours == 1 ? ' {{ trans_choice('label.hour_lc', 1) }}' : ' {{ trans_choice('label.hour_lc', 2) }}')
                             );
@@ -273,6 +274,11 @@
                                 data.class_time.trans_month_year_start_at
                             ));
                         }
+
+                        var spentTime = parseFloat($classroomSpentTime.attr('data-hours')) + data.class_time.hours;
+                        $classroomSpentTime.attr('data-hours', spentTime).text(
+                            formatter.format(spentTime) + (spentTime == 1 ? ' {{ trans_choice('label.hour_lc', 1) }}' : ' {{ trans_choice('label.hour_lc', 2) }}')
+                        );
                     }
                 }, function () {
                     $alert.removeClass('hide').html('{{ trans('error.add_class_time_failed') }}');
@@ -579,7 +585,9 @@
                 </div>
                 <div>
                     <strong>{{ trans('label.class_spent_time') }}:</strong>
-                    {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}
+                    <span id="spent-time-total" data-hours="{{ $classroom->spentTime }}">
+                        {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}
+                    </span>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-3 margin-bottom-10">
