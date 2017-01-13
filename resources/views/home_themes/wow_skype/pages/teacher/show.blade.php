@@ -180,7 +180,7 @@
                     <p>{{ toFormattedNumber($average_rate) }}</p>
                     <p>{{ $count_rating_students }} {{ trans_choice('label.student', $count_rating_students) }}</p>
                     @foreach($rates_for_teacher as $name => $rate)
-                        <p>{{ trans('label.teacher_' . $name . '_rate') }}</p>
+                        <p>{{ toFormattedNumber($rate) }} {{ trans('label.teacher_' . $name . '_rate') }}</p>
                         <p class="color-star">
                             <?php $star_split = intval($rate) != $rate; ?>
                             @if($star_split)

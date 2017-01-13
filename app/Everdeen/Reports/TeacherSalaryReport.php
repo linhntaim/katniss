@@ -46,7 +46,7 @@ class TeacherSalaryReport extends Report
             trans('label.phone'),
             trans('label.teaching_hours'),
             trans('label.salary_jump') . ' (' . settings()->currency . ' / 1 ' . trans_choice('label.hour_lc', 1) . ')',
-            trans('label.total'),
+            trans('label.total') . ' (' . settings()->currency . ')',
         ];
     }
 

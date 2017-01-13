@@ -201,7 +201,7 @@ return [
     'teacher_document_rate' => 'Course',
     'teacher_attitude_rate' => 'Attitude',
     'teacher_quality_rate' => 'Quality',
-    'salary_jump' => 'Salary jump',
+    'salary_jump' => 'Salary rate',
     'apply_from' => 'Apply from',
     'applied_for_lc' => 'applied for',
     'teaching_hours' => 'Teaching hours',

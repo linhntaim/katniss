@@ -179,8 +179,9 @@
                             <th>Skype ID</th>
                             <th>{{ trans('label.phone') }}</th>
                             <th>{{ trans('label.teaching_hours') }}</th>
-                            <th>{{ trans('label.salary_jump') }} ({{ $salary_jump_currency }} /
-                                1 {{ trans_choice('label.hour_lc', 1) }})
+                            <th>
+                                {{ trans('label.salary_jump') }}
+                                ({{ $salary_jump_currency }} / 1 {{ trans_choice('label.hour_lc', 1) }})
                             </th>
                             <th>{{ trans('label.total') }} ({{ settings()->currency }})</th>
                         </tr>
@@ -194,10 +195,11 @@
                             <th>Skype ID</th>
                             <th>{{ trans('label.phone') }}</th>
                             <th>{{ trans('label.teaching_hours') }}</th>
-                            <th>{{ trans('label.salary_jump') }}</th>
-                            <th>{{ trans('label.total') }} ({{ $salary_jump_currency }} /
-                                1 {{ trans_choice('label.hour_lc', 1) }})
+                            <th>
+                                {{ trans('label.salary_jump') }}
+                                ({{ $salary_jump_currency }} / 1 {{ trans_choice('label.hour_lc', 1) }})
                             </th>
+                            <th>{{ trans('label.total') }} ({{ settings()->currency }})</th>
                         </tr>
                         </tfoot>
                         <tbody>
