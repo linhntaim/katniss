@@ -185,6 +185,12 @@ class TeacherController extends AdminController
         if ($request->has('approve')) {
             return $this->approve($request, $id);
         }
+        if ($request->has('full_schedule')) {
+            return $this->fullSchedule($request, $id);
+        }
+        if ($request->has('available')) {
+            return $this->available($request, $id);
+        }
 
         $this->teacherRepository->model($id);
 
@@ -273,6 +279,36 @@ class TeacherController extends AdminController
 
         try {
             $this->teacherRepository->approve($request->authUser()->id);
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
+    }
+
+    protected function fullSchedule(Request $request, $id)
+    {
+        $this->teacherRepository->model($id);
+
+        $this->_rdrUrl($request, adminUrl('approved-teachers'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->teacherRepository->fullSchedule();
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
+    }
+
+    protected function available(Request $request, $id)
+    {
+        $this->teacherRepository->model($id);
+
+        $this->_rdrUrl($request, adminUrl('approved-teachers'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->teacherRepository->available();
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

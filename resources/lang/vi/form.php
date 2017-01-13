@@ -91,4 +91,5 @@ return [
     'action_review_student' => 'Nhận xét về học viên',
     'action_review_teacher' => 'Nhận xét về giáo viên',
     'action_calculate' => 'Tính toán',
+    'action_change_to' => 'Chuyển thành',
 ];

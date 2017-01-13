@@ -31,6 +31,7 @@ class CreateTeachersTable extends Migration
             $table->string('certificates')->nullable();
             $table->longText('payment_info')->nullable();
 
+            $table->tinyInteger('teaching_status')->default(1);
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
 

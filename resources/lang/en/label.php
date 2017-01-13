@@ -37,6 +37,8 @@ return [
     'status_not_connected' => 'Not connected',
     'status_closed' => 'Closed',
     'status_opening' => 'Opening',
+    'status_teaching_available' => 'Available',
+    'status_full_schedule' => 'Full schedule',
 
     'wanna_delete' => 'Do you really want to delete :name ?',
     'wanna_verify' => 'Do you really want to verify :name ?',
@@ -48,6 +50,7 @@ return [
     'wanna_deactivate' => 'Do you really want to deactivate :name ?',
     'wanna_close' => 'Do you really want to close :name ?',
     'wanna_open' => 'Do you really want to open :name ?',
+    'wanna_change_to' => 'Do you really want to change to :name ?',
 
     'rate' => 'Rate',
     'rate_poor' => 'Poor',
@@ -201,6 +204,7 @@ return [
     'apply_from' => 'Apply from',
     'applied_for_lc' => 'applied for',
     'teaching_hours' => 'Teaching hours',
+    'teaching_status' => 'Teaching status',
 
     'settings' => 'Settings',
     'country' => 'Country',

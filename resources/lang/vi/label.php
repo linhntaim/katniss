@@ -37,6 +37,8 @@ return [
     'status_not_connected' => 'Chưa kết nối',
     'status_closed' => 'Đã đóng',
     'status_opening' => 'Đang mở',
+    'status_teaching_available' => 'Có thể nhận thêm học viên',
+    'status_full_schedule' => 'Lịch dạy đã đầy',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',
@@ -48,6 +50,7 @@ return [
     'wanna_deactivate' => 'Bạn có muốn bỏ kích hoạt :name ?',
     'wanna_close' => 'Bạn có muốn đóng :name ?',
     'wanna_open' => 'Bạn có muốn mở :name ?',
+    'wanna_change_to' => 'Bạn có muốn chuyển thành :name ?',
 
     'rate' => 'Đánh giá',
     'rate_poor' => 'Không tốt',
@@ -201,6 +204,7 @@ return [
     'apply_from' => 'Áp dụng từ',
     'applied_for_lc' => 'áp dụng cho',
     'teaching_hours' => 'Số giờ dạy',
+    'teaching_status' => 'Tình trạng dạy',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

@@ -396,6 +396,34 @@ class TeacherRepository extends ModelRepository
         }
     }
 
+    public function fullSchedule()
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'teaching_status' => Teacher::TEACHING_STATUS_FULL_SCHEDULE,
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function available()
+    {
+        $teacher = $this->model();
+
+        try {
+            $teacher->update([
+                'teaching_status' => Teacher::TEACHING_STATUS_AVAILABLE,
+            ]);
+            return $teacher;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function delete()
     {
         $teacher = $this->model();

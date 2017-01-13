@@ -11,6 +11,14 @@
     <script>
         $(function () {
             x_modal_put($('a.reject'), '{{ trans('form.action_reject') }}', '{{ trans('label.wanna_reject', ['name' => '']) }}');
+            x_modal_put(
+                $('a.full-schedule'),
+                '{{ trans('form.action_change_to') }} {{ trans('label.status_full_schedule') }}',
+                '{{ trans('label.wanna_change_to', ['name' => trans('label.status_full_schedule')]) }}');
+            x_modal_put(
+                $('a.available'),
+                '{{ trans('form.action_change_to') }} {{ trans('label.status_teaching_available') }}',
+                '{{ trans('label.wanna_change_to', ['name' => trans('label.status_teaching_available')]) }}');
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
     </script>
@@ -105,6 +113,7 @@
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
+                                    <th>{{ trans('label.teaching_status') }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </thead>
@@ -116,6 +125,7 @@
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
+                                    <th>{{ trans('label.teaching_status') }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </tfoot>
@@ -132,6 +142,19 @@
                                         <td>{{ $teacher->userProfile->email }}</td>
                                         <td>{{ $teacher->userProfile->skype_id }}</td>
                                         <td>{{ $teacher->userProfile->phone }}</td>
+                                        <td>
+                                            @if($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_AVAILABLE)
+                                                <span class="label label-success">{{ trans('label.status_teaching_available') }}</span><br>
+                                                <a class="full-schedule small" href="{{ addRdrUrl(adminUrl('teachers/{id}', ['id'=> $teacher->user_id]) . '?full_schedule=1') }}">
+                                                    {{ trans('form.action_change_to') }} {{ trans('label.status_full_schedule') }}
+                                                </a>
+                                            @elseif($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_FULL_SCHEDULE)
+                                                <span class="label label-danger">{{ trans('label.status_full_schedule') }}</span><br>
+                                                <a class="available small" href="{{ addRdrUrl(adminUrl('teachers/{id}', ['id'=> $teacher->user_id]) . '?available=1') }}">
+                                                    {{ trans('form.action_change_to') }} {{ trans('label.status_teaching_available') }}
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ adminUrl('teachers/{id}/edit', ['id'=> $teacher->user_id]) }}">
                                                 {{ trans('form.action_edit') }}
