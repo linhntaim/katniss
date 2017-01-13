@@ -672,11 +672,11 @@ function toFormattedNumber($number, $mode = NumberFormatHelper::DEFAULT_NUMBER_O
  * @param int $mode
  * @return string
  */
-function toFormattedCurrency($number, $originalCurrencyCode = null, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+function toFormattedCurrency($number, $originalCurrencyCode = null, $noSign = false, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
 {
     $helper = NumberFormatHelper::getInstance();
     $helper->mode($mode);
-    $number = $helper->formatCurrency($number, $originalCurrencyCode);
+    $number = $helper->formatCurrency($number, $originalCurrencyCode, $noSign);
     $helper->modeNormal();
     return $number;
 }

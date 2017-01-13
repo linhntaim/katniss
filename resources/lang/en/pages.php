@@ -105,6 +105,8 @@ return [
     'admin_opening_classrooms_desc' => 'Manage opening classrooms',
     'admin_closed_classrooms_title' => 'Closed Classrooms',
     'admin_closed_classrooms_desc' => 'Manage closed classrooms',
+    'admin_salary_report_title' => 'Salary Report',
+    'admin_salary_report_desc' => 'View salary report',
 
     'admin_error_title' => ':code Error',
     'admin_error_desc' => ':code Error Page',

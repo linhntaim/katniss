@@ -263,6 +263,9 @@ Route::group([
                 Route::get(adminRoute('classrooms/{id}/edit'), 'ClassroomController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('classrooms/{id}'), 'ClassroomController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('classrooms/{id}'), 'ClassroomController@destroy')->where('id', '[0-9]+');
+                //Salary
+                Route::get(adminRoute('salary-report'), 'SalaryReportController@index');
+                Route::post(adminRoute('salary-report'), 'SalaryReportController@store');
             });
         });
         #endregion

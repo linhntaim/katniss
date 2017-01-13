@@ -133,4 +133,5 @@ return [
     'admin/classrooms/create'                       => 'quan-tri/lop-hoc/them-moi',
     'admin/classrooms/{id}'                         => 'quan-tri/lop-hoc/{id}',
     'admin/classrooms/{id}/edit'                    => 'quan-tri/lop-hoc/{id}/chinh-sua',
+    'admin/salary-report'                           => 'quan-tri/tinh-luong',
 ];

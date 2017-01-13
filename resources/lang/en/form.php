@@ -90,4 +90,5 @@ return [
     'action_add_rating' => 'Add rating',
     'action_review_student' => 'Review the student',
     'action_review_teacher' => 'Review the teacher',
+    'action_calculate' => 'Calculate',
 ];

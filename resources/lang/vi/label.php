@@ -197,6 +197,10 @@ return [
     'teacher_document_rate' => 'Giáo trình',
     'teacher_attitude_rate' => 'Thái độ',
     'teacher_quality_rate' => 'Chất lượng',
+    'salary_jump' => 'Hệ số lương',
+    'apply_from' => 'Áp dụng từ',
+    'applied_for_lc' => 'áp dụng cho',
+    'teaching_hours' => 'Số giờ dạy',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -347,9 +351,11 @@ lộ trình học tập và học phí.',
     'classroom_lc' => 'lớp học',
     'supporter' => 'Tư vấn viên',
     'supporter_lc' => 'tư vấn viên',
+    'hour' => 'Giờ',
     'hour_lc' => 'giờ',
     'class_time' => 'Buổi học',
     'class_time_lc' => 'buổi học',
+    'month_lc' => 'tháng',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

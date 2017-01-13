@@ -133,4 +133,5 @@ return [
     'admin/classrooms/create'                       => 'admin/classrooms/create',
     'admin/classrooms/{id}'                         => 'admin/classrooms/{id}',
     'admin/classrooms/{id}/edit'                    => 'admin/classrooms/{id}/edit',
+    'admin/salary-report'                           => 'admin/salary-report',
 ];

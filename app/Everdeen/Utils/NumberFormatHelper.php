@@ -75,13 +75,16 @@ class NumberFormatHelper
      * @param string $originalCurrencyCode
      * @return string
      */
-    public function formatCurrency($number, $originalCurrencyCode = null)
+    public function formatCurrency($number, $originalCurrencyCode = null, $noSign = false)
     {
         if (empty($originalCurrencyCode)) {
             $originalCurrencyCode = $this->currencyCode;
         }
         $number = floatval($number);
         $number = contentFilter(self::FILTER_FORMAT_CURRENCY, $number, [$originalCurrencyCode]);
+        if ($noSign) {
+            return $this->format($number);
+        }
         return $this->format($number) . ' ' . $this->currencyCode;
     }
 

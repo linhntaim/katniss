@@ -105,6 +105,8 @@ return [
     'admin_opening_classrooms_desc' => 'Quản lý lớp đang học',
     'admin_closed_classrooms_title' => 'Lớp đã học xong',
     'admin_closed_classrooms_desc' => 'Quản lý lớp đã học xong',
+    'admin_salary_report_title' => 'Tính lương',
+    'admin_salary_report_desc' => 'Xem bảng lương',
 
     'admin_error_title' => 'Lỗi :code',
     'admin_error_desc' => 'Trang truy cập gặp lỗi :code',

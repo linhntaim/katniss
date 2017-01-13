@@ -277,6 +277,11 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subMenu->addSubMenu($subSubMenu);
+                $subMenu->add( //add a menu item
+                    adminUrl('salary-report'),
+                    trans('pages.admin_salary_report_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
                 $menu->addSubMenu($subMenu);
             }
         }

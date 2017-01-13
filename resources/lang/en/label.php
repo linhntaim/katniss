@@ -197,6 +197,10 @@ return [
     'teacher_document_rate' => 'Course',
     'teacher_attitude_rate' => 'Attitude',
     'teacher_quality_rate' => 'Quality',
+    'salary_jump' => 'Salary jump',
+    'apply_from' => 'Apply from',
+    'applied_for_lc' => 'applied for',
+    'teaching_hours' => 'Teaching hours',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -347,9 +351,11 @@ about your classes.',
     'classroom_lc' => 'classroom|classrooms',
     'supporter' => 'Supporter|Supporters',
     'supporter_lc' => 'supporter|supporters',
+    'hour' => 'Hour|Hours',
     'hour_lc' => 'hour|hours',
     'class_time' => 'Class time|Class times',
     'class_time_lc' => 'class time|class times',
+    'month_lc' => 'month|months',
 
     'no_widget' => 'No widget is placed here',
 

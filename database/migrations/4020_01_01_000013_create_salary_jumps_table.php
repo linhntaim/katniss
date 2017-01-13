@@ -18,6 +18,7 @@ class CreateSalaryJumpsTable extends Migration
 
             $table->increments('id');
             $table->decimal('jump');
+            $table->string('currency');
             $table->dateTime('apply_from');
             $table->timestamps();
 

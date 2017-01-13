@@ -165,8 +165,8 @@ class DateTimeHelper
         }
 
         return call_user_func(array($this, $func_1), $time, $no_offset)
-        . $separation
-        . call_user_func(array($this, $func_2), $time, $no_offset);
+            . $separation
+            . call_user_func(array($this, $func_2), $time, $no_offset);
     }
 
     public function compoundBags($func_1 = self::SHORT_DATE_FUNCTION, $separation = ' ', $func_2 = self::SHORT_TIME_FUNCTION, array $bags = [])
@@ -178,8 +178,8 @@ class DateTimeHelper
         $func_1 .= 'FromBags';
         $func_2 .= 'FromBags';
         return call_user_func(array($this, $func_1), $bags)
-        . $separation
-        . call_user_func(array($this, $func_2), $bags);
+            . $separation
+            . call_user_func(array($this, $func_2), $bags);
     }
 
     public function longDate($time = 'now', $no_offset = false)
@@ -439,15 +439,15 @@ class DateTimeHelper
     public static function compoundFormat($func_1, $separation, $func_2)
     {
         return call_user_func(array(self::class, $func_1 . 'Format'))
-        . $separation
-        . call_user_func(array(self::class, $func_2 . 'Format'));
+            . $separation
+            . call_user_func(array(self::class, $func_2 . 'Format'));
     }
 
     public static function compoundJsFormat($func_1, $separation, $func_2)
     {
         return call_user_func(array(self::class, $func_1 . 'JsFormat'))
-        . $separation
-        . call_user_func(array(self::class, $func_2 . 'JsFormat'));
+            . $separation
+            . call_user_func(array(self::class, $func_2 . 'JsFormat'));
     }
 
     public static function longDateFormat()
@@ -465,6 +465,11 @@ class DateTimeHelper
         return self::getInstance()->shortDateFromBags(self::getFormatBags());
     }
 
+    public static function shortMonthFormat()
+    {
+        return self::getInstance()->shortMonthFromBags(self::getFormatBags());
+    }
+
     public static function shortDateJsFormat()
     {
         return self::getInstance()->shortDateFromBags(self::getMomentJsFormatBags());
@@ -473,6 +478,11 @@ class DateTimeHelper
     public static function shortDatePickerJsFormat()
     {
         return self::getInstance()->shortDateFromBags(self::getDatePickerJsFormatBags());
+    }
+
+    public static function shortMonthPickerJsFormat()
+    {
+        return self::getInstance()->shortMonthFromBags(self::getDatePickerJsFormatBags());
     }
 
     public static function longTimeFormat()

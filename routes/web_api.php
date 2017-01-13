@@ -57,5 +57,11 @@ Route::group([
         ], function () {
             Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
         });
+
+        Route::group([
+            'middleware' => 'entrust:manager|admin'
+        ], function () {
+            Route::get('admin/salary-report', 'SalaryReportController@index');
+        });
     });
 });

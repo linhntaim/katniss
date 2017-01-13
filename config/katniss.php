@@ -68,6 +68,7 @@ return [
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME
     ],
     'admin_except_extensions' => [
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
