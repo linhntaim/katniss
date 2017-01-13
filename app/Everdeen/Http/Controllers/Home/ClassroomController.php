@@ -141,7 +141,7 @@ class ClassroomController extends ViewController
             'has_previous_month_class_times' => $hasPreviousMonthClassTimes,
             'previous_year' => $previousYear,
             'previous_month' => $previousMonth,
-            'can_classroom_edit' => $canClassroomEdit,
+            'can_classroom_edit' => $canClassroomEdit && $classroom->isOpening,
             'can_classroom_close' => $canClassroomClose,
             'can_add_teacher_review' => $canAddTeacherReview,
             'can_add_student_review' => $canAddStudentReview,

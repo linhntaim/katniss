@@ -55,6 +55,8 @@ class ClassTimeRepository extends ModelRepository
                 ]);
             }
 
+            logInfo('Class time created.', $classTime->toArray());
+
             DB::commit();
             return empty($classTimePeriodic) ? $classTime : [$classTime, $classTimePeriodic];
         } catch (\Exception $ex) {
@@ -76,6 +78,11 @@ class ClassTimeRepository extends ModelRepository
                 'review' => $review,
             ]);
 
+            logInfo('Class time reviewed.', [
+                'class_time_id' => $classTime->id,
+                'review' => $review->toArray(),
+            ]);
+
             return $review;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
@@ -93,6 +100,11 @@ class ClassTimeRepository extends ModelRepository
                 'review' => $review,
             ]);
 
+            logInfo('Class time rich reviewed.', [
+                'class_time_id' => $classTime->id,
+                'review' => $review->toArray(),
+            ]);
+
             return $review;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
@@ -104,10 +116,14 @@ class ClassTimeRepository extends ModelRepository
         $classTime = $this->model();
 
         try {
+            logInfo('Class time before updated.', $classTime->toArray());
+
             $classTime->update([
                 'subject' => $subject,
                 'content' => $content,
             ]);
+
+            logInfo('Class time updated.', $classTime->toArray());
 
             return $classTime;
         } catch (\Exception $ex) {
@@ -117,10 +133,13 @@ class ClassTimeRepository extends ModelRepository
 
     public function delete()
     {
-        $classroom = $this->model();
+        $classTime = $this->model();
 
         try {
-            $classroom->delete();
+            $classTime->delete();
+
+            logInfo('Class time updated.', $classTime->toArray());
+
             return true;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');

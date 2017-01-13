@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Jenssegers\Agent\Facades\Agent;
@@ -1517,5 +1518,16 @@ function rgbToHex($rgb = [])
     $hex[1] = str_pad(dechex($rgb[1]), 2, '0', STR_PAD_LEFT);
     $hex[2] = str_pad(dechex($rgb[2]), 2, '0', STR_PAD_LEFT);
     return implode('', $hex);
+}
+
+#endregion
+
+#region Logging
+function logInfo($text, $data)
+{
+    Log::info($text, [
+        'log_by_user_id' => isAuth() ? authUser()->id : request()->ip(),
+        'data' => $data,
+    ]);
 }
 #endregion

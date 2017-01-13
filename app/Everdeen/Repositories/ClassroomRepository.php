@@ -58,7 +58,7 @@ class ClassroomRepository extends ModelRepository
     {
         $classrooms = Classroom::opening()->orderBy('created_at', 'desc');
         if (!empty($name)) {
-            $classrooms->where('name', 'like', '%'.$name.'%');
+            $classrooms->where('name', 'like', '%' . $name . '%');
         }
         if (!empty($teacher)) {
             $classrooms->where('teacher_id', $teacher);
@@ -76,7 +76,7 @@ class ClassroomRepository extends ModelRepository
     {
         $classrooms = Classroom::closed()->orderBy('created_at', 'desc');
         if (!empty($name)) {
-            $classrooms->where('name', 'like', '%'.$name.'%');
+            $classrooms->where('name', 'like', '%' . $name . '%');
         }
         if (!empty($teacher)) {
             $classrooms->where('teacher_id', $teacher);
@@ -107,6 +107,8 @@ class ClassroomRepository extends ModelRepository
                 'status' => Classroom::STATUS_OPENING,
             ]);
 
+            logInfo('Classroom created.', $classroom->toArray());
+
             return $classroom;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
@@ -118,6 +120,8 @@ class ClassroomRepository extends ModelRepository
         $classroom = $this->model();
 
         try {
+            logInfo('Classroom before updated.', $classroom->toArray());
+
             $data = [
                 'name' => $name,
                 'hours' => NumberFormatHelper::getInstance()->fromFormat($duration),
@@ -137,6 +141,8 @@ class ClassroomRepository extends ModelRepository
             }
             $classroom->update($data);
 
+            logInfo('Classroom updated.', $classroom->toArray());
+
             return $classroom;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
@@ -148,9 +154,13 @@ class ClassroomRepository extends ModelRepository
         $classroom = $this->model();
 
         try {
+            logInfo('Classroom before updated.', $classroom->toArray());
+
             $classroom->update([
                 'name' => $name,
             ]);
+
+            logInfo('Classroom updated.', $classroom->toArray());
 
             return $classroom;
         } catch (\Exception $ex) {
@@ -166,6 +176,9 @@ class ClassroomRepository extends ModelRepository
             $classroom->update([
                 'status' => Classroom::STATUS_OPENING,
             ]);
+
+            logInfo('Classroom opened.', $classroom->toArray());
+
             return $classroom;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
@@ -180,6 +193,9 @@ class ClassroomRepository extends ModelRepository
             $classroom->update([
                 'status' => Classroom::STATUS_CLOSED,
             ]);
+
+            logInfo('Classroom closed.', $classroom->toArray());
+
             return $classroom;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
@@ -192,6 +208,9 @@ class ClassroomRepository extends ModelRepository
 
         try {
             $classroom->delete();
+
+            logInfo('Classroom deleted.', $classroom->toArray());
+
             return true;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');
