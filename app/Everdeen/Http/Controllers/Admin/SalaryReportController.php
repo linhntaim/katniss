@@ -5,9 +5,11 @@ namespace Katniss\Everdeen\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Reports\TeacherSalaryReport;
 use Katniss\Everdeen\Repositories\SalaryJumpRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SalaryReportController extends AdminController
 {
@@ -23,6 +25,10 @@ class SalaryReportController extends AdminController
 
     public function index(Request $request)
     {
+        if ($request->has('export')) {
+            return $this->export($request);
+        }
+
         $salaryJump = $this->salaryJumpRepository->getLast();
 
         $this->_title(trans('pages.admin_salary_report_title'));
@@ -36,6 +42,56 @@ class SalaryReportController extends AdminController
             'month_js_format' => DateTimeHelper::shortMonthPickerJsFormat(),
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
         ]);
+    }
+
+    public function export(Request $request)
+    {
+        if (!$this->customValidate($request, [
+            'month_year' => 'required|date_format:' . DateTimeHelper::shortMonthFormat(),
+        ])
+        ) {
+            return abort(404);
+        }
+
+        try {
+            $monthYear = $request->input('month_year');
+            $date = DateTimeHelper::getInstance()->fromFormat(
+                DateTimeHelper::shortMonthFormat(), $monthYear);
+
+            $report = new TeacherSalaryReport($date->format('Y'), $date->format('n'));
+
+            return Excel::create('Teacher_Salary_' . $monthYear, function ($excel) use ($report, $monthYear) {
+                $excel->sheet('Sheet 1', function ($sheet) use ($report, $monthYear) {
+                    $data = $report->getDataAsFlatArray();
+                    array_unshift($data, $report->getHeader());
+
+                    $sheet->cell('A1', function ($cell) use ($report, $monthYear) {
+                        $cell->setValue(
+                            trans('label.salary_jump') . ' ' .
+                            trans('label.applied_for_lc') . ' ' .
+                            $monthYear . ': ' .
+                            $report->getLastSalaryJump()->formattedJumpCurrency . ' / 1 ' . trans_choice('label.hour_lc', 1)
+                        );
+                    });
+
+                    $startColumn = 'A';
+                    $startRow = 2;
+                    $endColumn = chr(count($data[0]) + ord($startColumn) - 1);
+                    $endRow = $startRow + count($data) - 1;
+
+                    $sheet->mergeCells('A1:' . $endColumn . '1');
+                    $sheet->fromArray($data, null, $startColumn . $startRow, true, false);
+                    $sheet->cells($startColumn . $startRow . ':' . $endColumn . $startRow, function ($cells) {
+                        $cells->setBackground('#000000');
+                        $cells->setFontColor('#ffffff');
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setBorder($startColumn . $startRow . ':' . $endColumn . $endRow, 'thin');
+                });
+            })->download('xls');
+        } catch (KatnissException $ex) {
+            return abort(500);
+        }
     }
 
     public function store(Request $request)

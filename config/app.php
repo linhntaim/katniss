@@ -174,6 +174,7 @@ return [
         Dimsav\Translatable\TranslatableServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         //
 
         /*
@@ -241,8 +242,9 @@ return [
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

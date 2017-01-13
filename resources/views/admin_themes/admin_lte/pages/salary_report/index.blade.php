@@ -59,6 +59,8 @@
 
             var _$inputYearMonth = $('[name="filter_month_year"]');
             var _$report = $('#report');
+            var _$reportExport = $('#report-export');
+            var _reportUrl = '?export=1&month_year=';
             var _$reportJump = $('#report-apply-jump');
             var _$reportTime = $('#report-apply-time');
             var _$reportNone = $('#report-none');
@@ -68,21 +70,25 @@
                 _$report.addClass('hide');
                 _$reportNone.addClass('hide');
                 _$reportLoading.removeClass('hide');
+                var inputYearMonth = _$inputYearMonth.val();
                 var api = new KatnissApi(true);
                 api.get('admin/salary-report', {
-                    month_year: _$inputYearMonth.val()
+                    month_year: inputYearMonth
                 }, function (failed, data, messages) {
                     if (failed) {
                         _$reportNone.removeClass('hide');
+                        _$reportExport.addClass('hide');
                     }
                     else {
-                        _$reportTime.text(_$inputYearMonth.val());
+                        _$reportTime.text(inputYearMonth);
                         _$reportJump.text(data.jump);
                         _$report.find('tbody').empty().html(renderReport(data.report));
                         _$report.removeClass('hide');
+                        _$reportExport.attr('href', _reportUrl + inputYearMonth).removeClass('hide');
                     }
                 }, function () {
                     _$reportNone.removeClass('hide');
+                    _$reportExport.addClass('hide');
                 }, function () {
                     _$reportLoading.addClass('hide');
                 });
@@ -151,15 +157,16 @@
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button type="button" class="btn btn-success">
+                            <a id="report-export" role="button" target="_blank" href="" class="btn btn-success hide">
                                 <i class="fa fa-download"></i> {{ trans('form.action_export') }}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div><!-- /.box-header -->
                 <div id="report" class="box-body table-responsive no-padding hide">
                     <div class="padding-10">
-                        <strong>{{ trans('label.salary_jump') }} {{ trans('label.applied_for_lc') }} <span id="report-apply-time"></span>:</strong>
+                        <strong>{{ trans('label.salary_jump') }} {{ trans('label.applied_for_lc') }} <span
+                                    id="report-apply-time"></span>:</strong>
                         <span id="report-apply-jump"></span>
                     </div>
                     <table class="table table-bordered">
@@ -172,7 +179,9 @@
                             <th>Skype ID</th>
                             <th>{{ trans('label.phone') }}</th>
                             <th>{{ trans('label.teaching_hours') }}</th>
-                            <th>{{ trans('label.salary_jump') }} ({{ $salary_jump_currency }} / 1 {{ trans_choice('label.hour_lc', 1) }})</th>
+                            <th>{{ trans('label.salary_jump') }} ({{ $salary_jump_currency }} /
+                                1 {{ trans_choice('label.hour_lc', 1) }})
+                            </th>
                             <th>{{ trans('label.total') }} ({{ settings()->currency }})</th>
                         </tr>
                         </thead>
@@ -186,7 +195,9 @@
                             <th>{{ trans('label.phone') }}</th>
                             <th>{{ trans('label.teaching_hours') }}</th>
                             <th>{{ trans('label.salary_jump') }}</th>
-                            <th>{{ trans('label.total') }} ({{ $salary_jump_currency }} / 1 {{ trans_choice('label.hour_lc', 1) }})</th>
+                            <th>{{ trans('label.total') }} ({{ $salary_jump_currency }} /
+                                1 {{ trans_choice('label.hour_lc', 1) }})
+                            </th>
                         </tr>
                         </tfoot>
                         <tbody>
