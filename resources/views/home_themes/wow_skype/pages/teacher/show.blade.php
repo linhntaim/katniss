@@ -35,6 +35,25 @@
                             <strong>{{ $teacher->userProfile->display_name }}</strong>
                         </h4>
                         <p>{{ allCountry($teacher->userProfile->nationality, 'name') }}</p>
+                        @if($has_rates)
+                            <p>{{ toFormattedNumber($average_rate) }}</p>
+                            <p class="color-star">
+                                <?php $star_split = intval($average_rate) != $average_rate; ?>
+                                @if($star_split)
+                                    @for($i = 1; $i <= intval($average_rate); ++$i)
+                                        <i class="fa fa-star"></i>
+                                    @endfor
+                                        <i class="fa fa-star-half-o"></i>
+                                    @for($i = intval($average_rate) + 2; $i <= $max_rate; ++$i)
+                                        <i class="fa fa-star-o"></i>
+                                    @endfor
+                                @else
+                                    @for($i = 1; $i <= $max_rate; ++$i)
+                                        <i class="fa {{ $i <= $average_rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                    @endfor
+                                @endif
+                            </p>
+                        @endif
                         <p>
                             @if(!empty($teacher->video_teaching_url))
                                 <a target="_blank" role="button" class="btn btn-success teacher-video" href="{{ $teacher->video_teaching_url }}">
@@ -156,18 +175,50 @@
                         </div>
                     </div>
                 @endif
+                @if($has_rates)
+                    <hr>
+                    <p>{{ toFormattedNumber($average_rate) }}</p>
+                    <p>{{ $count_rating_students }} {{ trans_choice('label.student', $count_rating_students) }}</p>
+                    @foreach($rates_for_teacher as $name => $rate)
+                        <p>{{ trans('label.teacher_' . $name . '_rate') }}</p>
+                        <p class="color-star">
+                            <?php $star_split = intval($rate) != $rate; ?>
+                            @if($star_split)
+                                @for($i = 1; $i <= intval($rate); ++$i)
+                                    <i class="fa fa-star"></i>
+                                @endfor
+                                <i class="fa fa-star-half-o"></i>
+                                @for($i = intval($rate) + 2; $i <= $max_rate; ++$i)
+                                    <i class="fa fa-star-o"></i>
+                                @endfor
+                            @else
+                                @for($i = 1; $i <= $max_rate; ++$i)
+                                    <i class="fa {{ $i <= $rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                @endfor
+                            @endif
+                        </p>
+                    @endforeach
+                @endif
             </div>
             <div class="col-md-4">
-                @if(!$is_auth)
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <a role="button" class="btn btn-danger btn-block uppercase"
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div>
+                            <i class="fa fa-user"></i> &nbsp;
+                            @if($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_AVAILABLE)
+                                <strong class="color-slave">{{ trans('label.status_teaching_available') }}</strong><br>
+                            @elseif($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_FULL_SCHEDULE)
+                                <strong class="text-danger">{{ trans('label.status_full_schedule') }}</strong><br>
+                            @endif
+                        </div>
+                        @if(!$is_auth)
+                            <a role="button" class="btn btn-danger btn-block uppercase margin-top-10"
                                href="{{ homeUrl('student/sign-up') }}?teacher={{ $teacher->user_id }}">
                                 {{ trans('form.action_register_class') }}
                             </a>
-                        </div>
+                        @endif
                     </div>
-                @endif
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h4 class="margin-top-none margin-bottom-15">{{ trans('label.need_help') }}</h4>

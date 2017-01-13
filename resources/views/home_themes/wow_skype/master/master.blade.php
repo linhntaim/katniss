@@ -55,6 +55,9 @@
                                         @if($auth_user->can('access-admin'))
                                             <li><a href="{{ adminUrl() }}">{{ trans('form.action_go_to') }} {{ trans('pages.admin_title') }}</a></li>
                                         @endif
+                                        @if($auth_user->hasRole(['teacher', 'student', 'supporter']))
+                                            <li><a href="{{ homeUrl('teachers/{id}', ['id' => $auth_user->id]) }}">{{ trans('label.my_public_profile') }}</a></li>
+                                        @endif
                                         <li><a href="{{ homeUrl('profile/account-information') }}">{{ trans('label.my_profile') }}</a></li>
                                         @if($auth_user->hasRole(['teacher', 'student', 'supporter']))
                                             <li><a href="{{ homeUrl('opening-classrooms') }}">{{ trans('label.my_classrooms') }}</a></li>

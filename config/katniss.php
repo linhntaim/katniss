@@ -17,6 +17,8 @@ return [
     'learning_forms_children' => [11, 12, 13, 14, 15, 101],
     'periodic_class_time' => 4,
     'rates' => ['poor', 'fair', 'good', 'very_good', 'excellent'],
+    'rates_for_teacher' => ['document', 'attitude', 'quality'],
+    'rates_for_student' => ['attitude', 'progression', 'quality'],
 
     'settings' => [
         'city' => 'LA',

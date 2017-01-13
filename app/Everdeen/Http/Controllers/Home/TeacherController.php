@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Reports\TeacherPeriodicReviewsReport;
 use Katniss\Everdeen\Repositories\TeacherRepository;
 use Katniss\Everdeen\Repositories\TopicRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
@@ -626,15 +627,37 @@ class TeacherController extends ViewController
         ]);
     }
 
+    protected function getRatesForTeacher($reviewsForTeacher, &$ratesForTeacher, &$averageRate)
+    {
+        $ratesForTeacher = [];
+        $averageRate = 0;
+        $count = 0;
+        foreach (_k('rates_for_teacher') as $rate) {
+            ++$count;
+            $ratesForTeacher[$rate] = $reviewsForTeacher->avg($rate);
+            $averageRate += $ratesForTeacher[$rate];
+        }
+        $averageRate = $averageRate / $count;
+    }
+
     public function show(Request $request, $id)
     {
         $teacher = $this->teacherRepository->model($id);
+
+        $reviewsReport = new TeacherPeriodicReviewsReport($teacher->user_id);
+        $reviewsForTeacher = $reviewsReport->getData()[$teacher->user_id];
+        $this->getRatesForTeacher($reviewsForTeacher, $ratesForTeacher, $averageRate);
 
         $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);
         $this->_description(shorten($teacher->about_me));
 
         return $this->_show([
             'teacher' => $teacher,
+            'has_rates' => $reviewsForTeacher->count() > 0,
+            'count_rating_students' => $reviewsForTeacher->groupBy('user_id')->count(),
+            'rates_for_teacher' => $ratesForTeacher,
+            'average_rate' => $averageRate,
+            'max_rate' => count(_k('rates')),
 
             'skype_id' => 'skype_id',
             'skype_name' => 'Skype',
