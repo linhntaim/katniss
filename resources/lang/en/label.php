@@ -206,6 +206,7 @@ return [
     'applied_for_lc' => 'applied for',
     'teaching_hours' => 'Teaching hours',
     'teaching_status' => 'Teaching status',
+    'sort_order' => 'Order',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -361,6 +362,8 @@ about your classes.',
     'class_time' => 'Class time|Class times',
     'class_time_lc' => 'class time|class times',
     'month_lc' => 'month|months',
+    'help' => 'Help|Helps',
+    'help_lc' => 'help|helps',
 
     'no_widget' => 'No widget is placed here',
 

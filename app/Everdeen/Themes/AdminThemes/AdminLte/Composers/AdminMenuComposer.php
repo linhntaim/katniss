@@ -162,7 +162,6 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
-
                 //Media
 //                $menu->add(  // add an example menu item which have sub menu
 //                    '#',
@@ -191,9 +190,19 @@ class AdminMenuComposer
                     '<i class="fa fa-align-justify"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
                 $subMenu = new Menu($currentUrl);
+//                $subMenu->add( //add a menu item
+//                    adminUrl('pages'),
+//                    trans('pages.admin_pages_title'),
+//                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+//                );
                 $subMenu->add( //add a menu item
-                    adminUrl('pages'),
-                    trans('pages.admin_pages_title'),
+                    adminUrl('help-categories'),
+                    trans('pages.admin_help_categories_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('helps'),
+                    trans('pages.admin_helps_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subMenu->add( //add a menu item

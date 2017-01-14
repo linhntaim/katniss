@@ -199,13 +199,27 @@ Route::group([
             Route::group([
                 'middleware' => 'entrust:admin|editor'
             ], function () {
-                //Pages
-                Route::get(adminRoute('pages'), 'PageController@index');
-                Route::get(adminRoute('pages/create'), 'PageController@create');
-                Route::post(adminRoute('pages'), 'PageController@store');
-                Route::get(adminRoute('pages/{id}/edit'), 'PageController@edit')->where('id', '[0-9]+');
-                Route::put(adminRoute('pages/{id}'), 'PageController@update')->where('id', '[0-9]+');
-                Route::delete(adminRoute('pages/{id}'), 'PageController@destroy')->where('id', '[0-9]+');
+//                //Pages
+//                Route::get(adminRoute('pages'), 'PageController@index');
+//                Route::get(adminRoute('pages/create'), 'PageController@create');
+//                Route::post(adminRoute('pages'), 'PageController@store');
+//                Route::get(adminRoute('pages/{id}/edit'), 'PageController@edit')->where('id', '[0-9]+');
+//                Route::put(adminRoute('pages/{id}'), 'PageController@update')->where('id', '[0-9]+');
+//                Route::delete(adminRoute('pages/{id}'), 'PageController@destroy')->where('id', '[0-9]+');
+                //Help Categories
+                Route::get(adminRoute('help-categories'), 'HelpCategoryController@index');
+                Route::get(adminRoute('help-categories/create'), 'HelpCategoryController@create');
+                Route::post(adminRoute('help-categories'), 'HelpCategoryController@store');
+                Route::get(adminRoute('help-categories/{id}/edit'), 'HelpCategoryController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('help-categories/{id}'), 'HelpCategoryController@update');
+                Route::delete(adminRoute('help-categories/{id}'), 'HelpCategoryController@destroy')->where('id', '[0-9]+');
+                //Help
+                Route::get(adminRoute('helps'), 'HelpController@index');
+                Route::get(adminRoute('helps/create'), 'HelpController@create');
+                Route::post(adminRoute('helps'), 'HelpController@store');
+                Route::get(adminRoute('helps/{id}/edit'), 'HelpController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('helps/{id}'), 'HelpController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('helps/{id}'), 'HelpController@destroy')->where('id', '[0-9]+');
                 //Article Categories
                 Route::get(adminRoute('article-categories'), 'ArticleCategoryController@index');
                 Route::get(adminRoute('article-categories/create'), 'ArticleCategoryController@create');

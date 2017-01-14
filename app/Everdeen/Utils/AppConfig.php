@@ -23,6 +23,8 @@ class AppConfig
     const KEY_EXTRA_ROUTE = 'x_route';
 
     const REGEX_YOUTUBE_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(youtube.com\/watch\?v=|youtube.com\/embed\/|youtu.be\/)(.+)$/';
+    const REGEX_VIMEO_URL = '/^(http:\/\/|https:\/\/|\/\/)(vimeo.com\/|player.vimeo.com\/video\/)([0-9]+).*$/';
+    const REGEX_DAILYMOTION_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(dailymotion.com\/video\/([^_]+).*|(dailymotion.com\/embed\/video\/|dai.ly\/)(.+))$/';
 
     const DEFAULT_HTML_CLEAN_SETTING = 'typical';
     const DEFAULT_ITEMS_PER_PAGE = 10;

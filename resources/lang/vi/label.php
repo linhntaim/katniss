@@ -206,6 +206,7 @@ return [
     'applied_for_lc' => 'áp dụng cho',
     'teaching_hours' => 'Số giờ dạy',
     'teaching_status' => 'Tình trạng dạy',
+    'sort_order' => 'Thứ tự',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -361,6 +362,8 @@ lộ trình học tập và học phí.',
     'class_time' => 'Buổi học',
     'class_time_lc' => 'buổi học',
     'month_lc' => 'tháng',
+    'help' => 'Trợ giúp',
+    'help_lc' => 'trợ giúp',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

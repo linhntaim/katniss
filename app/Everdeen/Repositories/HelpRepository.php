@@ -16,33 +16,22 @@ use Katniss\Everdeen\Themes\Extension;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Utils\AppConfig;
 
-class ArticleRepository extends PostRepository
+class HelpRepository extends PostRepository
 {
     public function __construct($id = null)
     {
-        parent::__construct(Post::TYPE_ARTICLE, $id);
-    }
-
-    public function getPagedByCategory($categoryId, &$category)
-    {
-        $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getById($categoryId);
-        return $category->posts()->where('type', $this->type)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        parent::__construct(Post::TYPE_HELP, $id);
     }
 
     public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
     {
         DB::beginTransaction();
         try {
-            $article = new Post();
-            $article->type = $this->type;
-            $article->user_id = $userId;
-            $article->template = $template;
-            $article->featured_image = $featuredImage;
+            $help = new Post();
+            $help->type = $this->type;
+            $help->user_id = $userId;
             foreach ($localizedData as $locale => $transData) {
-                $trans = $article->translateOrNew($locale);
+                $trans = $help->translateOrNew($locale);
                 $trans->title = $transData['title'];
                 $trans->slug = $transData['slug'];
                 $trans->description = $transData['description'];
@@ -50,18 +39,13 @@ class ArticleRepository extends PostRepository
                 $trans->raw_content = $transData['content'];
             }
 
-            $article->save();
+            $help->save();
 
-            if (count($categories) > 0) {
-                $article->categories()->attach($categories);
-            } else {
-                $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
-                $article->categories()->attach([$appSettings->defaultArticleCategory]);
-            }
+            $help->categories()->attach($categories);
 
             DB::commit();
 
-            return $article;
+            return $help;
         } catch (\Exception $ex) {
             DB::rollBack();
             throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
@@ -70,10 +54,8 @@ class ArticleRepository extends PostRepository
 
     public function update($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
     {
-        $article = $this->model();
-        $article->user_id = $userId;
-        $article->template = $template;
-        $article->featured_image = $featuredImage;
+        $help = $this->model();
+        $help->user_id = $userId;
 
         DB::beginTransaction();
         try {
@@ -81,32 +63,27 @@ class ArticleRepository extends PostRepository
             foreach (supportedLocaleCodesOfInputTabs() as $locale) {
                 if (isset($localizedData[$locale])) {
                     $transData = $localizedData[$locale];
-                    $trans = $article->translateOrNew($locale);
+                    $trans = $help->translateOrNew($locale);
                     $trans->title = $transData['title'];
                     $trans->slug = $transData['slug'];
                     $trans->description = $transData['description'];
                     $trans->content = clean($transData['content'], 'blog');
                     $trans->raw_content = $transData['content'];
-                } elseif ($article->hasTranslation($locale)) {
+                } elseif ($help->hasTranslation($locale)) {
                     $deletedLocales[] = $locale;
                 }
             }
 
-            if (count($categories) > 0) {
-                $article->categories()->sync($categories);
-            } else {
-                $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);
-                $article->categories()->sync([$appSettings->defaultArticleCategory]);
-            }
+            $help->categories()->sync($categories);
 
-            $article->save();
+            $help->save();
 
             if (!empty($deletedLocales)) {
-                $article->deleteTranslations($deletedLocales);
+                $help->deleteTranslations($deletedLocales);
             }
             DB::commit();
 
-            return $article;
+            return $help;
         } catch (\Exception $ex) {
             DB::rollBack();
 

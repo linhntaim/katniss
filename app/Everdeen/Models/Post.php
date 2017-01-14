@@ -16,6 +16,7 @@ class Post extends Model
 {
     const TYPE_PAGE = 0;
     const TYPE_ARTICLE = 1;
+    const TYPE_HELP = 2;
 
     use Translatable;
     public $useTranslationFallback = true;
