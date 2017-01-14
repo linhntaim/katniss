@@ -1,11 +1,29 @@
 #page-teachers #teachers-sidebar h4 {
-    margin: 0;
+    font-size: 16px;
+    line-height: 20px;
 }
 
-#page-teachers .media-list.teacher-list .media-body h5 {
-    margin-top: 0;
+#page-teachers #teachers-sidebar .step-list .media-line {
+    border-left: 3px dotted #00aff0;
+    left: 13px;
+}
+
+#page-teachers .teacher-list .thumbnail {
+    padding: 0;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 #page-teachers .pagination {
     margin-bottom: 0;
+}
+
+@media (max-width: 767px) {
+    #page-teachers .teacher-list {
+        text-align: center;
+    }
+    #page-teachers .teacher-list .thumbnail.img-responsive {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

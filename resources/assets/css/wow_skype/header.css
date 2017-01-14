@@ -22,9 +22,9 @@ header .navbar-default .navbar-nav > .active > a:focus,
 header .navbar-default .navbar-nav > .active > a:hover,
 header .navbar-default .navbar-nav > li > a:focus,
 header .navbar-default .navbar-nav > li > a:hover {
-    color: #337ab7;
+    color: #00aff0;
     background-color: transparent;
-    border-bottom-color: #337ab7;
+    border-bottom-color: #00aff0;
 }
 
 header .navbar-toggle {
@@ -80,7 +80,7 @@ header .wrapper .bar.pull-left {
     width: 90%;
     font-size: 0;
     line-height: 0;
-    border-top: 8px solid #337ab7;
+    border-top: 8px solid #00aff0;
     border-right: 8px solid #fff;
 }
 
@@ -88,7 +88,7 @@ header .wrapper .bar.pull-right {
     width: 10%;
     font-size: 0;
     line-height: 0;
-    border-bottom: 8px solid #5cb85c;
+    border-bottom: 8px solid #75ab00;
     border-left: 8px solid #fff;
 }
 

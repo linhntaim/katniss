@@ -207,7 +207,7 @@ return [
     'teaching_hours' => 'Teaching hours',
     'teaching_status' => 'Teaching status',
     'sort_order' => 'Order',
-    'rate_by' => 'Rate by',
+    'rate_by' => 'Rated by',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -319,6 +319,8 @@ about your classes.',
     'no_student_review_yet' => 'No student\'s review yet',
     'no_teacher_feedback_yet' => 'No teacher\'s feedback yet',
     'no_student_rating_yet' => 'No student\'s rating yet',
+    'choose_teachers_help' => 'Find the best English teachers for you',
+    'choose_topics_help' => 'What do you want to learn?',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',
