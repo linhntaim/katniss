@@ -8,7 +8,7 @@
             <span>1</span>
         </div>
         <div class="media-body">
-            <div>Đăng ký trên website và để lại thông tin số điện thoại cùng email.</div>
+            <div class="color-master">Đăng ký trên website và để lại thông tin số điện thoại cùng email.</div>
         </div>
     </li>
     <li class="media">
@@ -17,7 +17,7 @@
             <span>2</span>
         </div>
         <div class="media-body">
-            <div>Chuyên viên tư vấn tuyển sinh gọi lại hỗ trợ thông tin.</div>
+            <div class="color-master">Chuyên viên tư vấn tuyển sinh gọi lại hỗ trợ thông tin.</div>
         </div>
     </li>
     <li class="media">
@@ -26,7 +26,7 @@
             <span>3</span>
         </div>
         <div class="media-body">
-            <div>Làm bài kiểm tra trình độ tiếng Anh theo chuẩn quốc tế.</div>
+            <div class="color-master">Làm bài kiểm tra trình độ tiếng Anh theo chuẩn quốc tế.</div>
         </div>
     </li>
     <li class="media">
@@ -35,7 +35,7 @@
             <span>4</span>
         </div>
         <div class="media-body">
-            <div>Hoàn thành thủ tục nhập học và đóng học phí.</div>
+            <div class="color-master">Hoàn thành thủ tục nhập học và đóng học phí.</div>
         </div>
     </li>
     <li class="media">
@@ -44,7 +44,7 @@
             <span>5</span>
         </div>
         <div class="media-body">
-            <div>Bắt đầu ngay với lộ trình học của riêng bạn.</div>
+            <div class="color-master">Bắt đầu ngay với lộ trình học của riêng bạn.</div>
         </div>
     </li>
     <li class="media">

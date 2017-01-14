@@ -8,7 +8,7 @@
             <span>1</span>
         </div>
         <div class="media-body">
-            <div>Register a learner account on our website by inputting your phone number and email.</div>
+            <div class="color-master">Register a learner account on our website by inputting your phone number and email.</div>
         </div>
     </li>
     <li class="media">
@@ -17,7 +17,7 @@
             <span>2</span>
         </div>
         <div class="media-body">
-            <div>Our consultants will contact you and give you further information.</div>
+            <div class="color-master">Our consultants will contact you and give you further information.</div>
         </div>
     </li>
     <li class="media">
@@ -26,7 +26,7 @@
             <span>3</span>
         </div>
         <div class="media-body">
-            <div>Do an English test which is formed based on the international standard.</div>
+            <div class="color-master">Do an English test which is formed based on the international standard.</div>
         </div>
     </li>
     <li class="media">
@@ -35,7 +35,7 @@
             <span>4</span>
         </div>
         <div class="media-body">
-            <div>Complete the course entry procedure and pay the tuition.</div>
+            <div class="color-master">Complete the course entry procedure and pay the tuition.</div>
         </div>
     </li>
     <li class="media">
@@ -44,7 +44,7 @@
             <span>5</span>
         </div>
         <div class="media-body">
-            <div>Begin studying with your own course plan.</div>
+            <div class="color-master">Begin studying with your own course plan.</div>
         </div>
     </li>
     <li class="media">

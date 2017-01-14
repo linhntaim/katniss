@@ -146,16 +146,22 @@
                                         </div>
                                         <div class="col-sm-6 col-sm-pl-none col-sm-pr-none">
                                             <h5 class="margin-bottom-5 margin-top-none">
-                                                <a target="_blank" href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">
-                                                    <strong class="color-master uppercase">{{ $teacher->userProfile->display_name }}</strong>
+                                                <a target="_blank" class="uppercase"
+                                                   href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">
+                                                    <strong>{{ $teacher->userProfile->display_name }}</strong>
                                                 </a>
                                             </h5>
-                                            <p class="help-block">
-                                                <span class="color-slave">
-                                                    {{ allCountry($teacher->userProfile->nationality, 'name') }}
-                                                </span>
+                                            <div class="color-slave">
+                                                {{ allCountry($teacher->userProfile->nationality, 'name') }}
+                                            </div>
+                                            <div class="master-slave-bar margin-bottom-10 margin-top-5 width-150 clearfix">
+                                                <div class="bar pull-left"></div>
+                                                <div class="bar pull-right"></div>
+                                            </div>
+                                            <p class="big">
+                                                {{ shorten($teacher->about_me, \Katniss\Everdeen\Utils\AppConfig::SMALLER_SHORTEN_TEXT_LENGTH) }}
+                                                <a target="_blank" href="{{ homeUrl('teachers/{id}', ['id' => $teacher->user_id]) }}">&raquo;</a>
                                             </p>
-                                            <p class="big">{{ shorten($teacher->about_me, \Katniss\Everdeen\Utils\AppConfig::SMALLER_SHORTEN_TEXT_LENGTH) }}</p>
                                             <p class="help-block">
                                                 <em class="color-normal bold-700">
                                                     #{{ $teacher->topics->implode('name', ' #') }}
@@ -198,7 +204,9 @@
                                         </div>
                                     </div>
                                 @endforeach
-                                {{ $pagination }}
+                                <div class="text-center">
+                                    {{ $pagination }}
+                                </div>
                             @else
                                 <div class="margin-top-15">
                                     {{ trans('label.list_empty') }}

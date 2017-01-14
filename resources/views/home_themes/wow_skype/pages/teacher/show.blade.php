@@ -28,18 +28,26 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-3">
-                        <img class="width-120 img-circle margin-bottom-15" src="{{ $teacher->userProfile->url_avatar_thumb }}" alt="{{ $teacher->userProfile->display_name }}">
+                        <img class="width-120 thumbnail padding-none border-master border-2x margin-bottom-15"
+                             src="{{ $teacher->userProfile->url_avatar_thumb }}"
+                             alt="{{ $teacher->userProfile->display_name }}">
                     </div>
                     <div class="col-md-9">
-                        <h4 class="margin-top-none">
+                        <h4 class="margin-top-none margin-bottom-5 color-master uppercase">
                             <strong>{{ $teacher->userProfile->display_name }}</strong>
                         </h4>
-                        <p>{{ allCountry($teacher->userProfile->nationality, 'name') }}</p>
+                        <div class="color-slave">
+                            {{ allCountry($teacher->userProfile->nationality, 'name') }}
+                        </div>
+                        <div class="master-slave-bar margin-bottom-10 margin-top-5 width-150 clearfix">
+                            <div class="bar pull-left"></div>
+                            <div class="bar pull-right"></div>
+                        </div>
                         @if($has_rates)
-                            <div class="box-50 box-circle box-center bg-star color-white bold-700">
+                            <div class="color-star biggest bold-600">
                                 <span>{{ toFormattedNumber($average_rate) }}</span>
                             </div>
-                            <p class="color-star margin-top-10">
+                            <div class="color-star">
                                 <?php $star_split = intval($average_rate) != $average_rate; ?>
                                 @if($star_split)
                                     @for($i = 1; $i <= intval($average_rate); ++$i)
@@ -54,27 +62,27 @@
                                         <i class="fa {{ $i <= $average_rate ? 'fa-star' : 'fa-star-o' }}"></i>
                                     @endfor
                                 @endif
-                            </p>
+                            </div>
                         @endif
                         <p>
                             @if(!empty($teacher->video_teaching_url))
-                                <a target="_blank" role="button" class="btn btn-success teacher-video" href="{{ $teacher->video_teaching_url }}">
+                                <a target="_blank" role="button" class="btn btn-primary teacher-video margin-top-10" href="{{ $teacher->video_teaching_url }}">
                                     <i class="fa fa-play-circle"></i> {{ trans('label.teaching_video') }}
                                 </a>
                                 &nbsp;
                             @endif
                             @if(!empty($teacher->video_introduce_url))
-                                <a target="_blank" role="button" class="btn btn-success teacher-video" href="{{ $teacher->video_introduce_url }}">
+                                <a target="_blank" role="button" class="btn btn-primary teacher-video margin-top-10" href="{{ $teacher->video_introduce_url }}">
                                     <i class="fa fa-play-circle"></i> {{ trans('label.self_introduction_video') }}
                                 </a>
                             @endif
                         </p>
                     </div>
                 </div>
-                <hr>
+                <hr class="border-master">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{ trans('label.about_me') }}</label>
+                        <label class="color-master">{{ trans('label.about_me') }}</label>
                     </div>
                     <div class="col-md-9">
                         <p>
@@ -87,49 +95,49 @@
                         </p>
                     </div>
                 </div>
-                <hr class="margin-top-10">
+                <hr class="margin-top-10 border-master">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{ trans('label.self_introduction') }}</label>
+                        <label class="color-master">{{ trans('label.self_introduction') }}</label>
                     </div>
                     <div class="col-md-9">
                         {!! $teacher->html_about_me !!}
                     </div>
                 </div>
-                <hr class="margin-top-10">
+                <hr class="margin-top-10 border-master">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{ trans_choice('label.topic', 2) }}</label>
+                        <label class="color-master">{{ trans_choice('label.topic', 2) }}</label>
                     </div>
                     <div class="col-md-9">
                         @foreach($teacher->topics as $topic)
-                            <span class="sausage-item sausage-item-default"><strong>{{ $topic->name }}</strong></span>
+                            <span class="sausage-item sausage-item-primary"><strong>{{ $topic->name }}</strong></span>
                         @endforeach
                     </div>
                 </div>
-                <hr class="margin-top-10">
+                <hr class="margin-top-10 border-master">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{ trans('label.teaching_experience') }}</label>
+                        <label class="color-master">{{ trans('label.teaching_experience') }}</label>
                     </div>
                     <div class="col-md-9">
                         {!! $teacher->html_experience !!}
                     </div>
                 </div>
-                <hr class="margin-top-10">
+                <hr class="margin-top-10 border-master">
                 <div class="row">
                     <div class="col-md-3">
-                        <label>{{ trans('label.teaching_methodology') }}</label>
+                        <label class="color-master">{{ trans('label.teaching_methodology') }}</label>
                     </div>
                     <div class="col-md-9">
                         {!! $teacher->html_methodology !!}
                     </div>
                 </div>
                 @if($teacher->userProfile->educations->count() > 0)
-                    <hr class="margin-top-10">
+                    <hr class="margin-top-10 border-master">
                     <div class="row">
                         <div class="col-md-3">
-                            <label>{{ trans('label.education_history') }}</label>
+                            <label class="color-master">{{ trans('label.education_history') }}</label>
                         </div>
                         <div class="col-md-9">
                             <div class="media-list">
@@ -152,10 +160,10 @@
                     </div>
                 @endif
                 @if($teacher->userProfile->works->count() > 0)
-                    <hr>
+                    <hr class="border-master">
                     <div class="row">
                         <div class="col-md-3">
-                            <label>{{ trans('label.work_history') }}</label>
+                            <label class="color-master">{{ trans('label.work_history') }}</label>
                         </div>
                         <div class="col-md-9">
                             <div class="media-list">
@@ -178,14 +186,15 @@
                     </div>
                 @endif
                 @if($has_rates)
-                    <hr>
+                    <hr class="border-master">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="box-50 box-circle bg-star box-center align-center color-white bold-700">
-                                <span>{{ toFormattedNumber($average_rate) }}</span>
+                            <div class="box-120 biggest box-circle bg-master box-center align-center color-white bold-700">
+                                <span class="margin-top--10">{{ toFormattedNumber($average_rate) }}</span>
                             </div>
-                            <p class="margin-top-10 text-center">
-                                {{ trans('label.rate_by') }} {{ $count_rating_students }} {{ trans_choice('label.student_lc', $count_rating_students) }}
+                            <p class="margin-top-10 text-center color-slave bold-700 big">
+                                {{ trans('label.rate_by') }}
+                                <span class="no-wrap">{{ $count_rating_students }} {{ trans_choice('label.student_lc', $count_rating_students) }}</span>
                             </p>
                         </div>
                         <div class="col-md-9">
@@ -193,8 +202,8 @@
                                 @foreach($rates_for_teacher as $name => $rate)
                                     <div class="col-xs-4">
                                         <p>
-                                            <label class="label label-warning">{{ toFormattedNumber($rate) }}</label>
-                                            <span class="margin-top-5">{{ trans('label.teacher_' . $name . '_rate') }}</span>
+                                            <label class="label bg-star">{{ toFormattedNumber($rate) }}</label>
+                                            <span class="color-master margin-top-5 bold-600">{{ trans('label.teacher_' . $name . '_rate') }}</span>
                                         </p>
                                         <p class="color-star">
                                             <?php $star_split = intval($rate) != $rate; ?>
