@@ -207,6 +207,7 @@ return [
     'teaching_hours' => 'Số giờ dạy',
     'teaching_status' => 'Tình trạng dạy',
     'sort_order' => 'Thứ tự',
+    'rate_by' => 'Đánh giá bởi',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

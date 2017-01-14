@@ -207,6 +207,7 @@ return [
     'teaching_hours' => 'Teaching hours',
     'teaching_status' => 'Teaching status',
     'sort_order' => 'Order',
+    'rate_by' => 'Rate by',
 
     'settings' => 'Settings',
     'country' => 'Country',

@@ -36,8 +36,10 @@
                         </h4>
                         <p>{{ allCountry($teacher->userProfile->nationality, 'name') }}</p>
                         @if($has_rates)
-                            <p>{{ toFormattedNumber($average_rate) }}</p>
-                            <p class="color-star">
+                            <div class="box-50 box-circle box-center bg-star color-white bold-700">
+                                <span>{{ toFormattedNumber($average_rate) }}</span>
+                            </div>
+                            <p class="color-star margin-top-10">
                                 <?php $star_split = intval($average_rate) != $average_rate; ?>
                                 @if($star_split)
                                     @for($i = 1; $i <= intval($average_rate); ++$i)
@@ -177,27 +179,44 @@
                 @endif
                 @if($has_rates)
                     <hr>
-                    <p>{{ toFormattedNumber($average_rate) }}</p>
-                    <p>{{ $count_rating_students }} {{ trans_choice('label.student', $count_rating_students) }}</p>
-                    @foreach($rates_for_teacher as $name => $rate)
-                        <p>{{ toFormattedNumber($rate) }} {{ trans('label.teacher_' . $name . '_rate') }}</p>
-                        <p class="color-star">
-                            <?php $star_split = intval($rate) != $rate; ?>
-                            @if($star_split)
-                                @for($i = 1; $i <= intval($rate); ++$i)
-                                    <i class="fa fa-star"></i>
-                                @endfor
-                                <i class="fa fa-star-half-o"></i>
-                                @for($i = intval($rate) + 2; $i <= $max_rate; ++$i)
-                                    <i class="fa fa-star-o"></i>
-                                @endfor
-                            @else
-                                @for($i = 1; $i <= $max_rate; ++$i)
-                                    <i class="fa {{ $i <= $rate ? 'fa-star' : 'fa-star-o' }}"></i>
-                                @endfor
-                            @endif
-                        </p>
-                    @endforeach
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="box-50 box-circle bg-star box-center align-center color-white bold-700">
+                                <span>{{ toFormattedNumber($average_rate) }}</span>
+                            </div>
+                            <p class="margin-top-10 text-center">
+                                {{ trans('label.rate_by') }} {{ $count_rating_students }} {{ trans_choice('label.student_lc', $count_rating_students) }}
+                            </p>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row padding-top-15 padding-bottom-15">
+                                @foreach($rates_for_teacher as $name => $rate)
+                                    <div class="col-xs-4">
+                                        <p>
+                                            <label class="label label-warning">{{ toFormattedNumber($rate) }}</label>
+                                            <span class="margin-top-5">{{ trans('label.teacher_' . $name . '_rate') }}</span>
+                                        </p>
+                                        <p class="color-star">
+                                            <?php $star_split = intval($rate) != $rate; ?>
+                                            @if($star_split)
+                                                @for($i = 1; $i <= intval($rate); ++$i)
+                                                    <i class="fa fa-star"></i>
+                                                @endfor
+                                                <i class="fa fa-star-half-o"></i>
+                                                @for($i = intval($rate) + 2; $i <= $max_rate; ++$i)
+                                                    <i class="fa fa-star-o"></i>
+                                                @endfor
+                                            @else
+                                                @for($i = 1; $i <= $max_rate; ++$i)
+                                                    <i class="fa {{ $i <= $rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                                @endfor
+                                            @endif
+                                        </p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
                 @endif
             </div>
             <div class="col-md-4">

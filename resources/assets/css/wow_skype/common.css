@@ -50,6 +50,124 @@ a:active {
     width: 150px;
 }
 
+.width-180 {
+    width: 180px;
+}
+
+.width-200 {
+    width: 200px;
+}
+
+.box-30 {
+    width: 30px;
+    height: 30px;
+}
+
+.box-32 {
+    width: 32px;
+    height: 32px;
+}
+
+.box-35 {
+    width: 35px;
+    height: 35px;
+}
+
+.box-40 {
+    width: 40px;
+    height: 40px;
+}
+
+.box-50 {
+    width: 50px;
+    height: 50px;
+}
+
+.box-100 {
+    width: 100px;
+    height: 100px;
+}
+
+.box-120 {
+    width: 120px;
+    height: 120px;
+}
+
+.box-150 {
+    width: 150px;
+    height: 150px;
+}
+
+.box-180 {
+    width: 180px;
+    height: 180px;
+}
+
+.box-200 {
+    width: 200px;
+    height: 200px;
+}
+
+.box-circle {
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.box-center.box-30 {
+    line-height: 30px;
+}
+
+.box-center.box-32 {
+    line-height: 32px;
+}
+
+.box-center.box-35 {
+    line-height: 35px;
+}
+
+.box-center.box-40 {
+    line-height: 40px;
+}
+
+.box-center.box-50 {
+    line-height: 50px;
+}
+
+.box-center.box-100 {
+    line-height: 100px;
+}
+
+.box-center.box-120 {
+    line-height: 120px;
+}
+
+.box-center.box-150 {
+    line-height: 150px;
+}
+
+.box-center.box-180 {
+    line-height: 180px;
+}
+
+.box-center.box-200 {
+    line-height: 200px;
+}
+
+.box-center {
+    text-align: center;
+}
+
+.box-center span {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.box-warning {
+
+}
+
 .margin-none {
     margin: 0;
 }
@@ -218,6 +336,10 @@ a:active {
     padding-bottom: 30px;
 }
 
+.align-center {
+    margin: 0 auto;
+}
+
 .bold-300 {
     font-weight: 300;
 }
@@ -238,6 +360,10 @@ a:active {
     color: #5cb85c;
 }
 
+.color-white {
+    color: #fff;
+}
+
 .color-lighter {
     color: #999;
 }
@@ -256,6 +382,10 @@ a:active {
 
 .bg-slave {
     background-color: #5cb85c;
+}
+
+.bg-star {
+    background-color: #EDB867;
 }
 
 .border-master {
