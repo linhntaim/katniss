@@ -29,9 +29,11 @@
                 }
                 queryString = queryString.split('&');
                 var pageIndex = -1;
+                var found = false;
                 for (var i in queryString) {
                     if (queryString[i].indexOf('gender=') == 0) {
                         queryString[i] = 'gender=' + $(this).val();
+                        found = true;
                     }
                     if (queryString[i].indexOf('page=') == 0) {
                         pageIndex = i;
@@ -39,6 +41,9 @@
                 }
                 if (pageIndex != -1) {
                     queryString.splice(pageIndex, 1);
+                }
+                if (!found) {
+                    queryString.push('gender=' + $(this).val());
                 }
                 window.location.href = '?' + queryString.join('&');
             });
@@ -51,9 +56,11 @@
                 }
                 queryString = queryString.split('&');
                 var pageIndex = -1;
+                var found = false;
                 for (var i in queryString) {
                     if (queryString[i].indexOf('nationality=') == 0) {
                         queryString[i] = 'nationality=' + $(this).val();
+                        found = true;
                     }
                     if (queryString[i].indexOf('page=') == 0) {
                         pageIndex = i;
@@ -61,6 +68,9 @@
                 }
                 if (pageIndex != -1) {
                     queryString.splice(pageIndex, 1);
+                }
+                if (!found) {
+                    queryString.push('nationality=' + $(this).val());
                 }
                 window.location.href = '?' + queryString.join('&');
             });
