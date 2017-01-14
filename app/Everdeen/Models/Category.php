@@ -46,6 +46,11 @@ class Category extends Model
         return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
     }
 
+    public function getOrderedPostsAttribute()
+    {
+        return $this->media()->orderBy('order', 'asc')->get();
+    }
+
     public function media()
     {
         return $this->belongsToMany(Media::class, 'categories_media', 'category_id', 'media_id');

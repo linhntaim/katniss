@@ -1213,6 +1213,12 @@ function homeThemeMockAdmin()
     }
 }
 
+function homeThemeExtensions()
+{
+    $homeTheme = homeTheme();
+    return $homeTheme !== false ? $homeTheme->extensions() : [];
+}
+
 /**
  * @return bool|\Katniss\Everdeen\Themes\AdminThemes\AdminTheme
  */

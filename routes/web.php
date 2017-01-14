@@ -34,6 +34,9 @@ Route::group([
         Route::get(homeRoute('teachers'), 'TeacherController@index');
         Route::get(homeRoute('teachers/{id}'), 'TeacherController@show');
 
+        Route::get(homeRoute('helps'), 'HelpController@index');
+        Route::get(homeRoute('helps/{slug}'), 'HelpController@show');
+
         Route::group([
             'middleware' => 'auth'
         ], function () {

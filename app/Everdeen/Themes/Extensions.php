@@ -21,7 +21,7 @@ class Extensions extends Plugins
 
     public function __construct()
     {
-        parent::__construct(array_merge(config('katniss.extensions'), ThemeFacade::extensions()));
+        parent::__construct(array_merge(config('katniss.extensions'), homeThemeExtensions()));
     }
 
     public function init()

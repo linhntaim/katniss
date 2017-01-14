@@ -18,6 +18,7 @@ class CreateCategoriesPosts extends Migration
 
             $table->integer('category_id')->unsigned();
             $table->bigInteger('post_id')->unsigned();
+            $table->integer('order')->unsigned()->default(0);
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');

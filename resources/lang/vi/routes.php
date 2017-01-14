@@ -22,6 +22,8 @@ return [
     'opening-classrooms'                            => 'lop-dang-hoc',
     'closed-classrooms'                             => 'lop-da-hoc-xong',
     'classrooms/{id}'                               => 'lop-hoc/{id}',
+    'helps'                                         => 'tro-giup',
+    'helps/{slug}'                                  => 'tro-giup/{slug}',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
     'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',
