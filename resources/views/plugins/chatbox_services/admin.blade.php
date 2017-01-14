@@ -24,38 +24,21 @@
                 <div class="form-group">
                     <div class="checkbox icheck">
                         <label for="inputChatboxEnable">
-                            <input id="inputchatEnable" type="checkbox" name="chatBox_enable" value="1"{{ $ga_enable ? ' checked' : '' }}>
-                            &nbsp; {{ trans('analytic_services.enable') }}
+                            <input id="inputchatEnable" type="checkbox" name="chatbox_enable" value="1"{{ $chatbox_enable ? ' checked' : '' }}>
+                            &nbsp; {{ trans('chatbox_services.enable') }}
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputChatboxId">ID</label>
-                    <input id="inputChatboxId" type="text" class="form-control" name="ga_id" value="{{ $ga_id }}">
+                    <label for="chatbox_id">Chatbox ID</label>
+                    <input id="chatbox_id" type="text" class="form-control" name="chatbox_id" value="{{ $chatbox_id }}" placeholder="{{ trans('chatbox_services.tawkto_chatbox_id') }}">
                 </div>
-                <div class="form-group">
-                    <div class="checkbox icheck">
-                        <label for="inputChatboxAsync">
-                            <input id="inputChatboxAsync" type="checkbox" name="ga_async" value="1"{{ $ga_async ? ' checked' : '' }}>
-                            &nbsp; {{ trans('analytic_services.ga_async') }}
-                        </label>
-                    </div>
-                    <div class="help-block">{{ trans('analytic_services.ga_async_help') }}</div>
-                </div>
+
             </div>
             <div class="col-xs-12 col-md-4">
-                <h5>MixPanel</h5>
+                <h5>Custom Chatbox Script</h5>
                 <div class="form-group">
-                    <div class="checkbox icheck">
-                        <label for="inputMixPanelEnable">
-                            <input id="inputMixPanelEnable" type="checkbox" name="mix_panel_enable" value="1"{{ $mix_panel_enable ? ' checked' : '' }}>
-                            &nbsp; {{ trans('analytic_services.enable') }}
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputMixPanelToken">Token</label>
-                    <input id="inputMixPanelToken" type="text" class="form-control" name="mix_panel_token" value="{{ $mix_panel_token }}">
+                    <textarea class="form-control" rows="4" id="custom_chatbox" name="custom_chatbox" placeholder="{{ trans('chatbox_services.place_holder_custom_chatbox_area') }}">{{ $custom_chatbox }}</textarea>
                 </div>
             </div>
         </div>
@@ -65,8 +48,8 @@
     <div class="checkbox icheck">
         <label for="inputCacheEnable">
             <input id="inputCacheEnable" type="checkbox" name="cache_enable" value="1"{{ $cache_enable ? ' checked' : '' }}>
-            &nbsp; {{ trans('analytic_services.cache_enable') }}
+            &nbsp; {{ trans('chatbox_services.cache_enable') }}
         </label>
     </div>
-    <div class="help-block">{{ trans('analytic_services.cache_enable_help') }}</div>
+    <div class="help-block">{{ trans('chatbox_services.cache_enable_help') }}</div>
 </div>

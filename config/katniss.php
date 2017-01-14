@@ -76,7 +76,7 @@ return [
     'admin_except_extensions' => [
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME,
-        //Katniss\Everdeen\Themes\Plugins\ChatBoxServices\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\ChatBoxServices\Extension::NAME,
     ],
     'paths_use_admin_theme' => [
         'admin', 'auth', 'documents', 'password', 'me'
