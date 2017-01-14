@@ -99,6 +99,7 @@ return [
     'admin/help-categories/create'                  => 'admin/help-categories/create',
     'admin/help-categories/{id}'                    => 'admin/help-categories/{id}',
     'admin/help-categories/{id}/edit'               => 'admin/help-categories/{id}/edit',
+    'admin/help-categories/{id}/sort'               => 'admin/help-categories/{id}/sort',
     'admin/helps'                                   => 'admin/helps',
     'admin/helps/create'                            => 'admin/helps/create',
     'admin/helps/{id}'                              => 'admin/helps/{id}',

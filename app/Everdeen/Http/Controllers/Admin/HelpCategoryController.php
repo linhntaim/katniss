@@ -179,4 +179,17 @@ class HelpCategoryController extends AdminController
 
         return redirect($rdrUrl);
     }
+
+    public function sort(Request $request, $id)
+    {
+        $category = $this->helpCategoryRepository->model($id);
+
+        $this->_title([trans('pages.admin_help_categories_title'), trans('form.action_sort')]);
+        $this->_description(trans('pages.admin_help_categories_desc'));
+
+        return $this->_any('sort', [
+            'category' => $category,
+            'helps' => $category->orderedPosts,
+        ]);
+    }
 }

@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Repositories;
 
 
+use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Themes\Extension;
@@ -36,6 +37,27 @@ class HelpCategoryRepository extends CategoryRepository
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();
+    }
+
+    public function updateSort($helpIds)
+    {
+        $category = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $order = 0;
+            $category_helps = $category->posts();
+            foreach ($helpIds as $helpId) {
+                ++$order;
+                $category_helps->updateExistingPivot($helpId, ['order' => $order]);
+            }
+            DB::commit();
+            return true;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
     }
 
     public function delete()
