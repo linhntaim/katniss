@@ -92,4 +92,5 @@ return [
     'action_review_teacher' => 'Nhận xét về giáo viên',
     'action_calculate' => 'Tính toán',
     'action_change_to' => 'Chuyển thành',
+    'action_view_profile' => 'Xem hồ sơ',
 ];

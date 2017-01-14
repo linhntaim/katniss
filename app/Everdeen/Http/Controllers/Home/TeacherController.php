@@ -598,6 +598,19 @@ class TeacherController extends ViewController
 
     #endregion
 
+    protected function getRatesForTeacher($reviewsForTeacher, &$ratesForTeacher, &$averageRate)
+    {
+        $ratesForTeacher = [];
+        $averageRate = 0;
+        $count = 0;
+        foreach (_k('rates_for_teacher') as $rate) {
+            ++$count;
+            $ratesForTeacher[$rate] = $reviewsForTeacher->avg($rate);
+            $averageRate += $ratesForTeacher[$rate];
+        }
+        $averageRate = $averageRate / $count;
+    }
+
     public function index(Request $request)
     {
         $topicRepository = new TopicRepository();
@@ -610,7 +623,20 @@ class TeacherController extends ViewController
             $searchNationality,
             $searchGender
         );
-        $paginationRender = new PaginationRender();
+
+        $reviewsReport = new TeacherPeriodicReviewsReport($teachers->pluck('user_id')->all());
+        $reviewsForTeachers = $reviewsReport->getData();
+        $averageRateForTeachers = [];
+        $countRatingStudentsForTeachers = [];
+        foreach ($reviewsForTeachers as $teacherId => $reviewsForTeacher) {
+            $this->getRatesForTeacher($reviewsForTeacher, $ratesForTeacher, $averageRate);
+            $averageRateForTeachers[$teacherId] = $averageRate;
+            $countRatingStudentsForTeachers[$teacherId] = $reviewsForTeacher->groupBy('user_id')->count();
+        }
+        $this->paginationRender->firstText = trans('pagination.page_first');
+        $this->paginationRender->lastText = trans('pagination.page_last');
+        $this->paginationRender->prevText = '<i class="fa fa-caret-left"></i>';
+        $this->paginationRender->nextText = '<i class="fa fa-caret-right"></i>';
 
         $this->_title(trans('pages.home_teachers_title'));
         $this->_description(trans('pages.home_teachers_desc'));
@@ -618,26 +644,16 @@ class TeacherController extends ViewController
         return $this->_index([
             'topics' => $topicRepository->getAll(),
             'teachers' => $teachers,
-            'pagination' => $paginationRender->renderByPagedModels($teachers),
-            'start_order' => $paginationRender->getRenderedPagination()['start_order'],
+            'average_rate_for_teachers' => $averageRateForTeachers,
+            'count_rating_students_for_teachers' => $countRatingStudentsForTeachers,
+            'pagination' => $this->paginationRender->renderByPagedModels($teachers),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+            'max_rate' => count(_k('rates')),
 
             'search_topics' => $searchTopics,
             'search_nationality' => $searchNationality,
             'search_gender' => $searchGender,
         ]);
-    }
-
-    protected function getRatesForTeacher($reviewsForTeacher, &$ratesForTeacher, &$averageRate)
-    {
-        $ratesForTeacher = [];
-        $averageRate = 0;
-        $count = 0;
-        foreach (_k('rates_for_teacher') as $rate) {
-            ++$count;
-            $ratesForTeacher[$rate] = $reviewsForTeacher->avg($rate);
-            $averageRate += $ratesForTeacher[$rate];
-        }
-        $averageRate = $averageRate / $count;
     }
 
     public function show(Request $request, $id)

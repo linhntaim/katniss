@@ -319,6 +319,8 @@ lộ trình học tập và học phí.',
     'no_student_review_yet' => 'Chưa có nhận xét nào của học viên',
     'no_teacher_feedback_yet' => 'Chưa có phản hồi nào của giáo viên',
     'no_student_rating_yet' => 'Chưa có đánh giá nào của học viên',
+    'choose_teachers_help' => 'Tìm giáo viên tiếng Anh phù hợp nhất với bạn',
+    'choose_topics_help' => 'Bạn đang học gì?',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',

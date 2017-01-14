@@ -1,13 +1,13 @@
-<h4>LEARN ENGLISH ON WOWSKYPE</h4>
-<hr>
-<ul class="media-list step-list">
+<h4 class="uppercase margin-bottom-15 margin-top-none bold-700 color-master">
+    Learns English at WowSkype
+</h4>
+<ul class="media-list step-list margin-bottom-none">
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
             <span>1</span>
         </div>
         <div class="media-body">
-            <h5 class="media-heading">Choose A Teacher And Register For A Free Test</h5>
             <div>Register a learner account on our website by inputting your phone number and email.</div>
         </div>
     </li>
@@ -17,8 +17,7 @@
             <span>2</span>
         </div>
         <div class="media-body">
-            <h5 class="media-heading">Take A Free Test</h5>
-            <div>Within 5 days, our consultants will contact you and give you further information.</div>
+            <div>Our consultants will contact you and give you further information.</div>
         </div>
     </li>
     <li class="media">
@@ -27,7 +26,6 @@
             <span>3</span>
         </div>
         <div class="media-body">
-            <h5 class="media-heading">Get Unique Learning Pathway</h5>
             <div>Do an English test which is formed based on the international standard.</div>
         </div>
     </li>
@@ -37,7 +35,6 @@
             <span>4</span>
         </div>
         <div class="media-body">
-            <h5 class="media-heading">Learn Online With Teacher</h5>
             <div>Complete the course entry procedure and pay the tuition.</div>
         </div>
     </li>
@@ -47,8 +44,15 @@
             <span>5</span>
         </div>
         <div class="media-body">
-            <h5 class="media-heading">Rate And Review Teacher</h5>
             <div>Begin studying with your own course plan.</div>
+        </div>
+    </li>
+    <li class="media">
+        <div class="media-body">
+            <a role="button" class="btn btn-primary btn-block uppercase bold-700"
+               href="{{ homeUrl('student/sign-up') }}">
+                {{ trans('form.action_register_class') }}
+            </a>
         </div>
     </li>
 </ul>

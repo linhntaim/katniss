@@ -19,9 +19,13 @@ class PaginationRender
         'query' => 'page',
         'wrapClass' => 'pagination',
         'firstClass' => 'first',
+        'firstText' => '&laquo;',
         'lastClass' => 'last',
+        'lastText' => '&raquo;',
         'prevClass' => 'prev',
+        'prevText' => '&lsaquo;',
         'nextClass' => 'next',
+        'nextText' => '&rsaquo;',
         'pageClass' => 'page',
         'activeClass' => 'active',
         'disabledClass' => 'disabled',
@@ -30,9 +34,13 @@ class PaginationRender
     public $query = 'page';
     public $wrapClass = 'pagination';
     public $firstClass = 'first';
+    public $firstText = '&laquo;';
     public $lastClass = 'last';
+    public $lastText = '&raquo;';
     public $prevClass = 'prev';
+    public $prevText = '&lsaquo;';
     public $nextClass = 'next';
+    public $nextText = '&rsaquo;';
     public $pageClass = 'page';
     public $activeClass = 'active';
     public $disabledClass = 'disabled';
@@ -77,12 +85,12 @@ class PaginationRender
         $menu = new Menu();
         $menu->add(
             $request->fullUrlWithQuery([$this->query => $this->renderedPagination['first']]),
-            '&laquo;', '', '', $this->renderedPagination['at_first'] ? "$this->firstClass $this->disabledClass" : $this->firstClass,
+            $this->firstText, '', '', $this->renderedPagination['at_first'] ? "$this->firstClass $this->disabledClass" : $this->firstClass,
             '', '', trans('pagination.page_first')
         );
         $menu->add(
             $request->fullUrlWithQuery([$this->query => $this->renderedPagination['prev']]),
-            '&lsaquo;', '', '', $this->renderedPagination['at_first'] ? "$this->prevClass $this->disabledClass" : $this->prevClass,
+            $this->prevText, '', '', $this->renderedPagination['at_first'] ? "$this->prevClass $this->disabledClass" : $this->prevClass,
             '', '', trans('pagination.page_prev')
         );
         for ($i = $this->renderedPagination['range']['start']; $i <= $this->renderedPagination['range']['end']; ++$i) {
@@ -94,12 +102,12 @@ class PaginationRender
         }
         $menu->add(
             $request->fullUrlWithQuery([$this->query => $this->renderedPagination['next']]),
-            '&rsaquo;', '', '', $this->renderedPagination['at_last'] ? "$this->nextClass $this->disabledClass" : $this->nextClass,
+            $this->nextText, '', '', $this->renderedPagination['at_last'] ? "$this->nextClass $this->disabledClass" : $this->nextClass,
             '', '', trans('pagination.page_next')
         );
         $menu->add(
             $request->fullUrlWithQuery([$this->query => $this->renderedPagination['last']]),
-            '&raquo;', '', '', $this->renderedPagination['at_last'] ? "$this->lastClass $this->disabledClass" : $this->lastClass,
+            $this->lastText, '', '', $this->renderedPagination['at_last'] ? "$this->lastClass $this->disabledClass" : $this->lastClass,
             '', '', trans('pagination.page_last')
         );
         $menuRender = new MenuRender();
