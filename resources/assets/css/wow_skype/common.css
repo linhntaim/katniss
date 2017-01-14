@@ -359,6 +359,12 @@ a:active {
     font-weight: 700;
 }
 
+.article-responsive img,
+.article-responsive iframe {
+    max-width: 100%;
+    height: auto;
+}
+
 @media all and (max-width: 960px) {
     .wrapper {
         width: 100%;

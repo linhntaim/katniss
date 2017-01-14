@@ -59,6 +59,7 @@ class Menu
     protected function matchUrl($url)
     {
         if (!beginsWith($url, 'http') || empty($this->matchingUrl)) return false;
+
         if ($this->strict) {
             return $url == $this->matchingUrl;
         }
@@ -90,7 +91,7 @@ class Menu
             && $url['path'] == $matchingUrl['path'];
     }
 
-    public function add($url, $name, $before = '', $after = '', $itemClass = '', $linkClass = '', $itemId = '', $title = '')
+    public function add($url, $name, $before = '', $after = '', $itemClass = '', $linkClass = '', $itemId = '', $title = '', $matchingCallback = null)
     {
         $this->data[] = [
             'item' => [
@@ -102,7 +103,9 @@ class Menu
                 'item_class' => $itemClass,
                 'link_class' => $linkClass,
                 'item_id' => $itemId,
-                'active' => $this->matchUrl($url),
+                'active' => is_bool($matchingCallback) ?
+                    $matchingCallback : (empty($matchingCallback) ?
+                        $this->matchUrl($url) : call_user_func($matchingCallback, $url)),
             ],
         ];
         $this->currentIndex = count($this->data) - 1;

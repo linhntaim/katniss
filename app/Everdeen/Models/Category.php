@@ -48,7 +48,7 @@ class Category extends Model
 
     public function getOrderedPostsAttribute()
     {
-        return $this->media()->orderBy('order', 'asc')->get();
+        return $this->posts()->orderBy('order', 'asc')->get();
     }
 
     public function media()

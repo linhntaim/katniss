@@ -3,9 +3,13 @@
     <div id="page-helps">
         <div class="row">
             <div class="col-sm-4">
-                {{ $category_menu }}
+                {{ $categories_menu }}
             </div>
             <div class="col-sm-8">
+                @if(!empty($help))
+                    <h1 class="margin-top-none margin-bottom-20 uppercase"><strong>{{ $help->title }}</strong></h1>
+                    <article class="article-responsive">{!! $help->content !!}</article>
+                @endif
             </div>
         </div>
     </div>

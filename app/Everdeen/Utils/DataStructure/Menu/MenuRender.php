@@ -43,7 +43,7 @@ class MenuRender
         $url = $object->property('url');
         $name = $this->renderName($object);
         if (!empty($url)) {
-            $linkClass = $this->renderClass($this->itemClass, $object->property('link_class'));
+            $linkClass = $this->renderClass($this->linkClass, $object->property('link_class'));
             return Str::format('<a{0} href="{1}">{2}</a>', $linkClass, $url, $name);
         }
         return $name;
