@@ -12,7 +12,6 @@ namespace Katniss\Everdeen\Themes\HomeThemes\WowSkype;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
 use Katniss\Everdeen\Themes\HomeThemes\WowSkype\Controllers\ThemeAdminController;
-use Katniss\Everdeen\Themes\HomeThemes\WowSkype\Plugins\Demo\Demo;
 use Katniss\Everdeen\Themes\Queue\CssQueue;
 use Katniss\Everdeen\Themes\Queue\JsQueue;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
@@ -111,7 +110,6 @@ class Theme extends HomeTheme
     {
         return [
             // define extension here: extension name => extension class
-            Demo::NAME => Demo::class,
         ];
     }
 
