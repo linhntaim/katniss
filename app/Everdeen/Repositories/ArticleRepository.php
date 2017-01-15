@@ -23,11 +23,57 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
+    public function getPublishedPaged()
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSearchPublishedPaged($title = null, $author = null, $categories = null)
+    {
+        $posts = Post::where('type', $this->type)->where('status', Post::STATUS_PUBLISHED);
+
+        if (!empty($title)) {
+            $posts->whereTranslationLike('title', '%' . $title . '%');
+        }
+        if (!empty($author)) {
+            $posts->where('user_id', $author);
+        }
+        if (!empty($categories)) {
+            $posts->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('id', $categories);
+            });
+        }
+
+        return $posts->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getTeacherEditingPaged()
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_TEACHER_EDITING)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getPagedByCategory($categoryId, &$category)
     {
         $categoryRepository = new ArticleCategoryRepository();
         $category = $categoryRepository->getById($categoryId);
         return $category->posts()->where('type', $this->type)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getPublishedPagedByCategory($categoryId, &$category)
+    {
+        $categoryRepository = new ArticleCategoryRepository();
+        $category = $categoryRepository->getById($categoryId);
+        return $category->posts()->where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }

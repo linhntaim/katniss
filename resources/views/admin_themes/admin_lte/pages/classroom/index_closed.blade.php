@@ -67,15 +67,27 @@
                 });
             }
 
-            initAjaxSelect2($('#inputTeacher'), KATNISS_WEB_API_URL + '/teachers', templateRender, dataSelection, function (response) {
+            var $inputTeacher = $('#inputTeacher');
+            initAjaxSelect2($inputTeacher, KATNISS_WEB_API_URL + '/teachers', templateRender, dataSelection, function (response) {
                 return response._success ? response._data.teachers : [];
             }, dataMore);
-            initAjaxSelect2($('#inputStudent'), KATNISS_WEB_API_URL + '/students', templateRender, dataSelection, function (response) {
+            $inputTeacher.on('change', function () {
+                $('#inputTeacherHidden').val($(this).val());
+            });
+            var $inputStudent = $('#inputStudent');
+            initAjaxSelect2($inputStudent, KATNISS_WEB_API_URL + '/students', templateRender, dataSelection, function (response) {
                 return response._success ? response._data.students : [];
             }, dataMore);
-            initAjaxSelect2($('#inputSupporter'), KATNISS_WEB_API_URL + '/supporters', templateRender, dataSelection, function (response) {
+            $inputStudent.on('change', function () {
+                $('#inputStudentHidden').val($(this).val());
+            });
+            var $inputSupporter = $('#inputSupporter');
+            initAjaxSelect2($inputSupporter, KATNISS_WEB_API_URL + '/supporters', templateRender, dataSelection, function (response) {
                 return response._success ? response._data.supporters : [];
             }, dataMore);
+            $inputSupporter.on('change', function () {
+                $('#inputSupporterHidden').val($(this).val());
+            });
 
             x_modal_put($('a.classroom-open'), '{{ trans('form.action_close') }}', '{{ trans('label.wanna_open', ['name' => '']) }}');
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
@@ -111,6 +123,7 @@
                                     <select id="inputTeacher" class="form-control select2" name="teacher" style="width: 100%;"
                                             data-placeholder="- {{ trans('form.action_select') }} {{ trans_choice('label.teacher', 1) }} -">
                                     </select>
+                                    <input id="inputTeacherHidden" type="hidden" name="teacher" value="{{ $search_teacher }}">
                                 </div>
                             </div>
                             <div class="col-xs-12">
@@ -122,6 +135,7 @@
                                     <select id="inputStudent" class="form-control select2" name="student" style="width: 100%;"
                                             data-placeholder="- {{ trans('form.action_select') }} {{ trans_choice('label.student', 1) }} -">
                                     </select>
+                                    <input id="inputStudentHidden" type="hidden" name="student" value="{{ $search_student }}">
                                 </div>
                             </div>
                             <div class="col-xs-12">
@@ -133,6 +147,7 @@
                                     <select id="inputSupporter" class="form-control select2" name="supporter" style="width: 100%;"
                                             data-placeholder="- {{ trans('form.action_select') }} {{ trans_choice('label.supporter', 1) }} -">
                                     </select>
+                                    <input id="inputSupporterHidden" type="hidden" name="supporter" value="{{ $search_supporter }}">
                                 </div>
                             </div>
                         </div>

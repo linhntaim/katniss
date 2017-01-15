@@ -28,6 +28,7 @@ Route::group([
     Route::get('teachers', 'TeacherController@index');
     Route::get('students', 'StudentController@index');
     Route::get('supporters', 'UserController@indexSupporter');
+    Route::get('authors', 'UserController@indexAuthor');
 
     Route::group([
         'middleware' => 'auth'
