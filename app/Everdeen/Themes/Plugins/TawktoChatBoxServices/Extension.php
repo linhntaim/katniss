@@ -6,7 +6,7 @@
  * Time: 22:07 PM
  */
 
-namespace Katniss\Everdeen\Themes\Plugins\ChatBoxServices;
+namespace Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices;
 
 use Katniss\Everdeen\Themes\Extension as BaseExtension;
 use Katniss\Everdeen\Utils\AssetHelper;
@@ -14,21 +14,19 @@ use Katniss\Everdeen\Utils\HtmlTag\Html5;
 
 class Extension extends BaseExtension
 {
-    const NAME              = 'chatbox_services';
-    const DISPLAY_NAME      = 'Chatbox Services';
-    const DESCRIPTION       = 'Set up Chatbox Services';
-    const EDITABLE          = true;
+    const NAME              = 'tawkto_chatbox_services';
+    const DISPLAY_NAME      = 'Tawk.to Chatbox Services';
+    const DESCRIPTION       = 'Set up Tawkto Chatbox Services';
     const DEFAULT_TAWKTO_ID = '54f6736dbd5fa428704c651a';
 
     public $cacheEnable;
     public $chatboxEnable;
     public $chatboxId;
-    public $customChatbox;
 
     public function register ()
     {
         if (!$this->cacheEnable && $this->chatboxEnable) {
-            enqueueThemeFooter($this->rawChatboxScript(), 'chatbox_services');
+            enqueueThemeFooter($this->rawChatboxScript(), $this::NAME);
         } else {
             enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
         }
@@ -59,9 +57,6 @@ class Extension extends BaseExtension
             if ($this->chatboxEnable) {
                 $cache .= $this->chatboxScript() . PHP_EOL;
             }
-            if (!empty($this->customChatbox)) {
-                $cache = $this->customChatbox . PHP_EOL;
-            }
             if (!empty($cache)) {
                 AssetHelper::cacheJs($this::NAME, $cache);
             }
@@ -77,8 +72,6 @@ class Extension extends BaseExtension
         $this->chatboxEnable = !empty($this->data['chatbox_enable']) && $this->data['chatbox_enable'] == 1;
         $this->chatboxId     = empty($this->data['chatbox_id']) ? $this::DEFAULT_TAWKTO_ID : $this->data['chatbox_id'];
 
-        $this->customChatbox = empty($this->data['custom_chatbox']) ? '' : $this->data['custom_chatbox'];
-
         if (!$this->chatboxEnable) {
             $this->cacheEnable = false;
         }
@@ -90,7 +83,6 @@ class Extension extends BaseExtension
             'cache_enable'   => $this->cacheEnable,
             'chatbox_enable' => $this->chatboxEnable,
             'chatbox_id'     => $this->chatboxId,
-            'custom_chatbox' => $this->customChatbox,
         ]);
     }
 
@@ -101,7 +93,6 @@ class Extension extends BaseExtension
             'cache_enable',
             'chatbox_enable',
             'chatbox_id',
-            'custom_chatbox',
         ]);
     }
 
@@ -111,8 +102,7 @@ class Extension extends BaseExtension
         return array_merge($validationRules, [
             'cache_enable'   => 'sometimes|in:1',
             'chatbox_enable' => 'sometimes|in:1',
-            'chatbox_id'     => 'required_without:custom_chatbox',
-            'custom_chatbox' => 'required_without:chatbox_id',
+            'chatbox_id'     => 'required_if:chatbox_enable,1',
         ]);
     }
 
