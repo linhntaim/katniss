@@ -7,6 +7,7 @@
  */
 return [
     'enable' => 'Cho phép',
+    'async' => 'Load không đồng bộ',
     'cache_enable' => 'Cho phép tạo tập tin tạm',
     'cache_enable_help' => 'Nếu được cho phép, các đoạn mã sẽ được lưu ra các tập tin tạm; nếu không, chúng sẽ được đặt trực tiếp trong trang web. Lưu ra tập tin tạm sẽ giúp giảm thời gian tải trang web của bạn.',
     'tawkto_chatbox_id' => 'Tawk.to chatbox id',

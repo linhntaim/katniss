@@ -21,6 +21,7 @@ class Extension extends BaseExtension
 
     public $cacheEnable;
     public $chatboxEnable;
+    public $chatboxAsync;
     public $chatboxId;
 
     public function register ()
@@ -34,10 +35,15 @@ class Extension extends BaseExtension
 
     public function chatboxScript ()
     {
+        if ($this->chatboxAsync) {
+            $async = 'true';
+        } else {
+            $async = 'false';
+        }
         return 'var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
                 (function(){
                 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
+                s1.async=' . $async . ';
                 s1.src=\'https://embed.tawk.to/' . $this->chatboxId . '/default\';
                 s1.charset=\'UTF-8\';
                 s1.setAttribute(\'crossorigin\',\'*\');
@@ -70,6 +76,7 @@ class Extension extends BaseExtension
         $this->cacheEnable   = !empty($this->data['cache_enable']) && $this->data['cache_enable'] == 1;
 
         $this->chatboxEnable = !empty($this->data['chatbox_enable']) && $this->data['chatbox_enable'] == 1;
+        $this->chatboxAsync  = !empty($this->data['chatbox_async']) && $this->data['chatbox_async'] == 1;
         $this->chatboxId     = empty($this->data['chatbox_id']) ? $this::DEFAULT_TAWKTO_ID : $this->data['chatbox_id'];
 
         if (!$this->chatboxEnable) {
@@ -83,6 +90,7 @@ class Extension extends BaseExtension
             'cache_enable'   => $this->cacheEnable,
             'chatbox_enable' => $this->chatboxEnable,
             'chatbox_id'     => $this->chatboxId,
+            'chatbox_async'  => $this->chatboxAsync,
         ]);
     }
 
@@ -93,6 +101,7 @@ class Extension extends BaseExtension
             'cache_enable',
             'chatbox_enable',
             'chatbox_id',
+            'chatbox_async',
         ]);
     }
 
@@ -102,6 +111,7 @@ class Extension extends BaseExtension
         return array_merge($validationRules, [
             'cache_enable'   => 'sometimes|in:1',
             'chatbox_enable' => 'sometimes|in:1',
+            'chatbox_async'  => 'sometimes|in:1',
             'chatbox_id'     => 'required_if:chatbox_enable,1',
         ]);
     }

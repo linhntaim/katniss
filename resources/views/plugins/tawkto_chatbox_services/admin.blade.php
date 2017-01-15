@@ -29,6 +29,13 @@
                             &nbsp; {{ trans('tawkto_chatbox_services.enable') }}
                         </label>
                     </div>
+                    <div class="checkbox icheck">
+                        <label for="inputChatboxAsync">
+                            <input id="inputchatAsync" type="checkbox" name="chatbox_async"
+                                   value="1"{{ $chatbox_async ? ' checked' : '' }}>
+                            &nbsp; {{ trans('tawkto_chatbox_services.async') }}
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="chatbox_id">Chatbox ID</label>
