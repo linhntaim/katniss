@@ -362,7 +362,9 @@ function currentFullUrl($localeCode = null)
     }
     $url_parts = parse_url(request()->fullUrl());
     $localizedUrl = LaravelLocalization::getLocalizedUrl($localeCode, null);
-    return $localizedUrl . '?' . $url_parts['query'] . '#' . $url_parts['hash'];
+    $query = empty($url_parts['query']) ? '' : '?' . $url_parts['query'];
+    $hash = empty($url_parts['hash']) ? '' : '#' . $url_parts['hash'];
+    return $localizedUrl . $query . $hash;
 }
 
 function transUrl($route = '', array $params = [], $localeCode = null)
