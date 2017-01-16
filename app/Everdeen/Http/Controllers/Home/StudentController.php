@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\Meta;
 use Katniss\Everdeen\Repositories\ProfessionalSkillRepository;
 use Katniss\Everdeen\Repositories\RegisterLearningRequestRepository;
 use Katniss\Everdeen\Repositories\StudentRepository;
@@ -39,7 +40,12 @@ class StudentController extends ViewController
         $this->_title(trans('pages.home_student_sign_up_title'));
         $this->_description(trans('pages.home_student_sign_up_desc'));
 
-        return $this->_any('sign_up');
+        return $this->_any('sign_up', [
+            'teacher_id' => $request->input('teacher_id', null),
+            'study_level' => $request->input('study_level', null),
+            'study_problem' => $request->input('study_problem', null),
+            'study_course' => $request->input('study_course', null),
+        ]);
     }
 
     public function postSignUp(Request $request)
@@ -50,9 +56,16 @@ class StudentController extends ViewController
             'phone_number' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:6',
-        ]);;
+        ]);
 
-        $errorRdr = redirect(homeUrl('student/sign-up'))->withInput();
+        $studyParams = http_build_query([
+            'teacher_id' => $request->input('teacher_id', null),
+            'study_level' => $request->input('study_level', null),
+            'study_problem' => $request->input('study_problem', null),
+            'study_course' => $request->input('study_course', null),
+        ]);
+
+        $errorRdr = redirect(homeUrl('student/sign-up') . (!empty($studyParams) ? '?' . $studyParams : ''))->withInput();
 
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
@@ -72,7 +85,7 @@ class StudentController extends ViewController
                     homeUrl('student/sign-up/step/{step}', ['step' => 2]),
                     $wizard['name'],
                     $wizard['key']
-                ) . '&student_id=' . $student->id);
+                ) . '&student_id=' . $student->id . (!empty($studyParams) ? '&' . $studyParams : ''));
         } catch (KatnissException $exception) {
             return $errorRdr->withErrors([$exception->getMessage()]);
         }
@@ -120,6 +133,10 @@ class StudentController extends ViewController
             'student_id' => $student->user_id,
             'wizard_name' => $wizard['name'],
             'wizard_key' => $wizard['key'],
+
+            'study_level' => $request->input('study_level', null),
+            'study_problem' => $request->input('study_problem', null),
+            'study_course' => $request->input('study_course', null),
         ]);
     }
 
@@ -178,13 +195,23 @@ class StudentController extends ViewController
             'skype_id' => 'required|max:255',
             'learning_targets' => 'required|array|in:' . implode(',', $learningTargets),
             'learning_forms' => 'required|array|in:' . implode(',', $learningForms),
+
+            'study_level' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
+            'study_problem' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
+            'study_course' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
+        ]);
+
+        $studyParams = http_build_query([
+            'study_level' => $request->input('study_level', null),
+            'study_problem' => $request->input('study_problem', null),
+            'study_course' => $request->input('study_course', null),
         ]);
 
         $errorRdr = redirect(addWizardUrl(
                 homeUrl('student/sign-up/step/{step}', ['step' => 2]),
                 $wizard['name'],
                 $wizard['key']
-            ) . '&student_id=' . $request->input('student_id'))->withInput();
+            ) . '&student_id=' . $request->input('student_id') . (!empty($studyParams) ? '&' . $studyParams : ''))->withInput();
 
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
@@ -219,7 +246,10 @@ class StudentController extends ViewController
                 $request->input('student_id'),
                 $request->input('professional_skills'),
                 $request->input('skype_id'),
-                $request->input('teacher_id')
+                $request->input('teacher_id', null),
+                $request->input('study_level', null),
+                $request->input('study_problem', null),
+                $request->input('study_course', null)
             );
 
             Auth::guard()->login($learningRequest->studentUserProfile);
@@ -248,13 +278,23 @@ class StudentController extends ViewController
             'skype_id' => 'required|max:255',
             'learning_targets' => 'required|array|in:' . implode(',', $learningTargets),
             'learning_forms' => 'required|array|in:' . implode(',', $learningForms),
+
+            'study_level' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
+            'study_problem' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
+            'study_course' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
+        ]);
+
+        $studyParams = http_build_query([
+            'study_level' => $request->input('study_level', null),
+            'study_problem' => $request->input('study_problem', null),
+            'study_course' => $request->input('study_course', null),
         ]);
 
         $errorRdr = redirect(addWizardUrl(
                 homeUrl('student/sign-up/step/{step}', ['step' => 2]),
                 $wizard['name'],
                 $wizard['key']
-            ) . '&student_id=' . $request->input('student_id'))->withInput();
+            ) . '&student_id=' . $request->input('student_id') . (!empty($studyParams) ? '&' . $studyParams : ''))->withInput();
 
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
@@ -289,7 +329,10 @@ class StudentController extends ViewController
                 $request->input('student_id'),
                 $request->input('children_full_name'),
                 $request->input('skype_id'),
-                $request->input('teacher_id')
+                $request->input('teacher_id', null),
+                $request->input('study_level', null),
+                $request->input('study_problem', null),
+                $request->input('study_course', null)
             );
 
             Auth::guard()->login($learningRequest->studentUserProfile);

@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <label for="inputOrder">{{ trans('label.sort_order') }}</label>
                     <input class="form-control" id="inputOrder" name="order"
-                           placeholder="{{ trans('label.sort_order') }}" type="text" value="{{ old('order') }}">
+                           placeholder="{{ trans('label.sort_order') }}" type="text" value="{{ old('order', 0) }}">
                 </div>
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">

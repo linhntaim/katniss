@@ -14,6 +14,9 @@ class RegisterLearningRequest extends Model
 
     protected $fillable = [
         'student_id', 'teacher_id',
+        'study_level_id',
+        'study_problem_id',
+        'study_course_id',
         'for_children', 'age_range',
         'learning_targets', 'learning_forms',
         'children_full_name',
@@ -54,6 +57,21 @@ class RegisterLearningRequest extends Model
     public function teacherUserProfile()
     {
         return $this->belongsTo(User::class, 'teacher_id', 'id');
+    }
+
+    public function studyLevel()
+    {
+        return $this->belongsTo(Meta::class, 'study_level_id', 'id');
+    }
+
+    public function studyProblem()
+    {
+        return $this->belongsTo(Meta::class, 'study_problem_id', 'id');
+    }
+
+    public function studyCourse()
+    {
+        return $this->belongsTo(Meta::class, 'study_course_id', 'id');
     }
 
     public function scopeNewly($query)

@@ -4,6 +4,9 @@
     <input type="hidden" name="{{ \Katniss\Everdeen\Utils\AppConfig::KEY_WIZARD_KEY }}" value="{{ $wizard_key }}">
     <input type="hidden" name="student_id" value="{{ $student_id }}">
     <input type="hidden" name="teacher_id" value="{{ $teacher_id }}">
+    <input type="hidden" name="study_level" value="{{ $study_level }}">
+    <input type="hidden" name="study_problem" value="{{ $study_problem }}">
+    <input type="hidden" name="study_course" value="{{ $study_course }}">
     @if (count($errors) > 0)
         <div class="alert alert-danger">
             @foreach ($errors->all() as $error)

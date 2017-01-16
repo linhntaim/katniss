@@ -48,7 +48,8 @@ class RegisterLearningRequestRepository extends ModelRepository
     public function createAdult($ageRange,
                                 $learningTargets, $learningTargetOther,
                                 $learningForms, $learningFormOther,
-                                $studentId, array $professionalSkills, $skypeId = null, $teacherId = null)
+                                $studentId, array $professionalSkills, $skypeId = null, $teacherId = null,
+                                $studyLevel = null, $studyProblem = null, $studyCourse = null)
     {
         DB::beginTransaction();
         try {
@@ -86,6 +87,15 @@ class RegisterLearningRequestRepository extends ModelRepository
             if (!empty($teacherId)) {
                 $data['teacher_id'] = $teacherId;
             }
+            if (!empty($studyLevel)) {
+                $data['study_level_id'] = $studyLevel;
+            }
+            if (!empty($studyProblem)) {
+                $data['study_problem_id'] = $studyProblem;
+            }
+            if (!empty($studyCourse)) {
+                $data['study_course_id'] = $studyCourse;
+            }
             $learningRequest = RegisterLearningRequest::create($data);
 
             DB::commit();
@@ -100,7 +110,8 @@ class RegisterLearningRequestRepository extends ModelRepository
     public function createChildren($ageRange,
                                 $learningTargets, $learningTargetOther,
                                 $learningForms, $learningFormOther,
-                                $studentId, $childrenFullName, $skypeId = null, $teacherId = null)
+                                $studentId, $childrenFullName, $skypeId = null, $teacherId = null,
+                                $studyLevel = null, $studyProblem = null, $studyCourse = null)
     {
         DB::beginTransaction();
         try {
@@ -133,6 +144,15 @@ class RegisterLearningRequestRepository extends ModelRepository
             ];
             if (!empty($teacherId)) {
                 $data['teacher_id'] = $teacherId;
+            }
+            if (!empty($studyLevel)) {
+                $data['study_level_id'] = $studyLevel;
+            }
+            if (!empty($studyProblem)) {
+                $data['study_problem_id'] = $studyProblem;
+            }
+            if (!empty($studyCourse)) {
+                $data['study_course_id'] = $studyCourse;
             }
             $learningRequest = RegisterLearningRequest::create($data);
 

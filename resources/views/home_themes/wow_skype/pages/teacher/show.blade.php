@@ -240,8 +240,8 @@
                             @endif
                         </div>
                         @if(!$is_auth)
-                            <a role="button" class="btn btn-danger btn-block uppercase margin-top-10"
-                               href="{{ homeUrl('student/sign-up') }}?teacher={{ $teacher->user_id }}">
+                            <a role="button" class="btn btn-primary btn-block uppercase bold-700 margin-top-10"
+                               href="{{ homeUrl('student/sign-up') }}?teacher_id={{ $teacher->user_id }}">
                                 {{ trans('form.action_register_class') }}
                             </a>
                         @endif

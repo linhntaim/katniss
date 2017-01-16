@@ -54,6 +54,7 @@ elixir(function (mix) {
         'wow_skype/header.css',
         'wow_skype/main.css',
         'wow_skype/footer.css',
+        'wow_skype/page.home.css',
         'wow_skype/page.sign_up.css',
         'wow_skype/page.teacher_sign_up.css',
         'wow_skype/page.profile_account_information.css',

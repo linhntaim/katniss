@@ -23,35 +23,13 @@
 </head>
 <body>
 <header>
-    <div class="wrapper">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{{ homeUrl() }}"><img class="logo" src="{{ themeImageAsset('logo.png') }}"></a>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <div class="bars clearfix">
-        <div class="bar bg-master bar-50 pull-left"></div>
-        <div class="bar bg-slave bar-50 pull-right"></div>
-    </div>
-    <div class="bars clearfix">
-        <div class="wrapper">
-            <div class="bar bg-master bar-75 pull-left"></div>
-            <div class="bar bg-slave bar-25 pull-right"></div>
-        </div>
-    </div>
+    @include('home_themes.wow_skype.master.header', ['header_nav_simple' => false])
 </header>
 <main>
     <div class="wrapper">
         @yield('main_content')
     </div>
 </main>
-<footer>
-    <div class="wrapper">
-    </div>
-</footer>
 {!! libScripts() !!}
 @yield('lib_scripts')
 {!! extScripts() !!}

@@ -243,6 +243,27 @@ Route::group([
             Route::group([
                 'middleware' => 'entrust:admin|manager'
             ], function () {
+                //Study Level
+                Route::get(adminRoute('study-levels'), 'StudyLevelController@index');
+                Route::get(adminRoute('study-levels/create'), 'StudyLevelController@create');
+                Route::post(adminRoute('study-levels'), 'StudyLevelController@store');
+                Route::get(adminRoute('study-levels/{id}/edit'), 'StudyLevelController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('study-levels/{id}'), 'StudyLevelController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('study-levels/{id}'), 'StudyLevelController@destroy')->where('id', '[0-9]+');
+                //Study Problem
+                Route::get(adminRoute('study-problems'), 'StudyProblemController@index');
+                Route::get(adminRoute('study-problems/create'), 'StudyProblemController@create');
+                Route::post(adminRoute('study-problems'), 'StudyProblemController@store');
+                Route::get(adminRoute('study-problems/{id}/edit'), 'StudyProblemController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('study-problems/{id}'), 'StudyProblemController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('study-problems/{id}'), 'StudyProblemController@destroy')->where('id', '[0-9]+');
+                //Study Course
+                Route::get(adminRoute('study-courses'), 'StudyCourseController@index');
+                Route::get(adminRoute('study-courses/create'), 'StudyCourseController@create');
+                Route::post(adminRoute('study-courses'), 'StudyCourseController@store');
+                Route::get(adminRoute('study-courses/{id}/edit'), 'StudyCourseController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('study-courses/{id}'), 'StudyCourseController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('study-courses/{id}'), 'StudyCourseController@destroy')->where('id', '[0-9]+');
                 //Professional Skills
                 Route::get(adminRoute('professional-skills'), 'ProfessionalSkillController@index');
                 Route::get(adminRoute('professional-skills/create'), 'ProfessionalSkillController@create');
@@ -284,6 +305,12 @@ Route::group([
                 //Salary
                 Route::get(adminRoute('salary-report'), 'SalaryReportController@index');
                 Route::post(adminRoute('salary-report'), 'SalaryReportController@store');
+                //Register learning request
+                Route::get(adminRoute('register-learning-requests'), 'LearningRequestController@indexRegistering');
+                Route::get(adminRoute('processed-learning-requests'), 'LearningRequestController@indexProcessed');
+                //Simple learning request
+                Route::get(adminRoute('simple-learning-requests'), 'LearningRequestSimplyController@indexRegistering');
+                Route::get(adminRoute('processed-simple-learning-requests'), 'LearningRequestSimplyController@indexProcessed');
             });
         });
         #endregion

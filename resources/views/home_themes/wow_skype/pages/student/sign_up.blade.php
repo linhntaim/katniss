@@ -58,6 +58,18 @@
                         <p class="big text-center">{{ trans('label.student_register_help') }}</p>
                         <form method="post">
                             {{ csrf_field() }}
+                            @if(!empty($teacher_id))
+                                <input type="hidden" name="teacher_id" value="{{ $teacher_id }}">
+                            @endif
+                            @if(!empty($study_level))
+                                <input type="hidden" name="study_level" value="{{ $study_level }}">
+                            @endif
+                            @if(!empty($study_problem))
+                                <input type="hidden" name="study_problem" value="{{ $study_problem }}">
+                            @endif
+                            @if(!empty($study_course))
+                                <input type="hidden" name="study_course" value="{{ $study_course }}">
+                            @endif
                             @if (count($errors) > 0)
                                 <div class="alert alert-danger">
                                     @foreach ($errors->all() as $error)

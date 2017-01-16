@@ -68,7 +68,7 @@ class Theme extends HomeTheme
     protected function registerComposers($is_auth = false)
     {
         view()->composer(
-            $this->masterPath('master'), Composers\MainMenuComposer::class
+            $this->masterPath('header_nav_full'), Composers\MainMenuComposer::class
         );
         view()->composer(
             $this->masterPath('profile'), Composers\ProfileMenuComposer::class

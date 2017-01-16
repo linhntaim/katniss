@@ -1,4 +1,4 @@
-@extends('home_themes.wow_skype.master.master')
+@extends('home_themes.wow_skype.master.master_footer_placed')
 @section('main_content')
     <div id="{{ $html_page_id }}" class="page-profile">
         <div class="row">

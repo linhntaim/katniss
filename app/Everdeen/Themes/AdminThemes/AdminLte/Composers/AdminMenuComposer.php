@@ -226,6 +226,21 @@ class AdminMenuComposer
                 );
                 $subMenu = new Menu($currentUrl);
                 $subMenu->add( //add a menu item
+                    adminUrl('study-levels'),
+                    trans('pages.admin_study_levels_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('study-problems'),
+                    trans('pages.admin_study_problems_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('study-courses'),
+                    trans('pages.admin_study_courses_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
                     adminUrl('professional-skills'),
                     trans('pages.admin_professional_skills_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'

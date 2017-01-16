@@ -19,6 +19,9 @@ class CreateRegisterLearningRequestsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned()->nullable();
+            $table->integer('study_level_id')->unsigned()->nullable();
+            $table->integer('study_problem_id')->unsigned()->nullable();
+            $table->integer('study_course_id')->unsigned()->nullable();
             $table->boolean('for_children')->default(false);
             $table->string('children_full_name')->default('');
             $table->tinyInteger('age_range')->default(0);
@@ -29,6 +32,9 @@ class CreateRegisterLearningRequestsTable extends Migration
 
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
             $table->foreign('teacher_id')->references('user_id')->on('teachers')->onDelete('cascade');
+            $table->foreign('study_level_id')->references('id')->on('meta')->onDelete('cascade');
+            $table->foreign('study_problem_id')->references('id')->on('meta')->onDelete('cascade');
+            $table->foreign('study_course_id')->references('id')->on('meta')->onDelete('cascade');
 
             $table->index(['student_id', 'status', 'created_at']);
         });

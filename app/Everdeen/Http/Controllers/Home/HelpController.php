@@ -64,6 +64,9 @@ class HelpController extends ViewController
                 }
             }
         }
+        if (empty($currentHelp)) {
+            abort(404);
+        }
 
         if (!empty($categoriesMenu)) {
             $menuRender = new MenuRender();
