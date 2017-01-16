@@ -216,6 +216,7 @@ Route::group([
                 Route::get(adminRoute('help-categories/{id}/edit'), 'HelpCategoryController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('help-categories/{id}'), 'HelpCategoryController@update');
                 Route::delete(adminRoute('help-categories/{id}'), 'HelpCategoryController@destroy')->where('id', '[0-9]+');
+                Route::get(adminRoute('help-categories/{id}/sort'), 'HelpCategoryController@sort')->where('id', '[0-9]+');
                 //Help
                 Route::get(adminRoute('helps'), 'HelpController@index');
                 Route::get(adminRoute('helps/create'), 'HelpController@create');

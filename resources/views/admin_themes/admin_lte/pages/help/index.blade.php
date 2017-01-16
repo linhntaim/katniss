@@ -32,6 +32,7 @@
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
                                     <th>{{ trans_choice('label.category', 1) }}</th>
@@ -41,6 +42,7 @@
                             <tfoot>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
                                     <th>{{ trans_choice('label.category', 1) }}</th>
@@ -51,16 +53,21 @@
                                 @foreach($helps as $help)
                                     <tr>
                                         <td class="order-col-2">{{ ++$start_order }}</td>
+                                        <td class="text-center">
+                                            <a href="{{ homeUrl('helps/{slug}', ['slug' => $help->slug]) }}">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>
+                                        </td>
                                         <td>{{ $help->title }}</td>
                                         <td>{{ $help->slug }}</td>
                                         <td>{{ $help->categories()->first()->name }}</td>
                                         <td>
-                                              <a href="{{ adminUrl('helps/{id}/edit', ['id'=> $help->id]) }}">
-                                                  {{ trans('form.action_edit') }}
-                                              </a>
-                                              <a class="delete" href="{{ addRdrUrl(adminUrl('helps/{id}', ['id'=> $help->id])) }}">
-                                                  {{ trans('form.action_delete') }}
-                                              </a>
+                                            <a href="{{ adminUrl('helps/{id}/edit', ['id'=> $help->id]) }}">
+                                              {{ trans('form.action_edit') }}
+                                            </a>
+                                            <a class="delete" href="{{ addRdrUrl(adminUrl('helps/{id}', ['id'=> $help->id])) }}">
+                                              {{ trans('form.action_delete') }}
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

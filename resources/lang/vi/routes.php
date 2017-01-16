@@ -99,6 +99,7 @@ return [
     'admin/help-categories/create'                  => 'quan-tri/chuyen-muc-tro-giup/them-moi',
     'admin/help-categories/{id}'                    => 'quan-tri/chuyen-muc-tro-giup/{id}',
     'admin/help-categories/{id}/edit'               => 'quan-tri/chuyen-muc-tro-giup/{id}/chinh-sua',
+    'admin/help-categories/{id}/sort'               => 'quan-tri/chuyen-muc-tro-giup/{id}/sap-xep',
     'admin/helps'                                   => 'quan-tri/tro-giup',
     'admin/helps/create'                            => 'quan-tri/tro-giup/them-moi',
     'admin/helps/{id}'                              => 'quan-tri/tro-giup/{id}',

@@ -63,7 +63,7 @@ class MainMenuComposer
             trans('wow_skype_theme.world')
         );
         $menu->add(
-            '#',
+            homeUrl('helps'),
             trans('label.about_us')
         );
         $menu = contentFilter('main_menu', $menu);

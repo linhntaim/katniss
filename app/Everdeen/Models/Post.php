@@ -18,11 +18,15 @@ class Post extends Model
     const TYPE_ARTICLE = 1;
     const TYPE_HELP = 2;
 
+    const STATUS_PUBLISHED = 1;
+    const STATUS_TEACHER_EDITING = 2;
+
     use Translatable;
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
-    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content', 'raw_content'];
+    protected $fillable = ['user_id', 'template', 'featured_image', 'type',
+        'title', 'slug', 'description', 'content', 'raw_content', 'status'];
 
     protected $translationForeignKey = 'post_id';
     public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];

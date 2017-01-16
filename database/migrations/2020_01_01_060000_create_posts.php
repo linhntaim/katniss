@@ -20,12 +20,13 @@ class CreatePosts extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('template')->nullable();
             $table->string('featured_image')->nullable();
+            $table->tinyInteger('status')->unsigned()->default(1); // 1 = PUBLISHED;
             $table->tinyInteger('type')->unsigned()->default(0); // 0 = PAGE;
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->index(['user_id', 'type', 'created_at']);
+            $table->index(['user_id', 'status', 'type', 'created_at']);
         });
 
         Schema::create('post_translations', function (Blueprint $table) {

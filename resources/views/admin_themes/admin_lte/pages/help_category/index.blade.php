@@ -65,6 +65,9 @@
                                             <a href="{{ adminUrl('help-categories/{id}/edit', ['id'=> $category->id]) }}">
                                                 {{ trans('form.action_edit') }}
                                             </a>
+                                            <a href="{{ adminUrl('help-categories/{id}/sort', ['id'=> $category->id]) }}">
+                                                {{ trans('form.action_sort') }}
+                                            </a>
                                             <a class="delete" href="{{ addRdrUrl(adminUrl('help-categories/{id}', ['id'=> $category->id])) }}">
                                                 {{ trans('form.action_delete') }}
                                             </a>

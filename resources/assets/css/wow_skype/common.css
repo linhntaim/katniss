@@ -135,6 +135,20 @@ body {
     box-shadow: none;
 }
 
+a {
+    color: #00aff0;
+}
+
+a:hover {
+    color: #009cd6;
+}
+
+a:focus,
+a:active,
+a:active:focus {
+    color: #0083b3;
+}
+
 a:hover,
 a:focus,
 a:active,
@@ -338,6 +352,30 @@ a:active:focus {
     margin-top: 0;
 }
 
+.margin-top--5 {
+    margin-top: -5px;
+}
+
+.margin-top--10 {
+    margin-top: -10px;
+}
+
+.margin-top--15 {
+    margin-top: -15px;
+}
+
+.margin-top--20 {
+    margin-top: -20px;
+}
+
+.margin-top--25 {
+    margin-top: -25px;
+}
+
+.margin-top--30 {
+    margin-top: -30px;
+}
+
 .margin-top-5 {
     margin-top: 5px;
 }
@@ -475,7 +513,8 @@ a:active:focus {
 }
 
 .align-center {
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .no-wrap {
@@ -524,6 +563,11 @@ a:active:focus {
 .sausage-item-default {
     color: #000;
     background: rgba(235, 235, 235, .5);
+}
+
+.sausage-item-primary {
+    color: #fff;
+    background: #00aff0;
 }
 
 .media-list.step-list .media {
@@ -607,6 +651,60 @@ a:active:focus {
 
 .col-sm-pl-none {
     padding-left: 15px;
+}
+
+.pagination li a,
+.pagination li span {
+    border-radius: 4px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-color: #666;
+    color: #666;
+    background-color: #fff;
+}
+
+.pagination li.active a,
+.pagination li.active a:hover,
+.pagination li.active a:focus,
+.pagination li.active span,
+.pagination li.active span:hover,
+.pagination li.active span:focus,
+.pagination li a:hover,
+.pagination li a:focus,
+.pagination li span:hover,
+.pagination li span:focus {
+    color: #fff;
+    background-color: #666;
+    border-color: #666;
+}
+
+.pagination li.disabled a,
+.pagination li.disabled span,
+.pagination li.disabled a:hover,
+.pagination li.disabled span:hover {
+    color: #afafaf;
+    border-color: #afafaf;
+    background-color: #fff;
+}
+
+.master-slave-bar .bar {
+    height: 8px;
+}
+
+.master-slave-bar .bar.pull-left {
+    width: 75%;
+    font-size: 0;
+    line-height: 0;
+    border-top: 8px solid #00aff0;
+    border-right: 8px solid #fff;
+}
+
+.master-slave-bar .bar.pull-right {
+    width: 25%;
+    font-size: 0;
+    line-height: 0;
+    border-bottom: 8px solid #75ab00;
+    border-left: 8px solid #fff;
 }
 
 @media all and (max-width: 960px) {

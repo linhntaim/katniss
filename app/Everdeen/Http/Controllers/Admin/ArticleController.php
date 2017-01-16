@@ -18,7 +18,7 @@ class ArticleController extends AdminController
     {
         parent::__construct();
 
-        $this->viewPath = 'article';
+        $this->viewPath = 'article'; // not multi-locale content
         $this->articleRepository = new ArticleRepository();
     }
 
@@ -29,7 +29,15 @@ class ArticleController extends AdminController
      */
     public function index(Request $request)
     {
-        $articles = $this->articleRepository->getPaged();
+        $searchTitle = $request->input('title', null);
+        $searchAuthor = $request->input('author', null);
+        $searchCategories = $request->input('categories', []);
+        $articles = $this->articleRepository->getSearchPublishedPaged(
+            $searchTitle,
+            $searchAuthor,
+            $searchCategories
+        );
+        $articleCategoryRepository = new ArticleCategoryRepository();
 
         $this->_title(trans('pages.admin_articles_title'));
         $this->_description(trans('pages.admin_articles_desc'));
@@ -38,6 +46,13 @@ class ArticleController extends AdminController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchTitle) || !empty($searchAuthor) || !empty($searchCategories),
+            'search_title' => $searchTitle,
+            'search_author' => $searchAuthor,
+            'search_categories' => $searchCategories,
+            'categories' => $articleCategoryRepository->getAll(),
         ]);
     }
 
@@ -55,7 +70,7 @@ class ArticleController extends AdminController
 
         return $this->_create([
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => ThemeFacade::articleTemplates(),
+            'templates' => homeTheme()->articleTemplates(),
         ]);
     }
 
@@ -132,7 +147,7 @@ class ArticleController extends AdminController
             'article' => $article,
             'article_categories' => $article->categories,
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => ThemeFacade::articleTemplates(),
+            'templates' => homeTheme()->articleTemplates(),
         ]);
     }
 
