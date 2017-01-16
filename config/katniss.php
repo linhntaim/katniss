@@ -65,6 +65,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
         Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
         Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::class,
 //        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
     ],
     'static_extensions' => [
@@ -75,6 +76,7 @@ return [
     'admin_except_extensions' => [
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::NAME,
     ],
     'paths_use_admin_theme' => [
         'admin', 'auth', 'documents', 'password', 'me'
