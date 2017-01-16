@@ -286,6 +286,23 @@ class AdminMenuComposer
                 $subMenu->addSubMenu($subSubMenu);
                 $subMenu->add(  // add an example menu item which have sub menu
                     '#',
+                    trans('pages.admin_learning_requests_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subSubMenu = new Menu($currentUrl);
+                $subSubMenu->add( // add a menu item
+                    adminUrl('register-learning-requests'),
+                    trans('pages.admin_register_learning_requests_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subSubMenu->add( // add a menu item
+                    adminUrl('processed-learning-requests'),
+                    trans('pages.admin_processed_learning_requests_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->addSubMenu($subSubMenu);
+                $subMenu->add(  // add an example menu item which have sub menu
+                    '#',
                     trans('pages.admin_classrooms_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );

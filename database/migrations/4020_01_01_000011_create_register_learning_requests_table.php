@@ -17,6 +17,9 @@ class CreateRegisterLearningRequestsTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
+            $table->bigInteger('processed_by_id')->unsigned()->nullable();
+            $table->dateTime('processed_at')->nullable();
+            $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned()->nullable();
             $table->integer('study_level_id')->unsigned()->nullable();
@@ -30,11 +33,12 @@ class CreateRegisterLearningRequestsTable extends Migration
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
 
+            $table->foreign('processed_by_id')->references('id')->on('users');
             $table->foreign('student_id')->references('user_id')->on('students')->onDelete('cascade');
             $table->foreign('teacher_id')->references('user_id')->on('teachers')->onDelete('cascade');
-            $table->foreign('study_level_id')->references('id')->on('meta')->onDelete('cascade');
-            $table->foreign('study_problem_id')->references('id')->on('meta')->onDelete('cascade');
-            $table->foreign('study_course_id')->references('id')->on('meta')->onDelete('cascade');
+            $table->foreign('study_level_id')->references('id')->on('meta');
+            $table->foreign('study_problem_id')->references('id')->on('meta');
+            $table->foreign('study_course_id')->references('id')->on('meta');
 
             $table->index(['student_id', 'status', 'created_at']);
         });

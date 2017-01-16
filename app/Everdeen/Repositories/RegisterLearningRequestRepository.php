@@ -28,15 +28,23 @@ class RegisterLearningRequestRepository extends ModelRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getNewlyPaged()
+    public function getSearchNewlyPaged($createdAt = null)
     {
-        return RegisterLearningRequest::newly()->orderBy('updated_at', 'desc')
+        $learningRequests = RegisterLearningRequest::newly();
+        if (!empty($createdAt)) {
+            $learningRequests->whereDate('created_at', $createdAt);
+        }
+        return $learningRequests->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getProcessedPaged()
+    public function getSearchProcessedPaged($createdAt = null)
     {
-        return RegisterLearningRequest::processed()->orderBy('updated_at', 'desc')
+        $learningRequests = RegisterLearningRequest::processed();
+        if (!empty($createdAt)) {
+            $learningRequests->whereDate('created_at', $createdAt);
+        }
+        return $learningRequests->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
@@ -108,10 +116,10 @@ class RegisterLearningRequestRepository extends ModelRepository
     }
 
     public function createChildren($ageRange,
-                                $learningTargets, $learningTargetOther,
-                                $learningForms, $learningFormOther,
-                                $studentId, $childrenFullName, $skypeId = null, $teacherId = null,
-                                $studyLevel = null, $studyProblem = null, $studyCourse = null)
+                                   $learningTargets, $learningTargetOther,
+                                   $learningForms, $learningFormOther,
+                                   $studentId, $childrenFullName, $skypeId = null, $teacherId = null,
+                                   $studyLevel = null, $studyProblem = null, $studyCourse = null)
     {
         DB::beginTransaction();
         try {
@@ -162,6 +170,23 @@ class RegisterLearningRequestRepository extends ModelRepository
         } catch (\Exception $ex) {
             DB::rollBack();
             throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function process($userId)
+    {
+        $learningRequest = $this->model();
+
+        try {
+            $learningRequest->update([
+                'processed_by_id' => $userId,
+                'processed_at' => date('Y-m-d H:i:s'),
+                'status' => RegisterLearningRequest::PROCESSED,
+            ]);
+
+            return $learningRequest;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
 

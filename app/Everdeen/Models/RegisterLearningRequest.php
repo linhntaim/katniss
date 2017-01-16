@@ -13,6 +13,7 @@ class RegisterLearningRequest extends Model
     protected $table = 'register_learning_requests';
 
     protected $fillable = [
+        'processed_by_id', 'processed_at',
         'student_id', 'teacher_id',
         'study_level_id',
         'study_problem_id',
@@ -22,6 +23,11 @@ class RegisterLearningRequest extends Model
         'children_full_name',
         'status',
     ];
+
+    public function getFormattedCreatedAtAttribute()
+    {
+        return DateTimeHelper::getInstance()->shortDate($this->attributes['created_at']);
+    }
 
     public function getLearningTargetsAttribute()
     {
@@ -37,6 +43,17 @@ class RegisterLearningRequest extends Model
             return [];
         }
         return unserialize($this->attributes['learning_forms']);
+    }
+
+    public function getFormattedProcessedAtAttribute()
+    {
+        return empty($this->attributes['processed_at']) ?
+            null : DateTimeHelper::getInstance()->shortDate($this->attributes['processed_at']);
+    }
+
+    public function processedBy()
+    {
+        return $this->belongsTo(User::class, 'processed_by_id', 'id');
     }
 
     public function studentProfile()

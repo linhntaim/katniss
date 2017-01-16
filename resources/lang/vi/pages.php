@@ -116,6 +116,11 @@ return [
     'admin_closed_classrooms_desc' => 'Quản lý lớp đã học xong',
     'admin_salary_report_title' => 'Tính lương',
     'admin_salary_report_desc' => 'Xem bảng lương',
+    'admin_learning_requests_title' => 'Đăng ký học',
+    'admin_register_learning_requests_title' => 'Đăng ký học mới',
+    'admin_register_learning_requests_desc' => 'Xem đăng ký học mới',
+    'admin_processed_learning_requests_title' => 'Đăng ký học đã xử lý',
+    'admin_processed_learning_requests_desc' => 'Xem đăng ký học đã xử lý',
 
     'admin_error_title' => 'Lỗi :code',
     'admin_error_desc' => 'Trang truy cập gặp lỗi :code',

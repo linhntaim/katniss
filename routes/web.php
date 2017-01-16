@@ -308,9 +308,7 @@ Route::group([
                 //Register learning request
                 Route::get(adminRoute('register-learning-requests'), 'LearningRequestController@indexRegistering');
                 Route::get(adminRoute('processed-learning-requests'), 'LearningRequestController@indexProcessed');
-                //Simple learning request
-                Route::get(adminRoute('simple-learning-requests'), 'LearningRequestSimplyController@indexRegistering');
-                Route::get(adminRoute('processed-simple-learning-requests'), 'LearningRequestSimplyController@indexProcessed');
+                Route::put(adminRoute('learning-requests/{id}'), 'LearningRequestController@update');
             });
         });
         #endregion

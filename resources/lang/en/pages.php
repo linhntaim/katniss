@@ -116,6 +116,11 @@ return [
     'admin_closed_classrooms_desc' => 'Manage closed classrooms',
     'admin_salary_report_title' => 'Salary Report',
     'admin_salary_report_desc' => 'View salary report',
+    'admin_learning_requests_title' => 'Learning Requests',
+    'admin_register_learning_requests_title' => 'Newly L.R.',
+    'admin_register_learning_requests_desc' => 'View newly learning requests',
+    'admin_processed_learning_requests_title' => 'Processed L.R.',
+    'admin_processed_learning_requests_desc' => 'View processed learning requests',
 
     'admin_error_title' => ':code Error',
     'admin_error_desc' => ':code Error Page',

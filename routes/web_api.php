@@ -62,6 +62,7 @@ Route::group([
         Route::group([
             'middleware' => 'entrust:manager|admin'
         ], function () {
+            Route::get('admin/learning-requests/{id}', 'LearningRequestController@show');
             Route::get('admin/salary-report', 'SalaryReportController@index');
         });
     });

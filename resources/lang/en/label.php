@@ -51,6 +51,7 @@ return [
     'wanna_close' => 'Do you really want to close :name ?',
     'wanna_open' => 'Do you really want to open :name ?',
     'wanna_change_to' => 'Do you really want to change to :name ?',
+    'wanna_process' => 'Do you really want to process :name ?',
 
     'rate' => 'Rate',
     'rate_poor' => 'Poor',
@@ -208,6 +209,9 @@ return [
     'teaching_status' => 'Teaching status',
     'sort_order' => 'Order',
     'rate_by' => 'Rated by',
+    'created_at' => 'Created at',
+    'processed_at' => 'Processed at',
+    'processed_by' => 'Processed by',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -237,6 +241,8 @@ return [
     'warning' => 'Warning',
     'error' => 'Error',
     'list_empty' => 'Empty list',
+    'yes' => 'Yes',
+    'no' => 'No',
 
     'sign_in_with_facebook' => 'Sign in using Facebook',
     'sign_in_with_google' => 'Sign in using Google+',
@@ -376,6 +382,7 @@ about your classes.',
     'study_course_1_lc' => 'course|courses',
     'study_level_1_lc' => 'level|levels',
     'study_problem_1_lc' => 'problem|problems',
+    'learning_request_lc' => 'learning requests|learning requests',
 
     'no_widget' => 'No widget is placed here',
 

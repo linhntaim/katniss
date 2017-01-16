@@ -93,4 +93,6 @@ return [
     'action_calculate' => 'Calculate',
     'action_change_to' => 'Change to',
     'action_view_profile' => 'View profile',
+    'action_view_detail' => 'View detail',
+    'action_process' => 'Process',
 ];

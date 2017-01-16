@@ -93,4 +93,6 @@ return [
     'action_calculate' => 'Tính toán',
     'action_change_to' => 'Chuyển thành',
     'action_view_profile' => 'Xem hồ sơ',
+    'action_view_detail' => 'Xem chi tiết',
+    'action_process' => 'Xử lý',
 ];

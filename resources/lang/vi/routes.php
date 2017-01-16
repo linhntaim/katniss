@@ -157,4 +157,7 @@ return [
     'admin/classrooms/{id}'                         => 'quan-tri/lop-hoc/{id}',
     'admin/classrooms/{id}/edit'                    => 'quan-tri/lop-hoc/{id}/chinh-sua',
     'admin/salary-report'                           => 'quan-tri/tinh-luong',
+    'admin/register-learning-requests'              => 'quan-tri/dang-ky-hoc-moi',
+    'admin/processed-learning-requests'             => 'quan-tri/dang-ky-hoc-da-xu-ly',
+    'admin/learning-requests/{id}'                  => 'quan-tri/dang-ky-hoc/{id}',
 ];

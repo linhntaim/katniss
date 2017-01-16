@@ -157,4 +157,7 @@ return [
     'admin/classrooms/{id}'                         => 'admin/classrooms/{id}',
     'admin/classrooms/{id}/edit'                    => 'admin/classrooms/{id}/edit',
     'admin/salary-report'                           => 'admin/salary-report',
+    'admin/register-learning-requests'              => 'admin/register-learning-requests',
+    'admin/processed-learning-requests'             => 'admin/processed-learning-requests',
+    'admin/learning-requests/{id}'                  => 'admin/learning-requests/{id}',
 ];

@@ -51,6 +51,7 @@ return [
     'wanna_close' => 'Bạn có muốn đóng :name ?',
     'wanna_open' => 'Bạn có muốn mở :name ?',
     'wanna_change_to' => 'Bạn có muốn chuyển thành :name ?',
+    'wanna_process' => 'Bạn có muốn xử lý :name ?',
 
     'rate' => 'Đánh giá',
     'rate_poor' => 'Không tốt',
@@ -208,6 +209,9 @@ return [
     'teaching_status' => 'Tình trạng dạy',
     'sort_order' => 'Thứ tự',
     'rate_by' => 'Đánh giá bởi',
+    'created_at' => 'Tạo ngày',
+    'processed_at' => 'Xử lý ngày',
+    'processed_by' => 'Xử lý bởi',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -237,6 +241,8 @@ return [
     'warning' => 'Lưu ý',
     'error' => 'Lỗi',
     'list_empty' => 'Danh sách trống',
+    'yes' => 'Có',
+    'no' => 'Không',
 
     'sign_in_with_facebook' => 'Đăng nhập bằng Facebook',
     'sign_in_with_google' => 'Đăng nhập bằng Google+',
@@ -376,6 +382,7 @@ lộ trình học tập và học phí.',
     'study_course_1_lc' => 'khóa học',
     'study_level_1_lc' => 'trình độ',
     'study_problem_1_lc' => 'vấn đề cần giải quyết',
+    'learning_request_lc' => 'dăng ký học',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
