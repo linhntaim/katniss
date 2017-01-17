@@ -23,7 +23,7 @@
                 @if($is_auth)
                 <div class="user-action margin-top-10 margin-bottom-10 clearfix">
                     <div class="dropdown pull-right">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <img class="img-circle width-40" src="{{ $auth_user->url_avatar_thumb }}">
                             <span class="caret"></span>
                         </a>

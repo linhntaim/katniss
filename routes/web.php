@@ -37,6 +37,11 @@ Route::group([
         Route::get(homeRoute('helps'), 'HelpController@index');
         Route::get(homeRoute('helps/{slug}'), 'HelpController@show');
 
+        Route::get(homeRoute('knowledge'), 'KnowledgeController@index');
+        Route::get(homeRoute('knowledge/articles'), 'ArticleController@index');
+        Route::get(homeRoute('knowledge/articles/{slug}'), 'ArticleController@show');
+        Route::get(homeRoute('knowledge/categories/{slug}'), 'ArticleCategoryController@show');
+
         Route::group([
             'middleware' => 'auth'
         ], function () {

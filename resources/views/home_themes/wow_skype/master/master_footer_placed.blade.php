@@ -26,9 +26,11 @@
     @include('home_themes.wow_skype.master.header', ['header_nav_simple' => true])
 </header>
 <main>
+    @yield('before_main_content')
     <div class="wrapper">
         @yield('main_content')
     </div>
+    @yield('after_main_content')
 </main>
 <footer>
     @yield('footer')

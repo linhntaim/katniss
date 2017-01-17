@@ -528,6 +528,11 @@ function defPr($value, $default)
     return empty($value) ? $default : $value;
 }
 
+function defArrItem($arr, $index, $default)
+{
+    return isset($arr[$index]) ? $arr[$index] : $default;
+}
+
 function wrapContent($content, $before = '', $after = '', $default = '')
 {
     return empty($content) ? $default : $before . $content . $after;

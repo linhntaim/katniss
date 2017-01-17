@@ -54,6 +54,26 @@ body {
     background-color: #999;
 }
 
+.border-solid {
+    border: 1px solid transparent;
+}
+
+.border-top-none {
+    border-top: none;
+}
+
+.border-bottom-none {
+    border-bottom: none;
+}
+
+.border-left-none {
+    border-left: none;
+}
+
+.border-right-none {
+    border-right: none;
+}
+
 .border-master {
     border-color: #00aff0;
 }
@@ -150,6 +170,20 @@ body {
     box-shadow: none;
 }
 
+.image-cover {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.image-cover img {
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+}
+
 a {
     color: #00aff0;
 }
@@ -223,6 +257,70 @@ a:active:focus {
 
 .width-200 {
     width: 200px;
+}
+
+.width-300 {
+    width: 300px;
+}
+
+.width-400 {
+    width: 400px;
+}
+
+.width-500 {
+    width: 500px;
+}
+
+.height-30 {
+    height: 30px;
+}
+
+.height-32 {
+    height: 32px;
+}
+
+.height-35 {
+    height: 35px;
+}
+
+.height-40 {
+    height: 40px;
+}
+
+.height-50 {
+    height: 50px;
+}
+
+.height-100 {
+    height: 100px;
+}
+
+.height-120 {
+    height: 120px;
+}
+
+.height-150 {
+    height: 150px;
+}
+
+.height-180 {
+    height: 180px;
+}
+
+.height-200 {
+    height: 200px;
+}
+
+.height-300 {
+    height: 300px;
+}
+
+.height-400 {
+    height: 400px;
+}
+
+.height-500 {
+    height: 500px;
 }
 
 .box-30 {
@@ -361,6 +459,31 @@ a:active:focus {
 
 .margin-30 {
     margin: 30px;
+}
+
+.margin-h-none {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.margin-h--5 {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+
+.margin-h--10 {
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.margin-v-none {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.margin-v--10 {
+    margin-top: -10px;
+    margin-bottom: -10px;
 }
 
 .margin-right-none {
@@ -525,6 +648,31 @@ a:active:focus {
 
 .padding-30 {
     padding: 30px;
+}
+
+.padding-h-none {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.padding-h-5 {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.padding-h-10 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.padding-v-none {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.padding-v-10 {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .padding-left-none {

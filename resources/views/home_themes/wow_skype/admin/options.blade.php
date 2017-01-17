@@ -5,6 +5,7 @@
     <script src="{{ _kExternalLink('select2-js') }}"></script>
 @endsection
 @section('extended_scripts')
+    @include('file_manager.open_documents_script')
     <script>
         $(function () {
             $('.select2').select2();
@@ -28,6 +29,32 @@
                             @endforeach
                         </div>
                     @endif
+                    <div class="form-group">
+                        <label for="inputKnowledgeCoverImage">{{ trans('wow_skype_theme.knowledge_cover_image') }}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="inputKnowledgeCoverImage" name="knowledge_cover_image"
+                                   placeholder="{{ trans('wow_skype_theme.knowledge_cover_image') }}" type="text" value="{{ $knowledge_cover_image }}">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary image-from-documents"
+                                        data-input-id="inputKnowledgeCoverImage">
+                                    <i class="fa fa-server"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputKnowledgeDefaultArticleImage">{{ trans('wow_skype_theme.knowledge_default_article_image') }}</label>
+                        <div class="input-group">
+                            <input class="form-control" id="inputKnowledgeDefaultArticleImage" name="knowledge_default_article_image"
+                                   placeholder="{{ trans('wow_skype_theme.knowledge_default_article_image') }}" type="text" value="{{ $knowledge_default_article_image }}">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-primary image-from-documents"
+                                        data-input-id="inputKnowledgeDefaultArticleImage">
+                                    <i class="fa fa-server"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="box-footer">
                     <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>

@@ -17,6 +17,8 @@ return [
     'home_teachers_title' => 'Teachers',
     'home_teachers_desc' => 'Our brilliant teachers',
     'home_teacher_title' => 'Teacher',
+    'home_knowledge_title' => 'Knowledge',
+    'home_knowledge_desc' => 'Sharing knowledge to everyone',
 
     'user_profile_title' => 'User Profile',
 

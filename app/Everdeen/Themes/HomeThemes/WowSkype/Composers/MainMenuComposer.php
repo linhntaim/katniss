@@ -55,8 +55,8 @@ class MainMenuComposer
             trans_choice('label.teacher', 2)
         );
         $menu->add(
-            '#',
-            trans('label.knowledge')
+            homeUrl('knowledge'),
+            trans('pages.home_knowledge_title')
         );
         $menu->add(
             '#',

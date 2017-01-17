@@ -63,6 +63,13 @@ class Theme extends HomeTheme
     public function register($isAuth = false)
     {
         parent::register($isAuth);
+
+        $knowledgeCoverImage = $this->options('knowledge_cover_image', '');
+        if (!empty($knowledgeCoverImage)) {
+            addPlace('knowledge_cover', new CallableObject(function () use ($knowledgeCoverImage) {
+                return '<div class="image-cover height-500" style="background-image: url(' . $knowledgeCoverImage . ')"></div>';
+            }), 'knowledge_cover_image');
+        }
     }
 
     protected function registerComposers($is_auth = false)
@@ -116,7 +123,8 @@ class Theme extends HomeTheme
     public function placeholders()
     {
         return [
-            'default_placeholder' => 'Default Placeholder',
+            'knowledge_middle' => 'Middle of Knowledge Page',
+            'knowledge_bottom' => 'Bottom of Knowledge Page',
         ];
     }
 

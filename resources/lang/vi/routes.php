@@ -24,6 +24,10 @@ return [
     'classrooms/{id}'                               => 'lop-hoc/{id}',
     'helps'                                         => 'tro-giup',
     'helps/{slug}'                                  => 'tro-giup/{slug}',
+    'knowledge'                                     => 'kien-thuc',
+    'knowledge/articles'                            => 'kien-thuc/bai-viet',
+    'knowledge/articles/{slug}'                     => 'kien-thuc/bai-viet/{slug}',
+    'knowledge/categories/{slug}'                   => 'kien-thuc/chuyen-muc/{slug}',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
     'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',

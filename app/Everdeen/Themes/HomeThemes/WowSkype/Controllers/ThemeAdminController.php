@@ -18,31 +18,36 @@ class ThemeAdminController extends AdminController
 {
     public function updateOptions(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'default_map_marker_id' => 'required|exists:map_markers,id',
-//        ]);
+        $validator = Validator::make($request->all(), [
+            'knowledge_cover_image' => 'required|url',
+        ]);
 
         $rdrResponse = redirect(addExtraUrl('admin/themes/wow_skype/options', adminUrl('extra')));
 
-//        if ($validator->fails()) {
-//            return $rdrResponse->withErrors($validator);
-//        }
+        if ($validator->fails()) {
+            return $rdrResponse->withErrors($validator);
+        }
 
-//        $options = getOption('theme_example', []);
-//        $options['default_map_marker_id'] = $request->input('default_map_marker_id');
-//        setOption('theme_example', $options, 'theme:h:example');
+        homeTheme()->options([
+            'knowledge_cover_image' => $request->input('knowledge_cover_image'),
+            'knowledge_default_article_image' => $request->input('knowledge_default_article_image'),
+        ]);
 
         return $rdrResponse;
     }
 
     public function options(Request $request)
     {
-        $options = getOption('theme_wow_skype', []);
+        $homeTheme = homeTheme();
 
         return $request->getTheme()->resolveExtraView(
             'home_themes.wow_skype.admin.options',
             trans('wow_skype_theme.page_options_title'),
-            trans('wow_skype_theme.page_options_desc')
+            trans('wow_skype_theme.page_options_desc'),
+            [
+                'knowledge_cover_image' => $homeTheme->options('knowledge_cover_image', ''),
+                'knowledge_default_article_image' => $homeTheme->options('knowledge_default_article_image', ''),
+            ]
         );
     }
 }

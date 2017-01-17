@@ -24,6 +24,10 @@ return [
     'classrooms/{id}'                               => 'classrooms/{id}',
     'helps'                                         => 'helps',
     'helps/{slug}'                                  => 'helps/{slug}',
+    'knowledge'                                     => 'knowledge',
+    'knowledge/articles'                            => 'knowledge/articles',
+    'knowledge/articles/{slug}'                     => 'knowledge/articles/{slug}',
+    'knowledge/categories/{slug}'                   => 'knowledge/categories/{slug}',
 
     'profile/account-information'                   => 'profile/account-information',
     'profile/user-information'                      => 'profile/user-information',
