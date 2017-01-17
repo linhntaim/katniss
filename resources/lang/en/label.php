@@ -382,7 +382,8 @@ about your classes.',
     'study_course_1_lc' => 'course|courses',
     'study_level_1_lc' => 'level|levels',
     'study_problem_1_lc' => 'problem|problems',
-    'learning_request_lc' => 'learning requests|learning requests',
+    'learning_request_lc' => 'learning request|learning requests',
+    'days_ago_lc' => 'day ago|days ago',
 
     'no_widget' => 'No widget is placed here',
 

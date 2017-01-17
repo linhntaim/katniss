@@ -294,7 +294,7 @@ class Extension extends BaseExtension
         if ($this->twitterEnable) {
             enqueueThemeFooter($this->twitterJsSdk(), 'twitter_js_sdk');
             if ($this->twitterShareEnable) {
-                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
+                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
             }
         }
 

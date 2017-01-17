@@ -7,6 +7,7 @@
  */
 return [
     'utc_offsets' => 'UTC Offsets',
+    'today' => 'Today',
     'day_0' => 'Monday',
     'day_1' => 'Tuesday',
     'day_2' => 'Wednesday',

@@ -23,6 +23,14 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
+    public function getBySlug($slug)
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->whereTranslation('slug', $slug)
+            ->firstOrFail();
+    }
+
     public function getLast($count = 1)
     {
         $posts = Post::where('type', $this->type)
@@ -81,6 +89,16 @@ class ArticleRepository extends PostRepository
     {
         $categoryRepository = new ArticleCategoryRepository();
         $category = $categoryRepository->getById($categoryId);
+        return $category->posts()->where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getPublishedPagedByCategorySlug($categorySlug, &$category)
+    {
+        $categoryRepository = new ArticleCategoryRepository();
+        $category = $categoryRepository->getBySlug($categorySlug);
         return $category->posts()->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')

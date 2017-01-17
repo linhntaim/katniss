@@ -21,6 +21,13 @@ class ArticleCategoryRepository extends CategoryRepository
         parent::__construct(Category::TYPE_ARTICLE, $id);
     }
 
+    public function getBySlug($slug)
+    {
+        return Category::where('type', $this->type)
+            ->whereTranslation('slug', $slug)
+            ->firstOrFail();
+    }
+
     public function getExceptDefault()
     {
         $appSettings = Extension::getSharedData(AppSettingsExtension::NAME);

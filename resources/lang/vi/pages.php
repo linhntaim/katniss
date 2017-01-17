@@ -17,6 +17,7 @@ return [
     'home_teachers_title' => 'Danh sách giáo viên',
     'home_teachers_desc' => 'Các giáo viên nổi trội của chúng tôi',
     'home_teacher_title' => 'Giáo viên',
+    'home_articles_title' => 'Bài viết',
     'home_knowledge_title' => 'Kiến thức',
     'home_knowledge_desc' => 'Chia sẻ kiến thức tới mọi người',
 

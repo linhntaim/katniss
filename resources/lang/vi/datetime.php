@@ -7,6 +7,7 @@
  */
 return [
     'utc_offsets' => 'Múi giờ UTC',
+    'today' => 'Hôm nay',
     'day_0' => 'Thứ hai',
     'day_1' => 'Thứ ba',
     'day_2' => 'Thứ tư',

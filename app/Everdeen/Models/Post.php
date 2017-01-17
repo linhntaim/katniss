@@ -11,6 +11,7 @@ namespace Katniss\Everdeen\Models;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class Post extends Model
 {
@@ -30,6 +31,11 @@ class Post extends Model
 
     protected $translationForeignKey = 'post_id';
     public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
+
+    public function getDiffDaysAttribute()
+    {
+        return DateTimeHelper::diffDay($this->attributes['created_at']);
+    }
 
     public function author()
     {

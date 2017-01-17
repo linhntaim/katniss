@@ -383,6 +383,7 @@ lộ trình học tập và học phí.',
     'study_level_1_lc' => 'trình độ',
     'study_problem_1_lc' => 'vấn đề cần giải quyết',
     'learning_request_lc' => 'dăng ký học',
+    'days_ago_lc' => 'ngày trước đây',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 
