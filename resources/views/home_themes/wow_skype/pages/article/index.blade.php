@@ -3,14 +3,16 @@
     <div id="page-articles">
         <div class="row">
             <div class="col-md-8">
-                @if(!empty($category))
-                    <ol class="breadcrumb margin-bottom-none">
-                        <li class="breadcrumb-item">
-                            <a href="{{ homeUrl('knowledge') }}">{{ trans('pages.home_knowledge_title') }}</a>
-                        </li>
+                <ol class="breadcrumb margin-bottom-none">
+                    <li class="breadcrumb-item">
+                        <a href="{{ homeUrl('knowledge') }}">{{ trans('pages.home_knowledge_title') }}</a>
+                    </li>
+                    @if(!empty($category))
                         <li class="breadcrumb-item active">{{ $category->name }}</li>
-                    </ol>
-                @endif
+                    @else
+                        <li class="breadcrumb-item active">{{ trans('pages.home_articles_title') }}</li>
+                    @endif
+                </ol>
                 @if($articles->count() > 0)
                     <?php $first = true; ?>
                     @foreach($articles as $article)
@@ -67,6 +69,14 @@
                 @endif
             </div>
             <div class="col-md-4">
+                <div class="margin-bottom-10">
+                    <a id="categories-menu-toggle" class="btn btn-primary btn-block collapsed" data-toggle="collapse" data-target="#categories-menu">
+                        {{ trans_choice('label.category', 2) }}
+                    </a>
+                    <div class="well padding-none collapse border-master" id="categories-menu">
+                        {{ $categories_menu }}
+                    </div>
+                </div>
                 {!! placeholder('article_sidebar_right') !!}
             </div>
         </div>

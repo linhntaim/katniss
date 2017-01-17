@@ -125,6 +125,7 @@ class Theme extends HomeTheme
         return [
             'knowledge_middle' => 'Middle of Knowledge Page',
             'knowledge_bottom' => 'Bottom of Knowledge Page',
+            'article_sidebar_right' => 'Right Sidebar on Article Page',
         ];
     }
 

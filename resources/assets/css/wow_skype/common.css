@@ -90,6 +90,12 @@ body {
     border-color: #999;
 }
 
+.box-flat {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
 .btn-primary {
     background-color: #00aff0;
     border-color: #00aff0;
@@ -184,7 +190,9 @@ body {
     height: 100%;
 }
 
-a {
+a,
+a.list-group-item,
+button.list-group-item {
     color: #00aff0;
 }
 
@@ -931,8 +939,8 @@ a:active:focus {
 
 .article-responsive img,
 .article-responsive iframe {
-    max-width: 100%!important;
-    height: auto!important;
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 .col-sm-pr-none {
@@ -975,6 +983,36 @@ a:active:focus {
     color: #afafaf;
     border-color: #afafaf;
     background-color: #fff;
+}
+
+.list-group.list-group-root {
+    padding: 0;
+    overflow: hidden;
+}
+
+ul.list-group.list-group-root .list-group {
+    margin-bottom: 0;
+}
+
+ul.list-group.list-group-root .list-group-item {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+}
+
+ul.list-group.list-group-root .list-group-item.first {
+    border-top-width: 0;
+}
+
+.list-group.list-group-root .list-group .list-group-item {
+    padding-left: 30px;
+}
+
+.list-group.list-group-root .list-group .list-group .list-group-item {
+    padding-left: 45px;
+}
+
+.list-group-item .glyphicon {
+    margin-right: 5px;
 }
 
 .master-slave-bar .bar {

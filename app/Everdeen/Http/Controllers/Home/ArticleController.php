@@ -7,6 +7,7 @@ use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
+use Katniss\Everdeen\Utils\DataStructure\Hierarchy\Hierarchy;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
 use Katniss\Everdeen\Utils\DataStructure\Menu\MenuRender;
 
@@ -35,30 +36,8 @@ class ArticleController extends ViewController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-        ]);
-    }
 
-    public function show(Request $request, $slug)
-    {
-        $article = $this->articleRepository->getBySlug($slug);
-
-        $this->_title($article->title);
-        $this->_description(htmlShorten($article->content));
-
-        return $this->_show([
-            'article' => $article,
-        ]);
-    }
-
-    public function showById(Request $request, $id)
-    {
-        $article = $this->articleRepository->getById($id);
-
-        $this->_title($article->title);
-        $this->_description(htmlShorten($article->content));
-
-        return $this->_show([
-            'article' => $article,
+            'categories_menu' => $this->getCategoriesMenuRender(),
         ]);
     }
 
@@ -75,6 +54,69 @@ class ArticleController extends ViewController
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
 
             'category' => $category,
+            'categories_menu' => $this->getCategoriesMenuRender(),
+        ]);
+    }
+
+    protected function getCategoriesMenuRender()
+    {
+        $menuRender = new MenuRender();
+        $menuRender->wrapClass = 'list-group list-group-root margin-bottom-none';
+        $menuRender->linkClass = 'list-group-item border-master';
+        $menuRender->childrenWrapClass = 'list-group';
+        return new HtmlString($menuRender->render($this->buildCategoriesMenu()));
+    }
+
+    protected function buildCategoriesMenu()
+    {
+        $hierarchy = new Hierarchy();
+        $hierarchy->buildFromList($this->categoryRepository->getAll(), 'id', 'parent_id');
+        $menu = $this->buildCategoriesMenuFromData($hierarchy->toArray());
+        if ($menu->has()) {
+            $data = &$menu->get();
+            $data[0]['item']['link_class'] = 'first';
+        }
+        return $menu;
+    }
+
+    protected function buildCategoriesMenuFromData($data)
+    {
+        $menu = new Menu(currentUrl());
+        foreach ($data as $item) {
+            $menu->add(
+                homeUrl('knowledge/categories/{slug}', ['slug' => $item['object']['slug']]),
+                $item['object']['name'], '<i class="glyphicon glyphicon-chevron-right"></i> '
+            );
+            if (count($item['children']) > 0) {
+                $menu->addSubMenu($this->buildCategoriesMenuFromData($item['children']));
+            }
+        }
+        return $menu;
+    }
+
+    public function show(Request $request, $slug)
+    {
+        $article = $this->articleRepository->getBySlug($slug);
+
+        $this->_title($article->title);
+        $this->_description(htmlShorten($article->content));
+
+        return $this->_show([
+            'article' => $article,
+            'categories_menu' => $this->getCategoriesMenuRender(),
+        ]);
+    }
+
+    public function showById(Request $request, $id)
+    {
+        $article = $this->articleRepository->getById($id);
+
+        $this->_title($article->title);
+        $this->_description(htmlShorten($article->content));
+
+        return $this->_show([
+            'article' => $article,
+            'categories_menu' => $this->getCategoriesMenuRender(),
         ]);
     }
 }

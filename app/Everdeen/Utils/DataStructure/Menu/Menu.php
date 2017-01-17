@@ -36,7 +36,7 @@ class Menu
         return count($this->data) > 0;
     }
 
-    public function get()
+    public function &get()
     {
         return $this->data;
     }

@@ -56,6 +56,14 @@
                 </div>
             </div>
             <div class="col-md-4">
+                <div class="margin-bottom-10">
+                    <a id="categories-menu-toggle" class="btn btn-primary btn-block collapsed" data-toggle="collapse" data-target="#categories-menu">
+                        {{ trans_choice('label.category', 2) }}
+                    </a>
+                    <div class="well padding-none collapse border-master" id="categories-menu">
+                        {{ $categories_menu }}
+                    </div>
+                </div>
                 {!! placeholder('article_sidebar_right') !!}
             </div>
         </div>
