@@ -67,6 +67,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
         Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
         Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\RelatedArticles\Extension::NAME => Katniss\Everdeen\Themes\Plugins\RelatedArticles\Extension::class,
 //        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
     ],
     'static_extensions' => [

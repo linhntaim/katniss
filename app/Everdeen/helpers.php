@@ -1045,9 +1045,13 @@ function removePlace($id, $name)
  * @param string $id
  * @return string
  */
-function contentPlace($id, array $params = [])
+function contentPlace($id, array $params = [], $before = '', $after = '')
 {
-    return ActionContentPlace::flush($id, $params);
+    $content = ActionContentPlace::flush($id, $params);
+    if (!empty($content)) {
+        $content = $before . $content . $after;
+    }
+    return $content;
 }
 
 #endregion

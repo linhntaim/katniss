@@ -62,6 +62,10 @@
                     <div class="comments">
                         {!! contentPlace('facebook_comments', [homeUrl('knowledge/articles/{slug}', ['slug' => $article->id], 'en')]) !!}
                     </div>
+                    {!! contentPlace('article_after', [$article], '<div class="master-slave-bar margin-v-10 clearfix">
+                            <div class="bar pull-left"></div>
+                            <div class="bar pull-right"></div>
+                        </div>') !!}
                 @endif
             </div>
             <div class="col-md-4">

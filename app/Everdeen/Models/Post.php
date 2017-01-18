@@ -23,6 +23,7 @@ class Post extends Model
     const STATUS_TEACHER_EDITING = 2;
 
     use Translatable;
+    use ExtendTranslatableTrait;
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
@@ -47,14 +48,19 @@ class Post extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('status', self::STATUS_PUBLISHED);
+    }
+
     public function scopeOfPage($query)
     {
-        return $query->where('type', $this::TYPE_PAGE);
+        return $query->where('type', self::TYPE_PAGE);
     }
 
     public function scopeOfArticle($query)
     {
-        return $query->where('type', $this::TYPE_ARTICLE);
+        return $query->where('type', self::TYPE_ARTICLE);
     }
 
     public function categories()
