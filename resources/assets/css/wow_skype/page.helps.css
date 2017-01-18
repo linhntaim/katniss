@@ -10,7 +10,11 @@
 
 #page-helps .list-group-item.help-item:hover,
 #page-helps .list-group-item.help-item:focus,
-#page-helps .list-group-item.help-item:active {
+#page-helps .list-group-item.help-item:active,
+#page-helps .active > .list-group-item.help-item,
+#page-helps .active > .list-group-item.help-item:hover,
+#page-helps .active > .list-group-item.help-item:focus,
+#page-helps .active > .list-group-item.help-item:active {
     background-color: transparent;
 }
 
@@ -22,6 +26,11 @@
     padding-bottom: 0;
 }
 
-#page-helps .active > .list-group-item.help-item.help-article {
+#page-helps .list-group-item.help-item {
+    color: #333;
+}
+
+#page-helps .active > .list-group-item.help-item.help-article,
+#page-helps .list-group-item.help-item.help-article:hover {
     color: #00aff0;
 }
