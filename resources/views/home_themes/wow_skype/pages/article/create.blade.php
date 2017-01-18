@@ -1,5 +1,7 @@
 @extends('home_themes.wow_skype.master.master')
 @section('lib_styles')
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-bootstrap-css') }}">
     <link rel="stylesheet" href="{{ _kExternalLink('medium-editor-css') }}">
     <link rel="stylesheet" href="{{ _kExternalLink('medium-editor-theme-default') }}">
     <link rel="stylesheet" href="{{ libraryAsset('medium-editor-insert-plugin/css/medium-editor-insert-plugin.css') }}">
@@ -9,6 +11,7 @@
     <style>#inputTitle{overflow: hidden}</style>
 @endsection
 @section('lib_scripts')
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
     <script src="{{ _kExternalLink('medium-editor-js') }}"></script>
     <script src="{{ _kExternalLink('handlebars-runtime') }}"></script>
     <script src="{{ libraryAsset('jquery-sortable-min.js') }}"></script>
@@ -20,6 +23,9 @@
 @section('extended_scripts')
     <script>
         $(function () {
+            $('.select2').select2({
+                theme: 'bootstrap'
+            });
             var editor = new MediumEditor('.medium-editor', {
                 toolbar: {
                     buttons: [
@@ -97,6 +103,15 @@
                 _$changeFeaturedImagePrev.text(addLabel);
                 _$removeFeaturedImage.addClass('hide');
             });
+
+            $('#create-article-form').on('submit', function (e) {
+                e.preventDefault();
+                var $inputContent = $('#inputContent')
+                var $html = $($inputContent.val()).not(':last'); // remove image insert class
+                var $wrapHtml = $('<div></div>').append($html);
+                $inputContent.val($wrapHtml.html());
+                this.submit();
+            });
         });
     </script>
 @endsection
@@ -129,7 +144,7 @@
                     <div class="form-group">
                         <label for="inputTitle" class="sr-only">{{ trans('label.title') }}</label>
                         <textarea id="inputTitle" name="title" placeholder="{{ trans('label.title') }}"
-                                  class="form-control as-text h1 bold-700 color-master uppercase"
+                                  class="form-control as-text h1 bold-700 color-master"
                                   rows="1" cols="5" required>{{ old('title') }}</textarea>
                     </div>
                     <div class="master-slave-bar clearfix">
@@ -145,6 +160,17 @@
                         <span class="color-lighter hidden-sm hidden-xs">
                             / {{ trans('datetime.today') }} &#64; {{ date('H:i') }}
                         </span>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputArticleCategories" class="sr-only">{{ trans_choice('label.category', 2) }}</label>
+                        <select id="inputArticleCategories" class="form-control select2" name="categories[]" multiple="multiple"
+                                data-placeholder="{{ trans('form.action_select') }} {{ trans_choice('label.category', 2) }}" style="width: 100%;">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}"{{ in_array($category->id, old('categories', [])) ? ' selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <div id="featured-image" class="image-cover margin-bottom-10">
                         @if(!empty($old_featured_image))
