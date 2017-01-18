@@ -72,6 +72,8 @@ return [
     'admin_link_categories_desc' => 'Manage link categories',
     'admin_links_title' => 'Links',
     'admin_links_desc' => 'Manage links',
+    'admin_announcements_title' => 'Announcements',
+    'admin_announcements_desc' => 'Manage announcements',
     'admin_posts_title' => 'Posts',
 //    'admin_pages_title' => 'Pages',
 //    'admin_pages_desc' => 'Manage pages',

@@ -72,6 +72,8 @@ return [
     'admin_link_categories_desc' => 'Quản lý chuyên mục liên kết',
     'admin_links_title' => 'Liên kết',
     'admin_links_desc' => 'Quản lý liên kết',
+    'admin_announcements_title' => 'Thông báo',
+    'admin_announcements_desc' => 'Quản lý thông báo',
     'admin_posts_title' => 'Bài viết',
 //    'admin_pages_title' => 'Chuyên trang',
 //    'admin_pages_desc' => 'Quản lý chuyên trang',

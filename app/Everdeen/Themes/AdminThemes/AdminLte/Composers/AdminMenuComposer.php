@@ -180,6 +180,11 @@ class AdminMenuComposer
 //                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
 //                );
 //                $menu->addSubMenu($subMenu);
+                $menu->add(  // add an example menu item which have sub menu
+                    adminUrl('announcements'),
+                    trans('pages.admin_announcements_title'),
+                    '<i class="fa fa-bullhorn"></i> <span>', '</span>'
+                );
             }
 
             if ($user->hasRole(['admin', 'editor'])) {

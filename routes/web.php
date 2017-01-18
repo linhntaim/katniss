@@ -210,6 +210,13 @@ Route::group([
 //                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
 //                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
 //                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+                //Announcements
+                Route::get(adminRoute('announcements'), 'AnnouncementController@index');
+                Route::get(adminRoute('announcements/create'), 'AnnouncementController@create');
+                Route::post(adminRoute('announcements'), 'AnnouncementController@store');
+                Route::get(adminRoute('announcements/{id}/edit'), 'AnnouncementController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('announcements/{id}'), 'AnnouncementController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('announcements/{id}'), 'AnnouncementController@destroy')->where('id', '[0-9]+');
             });
 
             Route::group([

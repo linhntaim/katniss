@@ -216,6 +216,9 @@ return [
     'cover_image' => 'Ảnh bìa',
     '_my' => ':name của tôi',
     'my_article' => 'Bài viết của tôi',
+    'to_all' => 'Cho tất cả',
+    'to_roles' => 'Cho vai trò',
+    'to_users' => 'Cho người dùng',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -389,6 +392,8 @@ lộ trình học tập và học phí.',
     'study_problem_1_lc' => 'vấn đề cần giải quyết',
     'learning_request_lc' => 'dăng ký học',
     'days_ago_lc' => 'ngày trước đây',
+    'announcement' => 'Thông báo',
+    'announcement_lc' => 'thông báo',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

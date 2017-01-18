@@ -25,6 +25,7 @@ Route::group([
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
 
+    Route::get('users', 'UserController@index');
     Route::get('teachers', 'TeacherController@index');
     Route::get('students', 'StudentController@index');
     Route::get('supporters', 'UserController@indexSupporter');

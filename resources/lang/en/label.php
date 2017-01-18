@@ -216,6 +216,9 @@ return [
     'cover_image' => 'Cover image',
     '_my' => 'My :name',
     'my_article' => 'My articles',
+    'to_all' => 'To all',
+    'to_roles' => 'To roles',
+    'to_users' => 'To users',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -389,6 +392,8 @@ about your classes.',
     'study_problem_1_lc' => 'problem|problems',
     'learning_request_lc' => 'learning request|learning requests',
     'days_ago_lc' => 'day ago|days ago',
+    'announcement' => 'Announcement|Announcements',
+    'announcement_lc' => 'announcement|announcements',
 
     'no_widget' => 'No widget is placed here',
 

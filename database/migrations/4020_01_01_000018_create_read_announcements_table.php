@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Schema\Blueprint;
 
-class CreateReviewsTable extends Migration
+class CreateReadAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,16 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('read_announcements', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
-            $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
-            $table->integer('rate')->unsigned()->default(0);
-            $table->text('rates');
-            $table->longText('review');
-            $table->boolean('multi_rate')->default(0);
-            $table->timestamps();
+            $table->integer('announcement_id')->unsigned();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('announcement_id')->references('id')->on('announcements')->onDelete('cascade');
 
-            $table->index(['user_id', 'created_at']);
+            $table->primary(['user_id', 'announcement_id']);
         });
     }
 
@@ -37,6 +33,6 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('read_announcements');
     }
 }
