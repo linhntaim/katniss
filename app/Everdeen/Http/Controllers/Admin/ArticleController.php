@@ -27,7 +27,7 @@ class ArticleController extends AdminController
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request)
+    public function indexPublished(Request $request)
     {
         $searchTitle = $request->input('title', null);
         $searchAuthor = $request->input('author', null);
@@ -42,7 +42,36 @@ class ArticleController extends AdminController
         $this->_title(trans('pages.admin_articles_title'));
         $this->_description(trans('pages.admin_articles_desc'));
 
-        return $this->_index([
+        return $this->_any('index_published', [
+            'articles' => $articles,
+            'pagination' => $this->paginationRender->renderByPagedModels($articles),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchTitle) || !empty($searchAuthor) || !empty($searchCategories),
+            'search_title' => $searchTitle,
+            'search_author' => $searchAuthor,
+            'search_categories' => $searchCategories,
+            'categories' => $articleCategoryRepository->getAll(),
+        ]);
+    }
+
+    public function indexTeacher(Request $request)
+    {
+        $searchTitle = $request->input('title', null);
+        $searchAuthor = $request->input('author', null);
+        $searchCategories = $request->input('categories', []);
+        $articles = $this->articleRepository->getSearchTeacherPaged(
+            $searchTitle,
+            $searchAuthor,
+            $searchCategories
+        );
+        $articleCategoryRepository = new ArticleCategoryRepository();
+
+        $this->_title(trans('pages.admin_articles_title'));
+        $this->_description(trans('pages.admin_articles_desc'));
+
+        return $this->_any('index_teacher', [
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
@@ -160,6 +189,10 @@ class ArticleController extends AdminController
      */
     public function update(Request $request, $id)
     {
+        if ($request->has('publish')) {
+            return $this->publish($request, $id);
+        }
+
         $page = $this->articleRepository->model($id);
 
         $redirect = redirect(adminUrl('articles/{id}/edit', ['id' => $page->id]));
@@ -194,6 +227,21 @@ class ArticleController extends AdminController
             return $redirect->withErrors([$ex->getMessage()]);
         }
         return $redirect;
+    }
+
+    protected function publish(Request $request, $id)
+    {
+        $this->articleRepository->model($id);
+
+        $this->_rdrUrl($request, adminUrl('teacher-articles'), $rdrUrl, $errorRdrUrl);
+
+        try {
+            $this->articleRepository->publish($request->authUser()->id);
+        } catch (KatnissException $ex) {
+            return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect($rdrUrl);
     }
 
     /**

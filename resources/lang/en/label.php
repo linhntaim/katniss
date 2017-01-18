@@ -52,6 +52,7 @@ return [
     'wanna_open' => 'Do you really want to open :name ?',
     'wanna_change_to' => 'Do you really want to change to :name ?',
     'wanna_process' => 'Do you really want to process :name ?',
+    'wanna_publish' => 'Do you really want to publish :name ?',
 
     'rate' => 'Rate',
     'rate_poor' => 'Poor',

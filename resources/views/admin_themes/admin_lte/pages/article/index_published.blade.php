@@ -1,10 +1,10 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_articles_title'))
-@section('page_description', trans('pages.admin_articles_desc'))
+@section('page_title', trans('pages.admin_published_articles_title'))
+@section('page_description', trans('pages.admin_published_articles_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
+        <li><a href="{{ adminUrl('published-articles') }}">{{ trans('pages.admin_published_articles_title') }}</a></li>
     </ol>
 @endsection
 @section('lib_styles')

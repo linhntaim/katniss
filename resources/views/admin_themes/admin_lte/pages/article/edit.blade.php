@@ -4,7 +4,11 @@
 @section('page_breadcrumb')
 <ol class="breadcrumb">
     <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-    <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
+    <li>
+        <a href="{{ $article->isPublished ? adminUrl('published-articles') : adminUrl('teacher-articles') }}">
+            {{ trans('pages.admin_articles_title') }}
+        </a>
+    </li>
     <li><a href="#">{{ trans('form.action_edit') }}</a></li>
 </ol>
 @endsection
@@ -53,6 +57,7 @@
                 filebrowserImageBrowseUrl: '{{ meUrl('documents/for/ckeditor') }}?custom_type=images',
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
+            x_modal_put($('a.publish'), '{{ trans('form.action_publish') }}', '{{ trans('label.wanna_publish', ['name' => '']) }}');
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
     </script>
@@ -67,6 +72,11 @@
                     <a class="btn btn-warning delete" href="{{ addErrorUrl(adminUrl('articles/{id}', ['id'=> $article->id])) }}">
                         {{ trans('form.action_delete') }}
                     </a>
+                    @if(!$article->isPublished)
+                        <a class="btn btn-success publish" href="{{ addErrorUrl(adminUrl('articles/{id}', ['id'=> $article->id]) . '?publish=1') }}">
+                            {{ trans('form.action_publish') }}
+                        </a>
+                    @endif
                     <a class="btn btn-primary pull-right" href="{{ adminUrl('articles/create') }}">
                         {{ trans('form.action_add') }} {{ trans_choice('label.article', 1) }}
                     </a>
@@ -174,7 +184,10 @@
                         <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
                         <div class="pull-right">
                             <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                            <a role="button" class="btn btn-warning" href="{{ adminUrl('articles') }}">{{ trans('form.action_cancel') }}</a>
+                            <a role="button" class="btn btn-warning"
+                               href="{{ $article->isPublished ? adminUrl('published-articles') : adminUrl('teacher-articles') }}">
+                                {{ trans('form.action_cancel') }}
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -43,8 +43,9 @@ class Extension extends BaseExtension
         addPlace('article_after', new CallableObject(function ($article) {
             $articles = Post::published()->where('id', '<>', $article->id);
             $articles->where(function ($query) use ($article) {
+                $query->where('user_id', $article->user_id);
                 $categories = $article->categories->pluck('id')->all();
-                $query->whereHas('categories', function ($query) use ($categories) {
+                $query->orWhereHas('categories', function ($query) use ($categories) {
                     $query->whereIn('id', $categories);
                 });
                 $values = ['title' => []];

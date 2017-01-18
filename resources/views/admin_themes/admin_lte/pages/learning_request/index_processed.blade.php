@@ -4,7 +4,7 @@
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('classrooms') }}">{{ trans('pages.admin_learning_requests_title') }}</a></li>
+        <li><a href="{{ adminUrl('processed-learning-requests') }}">{{ trans('pages.admin_learning_requests_title') }}</a></li>
     </ol>
 @endsection
 @section('lib_styles')

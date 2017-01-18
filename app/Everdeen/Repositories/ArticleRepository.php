@@ -80,6 +80,26 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchTeacherPaged($title = null, $author = null, $categories = null)
+    {
+        $posts = Post::where('type', $this->type)->where('status', Post::STATUS_TEACHER_EDITING);
+
+        if (!empty($title)) {
+            $posts->whereTranslationLike('title', '%' . $title . '%');
+        }
+        if (!empty($author)) {
+            $posts->where('user_id', $author);
+        }
+        if (!empty($categories)) {
+            $posts->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('id', $categories);
+            });
+        }
+
+        return $posts->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getTeacherEditingPaged()
     {
         return Post::where('type', $this->type)
@@ -220,6 +240,19 @@ class ArticleRepository extends PostRepository
             DB::rollBack();
 
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function publish($publishedBy)
+    {
+        $article = $this->model();
+        try {
+            $article->update([
+                'status' => Post::STATUS_PUBLISHED
+            ]);
+            return true;
+        } catch (\Exception $exception) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
         }
     }
 }

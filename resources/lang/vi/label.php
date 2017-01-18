@@ -52,6 +52,7 @@ return [
     'wanna_open' => 'Bạn có muốn mở :name ?',
     'wanna_change_to' => 'Bạn có muốn chuyển thành :name ?',
     'wanna_process' => 'Bạn có muốn xử lý :name ?',
+    'wanna_publish' => 'Bạn có muốn xuất bản :name ?',
 
     'rate' => 'Đánh giá',
     'rate_poor' => 'Không tốt',

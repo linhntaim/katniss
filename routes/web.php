@@ -245,6 +245,8 @@ Route::group([
                 Route::put(adminRoute('article-categories/{id}'), 'ArticleCategoryController@update');
                 Route::delete(adminRoute('article-categories/{id}'), 'ArticleCategoryController@destroy')->where('id', '[0-9]+');
                 //Articles
+                Route::get(adminRoute('published-articles'), 'ArticleController@indexPublished');
+                Route::get(adminRoute('teacher-articles'), 'ArticleController@indexTeacher');
                 Route::get(adminRoute('articles'), 'ArticleController@index');
                 Route::get(adminRoute('articles/create'), 'ArticleController@create');
                 Route::post(adminRoute('articles'), 'ArticleController@store');
