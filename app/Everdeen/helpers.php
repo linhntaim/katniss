@@ -742,6 +742,28 @@ function randomizeFilename($prefix = null, $extension = null)
     );
 }
 
+function tmpUploadPath()
+{
+    return public_path('upload/tmp');
+}
+
+function tmpUploadUrl()
+{
+    return asset('upload/tmp');
+}
+
+function uploadPath($time = 'now')
+{
+    $date = new \DateTime($time, new \DateTimeZone('UTC'));
+    return public_path('upload/' . $date->format('Y') . '/' . $date->format('m') . '/' . $date->format('d'));
+}
+
+function uploadUrl($time = 'now')
+{
+    $date = new \DateTime($time, new \DateTimeZone('UTC'));
+    return asset('upload/' . $date->format('Y') . '/' . $date->format('m') . '/' . $date->format('d'));
+}
+
 function makeUserPublicPath($userRelativePath)
 {
     $storage = Storage::disk('file_manager');

@@ -95,4 +95,5 @@ return [
     'action_view_profile' => 'Xem hồ sơ',
     'action_view_detail' => 'Xem chi tiết',
     'action_process' => 'Xử lý',
+    'action_create' => 'Tạo',
 ];

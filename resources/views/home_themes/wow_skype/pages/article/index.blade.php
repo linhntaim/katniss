@@ -8,7 +8,13 @@
                         <a href="{{ homeUrl('knowledge') }}">{{ trans('pages.home_knowledge_title') }}</a>
                     </li>
                     @if(!empty($category))
-                        <li class="breadcrumb-item active">{{ $category->name }}</li>
+                        <li class="breadcrumb-item active"><em>{{ trans_choice('label.category', 1) }}:</em>
+                            {{ $category->name }}
+                        </li>
+                    @elseif(!empty($author))
+                        <li class="breadcrumb-item active"><em>{{ trans('label.author') }}:</em>
+                            {{ $author->display_name }}
+                        </li>
                     @else
                         <li class="breadcrumb-item active">{{ trans('pages.home_articles_title') }}</li>
                     @endif
@@ -28,10 +34,17 @@
                                     <strong>{{ $article->title }}</strong>
                                 </a>
                             </h4>
+                            @if(!empty($is_author) && $is_author && !$article->isPublished)
+                                <div class="margin-bottom-10">
+                                    <span class="label label-warning">{{ trans('label.status_not_approved') }}</span>
+                                </div>
+                            @endif
                             <div class="article-meta margin-bottom-10">
-                                <img class="img-circle border-solid border-master width-30"
-                                     src="{{ $article->author->url_avatar_thumb }}">
-                                {{ $article->author->display_name }}
+                                <a href="{{ homeUrl('knowledge/authors/{id}', ['id' => $article->author->id]) }}">
+                                    <img class="img-circle border-solid border-master width-30"
+                                         src="{{ $article->author->url_avatar_thumb }}">
+                                    {{ $article->author->display_name }}
+                                </a>
                                 <span class="color-lighter hidden-sm hidden-xs">
                                     / {{ $article->diffDays == 0 ? trans('datetime.today') : $article->diffDays .' '. trans_choice('label.days_ago_lc', $article->diffDays) }}
                                 </span>
@@ -46,8 +59,8 @@
                                 </span>
                             </div>
                             @if(!empty($article->featured_image))
-                                <div class="image-cover height-200 margin-bottom-10">
-                                    <img src="{{ $article->featured_image }}">
+                                <div class="image-cover height-200 margin-bottom-10 bg-master"
+                                     style="background-image: url({{ $article->featured_image }})">
                                 </div>
                             @endif
                             <article>{{ htmlShorten($article->content)  }}</article>
@@ -69,15 +82,7 @@
                 @endif
             </div>
             <div class="col-md-4">
-                <div class="margin-bottom-10">
-                    <a id="categories-menu-toggle" class="btn btn-primary btn-block collapsed" data-toggle="collapse" data-target="#categories-menu">
-                        {{ trans_choice('label.category', 2) }}
-                    </a>
-                    <div class="well padding-none collapse border-master" id="categories-menu">
-                        {{ $categories_menu }}
-                    </div>
-                </div>
-                {!! placeholder('article_sidebar_right') !!}
+                @include('home_themes.wow_skype.pages.article.sidebar_right')
             </div>
         </div>
     </div>

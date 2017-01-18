@@ -23,19 +23,27 @@ class StorePhoto extends StoreFile
      */
     public function __construct($sourceFile)
     {
-        parent::__construct($sourceFile, '_photos');
+        parent::__construct($sourceFile, '_photos', 'img');
 
-        $this->prefix = 'img';
         $this->image = ImageManagerStatic::make($this->targetFileInfo->getRealPath());
     }
 
     /**
      * @param integer $width
      * @param integer $height
+     * @param boolean $aspectRatio
+     * @param boolean $upSize
      */
-    public function resize($width, $height)
+    public function resize($width, $height, $aspectRatio = true, $upSize = false)
     {
-        $this->image->resize($width, $height);
+        $this->image->resize($width, $height, function ($constraint) use ($aspectRatio, $upSize) {
+            if ($aspectRatio) {
+                $constraint->aspectRatio();
+            }
+            if ($upSize) {
+                $constraint->upsize();
+            }
+        });
     }
 
     /**

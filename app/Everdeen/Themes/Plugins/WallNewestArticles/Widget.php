@@ -28,7 +28,7 @@ class Widget extends DefaultWidget
     public function register()
     {
         enqueueThemeHeader(
-            '<style>.latest-article-item,.latest-article-item .image-cover img{border-radius: 8px}</style>',
+            '<style>.latest-article-item,.latest-article-item .image-cover{border-radius: 8px}</style>',
             'widget_wall_newest_articles'
         );
     }

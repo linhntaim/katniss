@@ -9,12 +9,11 @@
             @foreach($articles as $article)
                 <div class="col-xs-12 col-sm-6 col-md-4 padding-h-5 margin-bottom-10">
                     <div class="latest-article-item bg-master">
-                        <div class="image-cover height-200">
-                            <a href="{{ homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug]) }}">
-                                <img class="img-responsive border-solid border-master border-3x border-bottom-none"
-                                     src="{{ empty($article->featured_image) ? $default_image : $article->featured_image }}">
-                            </a>
-                        </div>
+                        <a href="{{ homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug]) }}">
+                            <div class="image-cover height-200 border-solid border-master border-3x border-bottom-none"
+                                 style="background-image: url({{ empty($article->featured_image) ? $default_image : $article->featured_image }})">
+                            </div>
+                        </a>
                         <div class="padding-10">
                             <a href="{{ homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug]) }}">
                                 <span class="color-white big uppercase bold-600">{{ $article->title }}</span>

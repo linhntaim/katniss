@@ -95,4 +95,5 @@ return [
     'action_view_profile' => 'View profile',
     'action_view_detail' => 'View detail',
     'action_process' => 'Process',
+    'action_create' => 'Create',
 ];

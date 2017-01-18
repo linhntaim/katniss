@@ -26,8 +26,10 @@ return [
     'helps/{slug}'                                  => 'tro-giup/{slug}',
     'knowledge'                                     => 'kien-thuc',
     'knowledge/articles'                            => 'kien-thuc/bai-viet',
+    'knowledge/articles/create'                     => 'kien-thuc/bai-viet/them-moi',
     'knowledge/articles/{slug}'                     => 'kien-thuc/bai-viet/{slug}',
     'knowledge/categories/{slug}'                   => 'kien-thuc/chuyen-muc/{slug}',
+    'knowledge/authors/{id}'                        => 'kien-thuc/tac-gia/{id}',
 
     'profile/account-information'                   => 'tai-khoan/thong-tin-tai-khoan',
     'profile/user-information'                      => 'tai-khoan/thong-tin-nguoi-dung',

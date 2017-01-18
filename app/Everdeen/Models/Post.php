@@ -32,6 +32,11 @@ class Post extends Model
     protected $translationForeignKey = 'post_id';
     public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
 
+    public function getIsPublishedAttribute()
+    {
+        return $this->attributes['status'] == self::STATUS_PUBLISHED;
+    }
+
     public function getDiffDaysAttribute()
     {
         return DateTimeHelper::diffDay($this->attributes['created_at']);

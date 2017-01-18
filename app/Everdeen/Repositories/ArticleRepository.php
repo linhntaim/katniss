@@ -23,7 +23,19 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
+    public function hasSlug($slug)
+    {
+        return Post::whereTranslation('slug', $slug)->count() > 0;
+    }
+
     public function getBySlug($slug)
+    {
+        return Post::where('type', $this->type)
+            ->whereTranslation('slug', $slug)
+            ->firstOrFail();
+    }
+
+    public function getPublishedBySlug($slug)
     {
         return Post::where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
@@ -105,7 +117,30 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
+    public function getPublishedPagedByAuthor($authorId, &$author)
+    {
+        $userRepository = new UserRepository($authorId);
+        $author = $userRepository->model();
+        return Post::where('type', $this->type)
+            ->where('user_id', $author->id)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getPagedByAuthor($authorId, &$author)
+    {
+        $userRepository = new UserRepository($authorId);
+        $author = $userRepository->model();
+        return Post::where('type', $this->type)
+            ->where('user_id', $author->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function create($userId, $template = null, $featuredImage = null,
+                           array $localizedData = [], array $categories = [],
+                           $status = Post::STATUS_PUBLISHED)
     {
         DB::beginTransaction();
         try {
@@ -114,6 +149,7 @@ class ArticleRepository extends PostRepository
             $article->user_id = $userId;
             $article->template = $template;
             $article->featured_image = $featuredImage;
+            $article->status = $status;
             foreach ($localizedData as $locale => $transData) {
                 $trans = $article->translateOrNew($locale);
                 $trans->title = $transData['title'];

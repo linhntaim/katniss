@@ -15,19 +15,24 @@
                 <h1 class="margin-top-none color-master margin-bottom-10 uppercase">
                     <strong>{{ $article->title }}</strong>
                 </h1>
+                @if(!empty($is_author) && $is_author && !$article->isPublished)
+                    <div class="margin-bottom-10">
+                        <span class="label label-warning">{{ trans('label.status_not_approved') }}</span>
+                    </div>
+                @endif
                 <div class="master-slave-bar clearfix">
                     <div class="bar pull-left"></div>
                     <div class="bar pull-right"></div>
                 </div>
                 <div class="article-meta margin-v-10">
-                    <img class="img-circle border-solid border-master width-30"
-                         src="{{ $article->author->url_avatar_thumb }}">
-                    {{ $article->author->display_name }}
-                    @if($article->diffDays > 0)
-                        <span class="color-lighter hidden-sm hidden-xs">
-                            / {{ $article->diffDays }} {{ trans_choice('label.days_ago_lc', $article->diffDays) }}
-                        </span>
-                    @endif
+                    <a href="{{ homeUrl('knowledge/authors/{id}', ['id' => $article->author->id]) }}">
+                        <img class="img-circle border-solid border-master width-30"
+                             src="{{ $article->author->url_avatar_thumb }}">
+                        {{ $article->author->display_name }}
+                    </a>
+                    <span class="color-lighter hidden-sm hidden-xs">
+                        / {{ $article->diffDays == 0 ? trans('datetime.today') : $article->diffDays .' '. trans_choice('label.days_ago_lc', $article->diffDays) }}
+                    </span>
                     <span class="color-lighter hidden-xs">
                         / {{ trans_choice('label.category', $article->categories->count()) }}:
                         <?php $first = true; ?>
@@ -44,27 +49,23 @@
                     </div>
                 @endif
                 <article class="article-responsive">{!! $article->content  !!}</article>
-                <div class="margin-top-20">
-                    {!! contentPlace('sharing_buttons', [homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug])]) !!}
-                </div>
+                @if($article->isPublished)
+                    <div class="margin-top-20">
+                        {!! contentPlace('sharing_buttons', [homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug])]) !!}
+                    </div>
+                @endif
                 <div class="master-slave-bar margin-v-10 clearfix">
                     <div class="bar pull-left"></div>
                     <div class="bar pull-right"></div>
                 </div>
-                <div class="comments">
-                    {!! contentPlace('facebook_comments', [homeUrl('knowledge/articles/{slug}', ['slug' => $article->id], 'en')]) !!}
-                </div>
+                @if($article->isPublished)
+                    <div class="comments">
+                        {!! contentPlace('facebook_comments', [homeUrl('knowledge/articles/{slug}', ['slug' => $article->id], 'en')]) !!}
+                    </div>
+                @endif
             </div>
             <div class="col-md-4">
-                <div class="margin-bottom-10">
-                    <a id="categories-menu-toggle" class="btn btn-primary btn-block collapsed" data-toggle="collapse" data-target="#categories-menu">
-                        {{ trans_choice('label.category', 2) }}
-                    </a>
-                    <div class="well padding-none collapse border-master" id="categories-menu">
-                        {{ $categories_menu }}
-                    </div>
-                </div>
-                {!! placeholder('article_sidebar_right') !!}
+                @include('home_themes.wow_skype.pages.article.sidebar_right')
             </div>
         </div>
     </div>

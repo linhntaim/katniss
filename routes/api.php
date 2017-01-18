@@ -22,6 +22,7 @@ Route::group([
         'namespace' => 'Api\V1',
         'middleware' => 'auth'
     ], function () {
+        Route::post('upload/default-image', 'UploadController@useDefaultImage');
         Route::post('upload/cropper-js', 'UploadController@useJsCropper');
 
         Route::post('user/{id}/avatar/cropper-js', 'UserController@postAvatarUsingCropperJs');

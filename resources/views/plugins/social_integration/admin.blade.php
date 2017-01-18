@@ -309,7 +309,7 @@
         <div class="form-group">
             <div class="checkbox icheck">
                 <label for="inputGoogleLoginEnable">
-                    <input id="inputGoogleShareEnable" type="checkbox" name="google_login_enable"
+                    <input id="inputGoogleLoginEnable" type="checkbox" name="google_login_enable"
                            data-enable-target="#inputGoogleEnable"
                            value="1"{{ $google_login_enable ? ' checked' : '' }}>
                     &nbsp; {{ trans('social_integration.google_login_enable') }}

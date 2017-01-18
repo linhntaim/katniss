@@ -212,6 +212,9 @@ return [
     'created_at' => 'Created at',
     'processed_at' => 'Processed at',
     'processed_by' => 'Processed by',
+    'cover_image' => 'Cover image',
+    '_my' => 'My :name',
+    'my_article' => 'My articles',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -327,6 +330,7 @@ about your classes.',
     'no_student_rating_yet' => 'No student\'s rating yet',
     'choose_teachers_help' => 'Find the best English teachers for you',
     'choose_topics_help' => 'What do you want to learn?',
+    'content_help_uc' => 'TYPE YOUR CONTENT HERE',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

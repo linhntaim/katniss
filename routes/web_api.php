@@ -33,6 +33,9 @@ Route::group([
     Route::group([
         'middleware' => 'auth'
     ], function () {
+        Route::post('upload/blue-imp', 'UploadController@useBlueImp');
+        Route::delete('upload/blue-imp', 'UploadController@destroyBlueImp');
+
         Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
 
         Route::put('me/account/password', 'AccountController@updatePassword');

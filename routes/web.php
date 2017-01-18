@@ -22,26 +22,6 @@ Route::group([
     Route::group([
         'namespace' => 'Home',
     ], function () {
-        Route::get('/', 'HomepageController@index');
-        Route::get(homeRoute('user/sign-up'), 'UserController@signUp');
-        Route::get(homeRoute('teacher/sign-up'), 'TeacherController@getSignUp');
-        Route::post(homeRoute('teacher/sign-up'), 'TeacherController@postSignUp');
-        Route::get(homeRoute('student/sign-up'), 'StudentController@getSignUp');
-        Route::post(homeRoute('student/sign-up'), 'StudentController@postSignUp');
-        Route::get(homeRoute('student/sign-up/step/{step}'), 'StudentController@getSignUpStep');
-        Route::post(homeRoute('student/sign-up/step/{step}'), 'StudentController@postSignUpStep');
-
-        Route::get(homeRoute('teachers'), 'TeacherController@index');
-        Route::get(homeRoute('teachers/{id}'), 'TeacherController@show');
-
-        Route::get(homeRoute('helps'), 'HelpController@index');
-        Route::get(homeRoute('helps/{slug}'), 'HelpController@show');
-
-        Route::get(homeRoute('knowledge'), 'KnowledgeController@index');
-        Route::get(homeRoute('knowledge/articles'), 'ArticleController@index');
-        Route::get(homeRoute('knowledge/articles/{slug}'), 'ArticleController@show');
-        Route::get(homeRoute('knowledge/categories/{slug}'), 'ArticleController@showCategory');
-
         Route::group([
             'middleware' => 'auth'
         ], function () {
@@ -59,6 +39,13 @@ Route::group([
             Route::post(homeRoute('profile/user-certificates'), 'UserController@storeCertificate');
             Route::put(homeRoute('profile/user-certificates/{id}'), 'UserController@updateCertificate');
             Route::delete(homeRoute('profile/user-certificates/{id}'), 'UserController@destroyCertificate');
+
+            Route::group([
+                'middleware' => 'entrust:,create-articles'
+            ], function () {
+                Route::get(homeRoute('knowledge/articles/create'), 'ArticleController@create');
+                Route::post(homeRoute('knowledge/articles'), 'ArticleController@store');
+            });
 
             Route::group([
                 'middleware' => 'entrust:teacher'
@@ -88,6 +75,27 @@ Route::group([
                 Route::put(homeRoute('classrooms/{id}'), 'ClassroomController@update');
             });
         });
+
+        Route::get('/', 'HomepageController@index');
+        Route::get(homeRoute('user/sign-up'), 'UserController@signUp');
+        Route::get(homeRoute('teacher/sign-up'), 'TeacherController@getSignUp');
+        Route::post(homeRoute('teacher/sign-up'), 'TeacherController@postSignUp');
+        Route::get(homeRoute('student/sign-up'), 'StudentController@getSignUp');
+        Route::post(homeRoute('student/sign-up'), 'StudentController@postSignUp');
+        Route::get(homeRoute('student/sign-up/step/{step}'), 'StudentController@getSignUpStep');
+        Route::post(homeRoute('student/sign-up/step/{step}'), 'StudentController@postSignUpStep');
+
+        Route::get(homeRoute('teachers'), 'TeacherController@index');
+        Route::get(homeRoute('teachers/{id}'), 'TeacherController@show');
+
+        Route::get(homeRoute('helps'), 'HelpController@index');
+        Route::get(homeRoute('helps/{slug}'), 'HelpController@show');
+
+        Route::get(homeRoute('knowledge'), 'KnowledgeController@index');
+        Route::get(homeRoute('knowledge/articles'), 'ArticleController@index');
+        Route::get(homeRoute('knowledge/articles/{slug}'), 'ArticleController@show');
+        Route::get(homeRoute('knowledge/categories/{slug}'), 'ArticleController@showCategory');
+        Route::get(homeRoute('knowledge/authors/{id}'), 'ArticleController@showAuthor');
     });
 
 

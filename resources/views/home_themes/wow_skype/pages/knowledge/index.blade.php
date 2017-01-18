@@ -1,6 +1,6 @@
 @extends('home_themes.wow_skype.master.master')
 @section('before_main_content')
-    <div id="knowledge-cover">
+    <div id="knowledge-cover" class="bg-master">
         {!! contentPlace('knowledge_cover') !!}
     </div>
 @endsection

@@ -20,10 +20,15 @@ class DefaultSeeder extends Seeder
             'display_name' => 'Access admin',
             'description' => 'Access admin pages'
         ]);
-        $publish_post_permission = Permission::create([
-            'name' => 'publish-post',
-            'display_name' => 'Publish post',
-            'description' => 'Publish posts'
+        $publish_articles_permission = Permission::create([
+            'name' => 'publish-articles',
+            'display_name' => 'Publish articles',
+            'description' => 'Publish articles'
+        ]);
+        $create_articles_permission = Permission::create([
+            'name' => 'create-articles',
+            'display_name' => 'Create articles',
+            'description' => 'Create articles'
         ]);
 
         $owner_role = Role::create(array(
@@ -40,7 +45,8 @@ class DefaultSeeder extends Seeder
             'description' => 'Manage operation of the system and important modules'
         ));
         $admin_role->attachPermission($admin_access_permission);
-        $admin_role->attachPermission($publish_post_permission);
+        $admin_role->attachPermission($publish_articles_permission);
+        $admin_role->attachPermission($create_articles_permission);
 
         $tester_role = Role::create(array(
             'name' => 'tester',
@@ -69,13 +75,15 @@ class DefaultSeeder extends Seeder
             'description' => 'Editor'
         ));
         $editor_role->attachPermission($admin_access_permission);
-        $editor_role->attachPermission($publish_post_permission);
+        $editor_role->attachPermission($publish_articles_permission);
+        $editor_role->attachPermission($create_articles_permission);
 
         $teacher_role = Role::create(array(
             'name' => 'teacher',
             'display_name' => 'Teacher',
             'description' => 'Teacher'
         ));
+        $teacher_role->attachPermission($create_articles_permission);
 
         $student_role = Role::create(array(
             'name' => 'student',

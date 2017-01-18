@@ -2,14 +2,20 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\HtmlString;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Post;
 use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
+use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\DataStructure\Hierarchy\Hierarchy;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
 use Katniss\Everdeen\Utils\DataStructure\Menu\MenuRender;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 
 class ArticleController extends ViewController
 {
@@ -36,8 +42,31 @@ class ArticleController extends ViewController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
-
             'categories_menu' => $this->getCategoriesMenuRender(),
+        ]);
+    }
+
+    public function showAuthor(Request $request, $id)
+    {
+        if ($request->isAuth() && $request->authUser()->id == $id) {
+            $articles = $this->articleRepository->getPagedByAuthor($id, $author);
+            $isAuthor = true;
+        } else {
+            $articles = $this->articleRepository->getPublishedPagedByAuthor($id, $author);
+            $isAuthor = false;
+        }
+
+        $this->_title([trans('label.author'), $author->display_name]);
+        $this->_description(trans('pages.home_knowledge_desc'));
+
+        return $this->_index([
+            'articles' => $articles,
+            'pagination' => $this->paginationRender->renderByPagedModels($articles),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+            'categories_menu' => $this->getCategoriesMenuRender(),
+
+            'author' => $author,
+            'is_author' => $isAuthor,
         ]);
     }
 
@@ -52,9 +81,9 @@ class ArticleController extends ViewController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+            'categories_menu' => $this->getCategoriesMenuRender(),
 
             'category' => $category,
-            'categories_menu' => $this->getCategoriesMenuRender(),
         ]);
     }
 
@@ -81,7 +110,7 @@ class ArticleController extends ViewController
 
     protected function buildCategoriesMenuFromData($data)
     {
-        $menu = new Menu(currentUrl());
+        $menu = new Menu(currentFullUrl());
         foreach ($data as $item) {
             $menu->add(
                 homeUrl('knowledge/categories/{slug}', ['slug' => $item['object']['slug']]),
@@ -97,6 +126,10 @@ class ArticleController extends ViewController
     public function show(Request $request, $slug)
     {
         $article = $this->articleRepository->getBySlug($slug);
+        $isAuthor = $request->isAuth() && $request->authUser()->id == $article->user_id;
+        if (!$isAuthor && !$article->isPublished) {
+            abort(404);
+        }
 
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));
@@ -104,12 +137,18 @@ class ArticleController extends ViewController
         return $this->_show([
             'article' => $article,
             'categories_menu' => $this->getCategoriesMenuRender(),
+
+            'is_author' => $isAuthor,
         ]);
     }
 
     public function showById(Request $request, $id)
     {
         $article = $this->articleRepository->getById($id);
+        $isAuthor = $request->isAuth() && $request->authUser()->id == $article->user_id;
+        if (!$isAuthor && !$article->isPublished) {
+            abort(404);
+        }
 
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));
@@ -117,6 +156,72 @@ class ArticleController extends ViewController
         return $this->_show([
             'article' => $article,
             'categories_menu' => $this->getCategoriesMenuRender(),
+
+            'is_author' => $isAuthor,
         ]);
+    }
+
+    public function create(Request $request)
+    {
+        $articleCategoryRepository = new ArticleCategoryRepository();
+
+        $this->_title([trans('pages.admin_articles_title'), trans('form.action_add')]);
+        $this->_description(trans('pages.admin_articles_desc'));
+
+        return $this->_create([
+            'categories' => $articleCategoryRepository->getExceptDefault(),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|url',
+        ]);
+
+        $errorRedirect = redirect(homeUrl('knowledge/articles/create'))
+            ->withInput();
+
+        if ($validator->fails()) {
+            return $errorRedirect->withErrors($validator);
+        }
+
+        try {
+            $authUser = $request->authUser();
+            $this->articleRepository->create(
+                $authUser->id,
+                null,
+                $request->input('featured_image', ''),
+                [
+                    AppConfig::INTERNATIONAL_LOCALE_CODE => [
+                        'title' => $request->input('title'),
+                        'content' => $request->input('content'),
+                        'slug' => $this->generateSlug($request->input('title')),
+                        'description' => '',
+                    ]
+                ],
+                $request->input('categories', []),
+                $authUser->hasRole('teacher') && !$authUser->can('publish-articles') ?
+                    Post::STATUS_TEACHER_EDITING : Post::STATUS_PUBLISHED
+            );
+        } catch (KatnissException $ex) {
+            return $errorRedirect->withErrors([$ex->getMessage()]);
+        }
+
+        return redirect(homeUrl('knowledge/authors/{id}', ['id' => $authUser->id]));
+    }
+
+    protected function generateSlug($title)
+    {
+        $slug = Str::slug($title);
+        $genSlug = $slug;
+        $i = 0;
+        while ($this->articleRepository->hasSlug($genSlug)) {
+            $genSlug = $slug . '-' . (++$i);
+        }
+        return $genSlug;
     }
 }
