@@ -166,6 +166,7 @@ return [
     'admin/students/{id}/edit'                      => 'quan-tri/hoc-vien/{id}/chinh-sua',
     'admin/opening-classrooms'                      => 'quan-tri/lop-dang-hoc',
     'admin/closed-classrooms'                       => 'quan-tri/lop-da-hoc-xong',
+    'admin/ready-classrooms'                        => 'quan-tri/lop-het-thoi-gian-hoc',
     'admin/classrooms/create'                       => 'quan-tri/lop-hoc/them-moi',
     'admin/classrooms/{id}'                         => 'quan-tri/lop-hoc/{id}',
     'admin/classrooms/{id}/edit'                    => 'quan-tri/lop-hoc/{id}/chinh-sua',

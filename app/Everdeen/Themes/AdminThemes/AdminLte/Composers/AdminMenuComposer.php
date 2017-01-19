@@ -330,6 +330,11 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subSubMenu->add( // add a menu item
+                    adminUrl('ready-classrooms'),
+                    trans('pages.admin_ready_classrooms_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subSubMenu->add( // add a menu item
                     adminUrl('closed-classrooms'),
                     trans('pages.admin_closed_classrooms_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'

@@ -155,6 +155,7 @@
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.author') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
@@ -165,6 +166,7 @@
                             <tfoot>
                                 <tr>
                                     <th class="order-col-2">#</th>
+                                    <th class="order-col-1"></th>
                                     <th>{{ trans('label.title') }}</th>
                                     <th>{{ trans('label.author') }}</th>
                                     <th>{{ trans('label.slug') }}</th>
@@ -176,6 +178,11 @@
                                 @foreach($articles as $article)
                                     <tr>
                                         <td class="order-col-2">{{ ++$start_order }}</td>
+                                        <td class="text-center">
+                                            <a target="_blank" href="{{ homeUrl('knowledge/articles/{slug}', ['slug' => $article->slug]) }}">
+                                                <i class="fa fa-external-link"></i>
+                                            </a>
+                                        </td>
                                         <td>{{ $article->title }}</td>
                                         <td>{{ $article->author->display_name }}</td>
                                         <td>{{ $article->slug }}</td>

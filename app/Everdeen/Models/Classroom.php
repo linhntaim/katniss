@@ -3,6 +3,7 @@
 namespace Katniss\Everdeen\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Classroom extends Model
 {
@@ -12,6 +13,7 @@ class Classroom extends Model
     protected $table = 'classrooms';
 
     protected $fillable = [
+        'closed_by', 'closed_at',
         'student_id', 'teacher_id', 'supporter_id', 'status', 'hours', 'name'
     ];
 
@@ -97,6 +99,17 @@ class Classroom extends Model
     public function scopeClosed($query)
     {
         return $query->where('status', self::STATUS_CLOSED);
+    }
+
+    public function scopeReadyToClose($query)
+    {
+        return $query->join(DB::raw('(select 
+                classroom_id, 
+                sum(hours) as sum_hours 
+                from '.DB::getTablePrefix().'class_times
+                group by classroom_id) as tmp_class_times'), DB::raw('tmp_class_times.classroom_id'), '=', 'classrooms.id')
+            ->where('status', self::STATUS_OPENING)
+            ->where('classrooms.hours', '<=', DB::raw('tmp_class_times.sum_hours'));
     }
 
     public function scopeOfTeacher($query, $teacherId)

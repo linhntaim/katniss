@@ -8,10 +8,16 @@
                         <a href="{{ homeUrl('knowledge') }}">{{ trans('pages.home_knowledge_title') }}</a>
                     </li>
                     @if(!empty($category))
+                        <li class="breadcrumb-item">
+                            <a href="{{ homeUrl('knowledge/articles') }}">{{ trans('pages.home_articles_title') }}</a>
+                        </li>
                         <li class="breadcrumb-item active"><em>{{ trans_choice('label.category', 1) }}:</em>
                             {{ $category->name }}
                         </li>
                     @elseif(!empty($author))
+                        <li class="breadcrumb-item">
+                            <a href="{{ homeUrl('knowledge/articles') }}">{{ trans('pages.home_articles_title') }}</a>
+                        </li>
                         <li class="breadcrumb-item active"><em>{{ trans('label.author') }}:</em>
                             {{ $author->display_name }}
                         </li>
@@ -50,11 +56,10 @@
                                 </span>
                                 <span class="color-lighter hidden-xs">
                                     / {{ trans_choice('label.category', $article->categories->count()) }}:
-                                    <?php $first = true; ?>
+                                    <?php $lastId = $article->categories->last()->id; ?>
                                     @foreach($article->categories as $category)
                                         <a href="{{ homeUrl('knowledge/categories/{slug}', ['slug' => $category->slug]) }}">
-                                            {{ $category->name }}</a>{{ !$first ? ',' : '' }}
-                                        <?php $first = false; ?>
+                                            {{ $category->name }}</a>{{ $category->id != $lastId ? ',' : '' }}
                                     @endforeach
                                 </span>
                             </div>

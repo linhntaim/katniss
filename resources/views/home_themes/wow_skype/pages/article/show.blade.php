@@ -35,11 +35,10 @@
                     </span>
                     <span class="color-lighter hidden-xs">
                         / {{ trans_choice('label.category', $article->categories->count()) }}:
-                        <?php $first = true; ?>
+                        <?php $lastId = $article->categories->last()->id; ?>
                         @foreach($article->categories as $category)
                             <a href="{{ homeUrl('knowledge/categories/{slug}', ['slug' => $category->slug]) }}">
-                                {{ $category->name }}</a>{{ !$first ? ',' : '' }}
-                            <?php $first = false; ?>
+                                {{ $category->name }}</a>{{ $category->id != $lastId ? ',' : '' }}
                         @endforeach
                     </span>
                 </div>

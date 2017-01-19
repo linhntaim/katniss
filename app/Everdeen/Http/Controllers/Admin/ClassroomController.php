@@ -83,6 +83,36 @@ class ClassroomController extends AdminController
         ]);
     }
 
+    public function indexReady(Request $request)
+    {
+        $searchName = $request->input('name', null);
+        $searchTeacher = $request->input('teacher', null);
+        $searchStudent = $request->input('student', null);
+        $searchSupporter = $request->input('supporter', null);
+        $classrooms = $this->classroomRepository->getSearchReadyToClosePaged(
+            $searchName,
+            $searchTeacher,
+            $searchStudent,
+            $searchSupporter
+        );
+
+        $this->_title(trans('pages.admin_closed_classrooms_title'));
+        $this->_description(trans('pages.admin_closed_classrooms_desc'));
+
+        return $this->_any('index_ready', [
+            'classrooms' => $classrooms,
+            'pagination' => $this->paginationRender->renderByPagedModels($classrooms),
+            'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchName) || !empty($searchTeacher) || !empty($searchStudent) || !empty($searchSupporter),
+            'search_name' => $searchName,
+            'search_teacher' => $searchTeacher,
+            'search_student' => $searchStudent,
+            'search_supporter' => $searchSupporter,
+        ]);
+    }
+
     public function create(Request $request)
     {
         $this->_title([trans('pages.admin_classrooms_title'), trans('form.action_add')]);
@@ -138,11 +168,13 @@ class ClassroomController extends AdminController
     {
         $classroom = $this->classroomRepository->model($id);
 
+        $this->_rdrUrl($request, adminUrl('opening-classrooms'), $rdrUrl, $errorRdrUrl);
+
         $this->_title([trans('pages.admin_classrooms_title'), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_classrooms_desc'));
 
         return $this->_edit([
-            'redirect_url' => $classroom->isOpening ? adminUrl('opening-classrooms') : adminUrl('closed-classrooms'),
+            'redirect_url' => $classroom->isOpening ? $rdrUrl : adminUrl('closed-classrooms'),
             'classroom' => $classroom,
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
         ]);
@@ -209,7 +241,7 @@ class ClassroomController extends AdminController
         $this->_rdrUrl($request, adminUrl('closed-classrooms'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->classroomRepository->close();
+            $this->classroomRepository->close($request->authUser()->id);
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

@@ -322,6 +322,7 @@ Route::group([
                 //Classroom
                 Route::get(adminRoute('opening-classrooms'), 'ClassroomController@indexOpening');
                 Route::get(adminRoute('closed-classrooms'), 'ClassroomController@indexClosed');
+                Route::get(adminRoute('ready-classrooms'), 'ClassroomController@indexReady');
                 Route::get(adminRoute('classrooms/create'), 'ClassroomController@create');
                 Route::post(adminRoute('classrooms'), 'ClassroomController@store');
                 Route::get(adminRoute('classrooms/{id}/edit'), 'ClassroomController@edit')->where('id', '[0-9]+');

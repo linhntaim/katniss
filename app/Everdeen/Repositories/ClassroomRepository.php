@@ -90,6 +90,24 @@ class ClassroomRepository extends ModelRepository
         return $classrooms->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchReadyToClosePaged($name = null, $teacher = null, $student = null, $supporter = null)
+    {
+        $classrooms = Classroom::readyToClose()->orderBy('created_at', 'desc');
+        if (!empty($name)) {
+            $classrooms->where('name', 'like', '%' . $name . '%');
+        }
+        if (!empty($teacher)) {
+            $classrooms->where('teacher_id', $teacher);
+        }
+        if (!empty($student)) {
+            $classrooms->where('student_id', $student);
+        }
+        if (!empty($supporter)) {
+            $classrooms->where('supporter_id', $supporter);
+        }
+        return $classrooms->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getAll()
     {
         return Classroom::all();
@@ -185,12 +203,14 @@ class ClassroomRepository extends ModelRepository
         }
     }
 
-    public function close()
+    public function close($userId)
     {
         $classroom = $this->model();
 
         try {
             $classroom->update([
+                'closed_by' => $userId,
+                'closed_at' => date('Y-m-d H:i:s'),
                 'status' => Classroom::STATUS_CLOSED,
             ]);
 

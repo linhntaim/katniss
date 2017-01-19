@@ -125,6 +125,8 @@ return [
     'admin_opening_classrooms_desc' => 'Quản lý lớp đang học',
     'admin_closed_classrooms_title' => 'Lớp đã học xong',
     'admin_closed_classrooms_desc' => 'Quản lý lớp đã học xong',
+    'admin_ready_classrooms_title' => 'Lớp hết thời gian học',
+    'admin_ready_classrooms_desc' => 'Quản lý lớp hết thời gian học',
     'admin_salary_report_title' => 'Tính lương',
     'admin_salary_report_desc' => 'Xem bảng lương',
     'admin_learning_requests_title' => 'Đăng ký học',

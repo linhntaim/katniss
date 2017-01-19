@@ -166,6 +166,7 @@ return [
     'admin/students/{id}/edit'                      => 'admin/students/{id}/edit',
     'admin/opening-classrooms'                      => 'admin/opening-classrooms',
     'admin/closed-classrooms'                       => 'admin/closed-classrooms',
+    'admin/ready-classrooms'                        => 'admin/ready-classrooms',
     'admin/classrooms/create'                       => 'admin/classrooms/create',
     'admin/classrooms/{id}'                         => 'admin/classrooms/{id}',
     'admin/classrooms/{id}/edit'                    => 'admin/classrooms/{id}/edit',

@@ -17,6 +17,8 @@ class CreateClassroomsTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->bigIncrements('id');
+            $table->bigInteger('closed_by')->unsigned()->nullable();
+            $table->dateTime('closed_at')->nullable();
             $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned();
             $table->bigInteger('supporter_id')->unsigned();

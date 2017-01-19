@@ -187,7 +187,7 @@ class ClassroomController extends ViewController
         $this->_rdrUrl($request, homeUrl('classrooms'), $rdrUrl, $errorRdrUrl);
 
         try {
-            $this->classroomRepository->close();
+            $this->classroomRepository->close($user->id);
         } catch (KatnissException $ex) {
             return redirect($errorRdrUrl)->withErrors([$ex->getMessage()]);
         }

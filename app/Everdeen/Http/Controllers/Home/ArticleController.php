@@ -126,7 +126,7 @@ class ArticleController extends ViewController
     public function show(Request $request, $slug)
     {
         $article = $this->articleRepository->getBySlug($slug);
-        $isAuthor = $request->isAuth() && $request->authUser()->id == $article->user_id;
+        $isAuthor = $request->isAuth() && ($request->authUser()->id == $article->user_id || $request->authUser()->hasRole(['admin', 'editor']));
         if (!$isAuthor && !$article->isPublished) {
             abort(404);
         }

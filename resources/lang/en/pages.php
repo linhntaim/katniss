@@ -125,6 +125,8 @@ return [
     'admin_opening_classrooms_desc' => 'Manage opening classrooms',
     'admin_closed_classrooms_title' => 'Closed Classrooms',
     'admin_closed_classrooms_desc' => 'Manage closed classrooms',
+    'admin_ready_classrooms_title' => 'Ready-to-Close Classrooms',
+    'admin_ready_classrooms_desc' => 'Manage ready-to-close classrooms',
     'admin_salary_report_title' => 'Salary Report',
     'admin_salary_report_desc' => 'View salary report',
     'admin_learning_requests_title' => 'Learning Requests',
