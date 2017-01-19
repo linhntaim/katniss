@@ -255,6 +255,9 @@
                         <p class="margin-bottom-none">Email: <a href="mail:{{ $email }}" class="greenColor">{{ $email }}</a></p>
                     </div>
                 </div>
+                @if($is_auth && $auth_user->hasRole(['admin', 'manager']))
+                    {{ $payment_info_view }}
+                @endif
             </div>
         </div>
     </div>

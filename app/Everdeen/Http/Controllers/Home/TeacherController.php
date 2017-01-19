@@ -10,6 +10,7 @@ namespace Katniss\Everdeen\Http\Controllers\Home;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\HtmlString;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
@@ -330,6 +331,46 @@ class TeacherController extends ViewController
     {
         $teacher = $request->authUser()->teacherProfile;
         $paymentInfo = $teacher->payment_info;
+
+        $this->buildPaymentInfo(
+            $paymentInfo,
+            $paymentVn, $hasPaymentVn,
+            $paymentBankAccount, $hasPaymentBankAccount,
+            $paymentPaypal, $hasPaymentPaypal,
+            $paymentSkrill, $hasPaymentSkrill,
+            $paymentPayoneer, $hasPaymentPayoneer,
+            $paymentOthers, $hasPaymentOthers
+        );
+
+        $this->_title(trans('label.payment_information'));
+        $this->_description(trans('label.payment_information'));
+
+        return $this->_any('payment_information', [
+            'payment_info' => $paymentInfo,
+            'payment_vn' => $paymentVn,
+            'has_payment_vn' => $hasPaymentVn,
+            'payment_bank_account' => $paymentBankAccount,
+            'has_payment_bank_account' => $hasPaymentBankAccount,
+            'payment_paypal' => $paymentPaypal,
+            'has_payment_paypal' => $hasPaymentPaypal,
+            'payment_skrill' => $paymentSkrill,
+            'has_payment_skrill' => $hasPaymentSkrill,
+            'payment_payoneer' => $paymentPayoneer,
+            'has_payment_payoneer' => $hasPaymentPayoneer,
+            'payment_others' => $paymentOthers,
+            'has_payment_others' => $hasPaymentOthers,
+        ]);
+    }
+
+    protected function buildPaymentInfo($paymentInfo,
+                                        &$paymentVn, &$hasPaymentVn,
+                                        &$paymentBankAccount, &$hasPaymentBankAccount,
+                                        &$paymentPaypal, &$hasPaymentPaypal,
+                                        &$paymentSkrill, &$hasPaymentSkrill,
+                                        &$paymentPayoneer, &$hasPaymentPayoneer,
+                                        &$paymentOthers, &$hasPaymentOthers
+    )
+    {
         $hasPaymentVn = false;
         $paymentVn = [
             'vn_account_number' => '',
@@ -408,25 +449,6 @@ class TeacherController extends ViewController
                 }
             }
         }
-
-        $this->_title(trans('label.payment_information'));
-        $this->_description(trans('label.payment_information'));
-
-        return $this->_any('payment_information', [
-            'payment_info' => $teacher->payment_info,
-            'payment_vn' => $paymentVn,
-            'has_payment_vn' => $hasPaymentVn,
-            'payment_bank_account' => $paymentBankAccount,
-            'has_payment_bank_account' => $hasPaymentBankAccount,
-            'payment_paypal' => $paymentPaypal,
-            'has_payment_paypal' => $hasPaymentPaypal,
-            'payment_skrill' => $paymentSkrill,
-            'has_payment_skrill' => $hasPaymentSkrill,
-            'payment_payoneer' => $paymentPayoneer,
-            'has_payment_payoneer' => $hasPaymentPayoneer,
-            'payment_others' => $paymentOthers,
-            'has_payment_others' => $hasPaymentOthers,
-        ]);
     }
 
     public function updatePaymentInformation(Request $request)
@@ -660,6 +682,51 @@ class TeacherController extends ViewController
         $reviewsForTeacher = $reviewsReport->getData()[$teacher->user_id];
         $this->getRatesForTeacher($reviewsForTeacher, $ratesForTeacher, $averageRate);
 
+        $paymentInfoView = '';
+        if ($request->isAuth() && $request->authUser()->hasRole(['admin', 'manager'])) {
+            $this->buildPaymentInfo(
+                $teacher->paymentInfo,
+                $paymentVn, $hasPaymentVn,
+                $paymentBankAccount, $hasPaymentBankAccount,
+                $paymentPaypal, $hasPaymentPaypal,
+                $paymentSkrill, $hasPaymentSkrill,
+                $paymentPayoneer, $hasPaymentPayoneer,
+                $paymentOthers, $hasPaymentOthers
+            );
+
+            if ($hasPaymentVn) {
+                $paymentInfoView = view($this->_viewPath('_pi_vn'), [
+                    'payment_vn' => $paymentVn,
+                ])->render();
+            } else {
+                if($hasPaymentBankAccount) {
+                    $paymentInfoView .= view($this->_viewPath('_pi_bank_account'), [
+                        'payment_bank_account' => $paymentBankAccount,
+                    ])->render();
+                }
+                if($hasPaymentPaypal) {
+                    $paymentInfoView .= view($this->_viewPath('_pi_paypal'), [
+                        'payment_paypal' => $paymentPaypal,
+                    ])->render();
+                }
+                if($hasPaymentSkrill) {
+                    $paymentInfoView .= view($this->_viewPath('_pi_skrill'), [
+                        'payment_skrill' => $paymentSkrill,
+                    ])->render();
+                }
+                if($hasPaymentPayoneer) {
+                    $paymentInfoView .= view($this->_viewPath('_pi_payoneer'), [
+                        'payment_payoneer' => $paymentPayoneer,
+                    ])->render();
+                }
+                if($hasPaymentOthers) {
+                    $paymentInfoView .= view($this->_viewPath('_pi_others'), [
+                        'payment_others' => $paymentOthers,
+                    ])->render();
+                }
+            }
+        }
+
         $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);
         $this->_description(shorten($teacher->about_me));
 
@@ -675,6 +742,8 @@ class TeacherController extends ViewController
             'skype_name' => 'Skype',
             'hot_line' => '1900 1000',
             'email' => 'example@example.com',
+
+            'payment_info_view' => new HtmlString($paymentInfoView),
         ]);
     }
 }
