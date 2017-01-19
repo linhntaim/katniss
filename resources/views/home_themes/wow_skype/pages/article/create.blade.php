@@ -57,12 +57,18 @@
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             }
+                        },
+                        captionPlaceholder: '{{ trans('medium_editor.caption_image') }}',
+                        messages: {
+                            acceptFileTypesError: '{{ trans('medium_editor.support_image') }} ',
+                            maxFileSizeError: '{{ trans('medium_editor.size_image') }} '
                         }
+                    },
+                    embeds: { // (object) Embeds addon configuration
+                        placeholder: '{{ trans('medium_editor.help_embed') }}', // (string) Placeholder displayed when entering URL to embed
+                        captionPlaceholder: '{{ trans('medium_editor.caption_embed') }}',
+                        oembedProxy: null
                     }
-                },
-                uploadCompleted: function ($el, data) {
-                    console.log(data);
-                    return data.url;
                 }
             });
 
