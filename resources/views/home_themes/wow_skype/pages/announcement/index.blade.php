@@ -16,7 +16,7 @@
         <div class="classroom-heading clearfix">
             <div class="btn-group margin-top-20 pull-right">
                 <a role="button" href="{{ $statuses[$current_status]['url'] }}" class="btn btn-default">
-                    {!! $statuses[$current_status]['label'] !!}
+                    {!! $statuses[$current_status]['current'] !!}
                 </a>
                 <button type="button" class="btn btn-default dropdown-toggle"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -50,6 +50,7 @@
                         @if(!empty($announcement->title))
                             <h4 class="bold-700">{{ $announcement->title }}</h4>
                         @endif
+                        <p class="small color-normal">&#8212; {{ $announcement->diffDays == 0 ? trans('datetime.today') : $announcement->diffDays .' '. trans_choice('label.days_ago_lc', $announcement->diffDays) }}</p>
                         {!! $announcement->htmlContent !!}
                         @if($is_read)
                             <button type="button" class="btn btn-primary box-40 box-circle"

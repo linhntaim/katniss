@@ -26,10 +26,12 @@ class Extension extends BaseExtension
 
     public function register ()
     {
-        if (!$this->cacheEnable && $this->chatboxEnable) {
-            enqueueThemeFooter($this->rawChatboxScript(), $this::NAME);
-        } else {
-            enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
+        if(!isMobileClient()) {
+            if (!$this->cacheEnable && $this->chatboxEnable) {
+                enqueueThemeFooter($this->rawChatboxScript(), $this::NAME);
+            } else {
+                enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
+            }
         }
     }
 

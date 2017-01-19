@@ -10,6 +10,7 @@ namespace Katniss\Everdeen\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class Announcement extends Model
 {
@@ -44,6 +45,11 @@ class Announcement extends Model
             return '';
         }
         return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->attributes['content']))) . '</p>';
+    }
+
+    public function getDiffDaysAttribute()
+    {
+        return DateTimeHelper::diffDay($this->attributes['created_at']);
     }
 
     public function author()

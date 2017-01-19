@@ -24,14 +24,17 @@ class AnnouncementController extends ViewController
         $searchStatus = $request->input('status', null);
         $statuses = [
             'all' => [
+                'current' => trans('label.all'),
                 'label' => trans('label.all'),
                 'url' => homeUrl('announcements') . '?status=all',
             ],
             'unread' => [
+                'current' => '<span class="color-slave">' . trans('label.status_unread') . '</span>',
                 'label' => '<span class="color-slave"><i class="fa fa-eye-slash"></i> &nbsp; ' . trans('label.status_unread') . '</span>',
                 'url' => homeUrl('announcements') . '?status=unread',
             ],
             'read' => [
+                'current' => '<span class="color-master">' . trans('label.status_read') . '</span>',
                 'label' => '<span class="color-master"><i class="fa fa-bullhorn"></i> &nbsp; ' . trans('label.status_read') . '</span>',
                 'url' => homeUrl('announcements') . '?status=read',
             ],
