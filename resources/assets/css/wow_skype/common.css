@@ -4,6 +4,78 @@ body {
     line-height: 16px;
 }
 
+.wp {
+    width: 100%;
+}
+
+.wp-2 {
+    width: 50%;
+}
+
+.wp-4 {
+    width: 25%;
+}
+
+.wp-8 {
+    width: 12.5%;
+}
+
+@media (max-width: 767px) {
+    .wp-xs-2 {
+        width: 50% !important;
+    }
+
+    .wp-xs-4 {
+        width: 25% !important;
+    }
+
+    .wp-xs-8 {
+        width: 12.5% !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .wp-sm-2 {
+        width: 50% !important;
+    }
+
+    .wp-sm-4 {
+        width: 25% !important;
+    }
+
+    .wp-sm-8 {
+        width: 12.5% !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .wp-md-2 {
+        width: 50%;
+    }
+
+    .wp-md-4 {
+        width: 25%;
+    }
+
+    .wp-md-8 {
+        width: 12.5%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wp-lg-2 {
+        width: 50%;
+    }
+
+    .wp-lg-4 {
+        width: 25%;
+    }
+
+    .wp-lg-8 {
+        width: 12.5%;
+    }
+}
+
 .color-master {
     color: #00aff0;
 }
@@ -30,6 +102,10 @@ body {
 
 .color-star {
     color: #86c12e;
+}
+
+.bg-white {
+    background-color: #fff;
 }
 
 .bg-master,
@@ -211,6 +287,14 @@ textarea.form-control.as-text {
     border-width: 3px;
 }
 
+.border-4x {
+    border-width: 4px;
+}
+
+.border-5x {
+    border-width: 5px;
+}
+
 .box-shadow-none {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -296,6 +380,14 @@ a:active:focus {
     width: 50px;
 }
 
+.width-60 {
+    width: 60px;
+}
+
+.width-80 {
+    width: 80px;
+}
+
 .width-100 {
     width: 100px;
 }
@@ -346,6 +438,14 @@ a:active:focus {
 
 .height-50 {
     height: 50px;
+}
+
+.height-60 {
+    height: 60px;
+}
+
+.height-80 {
+    height: 80px;
 }
 
 .height-100 {
@@ -405,6 +505,16 @@ a:active:focus {
     height: 50px;
 }
 
+.box-60 {
+    width: 60px;
+    height: 60px;
+}
+
+.box-80 {
+    width: 80px;
+    height: 80px;
+}
+
 .box-100 {
     width: 100px;
     height: 100px;
@@ -454,6 +564,14 @@ a:active:focus {
 
 .box-center.box-50 {
     line-height: 50px;
+}
+
+.box-center.box-60 {
+    line-height: 60px;
+}
+
+.box-center.box-80 {
+    line-height: 80px;
 }
 
 .box-center.box-100 {

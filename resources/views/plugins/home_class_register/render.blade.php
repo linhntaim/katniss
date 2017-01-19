@@ -1,4 +1,4 @@
-<div id="home-register" class="padding-bottom-20 padding-top-20">
+<div id="home-register" class="padding-v-20">
     <div class="row">
         <div class="col-sm-2 col-md-3"></div>
         <div class="col-sm-8 col-md-6">
@@ -39,8 +39,7 @@
                 <div class="form-group margin-bottom-none">
                     <a role="button" class="btn btn-success btn-block bold-700"
                        href="{{ homeUrl('student/sign-up') }}">
-                        {{ trans('label.or_lc') }} <span
-                                class="uppercase">{{ trans('form.action_register_class') }}</span>
+                        {{ trans('label.or_lc') }} <span class="uppercase">{{ trans('form.action_register_class') }}</span>
                     </a>
                 </div>
             </form>

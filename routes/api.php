@@ -34,7 +34,6 @@ Route::group([
             Route::group([
                 'middleware' => 'entrust:admin'
             ], function () {
-                Route::put('widgets/sort', 'WidgetController@sort');
                 Route::put('link-categories/{id}', 'LinkCategoryController@update');
             });
 

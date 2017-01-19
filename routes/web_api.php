@@ -51,6 +51,12 @@ Route::group([
         });
 
         Route::group([
+            'middleware' => 'entrust:admin'
+        ], function () {
+            Route::put('admin/widgets/sort', 'WidgetController@sort');
+        });
+
+        Route::group([
             'middleware' => 'entrust:teacher|student|manager|admin'
         ], function () {
             Route::post('class-times/{id}/reviews', 'ClassTimeController@storeReviews');

@@ -1,14 +1,13 @@
 <?php
 
-namespace Katniss\Everdeen\Http\Controllers\Api\V1;
+namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Http\Controllers\ApiController;
+use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\ThemeFacade;
 
-class WidgetController extends ApiController
+class WidgetController extends WebApiController
 {
     protected $widgetRepository;
 
@@ -21,8 +20,9 @@ class WidgetController extends ApiController
 
     public function sort(Request $request)
     {
+        $homeTheme = homeTheme();
         if (!$this->customValidate($request, [
-            'placeholder' => 'required|in:' . implode(',', array_keys(ThemeFacade::placeholders())),
+            'placeholder' => 'required|in:' . implode(',', array_keys($homeTheme->placeholders())),
             'widget_ids' => 'required|array|exists:theme_widgets,id',
         ])
         ) {
