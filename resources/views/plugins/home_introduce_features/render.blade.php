@@ -1,5 +1,5 @@
 @if($links->count()>0)
-    <div id="home-introduce-features" class="padding-v-20 bg-master">
+    <div id="home-introduce-features" class="padding-v-20 margin-bottom-20 bg-master">
         @if(!empty($name))
             <div class="text-center margin-v-20">
                 <h4 class="uppercase bold-700 color-white">{{ $name }}</h4>

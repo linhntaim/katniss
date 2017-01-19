@@ -1,4 +1,4 @@
-<div id="home-register" class="padding-v-20">
+<div id="home-register" class="padding-v-20 margin-bottom-20">
     <div class="row">
         <div class="col-sm-2 col-md-3"></div>
         <div class="col-sm-8 col-md-6">

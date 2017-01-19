@@ -1,4 +1,4 @@
-<div id="home-cover" class="padding-v-20 clearfix">
+<div id="home-cover" class="margin-bottom-20 clearfix">
     @if($has_media)
         <div class="cover-media" style="width:{{ !$has_text ? '100' : '70' }}%">
             <a class="cover-media-video" target="_blank" href="{{ $video_url }}">

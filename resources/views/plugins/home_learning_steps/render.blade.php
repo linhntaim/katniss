@@ -1,13 +1,13 @@
 @if($links->count()>0)
-    <div id="home-learning-steps" class="padding-v-20">
+    <div id="home-learning-steps" class="padding-v-10 margin-bottom-20">
         @if(!empty($name))
-            <div class="text-center margin-v-10">
+            <div class="text-center">
                 <h4 class="uppercase bold-700">{{ $name }}</h4>
                 @if(!empty($description))
                     <p class="lead text-muted">{{ $description }}</p>
                 @endif
             </div>
-            <div class="margin-v-15">&nbsp;</div>
+            <div class="margin-v-10">&nbsp;</div>
         @endif
         @while($links->count()>0 && $splice_items = $links->splice(0, 6))
             <div class="row margin-h-none">
