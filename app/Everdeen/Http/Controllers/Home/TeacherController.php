@@ -633,10 +633,6 @@ class TeacherController extends ViewController
             $averageRateForTeachers[$teacherId] = $averageRate;
             $countRatingStudentsForTeachers[$teacherId] = $reviewsForTeacher->groupBy('user_id')->count();
         }
-        $this->paginationRender->firstText = trans('pagination.page_first');
-        $this->paginationRender->lastText = trans('pagination.page_last');
-        $this->paginationRender->prevText = '<i class="fa fa-caret-left"></i>';
-        $this->paginationRender->nextText = '<i class="fa fa-caret-right"></i>';
 
         $this->_title(trans('pages.home_teachers_title'));
         $this->_description(trans('pages.home_teachers_desc'));

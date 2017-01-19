@@ -20,6 +20,8 @@ return [
     'home_articles_title' => 'Bài viết',
     'home_knowledge_title' => 'Kiến thức',
     'home_knowledge_desc' => 'Chia sẻ kiến thức tới mọi người',
+    'home_announcements_title' => 'Thông báo',
+    'home_announcements_desc' => 'Thông báo của tôi',
 
     'user_profile_title' => 'Thông tin cá nhân',
 

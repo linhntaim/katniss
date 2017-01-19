@@ -53,6 +53,7 @@ return [
     'wanna_change_to' => 'Do you really want to change to :name ?',
     'wanna_process' => 'Do you really want to process :name ?',
     'wanna_publish' => 'Do you really want to publish :name ?',
+    'wanna_mark_as' => 'Do you really want to mark as :name ?',
 
     'rate' => 'Rate',
     'rate_poor' => 'Poor',
@@ -219,6 +220,7 @@ return [
     'to_all' => 'To all',
     'to_roles' => 'To roles',
     'to_users' => 'To users',
+    'all' => 'All',
 
     'settings' => 'Settings',
     'country' => 'Country',

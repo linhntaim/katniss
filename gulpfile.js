@@ -62,6 +62,7 @@ elixir(function (mix) {
         'wow_skype/page.student_sign_up.css',
         'wow_skype/page.classrooms.css',
         'wow_skype/page.helps.css',
-        'wow_skype/page.articles.css'
+        'wow_skype/page.articles.css',
+        'wow_skype/page.announcements.css'
     ], 'public/assets/home_themes/wow_skype/css/style.css');
 });

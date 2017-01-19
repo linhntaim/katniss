@@ -38,8 +38,21 @@ class Announcement extends Model
         return explode(',', trim($this->attributes['to_ids'], ','));
     }
 
+    public function getHtmlContentAttribute()
+    {
+        if (empty($this->attributes['content'])) {
+            return '';
+        }
+        return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->attributes['content']))) . '</p>';
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function readUsers()
+    {
+        return $this->belongsToMany(User::class, 'read_announcements', 'announcement_id', 'user_id');
     }
 }

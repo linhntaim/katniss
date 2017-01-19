@@ -96,4 +96,6 @@ return [
     'action_view_detail' => 'Xem chi tiết',
     'action_process' => 'Xử lý',
     'action_create' => 'Tạo',
+    'action_mark_as' => 'Đánh dấu là',
+    'action_mark_all_as' => 'Đánh dấu tất cả là',
 ];

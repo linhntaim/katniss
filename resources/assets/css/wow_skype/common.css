@@ -106,6 +106,12 @@ body {
     border-bottom-right-radius: 0;
 }
 
+.btn:focus,
+.btn:active,
+.btn:active:focus {
+    outline: none;
+}
+
 .btn-primary {
     background-color: #00aff0;
     border-color: #00aff0;

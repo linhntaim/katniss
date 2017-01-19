@@ -40,6 +40,9 @@ Route::group([
             Route::put(homeRoute('profile/user-certificates/{id}'), 'UserController@updateCertificate');
             Route::delete(homeRoute('profile/user-certificates/{id}'), 'UserController@destroyCertificate');
 
+            Route::get(homeRoute('announcements'), 'AnnouncementController@index');
+            Route::put(homeRoute('announcements/{id}'), 'AnnouncementController@update');
+
             Route::group([
                 'middleware' => 'entrust:,create-articles'
             ], function () {

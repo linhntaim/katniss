@@ -20,6 +20,10 @@ class ViewController extends KatnissController
 
         $this->viewPath = '';
         $this->paginationRender = new PaginationRender();
+        $this->paginationRender->firstText = trans('pagination.page_first');
+        $this->paginationRender->lastText = trans('pagination.page_last');
+        $this->paginationRender->prevText = '<i class="fa fa-caret-left"></i>';
+        $this->paginationRender->nextText = '<i class="fa fa-caret-right"></i>';
     }
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)

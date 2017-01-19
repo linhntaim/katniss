@@ -53,6 +53,7 @@ return [
     'wanna_change_to' => 'Bạn có muốn chuyển thành :name ?',
     'wanna_process' => 'Bạn có muốn xử lý :name ?',
     'wanna_publish' => 'Bạn có muốn xuất bản :name ?',
+    'wanna_mark_as' => 'Bạn có muốn đánh dấu là :name ?',
 
     'rate' => 'Đánh giá',
     'rate_poor' => 'Không tốt',
@@ -219,6 +220,7 @@ return [
     'to_all' => 'Cho tất cả',
     'to_roles' => 'Cho vai trò',
     'to_users' => 'Cho người dùng',
+    'all' => 'Tất cả',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

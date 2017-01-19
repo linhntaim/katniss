@@ -30,6 +30,8 @@ return [
     'knowledge/articles/{slug}'                     => 'knowledge/articles/{slug}',
     'knowledge/categories/{slug}'                   => 'knowledge/categories/{slug}',
     'knowledge/authors/{id}'                        => 'knowledge/authors/{id}',
+    'announcements'                                 => 'announcements',
+    'announcements/{id}'                            => 'announcements/{id}',
 
     'profile/account-information'                   => 'profile/account-information',
     'profile/user-information'                      => 'profile/user-information',

@@ -20,6 +20,8 @@ return [
     'home_articles_title' => 'Articles',
     'home_knowledge_title' => 'Knowledge',
     'home_knowledge_desc' => 'Sharing knowledge to everyone',
+    'home_announcements_title' => 'Announcements',
+    'home_announcements_desc' => 'My announcements',
 
     'user_profile_title' => 'User Profile',
 

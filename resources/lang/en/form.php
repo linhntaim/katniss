@@ -96,4 +96,6 @@ return [
     'action_view_detail' => 'View detail',
     'action_process' => 'Process',
     'action_create' => 'Create',
+    'action_mark_as' => 'Mark as',
+    'action_mark_all_as' => 'Mark all as',
 ];

@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Katniss\Everdeen\Repositories\AnnouncementRepository;
 use Katniss\Everdeen\Vendors\Zizaco\Entrust\Traits\EntrustUserTrait as OverriddenEntrustUserTrait;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -177,5 +178,19 @@ class User extends Authenticatable
     public function works()
     {
         return $this->hasMany(UserWork::class, 'user_id', 'id');
+    }
+
+    public function announcements()
+    {
+        return $this->belongsToMany(Announcement::class, 'read_announcements', 'user_id', 'announcement_id');
+    }
+
+    public function getCountUnreadAnnouncementsAttribute()
+    {
+        $announcementRepository = new AnnouncementRepository();
+        $countAnnouncements = $announcementRepository->getCountByUser($userId, $this);
+        $countReadAnnouncements = $this->announcements()->count();
+        $countUnreadAnnouncements = $countAnnouncements - $countReadAnnouncements;
+        return $countUnreadAnnouncements > 0 ? $countUnreadAnnouncements : 0;
     }
 }

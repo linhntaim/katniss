@@ -92,6 +92,27 @@ header .wrapper .bar.pull-right {
     border-left: 8px solid #fff;
 }
 
+header .box-email > span {
+    margin-top: -3px;
+}
+
+header .box-email:hover > span > span {
+    display: none !important;
+}
+
+header .box-email:hover > span > i {
+    display: inherit !important;
+    font-weight: 700;
+}
+
+header .box-email:hover,
+header .box-email:focus,
+header .box-email:active,
+header .box-email:active:focus {
+    color: #fff;
+    background-color: #00aff0;
+}
+
 @media (min-width: 768px) {
     header .navbar-right {
         margin-right: -30px;
