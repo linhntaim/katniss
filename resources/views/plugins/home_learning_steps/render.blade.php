@@ -1,12 +1,13 @@
 @if($links->count()>0)
     <div id="home-learning-steps" class="padding-v-20">
         @if(!empty($name))
-            <div class="text-center margin-bottom-30">
+            <div class="text-center margin-v-10">
                 <h4 class="uppercase bold-700">{{ $name }}</h4>
                 @if(!empty($description))
                     <p class="lead text-muted">{{ $description }}</p>
                 @endif
             </div>
+            <div class="margin-v-15">&nbsp;</div>
         @endif
         @while($links->count()>0 && $splice_items = $links->splice(0, 6))
             <div class="row margin-h-none">
@@ -40,7 +41,7 @@
                 @endif
             </div>
         @endwhile
-        <div class="text-center">
+        <div class="text-center margin-bottom-10">
             <a class="btn btn-primary btn-lg uppercase bold-700" href="{{ homeUrl('student/sign-up') }}">
                 {{ trans('form.action_register_class') }}
             </a>
