@@ -10,4 +10,6 @@ return [
     'page_options_title' => 'Options',
     'page_options_desc' => 'Manage theme options',
     'world' => 'World of WowSkype',
+    'knowledge_cover_image' => 'Knowledge cover image',
+    'knowledge_default_article_image' => 'Knowledge default article image',
 ];

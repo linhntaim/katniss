@@ -123,6 +123,7 @@ class Theme extends HomeTheme
     public function placeholders()
     {
         return [
+            'homepage' => 'Homepage',
             'knowledge_middle' => 'Middle of Knowledge Page',
             'knowledge_bottom' => 'Bottom of Knowledge Page',
             'article_sidebar_right' => 'Right Sidebar on Article Page',
