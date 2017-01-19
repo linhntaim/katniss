@@ -7,14 +7,4 @@ class Widget extends BaseLinks
 {
     const NAME = 'home_introduce_features';
     const DISPLAY_NAME = 'Home Introduce Features';
-
-    public function register()
-    {
-        enqueueThemeHeader(
-            '
-<style>
-</style>',
-            'widget_home_introduce_features'
-        );
-    }
 }

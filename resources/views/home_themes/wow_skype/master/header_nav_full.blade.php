@@ -15,9 +15,9 @@
             <div class="navbar-right">
                 <div class="switch-locale text-right">
                     @foreach(allSupportedLocaleCodes() as $localeCode)
-                    <a class="btn {{ $localeCode == $site_locale ? 'btn-success' : 'btn-default' }}" href="{{ currentUrl($localeCode) }}">
-                        {{ $localeCode }}
-                    </a>
+                        <a class="btn {{ $localeCode == $site_locale ? 'btn-success' : 'btn-default' }}" href="{{ currentUrl($localeCode) }}">
+                            {{ $localeCode }}
+                        </a>
                     @endforeach
                 </div>
                 @if($is_auth)

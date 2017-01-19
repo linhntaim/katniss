@@ -188,6 +188,27 @@ body {
     outline: none;
 }
 
+.btn-default {
+    background-color: #fff;
+    border-color: #75ab00;
+    color: #75ab00;
+}
+
+.btn-default:hover {
+    background-color: #fff;
+    border-color: #689800;
+    color: #75ab00;
+}
+
+.btn-default.active,
+.btn-default:focus,
+.btn-default:active,
+.btn-default:active:focus {
+    background-color: #fff;
+    border-color: #537900;
+    color: #75ab00;
+}
+
 .btn-primary {
     background-color: #00aff0;
     border-color: #00aff0;
