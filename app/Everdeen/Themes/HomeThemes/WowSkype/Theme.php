@@ -26,6 +26,12 @@ class Theme extends HomeTheme
     public function __construct()
     {
         parent::__construct();
+
+        $currentLocale = currentLocaleCode();
+        $this->description = $this->options('home_description', $this->description, $currentLocale, true);
+        $this->title = $this->options('home_name', $this->title, $currentLocale, true);
+        $this->titleRoot = $this->title;
+        $this->keywords = $this->options('site_keywords', $this->keywords);
     }
 
     public function mockAdmin()

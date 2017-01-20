@@ -66,23 +66,12 @@ class Widget extends DefaultWidget
         );
     }
 
-    protected function parseVideoUrl($videoUrl)
-    {
-        if (preg_match(AppConfig::REGEX_YOUTUBE_URL, $videoUrl, $matches)) {
-            return 'https://www.youtube.com/embed/' . $matches[4];
-        } elseif (preg_match(AppConfig::REGEX_VIMEO_URL, $videoUrl, $matches)) {
-            return 'https://player.vimeo.com/video/' . $matches[3];
-        } elseif (preg_match(AppConfig::REGEX_DAILYMOTION_URL, $videoUrl, $matches)) {
-            return 'http://www.dailymotion.com/embed/video/' . (empty($matches[4]) ? $matches[6] : $matches[4]);
-        } else return null;
-    }
-
     public function viewHomeParams()
     {
         $hasVideo = !empty($this->videoUrl);
         $videoUrl = $this->videoUrl;
         if ($hasVideo) {
-            $videoUrl = $this->parseVideoUrl($videoUrl);
+            $videoUrl = parseEmbedVideoUrl($videoUrl);
             if (empty($videoUrl)) $hasVideo = false;
         }
 

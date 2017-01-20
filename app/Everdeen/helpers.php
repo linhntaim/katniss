@@ -161,6 +161,16 @@ function methodParam($method)
     return '_method=' . $method;
 }
 
+function parseEmbedVideoUrl($videoUrl)
+{
+    if (preg_match(AppConfig::REGEX_YOUTUBE_URL, $videoUrl, $matches)) {
+        return 'https://www.youtube.com/embed/' . $matches[4];
+    } elseif (preg_match(AppConfig::REGEX_VIMEO_URL, $videoUrl, $matches)) {
+        return 'https://player.vimeo.com/video/' . $matches[3];
+    } elseif (preg_match(AppConfig::REGEX_DAILYMOTION_URL, $videoUrl, $matches)) {
+        return 'http://www.dailymotion.com/embed/video/' . (empty($matches[4]) ? $matches[6] : $matches[4]);
+    } else return null;
+}
 #endregion
 
 #region Locale
