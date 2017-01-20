@@ -28,6 +28,14 @@ class ArticleRepository extends PostRepository
         return Post::whereTranslation('slug', $slug)->count() > 0;
     }
 
+    public function getPublishedByIds($ids)
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->whereIn('id', $ids)
+            ->get();
+    }
+
     public function getBySlug($slug)
     {
         return Post::where('type', $this->type)
@@ -155,6 +163,24 @@ class ArticleRepository extends PostRepository
         return Post::where('type', $this->type)
             ->where('user_id', $author->id)
             ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSearchCommonPaged($term = null)
+    {
+        $articles = Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED);
+        if (!empty($term)) {
+            $articles->where(function ($query) use ($term) {
+                $query->where('id', $term);
+                $query->orWhereTranslationLike('title', '%' . $term . '%');
+                $query->orWhereTranslationLike('description', '%' . $term . '%');
+                $query->orWhereHas('author', function ($query) use ($term) {
+                    $query->where('display_name', 'like', '%' . $term . '%');
+                });
+            });
+        }
+        return $articles->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 

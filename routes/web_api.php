@@ -30,6 +30,7 @@ Route::group([
     Route::get('students', 'StudentController@index');
     Route::get('supporters', 'UserController@indexSupporter');
     Route::get('authors', 'UserController@indexAuthor');
+    Route::get('articles', 'ArticleController@index');
 
     Route::group([
         'middleware' => 'auth'

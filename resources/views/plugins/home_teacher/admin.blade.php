@@ -28,7 +28,9 @@
             }
 
             function dataMore(response) {
-                return response._success && response._data.pagination.last != response._data.pagination.current;
+                return response._success
+                    && response._data.pagination.last != 0
+                    && response._data.pagination.last != response._data.pagination.current;
             }
 
             function initAjaxSelect2($selector, url, templateFunc, selectionFunc, resultFunc, moreFunc) {
