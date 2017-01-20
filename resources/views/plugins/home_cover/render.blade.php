@@ -7,7 +7,7 @@
                         <img class="embed-responsive-item" src="{{ $image }}">
                         <div class="cover-media-play-table">
                             <div class="cover-media-play-cell">
-                                <img class="width-100 height-100" src="{{ ThemFacade::imageAsset('icon_video_play_master_trans.png') }}">
+                                <img class="width-100 height-100" src="{{ ThemeFacade::imageAsset('icon_video_play_master_trans.png') }}">
                             </div>
                         </div>
                     </div>

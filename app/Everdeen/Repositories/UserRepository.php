@@ -29,6 +29,11 @@ class UserRepository extends ModelRepository
         return User::findOrFail($id);
     }
 
+    public function getByIdLoosely($id)
+    {
+        return User::find($id);
+    }
+
     public function getPaged()
     {
         return User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);

@@ -221,6 +221,7 @@ return [
     'to_roles' => 'To roles',
     'to_users' => 'To users',
     'all' => 'All',
+    'tag_line' => 'Tag line',
 
     'settings' => 'Settings',
     'country' => 'Country',

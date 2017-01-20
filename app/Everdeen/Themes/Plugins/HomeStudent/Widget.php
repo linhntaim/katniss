@@ -52,11 +52,15 @@ class Widget extends DefaultWidget
 <style>
 #home-student .student-review-list{padding-left:20px;padding-right:20px}
 #home-student .student-review-list .student-review-item{position: relative;-webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;padding: 5px 10px;margin-bottom: 16px}
+#home-student .student-review-list .student-review-item:last-child{margin-bottom:0}
 #home-student .student-review-list .student-review-item > img{position: absolute;top:-13px}
 #home-student .student-review-list .student-review-item.left{padding-left:35px}
 #home-student .student-review-list .student-review-item.left > img{left:-30px}
 #home-student .student-review-list .student-review-item.right{padding-right:35px}
 #home-student .student-review-list .student-review-item.right > img{right:-30px}
+@media (max-width: 767px) {
+#home-student .embed-responsive{margin-bottom:16px}
+}
 </style>',
             'widget_home_student'
         );

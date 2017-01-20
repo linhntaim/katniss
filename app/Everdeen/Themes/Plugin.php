@@ -85,7 +85,7 @@ abstract class Plugin
             }
         }
 
-        if(!$this::TRANSLATABLE) return $data;
+        if (!$this::TRANSLATABLE) return $data;
 
         $htmlFields = $this->localizedHtmlFields();
         foreach ($localizedData as $locale => &$values) {
@@ -125,22 +125,27 @@ abstract class Plugin
         return clean($value, $config);
     }
 
-    public function getProperty($name, $locale = '')
+    public function getProperty($name, $locale = '', $isArray = false, $indexKey = null)
     {
         if (!$this::EDITABLE) abort(404);
 
         if (empty($locale)) {
-            if (isset($this->data[$name])) return $this->data[$name];
+            if (isset($this->data[$name])) return !$isArray ? $this->data[$name] : $this->getPropertyArray($this->data[$name], $indexKey);
             if ($this::TRANSLATABLE && isset($this->currentLocalizedData[$name])) {
-                return $this->currentLocalizedData[$name];
+                return !$isArray ? $this->currentLocalizedData[$name] : $this->getPropertyArray($this->currentLocalizedData[$name], $indexKey);
             }
             return '';
         }
 
-        if(!$this::TRANSLATABLE) return '';
+        if (!$this::TRANSLATABLE) return '';
 
         return isset($this->localizedData[$locale]) && isset($this->localizedData[$locale][$name]) ?
-            $this->localizedData[$locale][$name] : '';
+            (!$isArray ? $this->localizedData[$locale][$name] : $this->getPropertyArray($this->localizedData[$locale][$name], $indexKey)) : '';
+    }
+
+    protected function getPropertyArray($data, $index)
+    {
+        return isset($data[$index]) ? $data[$index] : '';
     }
 
     public function register()

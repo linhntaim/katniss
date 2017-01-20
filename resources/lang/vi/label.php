@@ -221,6 +221,7 @@ return [
     'to_roles' => 'Cho vai trò',
     'to_users' => 'Cho người dùng',
     'all' => 'Tất cả',
+    'tag_line' => 'Dòng đề chữ',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

@@ -240,7 +240,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'ThemFacade' => \Katniss\Everdeen\Themes\ThemeFacade::class,
+        'ThemeFacade' => \Katniss\Everdeen\Themes\ThemeFacade::class,
 
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,

@@ -569,9 +569,13 @@ function oldLocaleInput($name, $locale, $default = null)
     return old(AppConfig::KEY_LOCALE_INPUT . '.' . $locale . '.' . $name, $default);
 }
 
-function localeInputName($name, $locale)
+function localeInputName($name, $locale, $isArray = false, $indexKey = null)
 {
-    return AppConfig::KEY_LOCALE_INPUT . '[' . $locale . '][' . $name . ']';
+    $name = AppConfig::KEY_LOCALE_INPUT . '[' . $locale . '][' . $name . ']';
+    if ($isArray) {
+        $name .= empty($indexKey) ? '[]' : '[' . $indexKey . ']';
+    }
+    return $name;
 }
 
 /**
