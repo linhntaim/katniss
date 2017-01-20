@@ -70,9 +70,6 @@ class Widget extends DefaultWidget
                 media : {}
             }
         });
-        function showCoverMediaPlay() {
-            
-        }
     });
 </script>', 'widget_home_cover');
     }

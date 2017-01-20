@@ -1,7 +1,7 @@
 @if($has_media || $has_text)
     <div id="home-cover" class="margin-bottom-20 clearfix">
         @if($has_media)
-            <div class="cover-media" style="width:{{ !$has_text ? '100' : '70' }}%">
+            <div class="cover-media" style="width:{{ !$has_text ? '100' : '75' }}%">
                 <a class="cover-media-video" target="_blank" href="{{ $video_url }}">
                     <div class="embed-responsive embed-responsive-16by9">
                         <img class="embed-responsive-item" src="{{ $image }}">
@@ -27,7 +27,7 @@
             </div>
         @endif
         @if($has_text)
-            <div class="cover-text padding-right-20" style="width:{{ $no_media ? '100' : '30' }}%">
+            <div class="cover-text padding-right-20" style="width:{{ $no_media ? '100' : '25' }}%">
                 @if(!empty($content))
                     <p class="text-justify">{{ $content }}</p>
                 @endif

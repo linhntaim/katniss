@@ -222,6 +222,9 @@ return [
     'to_users' => 'To users',
     'all' => 'All',
     'tag_line' => 'Tag line',
+    'hot_line' => 'Hot line',
+    'hot_line_short' => 'Hotline',
+    'email_short' => 'Email',
 
     'settings' => 'Settings',
     'country' => 'Country',

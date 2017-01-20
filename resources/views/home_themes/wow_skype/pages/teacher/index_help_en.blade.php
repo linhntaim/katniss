@@ -5,7 +5,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>1</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_stats.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Register a learner account on our website by inputting your phone number and email.</div>
@@ -14,7 +14,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>2</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_cogs.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Our consultants will contact you and give you further information.</div>
@@ -23,7 +23,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>3</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_search.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Do an English test which is formed based on the international standard.</div>
@@ -32,7 +32,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>4</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_pie.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Complete the course entry procedure and pay the tuition.</div>
@@ -41,7 +41,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>5</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_coin.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Begin studying with your own course plan.</div>

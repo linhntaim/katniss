@@ -98,7 +98,7 @@ background: linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* Standard sy
                         'url' => homeUrl('teachers/{id}', ['id' => $user->id]),
                         'avatar' => $user->url_avatar_thumb,
                         'display_name' => $user->display_name,
-                        'nationality' => allCountry($user->nationality, 'name'),
+                        'nationality' => preg_replace('/\s*\(.*\)\s*/', '', allCountry($user->nationality, 'name')),
                         'tag_line' => $this->tagLines[$i],
                         'review' => $this->reviews[$i],
                     ];

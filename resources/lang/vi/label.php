@@ -222,6 +222,9 @@ return [
     'to_users' => 'Cho người dùng',
     'all' => 'Tất cả',
     'tag_line' => 'Dòng đề chữ',
+    'hot_line' => 'Đường dây nóng',
+    'hot_line_short' => 'Đường dây nóng',
+    'email_short' => 'Email',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',

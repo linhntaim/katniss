@@ -130,9 +130,9 @@ abstract class Plugin
         if (!$this::EDITABLE) abort(404);
 
         if (empty($locale)) {
-            if (isset($this->data[$name])) return !$isArray ? $this->data[$name] : $this->getPropertyArray($this->data[$name], $indexKey);
+            if (isset($this->data[$name])) return !$isArray ? $this->data[$name] : defArrItem($this->data[$name], $indexKey, '');
             if ($this::TRANSLATABLE && isset($this->currentLocalizedData[$name])) {
-                return !$isArray ? $this->currentLocalizedData[$name] : $this->getPropertyArray($this->currentLocalizedData[$name], $indexKey);
+                return !$isArray ? $this->currentLocalizedData[$name] : defArrItem($this->currentLocalizedData[$name], $indexKey, '');
             }
             return '';
         }
@@ -140,12 +140,7 @@ abstract class Plugin
         if (!$this::TRANSLATABLE) return '';
 
         return isset($this->localizedData[$locale]) && isset($this->localizedData[$locale][$name]) ?
-            (!$isArray ? $this->localizedData[$locale][$name] : $this->getPropertyArray($this->localizedData[$locale][$name], $indexKey)) : '';
-    }
-
-    protected function getPropertyArray($data, $index)
-    {
-        return isset($data[$index]) ? $data[$index] : '';
+            (!$isArray ? $this->localizedData[$locale][$name] : defArrItem($this->localizedData[$locale][$name], $indexKey, '')) : '';
     }
 
     public function register()

@@ -39,9 +39,15 @@
             <div class="col-xs-12 col-sm-7">
                 <div class="content">
                     @include('home_themes.wow_skype.pages.teacher.sign_up_' . $site_locale)
-                    <p>Skype: <a href="skype:{{ $skype_id }}?chat" class="greenColor">{{ $skype_id }} ({{ $skype_name }})</a></p>
-                    <p>Hotline: <a>{{ $hot_line }}</a></p>
-                    <p>Email: <a href="mail:{{ $email }}" class="greenColor">{{ $email }}</a></p>
+                    @if(!empty($skype_id))
+                        <p>Skype: <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a></p>
+                    @endif
+                    @if(!empty($hot_line))
+                        <p>{{ trans('label.hot_line_short') }}: <a>{{ $hot_line }}</a></p>
+                    @endif
+                    @if(!empty($email))
+                        <p>{{ trans('label.email_short') }}: <a href="mail:{{ $email }}">{{ $email }}</a></p>
+                    @endif
                 </div>
             </div>
             <div class="col-xs-12 col-sm-5">

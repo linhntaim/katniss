@@ -80,6 +80,12 @@ class Theme extends HomeTheme
         view()->composer(
             $this->masterPath('profile'), Composers\ProfileMenuComposer::class
         );
+        view()->composer(
+            $this->masterPath('master'), Composers\FooterComposer::class
+        );
+        view()->composer(
+            $this->masterPath('footer_lower'), Composers\FooterLowerComposer::class
+        );
     }
 
     protected function registerLibStyles($is_auth = false)
@@ -89,6 +95,7 @@ class Theme extends HomeTheme
         $this->libCssQueue->add(CssQueue::LIB_OPEN_SANS_NAME, _kExternalLink(CssQueue::LIB_OPEN_SANS_NAME));
         $this->libCssQueue->add(CssQueue::LIB_BOOTSTRAP_NAME, _kExternalLink(CssQueue::LIB_BOOTSTRAP_NAME));
         $this->libCssQueue->add(CssQueue::LIB_FONT_AWESOME_NAME, _kExternalLink(CssQueue::LIB_FONT_AWESOME_NAME));
+        $this->libCssQueue->add('fancybox', libraryAsset('fancybox/jquery.fancybox.css'));
     }
 
     protected function registerExtStyles($is_auth = false)
@@ -104,6 +111,8 @@ class Theme extends HomeTheme
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, _kExternalLink(JsQueue::LIB_JQUERY_NAME));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, _kExternalLink(JsQueue::LIB_BOOTSTRAP_NAME));
+        $this->libJsQueue->add('fancybox', libraryAsset('fancybox/jquery.fancybox.pack.js'));
+        $this->libJsQueue->add('fancybox-media', libraryAsset('fancybox/helpers/jquery.fancybox-media.js'));
     }
 
     protected function registerExtScripts($is_auth = false)

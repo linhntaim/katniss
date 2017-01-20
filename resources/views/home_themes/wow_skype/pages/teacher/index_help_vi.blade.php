@@ -5,7 +5,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>1</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_stats.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Đăng ký trên website và để lại thông tin số điện thoại cùng email.</div>
@@ -14,7 +14,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>2</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_cogs.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Chuyên viên tư vấn tuyển sinh gọi lại hỗ trợ thông tin.</div>
@@ -23,7 +23,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>3</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_search.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Làm bài kiểm tra trình độ tiếng Anh theo chuẩn quốc tế.</div>
@@ -32,7 +32,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>4</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_pie.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Hoàn thành thủ tục nhập học và đóng học phí.</div>
@@ -41,7 +41,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span>5</span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_coin.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">Bắt đầu ngay với lộ trình học của riêng bạn.</div>

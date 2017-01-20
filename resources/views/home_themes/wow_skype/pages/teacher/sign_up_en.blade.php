@@ -50,6 +50,6 @@
 <p>
     <strong>
         If you have any question, feel free to contact us or go visit our
-        <a href="#" target="_blank">FAQ page</a>.
+        <a href="{{ homeUrl('helps') }}" target="_blank">FAQ page</a>.
     </strong>
 </p>

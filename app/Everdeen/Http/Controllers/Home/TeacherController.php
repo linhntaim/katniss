@@ -40,14 +40,16 @@ class TeacherController extends ViewController
             return redirect(homeUrl());
         }
 
+        $theme = $request->getTheme();
+
         $this->_title(trans('pages.home_teacher_sign_up_title'));
         $this->_description(trans('pages.home_teacher_sign_up_desc'));
 
         return $this->_any('sign_up', [
-            'skype_id' => 'skype_id',
-            'skype_name' => 'Skype',
-            'hot_line' => '1900 1000',
-            'email' => 'example@example.com',
+            'skype_id' => $theme->options('ts_skype_id', ''),
+            'skype_name' => $theme->options('ts_skype_name', ''),
+            'hot_line' => $theme->options('ts_hot_line', ''),
+            'email' => $theme->options('ts_email', ''),
         ]);
     }
 
@@ -699,33 +701,35 @@ class TeacherController extends ViewController
                     'payment_vn' => $paymentVn,
                 ])->render();
             } else {
-                if($hasPaymentBankAccount) {
+                if ($hasPaymentBankAccount) {
                     $paymentInfoView .= view($this->_viewPath('_pi_bank_account'), [
                         'payment_bank_account' => $paymentBankAccount,
                     ])->render();
                 }
-                if($hasPaymentPaypal) {
+                if ($hasPaymentPaypal) {
                     $paymentInfoView .= view($this->_viewPath('_pi_paypal'), [
                         'payment_paypal' => $paymentPaypal,
                     ])->render();
                 }
-                if($hasPaymentSkrill) {
+                if ($hasPaymentSkrill) {
                     $paymentInfoView .= view($this->_viewPath('_pi_skrill'), [
                         'payment_skrill' => $paymentSkrill,
                     ])->render();
                 }
-                if($hasPaymentPayoneer) {
+                if ($hasPaymentPayoneer) {
                     $paymentInfoView .= view($this->_viewPath('_pi_payoneer'), [
                         'payment_payoneer' => $paymentPayoneer,
                     ])->render();
                 }
-                if($hasPaymentOthers) {
+                if ($hasPaymentOthers) {
                     $paymentInfoView .= view($this->_viewPath('_pi_others'), [
                         'payment_others' => $paymentOthers,
                     ])->render();
                 }
             }
         }
+
+        $theme = $request->getTheme();
 
         $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);
         $this->_description(shorten($teacher->about_me));
@@ -738,10 +742,10 @@ class TeacherController extends ViewController
             'average_rate' => $averageRate,
             'max_rate' => count(_k('rates')),
 
-            'skype_id' => 'skype_id',
-            'skype_name' => 'Skype',
-            'hot_line' => '1900 1000',
-            'email' => 'example@example.com',
+            'skype_id' => $theme->options('ts_skype_id', ''),
+            'skype_name' => $theme->options('ts_skype_name', ''),
+            'hot_line' => $theme->options('ts_hot_line', ''),
+            'email' => $theme->options('ts_email', ''),
 
             'payment_info_view' => new HtmlString($paymentInfoView),
         ]);

@@ -1,11 +1,4 @@
 @extends('home_themes.wow_skype.master.master')
-@section('lib_styles')
-    <link rel="stylesheet" href="{{ libraryAsset('fancybox/jquery.fancybox.css') }}">
-@endsection
-@section('lib_scripts')
-    <script src="{{ libraryAsset('fancybox/jquery.fancybox.pack.js') }}"></script>
-    <script src="{{ libraryAsset('fancybox/helpers/jquery.fancybox-media.js') }}"></script>
-@endsection
 @section('extended_scripts')
     <script>
         $(function() {
@@ -185,8 +178,9 @@
                         </div>
                     </div>
                 @endif
+                <hr class="border-master">
                 @if($has_rates)
-                    <hr class="border-master">
+                    <h5 class="bold-700 color-master uppercase margin-bottom-20">{{ trans('label.student_rating') }}</h5>
                     <div class="row">
                         <div class="col-md-3">
                             <div class="box-120 biggest box-circle bg-master box-center align-center color-white bold-700">
@@ -198,29 +192,33 @@
                             </p>
                         </div>
                         <div class="col-md-9">
-                            <div class="row padding-top-15 padding-bottom-15">
+                            <div class="row padding-v-15">
                                 @foreach($rates_for_teacher as $name => $rate)
-                                    <div class="col-xs-4">
-                                        <p>
-                                            <label class="label bg-star">{{ toFormattedNumber($rate) }}</label>
-                                            <span class="color-master margin-top-5 bold-600">{{ trans('label.teacher_' . $name . '_rate') }}</span>
-                                        </p>
-                                        <p class="color-star">
-                                            <?php $star_split = intval($rate) != $rate; ?>
-                                            @if($star_split)
-                                                @for($i = 1; $i <= intval($rate); ++$i)
-                                                    <i class="fa fa-star"></i>
-                                                @endfor
-                                                <i class="fa fa-star-half-o"></i>
-                                                @for($i = intval($rate) + 2; $i <= $max_rate; ++$i)
-                                                    <i class="fa fa-star-o"></i>
-                                                @endfor
-                                            @else
-                                                @for($i = 1; $i <= $max_rate; ++$i)
-                                                    <i class="fa {{ $i <= $rate ? 'fa-star' : 'fa-star-o' }}"></i>
-                                                @endfor
-                                            @endif
-                                        </p>
+                                    <div class="col-sm-6">
+                                        <h5 class="margin-v-none bold-600 color-master">{{ trans('label.rating') }} {{ trans('label.teacher_' . $name . '_rate') }}</h5>
+                                        <div class="media margin-v-10">
+                                            <div class="media-left">
+                                                <span class="color-star font-24 bold-600">{{ toFormattedNumber($rate) }}</span>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="color-star">
+                                                    <?php $star_split = intval($rate) != $rate; ?>
+                                                    @if($star_split)
+                                                        @for($i = 1; $i <= intval($rate); ++$i)
+                                                            <i class="fa fa-star"></i>
+                                                        @endfor
+                                                        <i class="fa fa-star-half-o"></i>
+                                                        @for($i = intval($rate) + 2; $i <= $max_rate; ++$i)
+                                                            <i class="fa fa-star-o"></i>
+                                                        @endfor
+                                                    @else
+                                                        @for($i = 1; $i <= $max_rate; ++$i)
+                                                            <i class="fa {{ $i <= $rate ? 'fa-star' : 'fa-star-o' }}"></i>
+                                                        @endfor
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -229,15 +227,19 @@
                 @endif
             </div>
             <div class="col-md-4">
-                <div class="panel panel-default">
+                <div class="panel panel-default bg-lighter2">
                     <div class="panel-body">
-                        <div>
-                            <i class="fa fa-user"></i> &nbsp;
-                            @if($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_AVAILABLE)
-                                <strong class="color-slave">{{ trans('label.status_teaching_available') }}</strong><br>
-                            @elseif($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_FULL_SCHEDULE)
-                                <strong class="text-danger">{{ trans('label.status_full_schedule') }}</strong><br>
-                            @endif
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fa fa-user font-20 width-20"></i>
+                            </div>
+                            <div class="media-body text-middle">
+                                @if($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_AVAILABLE)
+                                    <strong class="color-slave">{{ trans('label.status_teaching_available') }}</strong><br>
+                                @elseif($teacher->teaching_status == \Katniss\Everdeen\Models\Teacher::TEACHING_STATUS_FULL_SCHEDULE)
+                                    <strong class="text-danger">{{ trans('label.status_full_schedule') }}</strong><br>
+                                @endif
+                            </div>
                         </div>
                         @if(!$is_auth)
                             <a role="button" class="btn btn-primary btn-block uppercase bold-700 margin-top-10"
@@ -247,12 +249,39 @@
                         @endif
                     </div>
                 </div>
-                <div class="panel panel-default">
+                <div class="panel panel-default bg-lighter2">
                     <div class="panel-body">
                         <h4 class="margin-top-none margin-bottom-15">{{ trans('label.need_help') }}</h4>
-                        <p>Skype: <a href="skype:{{ $skype_id }}?chat" class="greenColor">{{ $skype_id }} ({{ $skype_name }})</a></p>
-                        <p>Hotline: <a>{{ $hot_line }}</a></p>
-                        <p class="margin-bottom-none">Email: <a href="mail:{{ $email }}" class="greenColor">{{ $email }}</a></p>
+                        @if(!empty($hot_line))
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="fa fa-phone font-20 width-20"></i>
+                                </div>
+                                <div class="media-body text-middle">
+                                    <a>{{ $hot_line }}</a>
+                                </div>
+                            </div>
+                        @endif
+                        @if(!empty($email))
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="fa fa-send font-20 width-20"></i>
+                                </div>
+                                <div class="media-body text-middle">
+                                    <a href="mail:{{ $email }}">{{ $email }}</a>
+                                </div>
+                            </div>
+                        @endif
+                        @if(!empty($skype_id))
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="fa fa-skype font-20 width-20"></i>
+                                </div>
+                                <div class="media-body text-middle">
+                                    <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 @if($is_auth && $auth_user->hasRole(['admin', 'manager']))

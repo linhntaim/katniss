@@ -1,39 +1,79 @@
 @section('lib_styles')
-    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
 @endsection
 @section('lib_scripts')
-    <script src="{{ _kExternalLink('select2-js') }}"></script>
+    <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @endsection
 @section('extended_scripts')
     @include('file_manager.open_documents_script')
     <script>
         $(function () {
-            $('.select2').select2();
+            $('[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
         });
     </script>
 @endsection
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('form.action_edit') }}</h3>
-            </div>
-            <form method="post" action="{{ currentFullUrl() }}">
-                {{ csrf_field() }}
-                {{ method_field('put') }}
+
+<form method="post" action="{{ currentFullUrl() }}">
+    {{ csrf_field() }}
+    {{ method_field('put') }}
+    <div class="row">
+        <div class="col-xs-12">
+            <h4 class="box-title">{{ trans('form.action_edit') }}</h4>
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
+                        <li{!! $locale == $site_locale ? ' class="active"' : '' !!}>
+                            <a href="#tab_{{ $locale }}" data-toggle="tab">
+                                {{ $properties['native'] }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="tab-content">
+                    @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
+                        <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="tab_{{ $locale }}">
+                            <div class="form-group">
+                                <label for="{{ localeInputId('inputHomeName', $locale) }}">{{ trans('wow_skype_theme.home_name') }}</label>
+                                <input class="form-control" id="{{ localeInputId('inputHomeName', $locale) }}"
+                                       name="{{ localeInputName('home_name', $locale) }}" type="text"
+                                       placeholder="{{ trans('wow_skype_theme.home_name') }}" value="{{ $home_theme->options('home_name', '', $locale) }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ localeInputId('inputHomeDescription', $locale) }}">{{ trans('wow_skype_theme.home_description') }}</label>
+                                <input class="form-control" id="{{ localeInputId('inputHomeDescription', $locale) }}"
+                                       name="{{ localeInputName('home_description', $locale) }}" type="text"
+                                       placeholder="{{ trans('wow_skype_theme.home_description') }}" value="{{ $home_theme->options('home_description', '', $locale) }}">
+                            </div>
+                            @if(isset($extended_localizing_path))
+                                @include($extended_localizing_path)
+                            @endif
+                        </div><!-- /.tab-pane -->
+                    @endforeach
+                </div><!-- /.tab-content -->
+            </div><!-- nav-tabs-custom -->
+
+            <div class="box box-primary">
                 <div class="box-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
-                        </div>
-                    @endif
                     <div class="form-group">
-                        <label for="inputHomeDescription">{{ trans('wow_skype_theme.home_description') }}</label>
-                        <input class="form-control" id="inputHomeDescription" name="home_description"
-                               placeholder="{{ trans('wow_skype_theme.home_description') }}" type="text" value="{{ $home_description }}">
+                        <label for="inputSiteKeywords">{{ trans('wow_skype_theme.site_keywords') }}</label>
+                        <input class="form-control" id="inputSiteKeywords" name="site_keywords"
+                               placeholder="{{ trans('wow_skype_theme.site_keywords') }}" type="text" value="{{ $site_keywords }}">
                     </div>
+                    <hr>
                     <div class="form-group">
                         <label for="inputHomeEmail">{{ trans('wow_skype_theme.home_email') }}</label>
                         <input class="form-control" id="inputHomeEmail" name="home_email"
@@ -49,31 +89,115 @@
                         <label for="inputSocialFacebook">{{ trans('wow_skype_theme.social_facebook') }}</label>
                         <input class="form-control" id="inputSocialFacebook" name="social_facebook"
                                placeholder="{{ trans('wow_skype_theme.social_facebook') }}" type="text" value="{{ $social_facebook }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialFacebookSf">
+                                <input id="inputSocialFacebookSf" type="checkbox" name="social_facebook_sf"
+                                       value="1"{{ $social_facebook_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialFacebookSb">
+                                <input id="inputSocialFacebookSb" type="checkbox" name="social_facebook_sb"
+                                       value="1"{{ $social_facebook_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialTwitter">{{ trans('wow_skype_theme.social_twitter') }}</label>
                         <input class="form-control" id="inputSocialTwitter" name="social_twitter"
                                placeholder="{{ trans('wow_skype_theme.social_twitter') }}" type="text" value="{{ $social_twitter }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialTwitterSf">
+                                <input id="inputSocialTwitterSf" type="checkbox" name="social_twitter_sf"
+                                       value="1"{{ $social_twitter_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialTwitterSb">
+                                <input id="inputSocialTwitterSb" type="checkbox" name="social_twitter_sb"
+                                       value="1"{{ $social_twitter_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialInstagram">{{ trans('wow_skype_theme.social_instagram') }}</label>
                         <input class="form-control" id="inputSocialInstagram" name="social_instagram"
                                placeholder="{{ trans('wow_skype_theme.social_instagram') }}" type="text" value="{{ $social_instagram }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialInstagramSf">
+                                <input id="inputSocialInstagramSf" type="checkbox" name="social_instagram_sf"
+                                       value="1"{{ $social_instagram_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialInstagramSb">
+                                <input id="inputSocialInstagramSb" type="checkbox" name="social_instagram_sb"
+                                       value="1"{{ $social_instagram_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialGooglePlus">{{ trans('wow_skype_theme.social_gplus') }}</label>
                         <input class="form-control" id="inputSocialGooglePlus" name="social_gplus"
                                placeholder="{{ trans('wow_skype_theme.social_gplus') }}" type="text" value="{{ $social_gplus }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialGooglePlusSf">
+                                <input id="inputSocialGooglePlusSf" type="checkbox" name="social_gplus_sf"
+                                       value="1"{{ $social_gplus_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialGooglePlusSb">
+                                <input id="inputSocialGooglePlusSb" type="checkbox" name="social_gplus_sb"
+                                       value="1"{{ $social_gplus_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialYoutube">{{ trans('wow_skype_theme.social_youtube') }}</label>
                         <input class="form-control" id="inputSocialYoutube" name="social_youtube"
                                placeholder="{{ trans('wow_skype_theme.social_youtube') }}" type="text" value="{{ $social_youtube }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialYoutubeSf">
+                                <input id="inputSocialYoutubeSf" type="checkbox" name="social_youtube_sf"
+                                       value="1"{{ $social_youtube_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialYoutubeSb">
+                                <input id="inputSocialYoutubeSb" type="checkbox" name="social_youtube_sb"
+                                       value="1"{{ $social_youtube_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialSkype">{{ trans('wow_skype_theme.social_skype') }}</label>
                         <input class="form-control" id="inputSocialSkype" name="social_skype"
                                placeholder="{{ trans('wow_skype_theme.social_skype') }}" type="text" value="{{ $social_skype }}">
+                        <div class="checkbox icheck">
+                            <label for="inputSocialSkypeSf">
+                                <input id="inputSocialSkypeSf" type="checkbox" name="social_skype_sf"
+                                       value="1"{{ $social_skype_sf == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sf') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialSkypeSb">
+                                <input id="inputSocialSkypeSb" type="checkbox" name="social_skype_sb"
+                                       value="1"{{ $social_skype_sb == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
                     </div>
                     <hr>
                     <div class="form-group">
@@ -124,16 +248,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="box-footer">
-                    <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
-                    <div class="pull-right">
-                        <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                    </div>
+                <!-- /.box-body -->
+            </div>
+            <div class="margin-top">
+                <button class="btn btn-primary" type="submit">{{ trans('form.action_save') }}</button>
+                <div class="pull-right">
+                    <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
                 </div>
-            </form>
-            <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
         </div>
-        <!-- /.box -->
+        <!-- /.col -->
     </div>
-    <!-- /.col -->
-</div>
+</form>

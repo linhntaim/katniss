@@ -108,6 +108,34 @@ body {
     background-color: #fff;
 }
 
+.bg-facebook {
+    background-color: #4862A3;
+}
+
+.bg-twitter {
+    background-color: #1DA1F2;
+}
+
+.bg-instagram {
+    background-color: #3F6D94;
+}
+
+.bg-gplus {
+    background-color: #DB4437;
+}
+
+.bg-youtube {
+    background-color: #E62117;
+}
+
+.bg-youtube-2 {
+    background-color: #CC181E;
+}
+
+.bg-skype {
+    background-color: #00AFF0;
+}
+
 .bg-master,
 .bg-master.wrapper {
     background-color: #00aff0;
@@ -386,6 +414,14 @@ a:active:focus {
     line-height: 44px;
 }
 
+.width-20 {
+    width: 20px;
+}
+
+.width-25 {
+    width: 25px;
+}
+
 .width-30 {
     width: 30px;
 }
@@ -446,6 +482,14 @@ a:active:focus {
     width: 500px;
 }
 
+.height-20 {
+    height: 20px;
+}
+
+.height-25 {
+    height: 25px;
+}
+
 .height-30 {
     height: 30px;
 }
@@ -504,6 +548,16 @@ a:active:focus {
 
 .height-500 {
     height: 500px;
+}
+
+.box-20 {
+    width: 20px;
+    height: 20px;
+}
+
+.box-25 {
+    width: 25px;
+    height: 25px;
 }
 
 .box-30 {
@@ -965,7 +1019,7 @@ a:active:focus {
 }
 
 .padding-right-none {
-    padding: 0;
+    padding-right: 0;
 }
 
 .padding-right-5 {
@@ -1055,6 +1109,18 @@ a:active:focus {
 
 .no-wrap {
     white-space: nowrap;
+}
+
+.text-middle {
+    vertical-align: middle;
+}
+
+.font-20 {
+    font-size: 20px;
+}
+
+.font-24 {
+    font-size: 24px;
 }
 
 .bold-300 {
