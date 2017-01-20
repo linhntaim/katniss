@@ -113,6 +113,11 @@ body {
     background-color: #00aff0;
 }
 
+.bg-master-lighter,
+.bg-master-lighter.wrapper {
+    background-color: #4cc7f4;
+}
+
 .bg-slave,
 .bg-slave.wrapper {
     background-color: #75ab00;
