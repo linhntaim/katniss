@@ -92,6 +92,9 @@
                         <button type="button" class="btn {{ $on_searching ? 'btn-warning' : 'btn-primary' }} btn-sm" data-toggle="modal" data-target="#search-modal">
                             <i class="fa fa-search"></i> {{ trans('form.action_search') }}
                         </button>
+                        <a role="button" target="_blank" href="?export=1" class="btn btn-success btn-sm">
+                            <i class="fa fa-download"></i> {{ trans('form.action_export') }}
+                        </a>
                     </div>
                 </div><!-- /.box-header -->
                 @if($students->count()>0)

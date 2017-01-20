@@ -157,7 +157,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 text-right">
-                            <a id="report-export" role="button" target="_blank" href="" class="btn btn-success hide">
+                            <a id="report-export" role="button" target="_blank" href="#" class="btn btn-success hide">
                                 <i class="fa fa-download"></i> {{ trans('form.action_export') }}
                             </a>
                         </div>

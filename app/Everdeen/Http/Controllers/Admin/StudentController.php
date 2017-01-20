@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Reports\StudentReport;
 use Katniss\Everdeen\Repositories\StudentRepository;
 use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends AdminController
 {
@@ -24,6 +26,10 @@ class StudentController extends AdminController
 
     public function indexApproved(Request $request)
     {
+        if ($request->has('export')) {
+            return $this->exportApproved($request);
+        }
+
         $searchDisplayName = $request->input('display_name', null);
         $searchEmail = $request->input('email', null);
         $searchSkypeId = $request->input('skype_id', null);
@@ -50,6 +56,42 @@ class StudentController extends AdminController
             'search_skype_id' => $searchSkypeId,
             'search_phone_number' => $searchPhoneNumber,
         ]);
+    }
+
+    public function exportApproved(Request $request)
+    {
+        try {
+            $report = new StudentReport();
+
+            return Excel::create('Student_List', function ($excel) use ($report) {
+                $excel->sheet('Sheet 1', function ($sheet) use ($report) {
+                    $data = $report->getDataAsFlatArray();
+                    array_unshift($data, $report->getHeader());
+
+                    $sheet->cell('A1', function ($cell) {
+                        $cell->setValue(
+                            trans_choice('label.student', 2)
+                        );
+                    });
+
+                    $startColumn = 'A';
+                    $startRow = 2;
+                    $endColumn = chr(count($data[0]) + ord($startColumn) - 1);
+                    $endRow = $startRow + count($data) - 1;
+
+                    $sheet->mergeCells('A1:' . $endColumn . '1');
+                    $sheet->fromArray($data, null, $startColumn . $startRow, true, false);
+                    $sheet->cells($startColumn . $startRow . ':' . $endColumn . $startRow, function ($cells) {
+                        $cells->setBackground('#000000');
+                        $cells->setFontColor('#ffffff');
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->setBorder($startColumn . $startRow . ':' . $endColumn . $endRow, 'thin');
+                });
+            })->download('xls');
+        } catch (KatnissException $ex) {
+            return abort(500, $ex->getMessage());
+        }
     }
 
     public function indexRegistering(Request $request)
