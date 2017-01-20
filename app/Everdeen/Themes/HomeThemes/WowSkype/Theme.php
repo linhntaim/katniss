@@ -139,8 +139,10 @@ class Theme extends HomeTheme
     {
         return [
             'homepage' => 'Homepage',
-            'knowledge_middle' => 'Middle of Knowledge Page',
-            'knowledge_bottom' => 'Bottom of Knowledge Page',
+            'knowledge_middle' => 'Knowledge Page - Middle',
+            'knowledge_bottom_left' => 'Knowledge Page - Bottom - Left',
+            'knowledge_bottom_right' => 'Knowledge Page - Bottom - Right',
+            'knowledge_bottom_middle' => 'Knowledge Page - Bottom - Middle',
             'article_sidebar_right' => 'Right Sidebar on Article Page',
             'footer_links' => 'Footer Links',
         ];

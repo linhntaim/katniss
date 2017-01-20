@@ -9,8 +9,18 @@
         <div id="knowledge-middle">
             {!! placeholder('knowledge_middle') !!}
         </div>
-        <div id="knowledge-bottom">
-            {!! placeholder('knowledge_bottom') !!}
+        <div id="knowledge-bottom" class="margin-v-30">
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    {!! placeholder('knowledge_bottom_left') !!}
+                </div>
+                <div class="col-sm-6 col-md-4">
+                    {!! placeholder('knowledge_bottom_middle') !!}
+                </div>
+                <div class="col-md-4">
+                    {!! placeholder('knowledge_bottom_right') !!}
+                </div>
+            </div>
         </div>
     </div>
 @endsection

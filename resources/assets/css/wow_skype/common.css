@@ -776,6 +776,16 @@ a:active:focus {
     margin-bottom: 20px;
 }
 
+.margin-v-25 {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.margin-v-30 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
 .margin-right-none {
     margin-right: 0;
 }

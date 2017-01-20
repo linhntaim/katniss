@@ -21,29 +21,9 @@ class Category extends Model
     protected $translationForeignKey = 'category_id';
     public $translatedAttributes = ['name', 'slug', 'description'];
 
-    public function parent()
-    {
-        return $this->hasOne(Category::class, 'id', 'parent_id');
-    }
-
-    public function scopeOfLink($query)
-    {
-        return $query->where('type', $this::TYPE_LINK);
-    }
-
-    public function links()
-    {
-        return $this->belongsToMany(Link::class, 'categories_links', 'category_id', 'link_id');
-    }
-
     public function getOrderedLinksAttribute()
     {
         return $this->links()->orderBy('order', 'asc')->get();
-    }
-
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
     }
 
     public function getOrderedPostsAttribute()
@@ -51,13 +31,41 @@ class Category extends Model
         return $this->posts()->orderBy('order', 'asc')->get();
     }
 
-    public function media()
-    {
-        return $this->belongsToMany(Media::class, 'categories_media', 'category_id', 'media_id');
-    }
-
     public function getOrderedMediaAttribute()
     {
         return $this->media()->orderBy('order', 'asc')->get();
+    }
+
+    public function getHtmlDescriptionAttribute()
+    {
+        if (empty($this->description)) {
+            return '';
+        }
+        return '<p>' . implode('</p><p>', explode(PHP_EOL, htmlspecialchars($this->description))) . '</p>';
+    }
+
+    public function scopeOfLink($query)
+    {
+        return $query->where('type', $this::TYPE_LINK);
+    }
+
+    public function parent()
+    {
+        return $this->hasOne(Category::class, 'id', 'parent_id');
+    }
+
+    public function links()
+    {
+        return $this->belongsToMany(Link::class, 'categories_links', 'category_id', 'link_id');
+    }
+
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
+    }
+
+    public function media()
+    {
+        return $this->belongsToMany(Media::class, 'categories_media', 'category_id', 'media_id');
     }
 }
