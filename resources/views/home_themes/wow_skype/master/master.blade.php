@@ -13,66 +13,7 @@
                 </div>
             </div>
             <div class="col-sm-8">
-                <div class="pull-left margin-right-30">
-                    <h5 class="color-master uppercase bold-700">{{ trans_choice('label.teacher', 1) }}</h5>
-                    <ul class="list-unstyled">
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pull-left margin-right-30">
-                    <h5 class="color-master uppercase bold-700">{{ trans_choice('label.student', 1) }}</h5>
-                    <ul class="list-unstyled">
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pull-left margin-right-30">
-                    <h5 class="color-master uppercase bold-700">WowSkype</h5>
-                    <ul class="list-unstyled">
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                        <li class="margin-bottom-10">
-                            <a href="#">
-                                <span class="color-normal">Demo link</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                {!! placeholder('footer_links') !!}
                 <div class="pull-right text-center width-150 min-width-sm-full">
                     <div class="margin-bottom-5 margin-top-10">
                         <a class="btn btn-primary btn-block uppercase bold-700"
