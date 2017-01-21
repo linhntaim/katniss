@@ -12,9 +12,11 @@
         </a>
     @endif
     <div class="text-justify">{!! $category->htmlDescription !!}</div>
-    <div class="text-center margin-top-20">
-        <a class="btn btn-primary uppercase" href="{{ homeUrl('knowledge/categories/{slug}', ['slug' => $category->slug]) }}">
-            {{ trans('form.action_see_more') }}
-        </a>
-    </div>
+    @if($show_button==1)
+        <div class="text-center margin-top-20">
+            <a class="btn btn-primary uppercase" href="{{ homeUrl('knowledge/categories/{slug}', ['slug' => $category->slug]) }}">
+                {{ trans('form.action_see_more') }}
+            </a>
+        </div>
+    @endif
 </div>

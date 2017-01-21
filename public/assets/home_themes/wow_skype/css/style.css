@@ -1914,6 +1914,11 @@ footer ul.list-inline.bottom-social-links > li {
     border-bottom-width: 5px;
     border-left-width: 5px;
 }
+
+#page-article .widgets > div,
+#page-articles .widgets > div {
+    margin-bottom: 20px;
+}
 #page-announcements .announcement-item {
     background-color: #fff;
     color: #00aff0;

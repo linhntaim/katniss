@@ -1,9 +1,11 @@
 @extends('plugins.default_widget.admin')
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
 @endsection
 @section('lib_scripts')
     <script src="{{ _kExternalLink('select2-js') }}"></script>
+    <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
@@ -76,6 +78,12 @@
                 forcePlaceholderSize: true,
                 zIndex: 999999
             });
+
+            $('[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
         });
     </script>
 @endsection
@@ -109,6 +117,15 @@
                 <label for="inputArticles">{{ trans('form.action_add') }} {{ trans_choice('label.article_lc', 2) }}</label>
                 <select id="inputArticles" class="form-control select2" name="articles[]" multiple style="width: 100%;">
                 </select>
+            </div>
+            <div class="form-group">
+                <div class="checkbox icheck">
+                    <label for="inputShowButton">
+                        <input id="inputShowButton" type="checkbox" name="show_button"
+                               value="1"{{ $show_button == 1 ? ' checked' : '' }}>
+                        &nbsp; {{ trans('featured_articles.show_button') }}
+                    </label>
+                </div>
             </div>
         </div>
     </div>

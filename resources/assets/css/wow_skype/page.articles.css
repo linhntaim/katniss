@@ -14,3 +14,8 @@
     border-bottom-width: 5px;
     border-left-width: 5px;
 }
+
+#page-article .widgets > div,
+#page-articles .widgets > div {
+    margin-bottom: 20px;
+}

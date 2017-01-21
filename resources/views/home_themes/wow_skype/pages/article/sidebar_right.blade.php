@@ -1,12 +1,15 @@
-<div class="margin-bottom-10">
+<div class="margin-bottom-20">
     <a id="categories-menu-toggle" class="btn btn-primary btn-block">
         {{ trans_choice('label.category', 2) }}
     </a>
-    <div id="categories-menu" class="well padding-none border-master no-border-radius-top" style="display: none">
+    <div id="categories-menu" class="well padding-none border-master no-border-radius-top margin-bottom-none" style="display: none">
         {{ $categories_menu }}
     </div>
 </div>
-{!! placeholder('article_sidebar_right') !!}
+<div class="widgets">
+    {!! placeholder('article_sidebar_right') !!}
+</div>
+
 @section('extended_scripts')
     @parent
     <script>

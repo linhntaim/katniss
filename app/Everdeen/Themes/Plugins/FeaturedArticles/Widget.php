@@ -17,12 +17,14 @@ class Widget extends DefaultWidget
     const DISPLAY_NAME = 'Featured Articles';
 
     protected $articles;
+    protected $showButton;
 
     public function __init()
     {
         parent::__init();
 
         $this->articles = defPr($this->getProperty('articles'), []);
+        $this->showButton = defPr($this->getProperty('show_button'), 0);
     }
 
     public function register()
@@ -46,6 +48,7 @@ class Widget extends DefaultWidget
         }
         return array_merge(parent::viewAdminParams(), [
             'articles' => $articles,
+            'show_button' => $this->showButton,
         ]);
     }
 
@@ -61,6 +64,7 @@ class Widget extends DefaultWidget
         }
         return array_merge(parent::viewHomeParams(), [
             'articles' => $articles,
+            'show_button' => $this->showButton,
         ]);
     }
 
@@ -72,7 +76,8 @@ class Widget extends DefaultWidget
     public function fields()
     {
         return array_merge(parent::fields(), [
-            'articles'
+            'articles',
+            'show_button',
         ]);
     }
 
@@ -80,6 +85,7 @@ class Widget extends DefaultWidget
     {
         return array_merge(parent::validationRules(), [
             'articles' => 'sometimes|array',
+            'show_button' => 'sometimes|in:1',
         ]);
     }
 }

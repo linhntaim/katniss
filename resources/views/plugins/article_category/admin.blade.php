@@ -1,14 +1,21 @@
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('iCheck/square/blue.css') }}">
 @endsection
 @section('lib_scripts')
     <script src="{{ _kExternalLink('select2-js') }}"></script>
+    <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
 @endsection
 @section('extended_scripts')
     @include('file_manager.open_documents_script')
     <script>
         $(function () {
             $('.select2').select2();
+            $('[type=checkbox]').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
         });
     </script>
 @endsection
@@ -37,6 +44,15 @@
                         <i class="fa fa-server"></i>
                     </button>
                 </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="checkbox icheck">
+                <label for="inputShowButton">
+                    <input id="inputShowButton" type="checkbox" name="show_button"
+                           value="1"{{ $show_button == 1 ? ' checked' : '' }}>
+                    &nbsp; {{ trans('article_category.show_button') }}
+                </label>
             </div>
         </div>
     </div>

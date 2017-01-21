@@ -19,6 +19,7 @@ class Widget extends BaseWidget
 
     protected $image;
     protected $categoryId;
+    protected $showButton;
 
     protected function __init()
     {
@@ -26,6 +27,7 @@ class Widget extends BaseWidget
 
         $this->image = defPr($this->getProperty('image'), '');
         $this->categoryId = defPr($this->getProperty('category_id'), '');
+        $this->showButton = defPr($this->getProperty('show_button'), 0);
     }
 
     public function viewAdminParams()
@@ -36,6 +38,7 @@ class Widget extends BaseWidget
             'image' => $this->image,
             'category_id' => $this->categoryId,
             'categories' => $categoryRepository->getAll(),
+            'show_button' => $this->showButton,
         ]);
     }
 
@@ -49,6 +52,7 @@ class Widget extends BaseWidget
         return array_merge(parent::viewHomeParams(), [
             'image' => $this->image,
             'category' => $category,
+            'show_button' => $this->showButton,
         ]);
     }
 
@@ -62,6 +66,7 @@ class Widget extends BaseWidget
         return array_merge(parent::fields(), [
             'image',
             'category_id',
+            'show_button',
         ]);
     }
 
@@ -70,6 +75,7 @@ class Widget extends BaseWidget
         return array_merge(parent::validationRules(), [
             'image' => 'sometimes|url',
             'category_id' => 'required|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'show_button' => 'sometimes|in:1',
         ]);
     }
 }

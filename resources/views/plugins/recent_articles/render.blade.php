@@ -1,4 +1,4 @@
-<div id="{{ $html_id }}" class="widget-featured-articles">
+<div id="{{ $html_id }}" class="widget-recent-articles">
     @if(!empty($name))
         <h4 class="bold-600 uppercase color-master">
             {{ $name }}
@@ -13,11 +13,4 @@
             </li>
         @endforeach
     </ul>
-    @if($show_button==1)
-        <div class="text-center margin-top-20">
-            <a role="button" class="btn btn-primary uppercase" href="{{ homeUrl('knowledge/articles') }}">
-                {{ trans('form.action_see_more') }}
-            </a>
-        </div>
-    @endif
 </div>
