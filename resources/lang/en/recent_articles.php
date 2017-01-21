@@ -6,6 +6,5 @@
  * Time: 17:25
  */
 return [
-    'title' => 'Related articles',
     'number_of_items' => 'Number of items',
 ];

@@ -146,20 +146,43 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getPublishedPagedByCategory($categoryId, &$category)
+    public function getPublishedPagedByCategory(&$categoryId, &$category)
     {
         $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getById($categoryId);
+        if (empty($category)) {
+            $category = $categoryRepository->getById($categoryId);
+        } else {
+            $categoryId = $category->id;
+        }
         return $category->posts()->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getPublishedPagedByCategorySlug($categorySlug, &$category)
+    public function getLastPublishedByCategory($count, &$categoryId, &$category)
     {
         $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getBySlug($categorySlug);
+        if (empty($category)) {
+            $category = $categoryRepository->getById($categoryId);
+        } else {
+            $categoryId = $category->id;
+        }
+        $articles = $category->posts()->where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderBy('created_at', 'desc')
+            ->take($count);
+        return $count == 1 ? $articles->first() : $articles->get();
+    }
+
+    public function getPublishedPagedByCategorySlug(&$categorySlug, &$category)
+    {
+        $categoryRepository = new ArticleCategoryRepository();
+        if (empty($category)) {
+            $category = $categoryRepository->getBySlug($categorySlug);
+        } else {
+            $categorySlug = $category->slug;
+        }
         return $category->posts()->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')

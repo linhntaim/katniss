@@ -7,4 +7,6 @@
  */
 return [
     'show_button' => 'Show button',
+    'show_articles' => 'Show articles',
+    'number_of_items' => 'Number of items',
 ];

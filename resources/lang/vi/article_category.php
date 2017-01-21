@@ -7,4 +7,6 @@
  */
 return [
     'show_button' => 'Hiển thị nút Xem thêm',
+    'show_articles' => 'Hiển thị tin mới nhất',
+    'number_of_items' => 'Số lượng bài viết hiển thị',
 ];

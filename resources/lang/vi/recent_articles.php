@@ -6,6 +6,5 @@
  * Time: 17:25
  */
 return [
-    'title' => 'Bài viết liên quan',
     'number_of_items' => 'Số lượng bài viết hiển thị',
 ];
