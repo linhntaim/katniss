@@ -27,6 +27,21 @@ class ClassroomRepository extends ModelRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getCountOpening()
+    {
+        return Classroom::opening()->count();
+    }
+
+    public function getCountClosed()
+    {
+        return Classroom::closed()->count();
+    }
+
+    public function getCountAfterDate($date)
+    {
+        return Classroom::whereDate('created_at', '>=', $date)->count();
+    }
+
     public function getByTeacherPaged($teacherId, $status = Classroom::STATUS_OPENING)
     {
         return Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])

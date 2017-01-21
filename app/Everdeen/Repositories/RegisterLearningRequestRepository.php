@@ -28,6 +28,21 @@ class RegisterLearningRequestRepository extends ModelRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getCountNewly()
+    {
+        return RegisterLearningRequest::newly()->count();
+    }
+
+    public function getCountProcessed()
+    {
+        return RegisterLearningRequest::processed()->count();
+    }
+
+    public function getCountAfterDate($date)
+    {
+        return RegisterLearningRequest::whereDate('created_at', '>=', $date)->count();
+    }
+
     public function getSearchNewlyPaged($createdAt = null)
     {
         $learningRequests = RegisterLearningRequest::newly();

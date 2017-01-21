@@ -31,6 +31,21 @@ class StudentRepository extends ModelRepository
         return Student::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getCountApproved()
+    {
+        return Student::approved()->count();
+    }
+
+    public function getCountRegistering()
+    {
+        return Student::where('status', '<>', Student::APPROVED)->count();
+    }
+
+    public function getCountAfterDate($date)
+    {
+        return Student::whereDate('created_at', '>=', $date)->count();
+    }
+
     public function getSearchCommonPaged($term = null)
     {
         $teacher = Student::approved()->orderBy('created_at', 'desc');

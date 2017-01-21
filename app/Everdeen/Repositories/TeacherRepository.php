@@ -30,6 +30,21 @@ class TeacherRepository extends ModelRepository
         return Teacher::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getCountApproved()
+    {
+        return Teacher::approved()->count();
+    }
+
+    public function getCountRegistering()
+    {
+        return Teacher::where('status', '<>', Teacher::APPROVED)->count();
+    }
+
+    public function getCountAfterDate($date)
+    {
+        return Teacher::whereDate('created_at', '>=', $date)->count();
+    }
+
     public function getSearchCommonPaged($term = null)
     {
         $teacher = Teacher::approved()->orderBy('created_at', 'desc');

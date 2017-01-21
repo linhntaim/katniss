@@ -23,6 +23,27 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
+    public function getCountPublished()
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->count();
+    }
+
+    public function getCountTeacher()
+    {
+        return Post::where('type', $this->type)
+            ->where('status', Post::STATUS_TEACHER_EDITING)
+            ->count();
+    }
+
+    public function getCountAfterDate($date)
+    {
+        return Post::where('type', $this->type)
+            ->whereDate('created_at', '>=', $date)
+            ->count();
+    }
+
     public function hasSlug($slug)
     {
         return Post::whereTranslation('slug', $slug)->count() > 0;
