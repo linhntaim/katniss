@@ -595,10 +595,10 @@
             <div class="col-xs-12 col-sm-4 col-md-3 margin-bottom-10">
                 <div class="media">
                     <div class="media-left">
-                        <img class="width-32" src="{{ $teacher->userProfile->url_avatar_thumb }}">
+                        <img class="width-32 img-circle" src="{{ $teacher->userProfile->url_avatar_thumb }}">
                     </div>
                     <div class="media-body">
-                        <div><strong>{{ $teacher->userProfile->display_name }}</strong></div>
+                        <div class="color-master"><strong>{{ $teacher->userProfile->display_name }}</strong></div>
                         <div>{{ trans_choice('label.teacher', 1) }}</div>
                     </div>
                 </div>
@@ -606,10 +606,10 @@
             <div class="col-xs-12 col-sm-4 col-md-3 margin-bottom-10">
                 <div class="media">
                     <div class="media-left">
-                        <img class="width-32" src="{{ $student->userProfile->url_avatar_thumb }}">
+                        <img class="width-32 img-circle" src="{{ $student->userProfile->url_avatar_thumb }}">
                     </div>
                     <div class="media-body">
-                        <div><strong>{{ $student->userProfile->display_name }}</strong></div>
+                        <div class="color-master"><strong>{{ $student->userProfile->display_name }}</strong></div>
                         <div>{{ trans_choice('label.student', 1) }}</div>
                     </div>
                 </div>
@@ -617,12 +617,12 @@
             <div class="col-xs-12 col-sm-4 col-md-3 margin-bottom-10">
                 <div class="media">
                     <div class="media-left">
-                        <img class="width-32 pop-hover" src="{{ $supporter->url_avatar_thumb }}"
+                        <img class="width-32 img-circle pop-hover" src="{{ $supporter->url_avatar_thumb }}"
                              data-placement="bottom"
                              data-content="<strong>Skype ID:</strong> {{ $supporter->skype_id }}<br><strong>{{ trans('label.email') }}:</strong> {{ $supporter->email }}<br><strong>{{ trans('label.phone') }}:</strong> {{ $supporter->phone }}">
                     </div>
                     <div class="media-body">
-                        <div>
+                        <div class="color-master">
                             <strong>
                                 {{ $supporter->display_name }}
                             </strong>

@@ -13,7 +13,7 @@
                     <li><a href="{{ homeUrl('opening-classrooms') }}">{{ trans('label.status_opening') }}</a></li>
                 </ul>
             </div>
-            <h3 class="color-slave"><strong>{{ trans_choice('label.classroom', 2) }}</strong></h3>
+            <h3 class="color-master"><strong>{{ trans_choice('label.classroom', 2) }}</strong></h3>
         </div>
         <div class="classroom-list big">
             @if($classrooms->count()>0)
@@ -26,10 +26,10 @@
                                     <div class="col-sm-4 margin-bottom-15">
                                         <div class="media">
                                             <div class="media-left">
-                                                <img class="width-32" src="{{ $classroom->teacherUserProfile->url_avatar_thumb }}">
+                                                <img class="width-32 img-circle" src="{{ $classroom->teacherUserProfile->url_avatar_thumb }}">
                                             </div>
                                             <div class="media-body">
-                                                <div><strong>{{ $classroom->teacherUserProfile->display_name }}</strong></div>
+                                                <div class="color-master"><strong>{{ $classroom->teacherUserProfile->display_name }}</strong></div>
                                                 <div>{{ trans_choice('label.teacher', 1) }}</div>
                                             </div>
                                         </div>
@@ -37,10 +37,10 @@
                                     <div class="col-sm-4 margin-bottom-15">
                                         <div class="media">
                                             <div class="media-left">
-                                                <img class="width-32" src="{{ $classroom->studentUserProfile->url_avatar_thumb }}">
+                                                <img class="width-32 img-circle" src="{{ $classroom->studentUserProfile->url_avatar_thumb }}">
                                             </div>
                                             <div class="media-body">
-                                                <div><strong>{{ $classroom->studentUserProfile->display_name }}</strong></div>
+                                                <div class="color-master"><strong>{{ $classroom->studentUserProfile->display_name }}</strong></div>
                                                 <div>{{ trans_choice('label.student', 1) }}</div>
                                             </div>
                                         </div>
@@ -48,10 +48,10 @@
                                     <div class="col-sm-4 margin-bottom-15">
                                         <div class="media">
                                             <div class="media-left">
-                                                <img class="width-32" src="{{ $classroom->supporter->url_avatar_thumb }}">
+                                                <img class="width-32 img-circle" src="{{ $classroom->supporter->url_avatar_thumb }}">
                                             </div>
                                             <div class="media-body">
-                                                <div><strong>{{ $classroom->supporter->display_name }}</strong></div>
+                                                <div class="color-master"><strong>{{ $classroom->supporter->display_name }}</strong></div>
                                                 <div>{{ trans_choice('label.supporter', 1) }}</div>
                                             </div>
                                         </div>
@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-3">
-                                <a role="button" class="btn btn-success btn-block" href="{{ homeUrl('classrooms/{id}', ['id' => $classroom->id]) }}">
+                                <a role="button" class="btn btn-primary btn-block" href="{{ homeUrl('classrooms/{id}', ['id' => $classroom->id]) }}">
                                     {{ trans('form.action_see_detail') }}
                                 </a>
                             </div>
