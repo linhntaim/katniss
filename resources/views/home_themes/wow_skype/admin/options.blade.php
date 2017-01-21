@@ -103,6 +103,13 @@
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
                             </label>
                         </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialFacebookSw">
+                                <input id="inputSocialFacebookSw" type="checkbox" name="social_facebook_sw"
+                                       value="1"{{ $social_facebook_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialTwitter">{{ trans('wow_skype_theme.social_twitter') }}</label>
@@ -120,6 +127,13 @@
                                 <input id="inputSocialTwitterSb" type="checkbox" name="social_twitter_sb"
                                        value="1"{{ $social_twitter_sb == 1 ? ' checked' : '' }}>
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialTwitterSw">
+                                <input id="inputSocialTwitterSw" type="checkbox" name="social_twitter_sw"
+                                       value="1"{{ $social_twitter_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
                             </label>
                         </div>
                     </div>
@@ -141,6 +155,13 @@
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
                             </label>
                         </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialInstagramSw">
+                                <input id="inputSocialInstagramSw" type="checkbox" name="social_instagram_sw"
+                                       value="1"{{ $social_instagram_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialGooglePlus">{{ trans('wow_skype_theme.social_gplus') }}</label>
@@ -158,6 +179,13 @@
                                 <input id="inputSocialGooglePlusSb" type="checkbox" name="social_gplus_sb"
                                        value="1"{{ $social_gplus_sb == 1 ? ' checked' : '' }}>
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialGooglePlusSw">
+                                <input id="inputSocialGooglePlusSw" type="checkbox" name="social_gplus_sw"
+                                       value="1"{{ $social_gplus_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
                             </label>
                         </div>
                     </div>
@@ -179,6 +207,13 @@
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
                             </label>
                         </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialYoutubeSw">
+                                <input id="inputSocialYoutubeSw" type="checkbox" name="social_youtube_sw"
+                                       value="1"{{ $social_youtube_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="inputSocialSkype">{{ trans('wow_skype_theme.social_skype') }}</label>
@@ -196,6 +231,13 @@
                                 <input id="inputSocialSkypeSb" type="checkbox" name="social_skype_sb"
                                        value="1"{{ $social_skype_sb == 1 ? ' checked' : '' }}>
                                 &nbsp; {{ trans('wow_skype_theme.social_sb') }}
+                            </label>
+                        </div>
+                        <div class="checkbox icheck">
+                            <label for="inputSocialSkypeSw">
+                                <input id="inputSocialSkypeSw" type="checkbox" name="social_skype_sw"
+                                       value="1"{{ $social_skype_sw == 1 ? ' checked' : '' }}>
+                                &nbsp; {{ trans('wow_skype_theme.social_sw') }}
                             </label>
                         </div>
                     </div>

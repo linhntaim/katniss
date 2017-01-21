@@ -58,10 +58,66 @@ class MainMenuComposer
             homeUrl('knowledge'),
             trans('pages.home_knowledge_title')
         );
-        $menu->add(
-            '#',
-            trans('wow_skype_theme.world')
-        );
+
+        $hasSubMenu = false;
+        $subMenu = new Menu();
+        $homeTheme = homeTheme();
+        $social = $homeTheme->options('social_facebook', '');
+        if (!empty($social) && $homeTheme->options('social_facebook_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-facebook-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_connect_facebook')
+            );
+            $hasSubMenu = true;
+        }
+        $social = $homeTheme->options('social_twitter', '');
+        if (!empty($social) && $homeTheme->options('social_twitter_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-twitter-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_follow_twitter')
+            );
+            $hasSubMenu = true;
+        }
+        $social = $homeTheme->options('social_instagram', '');
+        if (!empty($social) && $homeTheme->options('social_instagram_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-instagram font-20 text-middle"></i> &nbsp; ' . trans('label.us_follow_instagram')
+            );
+            $hasSubMenu = true;
+        }
+        $social = $homeTheme->options('social_gplus', '');
+        if (!empty($social) && $homeTheme->options('social_gplus_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-google-plus-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_connect_gplus')
+            );
+            $hasSubMenu = true;
+        }
+        $social = $homeTheme->options('social_youtube', '');
+        if (!empty($social) && $homeTheme->options('social_youtube_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-youtube-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_watch_youtube')
+            );
+            $hasSubMenu = true;
+        }
+        $social = $homeTheme->options('social_skype', '');
+        if (!empty($social) && $homeTheme->options('social_skype_sw') == 1) {
+            $subMenu->add(
+                $social,
+                '<i class="fa fa-skype font-20 text-middle"></i> &nbsp; ' . trans('label.us_talk_skype')
+            );
+            $hasSubMenu = true;
+        }
+        if ($hasSubMenu) {
+            $menu->add(
+                '#',
+                trans('wow_skype_theme.world')
+            );
+            $menu->addSubMenu($subMenu);
+        }
+
         $menu->add(
             homeUrl('helps'),
             trans('label.about_us')

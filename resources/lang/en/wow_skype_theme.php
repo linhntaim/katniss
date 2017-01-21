@@ -18,6 +18,7 @@ return [
     'home_hot_line' => 'Home hot line',
     'social_sf' => 'Show at footer',
     'social_sb' => 'Show at bottom bar',
+    'social_sw' => 'Show at world of WowSkype',
     'social_facebook' => 'Facebook URL',
     'social_twitter' => 'Twitter URL',
     'social_instagram' => 'Instagram URL',

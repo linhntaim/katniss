@@ -452,4 +452,11 @@ send payment via Western Union or MoneyGram.',
     'vn_account_name' => 'Full name of bank account owner',
     'vn_city' => 'Bank\'s province/city',
     'vn_branch' => 'Bank\'s branch',
+
+    'us_connect_facebook' => 'Connect with us on Facebook',
+    'us_follow_twitter' => 'Follow us on Twitter',
+    'us_follow_instagram' => 'Follow us on Instagram',
+    'us_connect_gplus' => 'Connect with us on Google+',
+    'us_watch_youtube' => 'Watch us on Youtube',
+    'us_talk_skype' => 'Talk to us on Skype',
 ];
