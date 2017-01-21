@@ -65,4 +65,41 @@ class AccountController extends WebApiController
             return $this->responseFail();
         }
     }
+
+    public function storeFacebookConnect(Request $request)
+    {
+        $this->userRepository->model($request->authUser());
+
+        if (!$this->customValidate($request, [
+            'id' => 'required',
+            'avatar' => 'required|url',
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
+        }
+
+        try {
+            $this->userRepository->createFacebookConnection(
+                $request->input('id'),
+                $request->input('avatar')
+            );
+
+            return $this->responseSuccess();
+        } catch (KatnissException $ex) {
+            return $this->responseFail($ex->getMessage());
+        }
+    }
+
+    public function storeFacebookDisconnect(Request $request)
+    {
+        $this->userRepository->model($request->authUser());
+
+        try {
+            $this->userRepository->removeFacebookConnection();
+
+            return $this->responseSuccess();
+        } catch (KatnissException $ex) {
+            return $this->responseFail($ex->getMessage());
+        }
+    }
 }

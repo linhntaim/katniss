@@ -57,6 +57,45 @@
                     $alert.removeClass('hide').html('{{ trans('error.change_password_failed') }}');
                 });
             });
+            $('#submitConnectFacebook').on('click', function (e) {
+                e.preventDefault();
+
+                FB.login(function () {
+                    FB.api('/me', {
+                        fields: 'id,name,email,picture.type(large)'
+                    }, function (response) {
+                        if (response.error) {
+                            x_modal_alert('{{ trans('error.fail') }}');
+                            return;
+                        }
+                        var api = new KatnissApi(true);
+                        api.post('me/account/connect-facebook', {
+                            id: response.id,
+                            avatar: response.picture.data.url
+                        }, function (failed, data, messages) {
+                            if (failed) {
+                                x_modal_alert('{{ trans('error.fail') }}');
+                            }
+                            else {
+                                window.location.reload(true);
+                            }
+                        });
+                    });
+                });
+            });
+            $('#submitDisconnectFacebook').on('click', function (e) {
+                e.preventDefault();
+
+                var api = new KatnissApi(true);
+                api.post('me/account/disconnect-facebook', {}, function (failed, data, messages) {
+                    if (failed) {
+                        x_modal_alert('{{ trans('error.fail') }}');
+                    }
+                    else {
+                        window.location.reload(true);
+                    }
+                });
+            });
         });
     </script>
 @endsection
@@ -147,19 +186,26 @@
             </div>
         </div>
     </div>
-    <div class="alert alert-danger hide"></div>
-    <div class="media">
-        <div class="media-left">
-            <img class="width-35" src="{{ themeImageAsset('facebook.png') }}" alt="Facebook">
-        </div>
-        <div class="media-body">
-            <div class="input-group">
-                <input type="text" placeholder="{{ trans('form.action_connect') }} Facebook" value="{{ trans('label.status_not_connected') }}"
-                       class="form-control" id="inputFacebookConnect" name="facebook_connect" readonly>
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-primary">{{ trans('form.action_connect') }}</button>
-                </span>
+    @if($social_integration && $social_integration->facebook_enable)
+        <div class="alert alert-danger hide"></div>
+        <div class="media">
+            <div class="media-left">
+                <img class="width-35" src="{{ themeImageAsset('facebook.png') }}" alt="Facebook">
+            </div>
+            <div class="media-body">
+                <div class="input-group">
+                    <input type="text" placeholder="{{ trans('form.action_connect') }} Facebook"
+                           value="{{ $has_facebook_connected ? trans('label.status_connected') : trans('label.status_not_connected') }}"
+                           class="form-control" id="inputFacebookConnect" name="facebook_connect" readonly>
+                    <span class="input-group-btn">
+                        @if(!$has_facebook_connected)
+                            <button id="submitConnectFacebook" type="button" class="btn btn-primary">{{ trans('form.action_connect') }}</button>
+                        @else
+                            <button id="submitDisconnectFacebook" type="button" class="btn btn-primary">{{ trans('form.action_disconnect') }}</button>
+                        @endif
+                    </span>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endsection

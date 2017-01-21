@@ -42,6 +42,8 @@ Route::group([
 
         Route::put('me/account/password', 'AccountController@updatePassword');
         Route::put('me/account/skype-id', 'AccountController@updateSkypeId');
+        Route::post('me/account/connect-facebook', 'AccountController@storeFacebookConnect');
+        Route::post('me/account/disconnect-facebook', 'AccountController@storeFacebookDisconnect');
 
         Route::group([
             'middleware' => 'entrust:teacher|manager|admin'

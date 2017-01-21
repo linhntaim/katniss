@@ -98,4 +98,5 @@ return [
     'action_create' => 'Create',
     'action_mark_as' => 'Mark as',
     'action_mark_all_as' => 'Mark all as',
+    'action_disconnect' => 'Disconnect',
 ];

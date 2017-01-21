@@ -23,9 +23,10 @@ class Extension extends BaseExtension
     public static function getSharedViewData()
     {
         $ext = Extension::getSharedData(self::NAME);
-        if(empty($ext)) return null;
+        if (empty($ext)) return null;
 
         $data = new \stdClass();
+        $data->facebook_enable = $ext->facebookEnable;
         $data->social_login_enable = $ext->facebookLoginEnable || $ext->googleLoginEnable;
         $data->facebook_login_enable = $ext->facebookLoginEnable;
         $data->google_login_enable = $ext->googleLoginEnable;
@@ -153,6 +154,7 @@ class Extension extends BaseExtension
         }
 
         $this->makeSharedData([
+            'facebookEnable',
             'facebookLoginEnable',
             'facebookCommentEnable',
             'googleLoginEnable',
@@ -212,13 +214,23 @@ class Extension extends BaseExtension
     protected function facebookJsSdk()
     {
         return '<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/' . currentFullLocaleCode() . '/sdk.js#xfbml=1&version=v2.5&facebookAppId=' . $this->facebookAppId . '";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, \'script\', \'facebook-jssdk\'));</script>';
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : \'' . $this->facebookAppId . '\',
+        xfbml      : true,
+        version    : \'v2.8\'
+    });
+    FB.AppEvents.logPageView();
+};
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = \'//connect.facebook.net/' . currentFullLocaleCode() . '/sdk.js\';
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, \'script\', \'facebook-jssdk\'));
+</script>';
     }
 
     protected function twitterJsSdk()

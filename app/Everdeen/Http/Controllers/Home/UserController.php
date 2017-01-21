@@ -17,6 +17,7 @@ use Katniss\Everdeen\Repositories\UserCertificateRepository;
 use Katniss\Everdeen\Repositories\UserEducationRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Repositories\UserWorkRepository;
+use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class UserController extends ViewController
@@ -45,10 +46,15 @@ class UserController extends ViewController
 
     public function getAccountInformation(Request $request)
     {
+        $this->userRepository->model($request->authUser());
+
         $this->_title(trans('label.account_information'));
         $this->_description(trans('label.account_information'));
 
-        return $this->_any('account_information');
+        return $this->_any('account_information', [
+            'social_integration' => SocialIntegrationExtension::getSharedViewData(),
+            'has_facebook_connected' => $this->userRepository->hasFacebookConnected(),
+        ]);
     }
 
     public function getUserInformation(Request $request)

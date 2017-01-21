@@ -477,8 +477,63 @@ class UserRepository extends ModelRepository
             $user->update($attributes);
             return $user;
         } catch (\Exception $ex) {
-            throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
+    }
+
+    public function createFacebookConnection($providerId, $avatar)
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $user->socialProviders()->save(new UserSocial([
+                'provider' => UserSocial::PROVIDER_FACEBOOK,
+                'provider_id' => $providerId,
+            ]));
+            $user->url_avatar = $avatar;
+            $user->url_avatar_thumb = $avatar;
+            $user->save();
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function removeFacebookConnection()
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $user->socialProviders()
+                ->where('provider', UserSocial::PROVIDER_FACEBOOK)
+                ->delete();
+            $user->url_avatar = appDefaultUserProfilePicture();
+            $user->url_avatar_thumb = appDefaultUserProfilePicture();
+            $user->save();
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function hasFacebookConnected()
+    {
+        $user = $this->model();
+        return $user->socialProviders()
+                ->where('provider', UserSocial::PROVIDER_FACEBOOK)
+                ->count() > 0;
     }
 
     public function delete()
