@@ -19,3 +19,9 @@
 #page-articles .widgets > div {
     margin-bottom: 20px;
 }
+
+#page-article .comments,
+#page-articles .comments {
+    position: relative;
+    z-index: 0;
+}

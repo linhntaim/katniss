@@ -137,8 +137,8 @@
                                 @foreach($teacher->userProfile->educations as $education)
                                     <div class="media">
                                         <div class="media-body">
-                                            <div class="big text-success"><strong>{{ $education->field }}</strong></div>
-                                            <div class="color-darker bold-700">
+                                            <div class="big color-master"><strong>{{ $education->field }}</strong></div>
+                                            <div class="color-slave bold-700">
                                                 <span class="color-lighter">{{ trans('label.at_lc') }}</span> {{ $education->school }}
                                                 {!! $education->renderDuration('<span class="color-lighter">' . trans('label.from_lc') . '</span>', '<span class="color-lighter">' . trans('label.to_lc') . '</span>') !!}
                                             </div>
@@ -163,8 +163,8 @@
                                 @foreach($teacher->userProfile->works as $work)
                                     <div class="media">
                                         <div class="media-body">
-                                            <div class="big text-success"><strong>{{ $work->position }}</strong></div>
-                                            <div class="color-darker bold-700">
+                                            <div class="big color-master"><strong>{{ $work->position }}</strong></div>
+                                            <div class="color-slave bold-700">
                                                 <span class="color-lighter">{{ trans('label.at_lc') }}</span> {{ $work->company }}
                                                 {!! $work->renderDuration('<span class="color-lighter">' . trans('label.from_lc') . '</span>', '<span class="color-lighter">' . trans('label.to_lc') . '</span>') !!}
                                             </div>

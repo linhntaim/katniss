@@ -73,7 +73,7 @@ class Theme extends HomeTheme
         $knowledgeCoverImage = $this->options('knowledge_cover_image', '');
         if (!empty($knowledgeCoverImage)) {
             addPlace('knowledge_cover', new CallableObject(function () use ($knowledgeCoverImage) {
-                return '<div class="image-cover height-500" style="background-image: url(' . $knowledgeCoverImage . ')"></div>';
+                return '<div class="image-cover image-cover-top height-500" style="background-image: url(' . $knowledgeCoverImage . ')"></div>';
             }), 'knowledge_cover_image');
         }
     }

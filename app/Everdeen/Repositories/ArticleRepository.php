@@ -304,7 +304,7 @@ class ArticleRepository extends PostRepository
     public function update($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
     {
         $article = $this->model();
-        $article->user_id = $userId;
+//        $article->user_id = $userId;
         $article->template = $template;
         $article->featured_image = $featuredImage;
 

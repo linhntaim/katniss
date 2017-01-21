@@ -65,7 +65,7 @@ class Widget extends BaseWidget
         if (!empty($this->categoryId)) {
             $categoryRepository = new ArticleCategoryRepository();
             $category = $categoryRepository->getById($this->categoryId);
-            if ($this->showArticles) {
+            if ($this->showArticles == 1) {
                 $articleRepository = new ArticleRepository();
                 $articles = $articleRepository->getLastPublishedByCategory($this->numberOfItems, $categoryId, $category);
             }

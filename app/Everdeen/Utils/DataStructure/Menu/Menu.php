@@ -111,6 +111,11 @@ class Menu
         $this->currentIndex = count($this->data) - 1;
     }
 
+    public function setTargetBlank()
+    {
+        $this->data[$this->currentIndex]['item']['blank'] = true;
+    }
+
     public function addSubMenu(Menu $menu)
     {
         $this->data[$this->currentIndex]['children'] = $menu->get();

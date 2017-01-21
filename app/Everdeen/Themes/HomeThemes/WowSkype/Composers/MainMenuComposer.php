@@ -68,6 +68,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-facebook-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_connect_facebook')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         $social = $homeTheme->options('social_twitter', '');
@@ -76,6 +77,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-twitter-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_follow_twitter')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         $social = $homeTheme->options('social_instagram', '');
@@ -84,6 +86,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-instagram font-20 text-middle"></i> &nbsp; ' . trans('label.us_follow_instagram')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         $social = $homeTheme->options('social_gplus', '');
@@ -92,6 +95,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-google-plus-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_connect_gplus')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         $social = $homeTheme->options('social_youtube', '');
@@ -100,6 +104,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-youtube-square font-20 text-middle"></i> &nbsp; ' . trans('label.us_watch_youtube')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         $social = $homeTheme->options('social_skype', '');
@@ -108,6 +113,7 @@ class MainMenuComposer
                 $social,
                 '<i class="fa fa-skype font-20 text-middle"></i> &nbsp; ' . trans('label.us_talk_skype')
             );
+            $subMenu->setTargetBlank();
             $hasSubMenu = true;
         }
         if ($hasSubMenu) {

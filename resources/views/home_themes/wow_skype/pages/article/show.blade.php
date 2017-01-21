@@ -1,4 +1,7 @@
 @extends('home_themes.wow_skype.master.master')
+@section('lib_styles')
+    <link rel="stylesheet" href="{{ libraryAsset('medium-editor-insert-plugin/css/medium-editor-insert-plugin-frontend.css') }}">
+@endsection
 @section('main_content')
     <div id="page-article">
         <div class="row">

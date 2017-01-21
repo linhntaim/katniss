@@ -361,6 +361,10 @@ textarea.form-control.as-text {
     background-repeat: no-repeat;
 }
 
+.image-cover-top {
+    background-position: center top;
+}
+
 .image-cover img {
     object-fit: cover;
     display: block;
