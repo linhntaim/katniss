@@ -40,6 +40,7 @@ return [
     'status_opening' => 'Đang mở',
     'status_teaching_available' => 'Có thể nhận thêm học viên',
     'status_full_schedule' => 'Lịch dạy đã đầy',
+    'status_selected' => 'Đã chọn',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',

@@ -54,9 +54,9 @@ class Widget extends DefaultWidget
 
     public function viewHomeParams()
     {
-        $articleRepository = new ArticleRepository();
         $articles = [];
         if (!empty($this->articles)) {
+            $articleRepository = new ArticleRepository();
             $tmpArticles = $articleRepository->getPublishedByIds($this->articles);
             foreach ($this->articles as $article) {
                 $articles[] = $tmpArticles->where('id', $article)->first();

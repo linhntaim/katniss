@@ -45,6 +45,11 @@ class TeacherRepository extends ModelRepository
         return Teacher::whereDate('created_at', '>=', $date)->count();
     }
 
+    public function getApprovedByIds($ids)
+    {
+        return Teacher::approved()->whereIn('user_id', $ids)->get();
+    }
+
     public function getSearchCommonPaged($term = null)
     {
         $teacher = Teacher::approved()->orderBy('created_at', 'desc');

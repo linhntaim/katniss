@@ -200,6 +200,30 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getLastPublishedByAuthorIds($count, $authorIds)
+    {
+        $articles = Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->whereIn('user_id', $authorIds)
+            ->orderBy('created_at', 'desc')
+            ->take($count);
+        return $count == 1 ? $articles->first() : $articles->get();
+    }
+
+    public function getLastPublishedByTeachers($count)
+    {
+        $articles = Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->whereHas('author', function ($query) {
+                $query->whereHas('roles', function ($query) {
+                    $query->where('name', 'teacher');
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->take($count);
+        return $count == 1 ? $articles->first() : $articles->get();
+    }
+
     public function getPagedByAuthor($authorId, &$author)
     {
         $userRepository = new UserRepository($authorId);

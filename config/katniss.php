@@ -64,6 +64,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\ArticleCategory\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategory\Widget::class,
         Katniss\Everdeen\Themes\Plugins\FeaturedArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\FeaturedArticles\Widget::class,
         Katniss\Everdeen\Themes\Plugins\RecentArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\RecentArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\TeacherArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\TeacherArticles\Widget::class,
 //        Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
 //        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
     ],
