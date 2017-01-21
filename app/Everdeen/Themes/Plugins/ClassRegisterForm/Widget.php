@@ -6,19 +6,18 @@
  * Time: 15:37
  */
 
-namespace Katniss\Everdeen\Themes\Plugins\HomeClassRegister;
+namespace Katniss\Everdeen\Themes\Plugins\ClassRegisterForm;
 
 use Katniss\Everdeen\Repositories\StudyCourseRepository;
 use Katniss\Everdeen\Repositories\StudyLevelRepository;
 use Katniss\Everdeen\Repositories\StudyProblemRepository;
 use Katniss\Everdeen\Themes\ThemeFacade;
-use Katniss\Everdeen\Themes\Widget as BaseWidget;
+use Katniss\Everdeen\Themes\Plugins\DefaultWidget\Widget as DefaultWidget;
 
-class Widget extends BaseWidget
+class Widget extends DefaultWidget
 {
-    const NAME = 'home_class_register';
-    const DISPLAY_NAME = 'Home Class Register';
-    const EDITABLE = false;
+    const NAME = 'class_register_form';
+    const DISPLAY_NAME = 'Class Register Form';
 
     public function __init()
     {
@@ -28,11 +27,11 @@ class Widget extends BaseWidget
     public function register()
     {
         enqueueThemeHeader('<style>
-#home-register {
+.widget-register-class-form {
 background: #999 url("' . ThemeFacade::imageAsset('bg_home_register.jpg') . '") center no-repeat;
 background-size: cover;
 }
-</style>', 'widget_home_class_register');
+</style>', 'widget_class_register_form');
     }
 
     public function viewHomeParams()
