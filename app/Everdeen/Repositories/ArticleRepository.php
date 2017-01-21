@@ -81,6 +81,16 @@ class ArticleRepository extends PostRepository
         return $count == 1 ? $posts->first() : $posts->get();
     }
 
+    public function getLastMostViewed($count = 1)
+    {
+        $posts = Post::where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED)
+            ->orderBy('viewed', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->take($count);
+        return $count == 1 ? $posts->first() : $posts->get();
+    }
+
     public function getPublishedPaged()
     {
         return Post::where('type', $this->type)
