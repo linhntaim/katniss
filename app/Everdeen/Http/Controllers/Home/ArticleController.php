@@ -46,7 +46,7 @@ class ArticleController extends ViewController
         ]);
     }
 
-    public function showAuthor(Request $request, $id)
+    public function indexAuthor(Request $request, $id)
     {
         if ($request->isAuth() && $request->authUser()->id == $id) {
             $articles = $this->articleRepository->getPagedByAuthor($id, $author);
@@ -70,7 +70,7 @@ class ArticleController extends ViewController
         ]);
     }
 
-    public function showCategory(Request $request, $slug)
+    public function indexCategory(Request $request, $slug)
     {
         $articles = $this->articleRepository->getPublishedPagedByCategorySlug($slug, $category);
 
@@ -131,6 +131,9 @@ class ArticleController extends ViewController
             abort(404);
         }
 
+        $this->articleRepository->model($article);
+        $this->articleRepository->view();
+
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));
 
@@ -145,10 +148,13 @@ class ArticleController extends ViewController
     public function showById(Request $request, $id)
     {
         $article = $this->articleRepository->getById($id);
-        $isAuthor = $request->isAuth() && $request->authUser()->id == $article->user_id;
+        $isAuthor = $request->isAuth() && ($request->authUser()->id == $article->user_id || $request->authUser()->hasRole(['admin', 'editor']));
         if (!$isAuthor && !$article->isPublished) {
             abort(404);
         }
+
+        $this->articleRepository->model($article);
+        $this->articleRepository->view();
 
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));

@@ -17,6 +17,7 @@ class CreateTeachersTable extends Migration
             $table->engine = 'InnoDB';
 
             $table->bigInteger('user_id')->unsigned()->primary();
+            $table->integer('viewed')->unsigned()->default(0);
 
             $table->bigInteger('approving_user_id')->unsigned()->nullable();
             $table->dateTime('approving_at')->nullable();

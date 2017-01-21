@@ -27,7 +27,7 @@ class Post extends Model
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
-    protected $fillable = ['user_id', 'template', 'featured_image', 'type',
+    protected $fillable = ['user_id', 'viewed', 'template', 'featured_image', 'type',
         'title', 'slug', 'description', 'content', 'raw_content', 'status'];
 
     protected $translationForeignKey = 'post_id';

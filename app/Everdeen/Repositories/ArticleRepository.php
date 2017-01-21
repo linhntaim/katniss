@@ -349,4 +349,15 @@ class ArticleRepository extends PostRepository
             throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
         }
     }
+
+    public function view()
+    {
+        $article = $this->model();
+        try {
+            $article->increment('viewed');
+            return true;
+        } catch (\Exception $exception) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
+        }
+    }
 }

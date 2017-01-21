@@ -386,6 +386,17 @@ class TeacherRepository extends ModelRepository
         }
     }
 
+    public function view()
+    {
+        $teacher = $this->model();
+        try {
+            $teacher->increment('viewed');
+            return true;
+        } catch (\Exception $exception) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
+        }
+    }
+
     public function reject()
     {
         $teacher = $this->model();

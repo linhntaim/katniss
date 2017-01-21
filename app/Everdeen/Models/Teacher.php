@@ -19,7 +19,7 @@ class Teacher extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'user_id', 'approving_user_id', 'approving_at', 'teaching_status', 'status',
+        'user_id', 'viewed', 'approving_user_id', 'approving_at', 'teaching_status', 'status',
         'video_teaching_url', 'video_introduce_url',
         'about_me', 'experience', 'methodology',
         'available_times', 'certificates', 'payment_info',

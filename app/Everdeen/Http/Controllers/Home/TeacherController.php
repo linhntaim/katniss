@@ -729,6 +729,7 @@ class TeacherController extends ViewController
             }
         }
 
+        $this->teacherRepository->view();
         $theme = $request->getTheme();
 
         $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);

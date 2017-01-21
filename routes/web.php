@@ -97,8 +97,8 @@ Route::group([
         Route::get(homeRoute('knowledge'), 'KnowledgeController@index');
         Route::get(homeRoute('knowledge/articles'), 'ArticleController@index');
         Route::get(homeRoute('knowledge/articles/{slug}'), 'ArticleController@show');
-        Route::get(homeRoute('knowledge/categories/{slug}'), 'ArticleController@showCategory');
-        Route::get(homeRoute('knowledge/authors/{id}'), 'ArticleController@showAuthor');
+        Route::get(homeRoute('knowledge/categories/{slug}'), 'ArticleController@indexCategory');
+        Route::get(homeRoute('knowledge/authors/{id}'), 'ArticleController@indexAuthor');
     });
 
 
