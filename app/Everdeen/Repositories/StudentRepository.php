@@ -69,7 +69,7 @@ class StudentRepository extends ModelRepository
 
     public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $student = Student::with('userProfile')
+        $student = Student::with(['userProfile', 'learningRequest'])
             ->approved()
             ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
@@ -93,7 +93,7 @@ class StudentRepository extends ModelRepository
 
     public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $student = Student::with('userProfile')
+        $student = Student::with(['userProfile', 'learningRequest'])
             ->where('status', '<>', Student::APPROVED)
             ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {

@@ -40,6 +40,11 @@ class Student extends Model
         return $this->hasMany(Classroom::class, 'user_id', 'teacher_id');
     }
 
+    public function learningRequest()
+    {
+        return $this->hasOne(RegisterLearningRequest::class, 'student_id', 'user_id');
+    }
+
     public function scopeApproved($query)
     {
         return $query->where('status', Student::APPROVED);

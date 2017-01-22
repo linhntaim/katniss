@@ -10,8 +10,72 @@
 @section('extended_scripts')
     <script>
         $(function () {
+            function renderDetail(learningRequest, order) {
+                var detail = '<p><strong>{{ trans('label.sort_order') }}:</strong> ' + order + '</p>' +
+                    '<p>' +
+                    '<strong>{{ trans_choice('label.student', 1) }}:</strong> ' +
+                    '<a target="_blank" href="' + learningRequest.student.admin_edit_url + '">' + learningRequest.student.display_name + '</a>' +
+                    '<br>- <em>{{ trans('label.phone') }}:</em> ' + learningRequest.student.phone +
+                    '<br>- <em>{{ trans('label.email') }}:</em> ' + learningRequest.student.email +
+                    '</p>' +
+                    (learningRequest.teacher ? '<p>' +
+                        '<strong>{{ trans_choice('label.teacher', 1) }}:</strong> ' +
+                        '<a target="_blank" href="' + learningRequest.teacher.admin_edit_url + '">' + learningRequest.teacher.display_name + '</a>' +
+                        '</p>' : '') +
+                    (learningRequest.study_level ? '<p>' +
+                        '<strong>{{ trans_choice('label.study_level', 1) }}:</strong> ' + learningRequest.study_level.name + '</p>' : '') +
+                    (learningRequest.study_problem ? '<p>' +
+                        '<strong>{{ trans_choice('label.study_problem', 1) }}:</strong> ' + learningRequest.study_problem.name + '</p>' : '') +
+                    (learningRequest.study_course ? '<p>' +
+                        '<strong>{{ trans_choice('label.study_course', 1) }}:</strong> ' + learningRequest.study_course.name + '</p>' : '');
+                if(learningRequest.for_children) {
+                    detail += '<p><strong>{{ trans('label.for_children') }}:</strong> {{ trans('label.yes') }}</p>' +
+                        '<p><strong>{{ trans('label.your_children_full_name') }}:</strong> ' + learningRequest.children_full_name + '</p>' +
+                        '<p><strong>{{ trans('label.your_children_age_range') }}:</strong> ' + learningRequest.age_range_label + '</p>' +
+                        '<p><strong>Skype ID:</strong> ' + learningRequest.student.skype_id + '</p>' +
+                        '<p><strong>{{ trans('label.your_children_learning_targets') }}:</strong> ' + learningRequest.learning_targets_label + '</p>' +
+                        '<p><strong>{{ trans('label.your_children_learning_forms') }}:</strong> ' + learningRequest.learning_forms_label + '</p>';
+                }
+                else {
+                    detail += '<p><strong>{{ trans('label.for_children') }}:</strong> {{ trans('label.no') }}</p>' +
+                        '<p><strong>{{ trans('label.your_age_range') }}:</strong> ' + learningRequest.age_range_label + '</p>'+
+                        '<p><strong>{{ trans_choice('label.professional_skill', 2) }}:</strong> ' + learningRequest.student.professional_skill_names + '</p>'+
+                        '<p><strong>Skype ID:</strong> ' + learningRequest.student.skype_id + '</p>' +
+                        '<p><strong>{{ trans('label.your_learning_targets') }}:</strong> ' + learningRequest.learning_targets_label + '</p>' +
+                        '<p><strong>{{ trans('label.your_learning_forms') }}:</strong> ' + learningRequest.learning_forms_label + '</p>';
+                }
+                return detail;
+            }
+
             x_modal_put($('a.reject'), '{{ trans('form.action_reject') }}', '{{ trans('label.wanna_reject', ['name' => '']) }}');
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
+
+            var _$detailModal = $('#detail-modal');
+            var _$detailModalLoading = $('#detail-modal-loading');
+            var _$detailModalView = $('#detail-modal-view');
+            $('a.view-learning-request').on('click', function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                _$detailModal.modal('show');
+                _$detailModalLoading.removeClass('hide');
+                _$detailModalView.addClass('hide');
+
+                var api = new KatnissApi(true);
+                api.get('admin/learning-requests/' + $this.attr('data-id'), {}, function (failed, data, messages) {
+                    if (!failed) {
+                        _$detailModalView.html(renderDetail(data.learning_request, $this.attr('data-order')));
+                    }
+                    else {
+                        _$detailModalView.html('<div class="alert alert-danger">{{ trans('error.fail_ajax') }}</div>');
+                    }
+                }, function () {
+                    _$detailModalView.html('<div class="alert alert-danger">{{ trans('error.fail_ajax') }}</div>');
+                }, function () {
+                    _$detailModalLoading.addClass('hide');
+                    _$detailModalView.removeClass('hide');
+                });
+            });
         });
     </script>
 @endsection
@@ -69,6 +133,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="detail-modal" tabindex="false" role="dialog" aria-labelledby="detail-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="detail-modal-title">{{ trans('form.action_view_detail') }}</h4>
+                </div>
+                <div id="detail-modal-content" class="modal-body">
+                    <div id="detail-modal-loading">
+                        <i class="fa fa-refresh fa-spin fa-fw"></i>
+                    </div>
+                    <div id="detail-modal-view" class="hide">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('form.action_close') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('page_content')
     <div class="row">
@@ -107,6 +193,7 @@
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
+                                    <th>{{ trans_choice('label.learning_request', 1) }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </thead>
@@ -117,6 +204,7 @@
                                     <th>{{ trans('label.email') }}</th>
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
+                                    <th>{{ trans_choice('label.learning_request', 1) }}</th>
                                     <th>{{ trans('form.action') }}</th>
                                 </tr>
                             </tfoot>
@@ -128,6 +216,14 @@
                                         <td>{{ $student->userProfile->email }}</td>
                                         <td>{{ $student->userProfile->skype_id }}</td>
                                         <td>{{ $student->userProfile->phone }}</td>
+                                        <td>
+                                            @if(!empty($student->learningRequest))
+                                                <a class="view-learning-request" href="#"
+                                                   data-id="{{ $student->learningRequest->id }}" data-order="{{ $start_order }}">
+                                                    {{ trans('form.action_view_detail') }}
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ adminUrl('students/{id}/edit', ['id'=> $student->user_id]) }}">
                                                 {{ trans('form.action_edit') }}
