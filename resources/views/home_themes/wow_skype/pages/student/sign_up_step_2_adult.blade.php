@@ -73,7 +73,7 @@
         <label for="inputOtherLearningForms" class="sr-only">Others</label>
         <input id="inputOtherLearningForms" type="text" class="form-control hide" value="{{ old('learning_form_other') }}" name="learning_form_other">
     </div>
-    <div class="form-group">
+    <div class="form-group margin-bottom-none">
         <button type="submit" class="btn btn-success uppercase btn-block"><strong>{{ trans('form.action_complete') }}</strong></button>
     </div>
 </form>

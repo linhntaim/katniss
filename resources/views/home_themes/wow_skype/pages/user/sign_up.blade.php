@@ -9,7 +9,7 @@
                 </h3>
                 <hr>
                 <p>{{ trans('label.help_sign_up_student') }}</p>
-                <a href="{{ homeUrl('student/sign-up') }}" class="btn btn-success btn-block clearfix">
+                <a href="{{ homeUrl('student/sign-up') }}" class="btn btn-primary btn-block clearfix">
                     <span class="pull-left uppercase">
                         <strong>{{ trans_choice('label.student', 1) }} {{ trans('form.action_sign_up') }}</strong>
                     </span>
@@ -23,7 +23,7 @@
                 </h3>
                 <hr>
                 <p>{{ trans('label.help_sign_up_teacher') }}</p>
-                <a href="{{ homeUrl('teacher/sign-up') }}" class="btn btn-success btn-block clearfix">
+                <a href="{{ homeUrl('teacher/sign-up') }}" class="btn btn-primary btn-block clearfix">
                     <span class="pull-left uppercase">
                         <strong>{{ trans_choice('label.teacher', 1) }} {{ trans('form.action_sign_up') }}</strong>
                     </span>

@@ -82,7 +82,7 @@
         <div class="row">
             <div class="col-md-4 hidden-sm hidden-xs">
                 <div id="teachers-sidebar" class="bg-lighter2 padding-15">
-                    @include('home_themes.wow_skype.pages.teacher.index_help_' . $site_locale)
+                    @include('home_themes.wow_skype.pages.teacher.index_help')
                 </div>
             </div>
             <div class="col-md-8">

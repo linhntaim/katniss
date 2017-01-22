@@ -117,5 +117,6 @@
                 <button type="submit" class="btn btn-success uppercase"><strong>{{ trans('form.action_continue') }}</strong></button>
             </div>
         </form>
+        <div class="margin-v-30">&nbsp;</div>
     </div>
 @endsection

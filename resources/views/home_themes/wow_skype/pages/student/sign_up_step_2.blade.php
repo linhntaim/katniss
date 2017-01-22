@@ -75,12 +75,13 @@
                                     <strong>{{ trans('label.for_children') }}</strong>
                                 </label>
                             </div>
-                            @include('home_themes.wow_skype.pages.student.sign_up_step_2_adult')
-                            @include('home_themes.wow_skype.pages.student.sign_up_step_2_children')
                         </div>
+                        @include('home_themes.wow_skype.pages.student.sign_up_step_2_adult')
+                        @include('home_themes.wow_skype.pages.student.sign_up_step_2_children')
                     </div>
                 </div>
             </div>
         </div>
+        <div class="margin-v-20">&nbsp;</div>
     </div>
 @endsection

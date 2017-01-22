@@ -73,6 +73,7 @@
             $('button.add-more-teacher').on('click', function (e) {
                 e.preventDefault();
                 initAjaxTeacher($('.teacher-list').append($('#teacher-item-template').html()).children(':last').find('.select2'));
+                $(this).hide();
             });
             $(document).on('click', 'button.delete-teacher', function (e) {
                 e.preventDefault();

@@ -1,6 +1,6 @@
 #page-teacher-sign-up .media .media-left span {
     border-radius: 50%;
-    background-color: #337ab7;
+    background-color: #00aff0;
     padding: 3px 5px;
     display: block;
     height: 22px;
@@ -24,7 +24,7 @@
 }
 
 #page-teacher-sign-up-step .nav > li > a > span {
-    background-color: #337ab7;
+    background-color: #00aff0;
     color: #fff;
     border-radius: 50%;
     padding: 3px 8px;
@@ -34,7 +34,7 @@
 
 #page-teacher-sign-up-step .nav > li.active > a > span {
     background-color: #eee;
-    color: #337ab7;
+    color: #00aff0;
 }
 
 #page-teacher-sign-up-step .nav-wizard > li:not(:last-child) > a {

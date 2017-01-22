@@ -1,6 +1,7 @@
 @extends('home_themes.wow_skype.master.simple')
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-bootstrap-css') }}">
 @endsection
 @section('extended_styles')
     <style>
@@ -38,7 +39,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-7">
                 <div class="content">
-                    @include('home_themes.wow_skype.pages.teacher.sign_up_' . $site_locale)
+                    @include('home_themes.wow_skype.pages.teacher.sign_up_help')
                     @if(!empty($skype_id))
                         <p>Skype: <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a></p>
                     @endif
