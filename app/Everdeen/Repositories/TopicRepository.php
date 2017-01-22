@@ -17,18 +17,21 @@ class TopicRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return Topic::where('id', $id)->firstOrFail();
+        return Topic::with('translations')
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function getPaged()
     {
-        return Topic::orderBy('created_at', 'desc')
+        return Topic::with('translations')
+            ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAll()
     {
-        return Topic::all();
+        return Topic::with('translations')->get();
     }
 
     public function create(array $localizedData = [])

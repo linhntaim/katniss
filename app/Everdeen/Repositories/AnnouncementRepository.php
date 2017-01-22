@@ -23,13 +23,15 @@ class AnnouncementRepository extends ModelRepository
 
     public function getPaged()
     {
-        return Announcement::orderBy('created_at', 'desc')
+        return Announcement::with('author')
+            ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getSearchPaged($title = null, $content = null)
     {
-        $announcements = Announcement::orderBy('created_at', 'desc');
+        $announcements = Announcement::with('author')
+            ->orderBy('created_at', 'desc');
         if (!empty($title)) {
             $announcements->where('title', 'like', '%' . $title . '%');
         }

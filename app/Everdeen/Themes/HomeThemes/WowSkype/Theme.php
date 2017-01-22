@@ -72,6 +72,12 @@ class Theme extends HomeTheme
 
         $knowledgeCoverImage = $this->options('knowledge_cover_image', '');
         if (!empty($knowledgeCoverImage)) {
+            if (request()->is(homePath('knowledge'))) {
+                addFilter('open_graph_tags_before_render', new CallableObject(function ($data) use ($knowledgeCoverImage) {
+                    $data['og:image'] = $knowledgeCoverImage;
+                    return $data;
+                }), 'articles_view_single');
+            }
             addPlace('knowledge_cover', new CallableObject(function () use ($knowledgeCoverImage) {
                 return '<div class="image-cover image-cover-top height-500" style="background-image: url(' . $knowledgeCoverImage . ')"></div>';
             }), 'knowledge_cover_image');

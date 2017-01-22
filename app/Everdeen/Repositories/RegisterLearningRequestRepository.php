@@ -45,7 +45,13 @@ class RegisterLearningRequestRepository extends ModelRepository
 
     public function getSearchNewlyPaged($createdAt = null)
     {
-        $learningRequests = RegisterLearningRequest::newly();
+        $learningRequests = RegisterLearningRequest::with([
+            'studentUserProfile',
+            'teacherUserProfile',
+            'studyLevel',
+            'studyProblem',
+            'studyCourse',
+        ])->newly();
         if (!empty($createdAt)) {
             $learningRequests->whereDate('created_at', $createdAt);
         }
@@ -55,7 +61,13 @@ class RegisterLearningRequestRepository extends ModelRepository
 
     public function getSearchProcessedPaged($createdAt = null)
     {
-        $learningRequests = RegisterLearningRequest::processed();
+        $learningRequests = RegisterLearningRequest::with([
+            'studentUserProfile',
+            'teacherUserProfile',
+            'studyLevel',
+            'studyProblem',
+            'studyCourse',
+        ])->processed();
         if (!empty($createdAt)) {
             $learningRequests->whereDate('created_at', $createdAt);
         }

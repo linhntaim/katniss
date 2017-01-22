@@ -15,6 +15,7 @@ use Katniss\Everdeen\Utils\AppConfig;
 use Katniss\Everdeen\Utils\DataStructure\Hierarchy\Hierarchy;
 use Katniss\Everdeen\Utils\DataStructure\Menu\Menu;
 use Katniss\Everdeen\Utils\DataStructure\Menu\MenuRender;
+use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 
 class ArticleController extends ViewController
@@ -38,6 +39,8 @@ class ArticleController extends ViewController
         $this->_title(trans('pages.home_knowledge_title'));
         $this->_description(trans('pages.home_knowledge_desc'));
 
+        $this->ogArticleList($articles);
+
         return $this->_index([
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
@@ -59,6 +62,8 @@ class ArticleController extends ViewController
         $this->_title([trans('label.author'), $author->display_name]);
         $this->_description(trans('pages.home_knowledge_desc'));
 
+        $this->ogArticleList($articles);
+
         return $this->_index([
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
@@ -76,6 +81,8 @@ class ArticleController extends ViewController
 
         $this->_title([trans_choice('label.category', 1), $category->name]);
         $this->_description($category->description);
+
+        $this->ogArticleList($articles);
 
         return $this->_index([
             'articles' => $articles,
@@ -125,7 +132,7 @@ class ArticleController extends ViewController
 
     public function show(Request $request, $slug)
     {
-        $article = $this->articleRepository->getBySlug($slug);
+        $article = $this->articleRepository->getBySlugWithPossibleLoads($slug);
         $isAuthor = $request->isAuth() && ($request->authUser()->id == $article->user_id || $request->authUser()->hasRole(['admin', 'editor']));
         if (!$isAuthor && !$article->isPublished) {
             abort(404);
@@ -136,6 +143,8 @@ class ArticleController extends ViewController
 
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));
+
+        $this->ogArticleSingle($article->featured_image, $article->content);
 
         return $this->_show([
             'article' => $article,
@@ -147,7 +156,7 @@ class ArticleController extends ViewController
 
     public function showById(Request $request, $id)
     {
-        $article = $this->articleRepository->getById($id);
+        $article = $this->articleRepository->getByIdWithPossibleLoads($id);
         $isAuthor = $request->isAuth() && ($request->authUser()->id == $article->user_id || $request->authUser()->hasRole(['admin', 'editor']));
         if (!$isAuthor && !$article->isPublished) {
             abort(404);
@@ -158,6 +167,8 @@ class ArticleController extends ViewController
 
         $this->_title($article->title);
         $this->_description(htmlShorten($article->content));
+
+        $this->ogArticleSingle($article->featured_image, $article->content);
 
         return $this->_show([
             'article' => $article,
@@ -229,5 +240,34 @@ class ArticleController extends ViewController
             $genSlug = $slug . '-' . (++$i);
         }
         return $genSlug;
+    }
+
+    protected function ogArticleSingle($featuredImage, $content)
+    {
+        $imageUrls = extractImageUrls($content);
+        if (!empty($featuredImage)) {
+            array_unshift($imageUrls, $featuredImage);
+        }
+        if (count($imageUrls) > 0) {
+            array_unshift($imageUrls, appLogo());
+            addFilter('open_graph_tags_before_render', new CallableObject(function ($data) use ($imageUrls) {
+                $data['og:image'] = $imageUrls;
+                return $data;
+            }), 'articles_view_single');
+        }
+    }
+
+    protected function ogArticleList($articles)
+    {
+        $imageUrls = [appLogo()];
+        foreach ($articles as $article) {
+            if (!empty($article->featured_image)) {
+                $imageUrls[] = $article->featured_image;
+            }
+        }
+        addFilter('open_graph_tags_before_render', new CallableObject(function ($data) use ($imageUrls) {
+            $data['og:image'] = $imageUrls;
+            return $data;
+        }), 'articles_view_list');
     }
 }

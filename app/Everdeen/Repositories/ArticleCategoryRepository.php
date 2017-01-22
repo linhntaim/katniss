@@ -13,6 +13,7 @@ use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Category;
 use Katniss\Everdeen\Themes\Extension;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
+use Katniss\Everdeen\Utils\AppConfig;
 
 class ArticleCategoryRepository extends CategoryRepository
 {
@@ -21,9 +22,18 @@ class ArticleCategoryRepository extends CategoryRepository
         parent::__construct(Category::TYPE_ARTICLE, $id);
     }
 
-    public function getBySlug($slug)
+    public function getPaged()
     {
-        return Category::where('type', $this->type)
+        return Category::with(['translations', 'parent', 'parent.translations'])
+            ->where('type', $this->type)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getBySlugWithTranslated($slug)
+    {
+        return Category::with('translations')
+            ->where('type', $this->type)
             ->whereTranslation('slug', $slug)
             ->firstOrFail();
     }

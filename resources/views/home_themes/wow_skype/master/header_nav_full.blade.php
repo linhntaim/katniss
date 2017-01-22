@@ -55,11 +55,12 @@
                                 <li><a href="{{ homeUrl('auth/logout') }}">{{ trans('form.action_logout') }}</a></li>
                             </ul>
                         </div>
+                        <?php $count_unread_announcements = $auth_user->countUnreadAnnouncements; ?>
                         <a href="{{ homeUrl('announcements') }}"
-                           class="box-email box-40 box-circle {{ $auth_user->countUnreadAnnouncements == 0 ? 'bg-master' : 'bg-slave' }} box-center color-white pull-right margin-right-10">
+                           class="box-email box-40 box-circle {{ $count_unread_announcements == 0 ? 'bg-master' : 'bg-slave' }} box-center color-white pull-right margin-right-10">
                             <span class="bold-700">
-                                <span{!! $auth_user->countUnreadAnnouncements == 0 ? ' style="display: none"' : '' !!}>{{ $auth_user->countUnreadAnnouncements }}</span>
-                                <i class="fa fa-envelope-o"{!! $auth_user->countUnreadAnnouncements > 0 ? ' style="display: none"' : '' !!}></i>
+                                <span{!! $count_unread_announcements == 0 ? ' style="display: none"' : '' !!}>{{ $count_unread_announcements }}</span>
+                                <i class="fa fa-envelope-o"{!! $count_unread_announcements > 0 ? ' style="display: none"' : '' !!}></i>
                             </span>
                         </a>
                     </div>

@@ -56,12 +56,14 @@ class Category extends Model
 
     public function links()
     {
-        return $this->belongsToMany(Link::class, 'categories_links', 'category_id', 'link_id');
+        return $this->belongsToMany(Link::class, 'categories_links', 'category_id', 'link_id')
+            ->withPivot('order');
     }
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id');
+        return $this->belongsToMany(Post::class, 'categories_posts', 'category_id', 'post_id')
+            ->withPivot('order');
     }
 
     public function media()

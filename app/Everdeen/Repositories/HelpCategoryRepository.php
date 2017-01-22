@@ -25,7 +25,8 @@ class HelpCategoryRepository extends CategoryRepository
 
     public function getPaged()
     {
-        return Category::where('type', $this->type)
+        return Category::with('translations')
+            ->where('type', $this->type)
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'asc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
@@ -33,7 +34,8 @@ class HelpCategoryRepository extends CategoryRepository
 
     public function getAll()
     {
-        return Category::where('type', $this->type)
+        return Category::with('translations')
+            ->where('type', $this->type)
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();

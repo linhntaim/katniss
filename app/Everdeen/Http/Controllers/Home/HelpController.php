@@ -43,14 +43,14 @@ class HelpController extends ViewController
                     $category->name,
                     '<strong>', '</strong>', '', 'help-item help-category'
                 );
-                $helps = $category->orderedPosts;
+                $helps = $category->posts()->with('translations')->get()->sortBy('pivot.order');
                 if ($helps->count() > 0) {
                     if ($emptySlug) {
                         $currentHelp = $helps->first();
                     }
                     $subMenu = new Menu($request->fullUrl());
                     foreach ($helps as $help) {
-                        if (!$emptySlug && $help->translations()->where('slug', $slug)->count() > 0) {
+                        if (!$emptySlug && $help->translations->where('slug', $slug)->count() > 0) {
                             $currentHelp = $help;
                         }
                         $subMenu->add( // add a menu item

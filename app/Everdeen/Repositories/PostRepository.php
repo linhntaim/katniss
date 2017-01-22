@@ -18,12 +18,16 @@ class PostRepository extends ByTypeRepository
 {
     public function getById($id)
     {
-        return Post::where('type', $this->type)->where('id', $id)->firstOrFail();
+        return Post::with('translations')
+            ->where('type', $this->type)
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function getPaged()
     {
-        return Post::where('type', $this->type)
+        return Post::with('translations')
+            ->where('type', $this->type)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }

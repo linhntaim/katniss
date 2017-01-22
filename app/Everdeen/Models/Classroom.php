@@ -130,6 +130,7 @@ class Classroom extends Model
     public function getClassTimesOfMonth($year, $month)
     {
         return $this->classTimes()
+            ->with('reviews')
             ->orderBy('start_at', 'desc')
             ->orderBy('id', 'desc')
             ->whereYear('start_at', $year)

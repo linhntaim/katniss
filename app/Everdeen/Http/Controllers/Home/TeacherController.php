@@ -20,6 +20,7 @@ use Katniss\Everdeen\Repositories\TopicRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Utils\DataStructure\Pagination\PaginationRender;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Utils\ExtraActions\CallableObject;
 
 class TeacherController extends ViewController
 {
@@ -661,6 +662,8 @@ class TeacherController extends ViewController
         $this->_title(trans('pages.home_teachers_title'));
         $this->_description(trans('pages.home_teachers_desc'));
 
+        $this->ogTeacherList($teachers);
+
         return $this->_index([
             'topics' => $topicRepository->getAll(),
             'teachers' => $teachers,
@@ -735,6 +738,8 @@ class TeacherController extends ViewController
         $this->_title([trans('pages.home_teacher_title'), $teacher->userProfile->display_name]);
         $this->_description(shorten($teacher->about_me));
 
+        $this->ogTeacherSingle($teacher);
+
         return $this->_show([
             'teacher' => $teacher,
             'has_rates' => $reviewsForTeacher->count() > 0,
@@ -750,5 +755,26 @@ class TeacherController extends ViewController
 
             'payment_info_view' => new HtmlString($paymentInfoView),
         ]);
+    }
+
+    protected function ogTeacherSingle($teacher)
+    {
+        $avatar = $teacher->userProfile->url_avatar;
+        addFilter('open_graph_tags_before_render', new CallableObject(function ($data) use ($avatar) {
+            $data['og:image'] = $avatar;
+            return $data;
+        }), 'teachers_view_single');
+    }
+
+    protected function ogTeacherList($teachers)
+    {
+        $imageUrls = [appLogo()];
+        foreach ($teachers as $teacher) {
+            $imageUrls[] = $teacher->userProfile->url_avatar;
+        }
+        addFilter('open_graph_tags_before_render', new CallableObject(function ($data) use ($imageUrls) {
+            $data['og:image'] = $imageUrls;
+            return $data;
+        }), 'teachers_view_list');
     }
 }

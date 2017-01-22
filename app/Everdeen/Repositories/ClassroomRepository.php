@@ -18,7 +18,9 @@ class ClassroomRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return Classroom::where('id', $id)->firstOrFail();
+        return Classroom::with(['teacherProfile', 'teacherUserProfile', 'studentProfile', 'studentUserProfile', 'supporter'])
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function getPaged()
@@ -71,7 +73,9 @@ class ClassroomRepository extends ModelRepository
 
     public function getSearchOpeningPaged($name = null, $teacher = null, $student = null, $supporter = null)
     {
-        $classrooms = Classroom::opening()->orderBy('created_at', 'desc');
+        $classrooms = Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->opening()
+            ->orderBy('created_at', 'desc');
         if (!empty($name)) {
             $classrooms->where('name', 'like', '%' . $name . '%');
         }
@@ -89,7 +93,9 @@ class ClassroomRepository extends ModelRepository
 
     public function getSearchClosedPaged($name = null, $teacher = null, $student = null, $supporter = null)
     {
-        $classrooms = Classroom::closed()->orderBy('created_at', 'desc');
+        $classrooms = Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->closed()
+            ->orderBy('created_at', 'desc');
         if (!empty($name)) {
             $classrooms->where('name', 'like', '%' . $name . '%');
         }
@@ -107,7 +113,9 @@ class ClassroomRepository extends ModelRepository
 
     public function getSearchReadyToClosePaged($name = null, $teacher = null, $student = null, $supporter = null)
     {
-        $classrooms = Classroom::readyToClose()->orderBy('created_at', 'desc');
+        $classrooms = Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->readyToClose()
+            ->orderBy('created_at', 'desc');
         if (!empty($name)) {
             $classrooms->where('name', 'like', '%' . $name . '%');
         }
@@ -125,7 +133,8 @@ class ClassroomRepository extends ModelRepository
 
     public function getAll()
     {
-        return Classroom::all();
+        return Classroom::with(['teacherUserProfile', 'studentUserProfile', 'supporter'])
+            ->get();
     }
 
     public function create($teacherId, $studentId, $supporterId, $name, $duration)

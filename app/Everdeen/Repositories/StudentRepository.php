@@ -23,12 +23,15 @@ class StudentRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return Student::findOrFail($id);
+        return Student::with('userProfile')
+            ->findOrFail($id);
     }
 
     public function getPaged()
     {
-        return Student::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        return Student::with('userProfile')
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getCountApproved()
@@ -48,7 +51,9 @@ class StudentRepository extends ModelRepository
 
     public function getSearchCommonPaged($term = null)
     {
-        $teacher = Student::approved()->orderBy('created_at', 'desc');
+        $teacher = Student::with('userProfile')
+            ->approved()
+            ->orderBy('created_at', 'desc');
         if (!empty($term)) {
             $teacher->whereHas('userProfile', function ($query) use ($term) {
                 $query->where('users.id', $term);
@@ -64,7 +69,9 @@ class StudentRepository extends ModelRepository
 
     public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $student = Student::approved()->orderBy('created_at', 'desc');
+        $student = Student::with('userProfile')
+            ->approved()
+            ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
             $student->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
                 if (!empty($displayName)) {
@@ -86,7 +93,8 @@ class StudentRepository extends ModelRepository
 
     public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $student = Student::where('status', '<>', Student::APPROVED)
+        $student = Student::with('userProfile')
+            ->where('status', '<>', Student::APPROVED)
             ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
             $student->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
@@ -109,7 +117,8 @@ class StudentRepository extends ModelRepository
 
     public function getAll()
     {
-        return Student::all();
+        return Student::with('userProfile')
+            ->all();
     }
 
     protected function generateNameFromEmail($email)

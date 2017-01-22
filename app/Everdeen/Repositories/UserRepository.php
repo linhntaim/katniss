@@ -41,7 +41,7 @@ class UserRepository extends ModelRepository
 
     public function getSearchPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $users = User::orderBy('created_at', 'desc');
+        $users = User::with('roles')->orderBy('created_at', 'desc');
         if (!empty($displayName)) {
             $users->where('display_name', 'like', '%' . $displayName . '%');
         }

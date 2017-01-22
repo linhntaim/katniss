@@ -585,10 +585,11 @@
                     <strong>{{ trans('label.class_duration') }}:</strong>
                     {{ $classroom->duration }} {{ trans_choice('label.hour_lc', $classroom->hours) }}
                 </div>
+                <?php $spentTime = $classroom->spentTime; ?>
                 <div>
                     <strong>{{ trans('label.class_spent_time') }}:</strong>
-                    <span id="spent-time-total" data-hours="{{ $classroom->spentTime }}">
-                        {{ $classroom->spentTimeDuration }} {{ trans_choice('label.hour_lc', $classroom->spentTime) }}
+                    <span id="spent-time-total" data-hours="{{ $spentTime }}">
+                        {{ toFormattedNumber($spentTime) }} {{ trans_choice('label.hour_lc', $spentTime) }}
                     </span>
                 </div>
             </div>

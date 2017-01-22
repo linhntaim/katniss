@@ -18,12 +18,16 @@ abstract class MetaRepository extends ByTypeRepository
 {
     public function getById($id)
     {
-        return Meta::where('id', $id)->where('type', $this->type)->firstOrFail();
+        return Meta::with('translations')
+            ->where('id', $id)
+            ->where('type', $this->type)
+            ->firstOrFail();
     }
 
     public function getPaged()
     {
-        return Meta::where('type', $this->type)
+        return Meta::with('translations')
+            ->where('type', $this->type)
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'asc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
@@ -31,7 +35,8 @@ abstract class MetaRepository extends ByTypeRepository
 
     public function getAll()
     {
-        return Meta::where('type', $this->type)
+        return Meta::with('translations')
+            ->where('type', $this->type)
             ->orderBy('order', 'asc')
             ->orderBy('created_at', 'asc')
             ->get();

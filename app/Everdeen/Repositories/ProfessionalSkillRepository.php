@@ -17,18 +17,22 @@ class ProfessionalSkillRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return ProfessionalSkill::where('id', $id)->firstOrFail();
+        return ProfessionalSkill::with('translations')
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function getPaged()
     {
-        return ProfessionalSkill::orderBy('created_at', 'desc')
+        return ProfessionalSkill::with('translations')
+            ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAll()
     {
-        return ProfessionalSkill::all();
+        return ProfessionalSkill::with('translations')
+            ->get();
     }
 
     public function create(array $localizedData = [])

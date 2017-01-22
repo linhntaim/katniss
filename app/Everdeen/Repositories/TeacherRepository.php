@@ -22,7 +22,7 @@ class TeacherRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return Teacher::findOrFail($id);
+        return Teacher::with(['userProfile', 'topics', 'topics.translations'])->findOrFail($id);
     }
 
     public function getPaged()
@@ -47,12 +47,17 @@ class TeacherRepository extends ModelRepository
 
     public function getApprovedByIds($ids)
     {
-        return Teacher::approved()->whereIn('user_id', $ids)->get();
+        return Teacher::with('userProfile')
+            ->approved()
+            ->whereIn('user_id', $ids)
+            ->get();
     }
 
     public function getSearchCommonPaged($term = null)
     {
-        $teacher = Teacher::approved()->orderBy('created_at', 'desc');
+        $teacher = Teacher::with('userProfile')
+            ->approved()
+            ->orderBy('created_at', 'desc');
         if (!empty($term)) {
             $teacher->whereHas('userProfile', function ($query) use ($term) {
                 $query->where('users.id', $term);
@@ -68,7 +73,9 @@ class TeacherRepository extends ModelRepository
 
     public function getSearchApprovedPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $teacher = Teacher::approved()->orderBy('created_at', 'desc');
+        $teacher = Teacher::with('userProfile')
+            ->approved()
+            ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
             $teacher->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
                 if (!empty($displayName)) {
@@ -90,7 +97,8 @@ class TeacherRepository extends ModelRepository
 
     public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
-        $teacher = Teacher::where('status', '<>', Teacher::APPROVED)
+        $teacher = Teacher::with('userProfile')
+            ->where('status', '<>', Teacher::APPROVED)
             ->orderBy('created_at', 'desc');
         if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
             $teacher->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
@@ -113,7 +121,9 @@ class TeacherRepository extends ModelRepository
 
     public function getHomeSearchPaged(array $topics = null, $nationality = null, $gender = null)
     {
-        $teachers = Teacher::approved()->orderBy('created_at', 'asc');
+        $teachers = Teacher::with(['userProfile', 'topics', 'topics.translations'])
+            ->approved()
+            ->orderBy('created_at', 'asc');
 
         if (!empty($topics)) {
             $teachers->whereHas('topics', function ($query) use ($topics) {

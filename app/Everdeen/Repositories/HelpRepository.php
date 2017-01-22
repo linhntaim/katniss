@@ -23,6 +23,14 @@ class HelpRepository extends PostRepository
         parent::__construct(Post::TYPE_HELP, $id);
     }
 
+    public function getPaged()
+    {
+        return Post::with(['translations', 'categories', 'categories.translations'])
+            ->where('type', $this->type)
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
     {
         DB::beginTransaction();

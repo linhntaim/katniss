@@ -51,30 +51,33 @@ class ArticleRepository extends PostRepository
 
     public function getPublishedByIds($ids)
     {
-        return Post::where('type', $this->type)
+        return Post::with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->whereIn('id', $ids)
             ->get();
     }
 
-    public function getBySlug($slug)
+    public function getByIdWithPossibleLoads($id)
     {
-        return Post::where('type', $this->type)
-            ->whereTranslation('slug', $slug)
+        return Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
+            ->where('id', $id)
             ->firstOrFail();
     }
 
-    public function getPublishedBySlug($slug)
+    public function getBySlugWithPossibleLoads($slug)
     {
-        return Post::where('type', $this->type)
-            ->where('status', Post::STATUS_PUBLISHED)
+        return Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
             ->whereTranslation('slug', $slug)
             ->firstOrFail();
     }
 
     public function getLast($count = 1)
     {
-        $posts = Post::where('type', $this->type)
+        $posts = Post::with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->take($count);
@@ -83,7 +86,8 @@ class ArticleRepository extends PostRepository
 
     public function getLastMostViewed($count = 1)
     {
-        $posts = Post::where('type', $this->type)
+        $posts = Post::with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('viewed', 'desc')
             ->orderBy('created_at', 'desc')
@@ -91,17 +95,11 @@ class ArticleRepository extends PostRepository
         return $count == 1 ? $posts->first() : $posts->get();
     }
 
-    public function getPublishedPaged()
-    {
-        return Post::where('type', $this->type)
-            ->where('status', Post::STATUS_PUBLISHED)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-    }
-
     public function getSearchPublishedPaged($title = null, $author = null, $categories = null)
     {
-        $posts = Post::where('type', $this->type)->where('status', Post::STATUS_PUBLISHED);
+        $posts = Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
+            ->where('status', Post::STATUS_PUBLISHED);
 
         if (!empty($title)) {
             $posts->whereTranslationLike('title', '%' . $title . '%');
@@ -121,7 +119,9 @@ class ArticleRepository extends PostRepository
 
     public function getSearchTeacherPaged($title = null, $author = null, $categories = null)
     {
-        $posts = Post::where('type', $this->type)->where('status', Post::STATUS_TEACHER_EDITING);
+        $posts = Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
+            ->where('status', Post::STATUS_TEACHER_EDITING);
 
         if (!empty($title)) {
             $posts->whereTranslationLike('title', '%' . $title . '%');
@@ -139,46 +139,17 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getTeacherEditingPaged()
-    {
-        return Post::where('type', $this->type)
-            ->where('status', Post::STATUS_TEACHER_EDITING)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-    }
-
-    public function getPagedByCategory($categoryId, &$category)
-    {
-        $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getById($categoryId);
-        return $category->posts()->where('type', $this->type)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-    }
-
-    public function getPublishedPagedByCategory(&$categoryId, &$category)
-    {
-        $categoryRepository = new ArticleCategoryRepository();
-        if (empty($category)) {
-            $category = $categoryRepository->getById($categoryId);
-        } else {
-            $categoryId = $category->id;
-        }
-        return $category->posts()->where('type', $this->type)
-            ->where('status', Post::STATUS_PUBLISHED)
-            ->orderBy('created_at', 'desc')
-            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
-    }
-
     public function getLastPublishedByCategory($count, &$categoryId, &$category)
     {
         $categoryRepository = new ArticleCategoryRepository();
         if (empty($category)) {
-            $category = $categoryRepository->getById($categoryId);
+            $category = $categoryRepository->getByIdWithTranslated($categoryId);
         } else {
             $categoryId = $category->id;
         }
-        $articles = $category->posts()->where('type', $this->type)
+        $articles = $category->posts()
+            ->with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->take($count);
@@ -189,11 +160,13 @@ class ArticleRepository extends PostRepository
     {
         $categoryRepository = new ArticleCategoryRepository();
         if (empty($category)) {
-            $category = $categoryRepository->getBySlug($categorySlug);
+            $category = $categoryRepository->getBySlugWithTranslated($categorySlug);
         } else {
             $categorySlug = $category->slug;
         }
-        return $category->posts()->where('type', $this->type)
+        return $category->posts()
+            ->with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
@@ -203,7 +176,8 @@ class ArticleRepository extends PostRepository
     {
         $userRepository = new UserRepository($authorId);
         $author = $userRepository->model();
-        return Post::where('type', $this->type)
+        return Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
             ->where('user_id', $author->id)
             ->where('status', Post::STATUS_PUBLISHED)
             ->orderBy('created_at', 'desc')
@@ -212,7 +186,8 @@ class ArticleRepository extends PostRepository
 
     public function getLastPublishedByAuthorIds($count, $authorIds)
     {
-        $articles = Post::where('type', $this->type)
+        $articles = Post::with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->whereIn('user_id', $authorIds)
             ->orderBy('created_at', 'desc')
@@ -222,7 +197,8 @@ class ArticleRepository extends PostRepository
 
     public function getLastPublishedByTeachers($count)
     {
-        $articles = Post::where('type', $this->type)
+        $articles = Post::with('translations')
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED)
             ->whereHas('author', function ($query) {
                 $query->whereHas('roles', function ($query) {
@@ -238,7 +214,8 @@ class ArticleRepository extends PostRepository
     {
         $userRepository = new UserRepository($authorId);
         $author = $userRepository->model();
-        return Post::where('type', $this->type)
+        return Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type)
             ->where('user_id', $author->id)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
@@ -246,7 +223,8 @@ class ArticleRepository extends PostRepository
 
     public function getSearchCommonPaged($term = null)
     {
-        $articles = Post::where('type', $this->type)
+        $articles = Post::with(['translations', 'author'])
+            ->where('type', $this->type)
             ->where('status', Post::STATUS_PUBLISHED);
         if (!empty($term)) {
             $articles->where(function ($query) use ($term) {
