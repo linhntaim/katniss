@@ -22,6 +22,13 @@ class Theme extends AdminTheme
     public function __construct()
     {
         parent::__construct();
+
+        $homeTheme = homeTheme();
+
+        $this->description = $homeTheme->description();
+        $this->title = $homeTheme->title();
+        $this->titleRoot = $this->title;
+        $this->keywords = $homeTheme->keywords();
     }
 
     protected function registerComposers($is_auth = false)

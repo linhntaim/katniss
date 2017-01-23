@@ -20,10 +20,10 @@ function quickForm(action, data, method) {
 
 $(function () {
     // fix stacked modals
-    var _zIndexModal = 1050;
-    $(document).on('shown.bs.modal', '.modal', function (e) {
-        $(this).css('z-index', ++_zIndexModal);
-    });
+    // var _zIndexModal = 1050;
+    // $(document).on('shown.bs.modal', '.modal', function (e) {
+    //     $(this).css('z-index', ++_zIndexModal);
+    // });
 
     $(document).on('click', '.go-url', function (e) {
         e.preventDefault();
