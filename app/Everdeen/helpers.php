@@ -171,6 +171,7 @@ function parseEmbedVideoUrl($videoUrl)
         return 'http://www.dailymotion.com/embed/video/' . (empty($matches[4]) ? $matches[6] : $matches[4]);
     } else return null;
 }
+
 #endregion
 
 #region Locale
@@ -1478,6 +1479,11 @@ function longTimeFormatsAsOptions($selected)
 function shortTimeFormatsAsOptions($selected)
 {
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
+}
+
+function dateFormatFromDatabase($inputString, $toFormat = 'Y-m-d H:i:s', &$diffDay = 0)
+{
+    return DateTimeHelper::getInstance()->format($toFormat, $inputString, 0, false, $diffDay);
 }
 
 function transMonthYear($dateString, $hideCurrentYear = true)

@@ -8,6 +8,7 @@
 return [
     'utc_offsets' => 'Múi giờ UTC',
     'today' => 'Hôm nay',
+    'day_-1' => 'Chủ nhật',
     'day_0' => 'Thứ hai',
     'day_1' => 'Thứ ba',
     'day_2' => 'Thứ tư',
@@ -15,6 +16,7 @@ return [
     'day_4' => 'Thứ sáu',
     'day_5' => 'Thứ bảy',
     'day_6' => 'Chủ nhật',
+    'day_7' => 'Thứ hai',
     'month_1' => 'Tháng 1',
     'month_2' => 'Tháng 2',
     'month_3' => 'Tháng 3',

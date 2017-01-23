@@ -94,7 +94,7 @@
                                     <div class="form-group">
                                         <label for="inputTopics" class="control-label sr-only">{{ trans_choice('label.topic', 2) }}</label>
                                         <select class="form-control select2" id="inputTopics" name="topics[]" multiple="multiple"
-                                                data-placeholder="{{ trans('label.choose_topics_help') }} ({{ $topics->chunk(3)->first()->implode('name', ', ') }}, ...)" style="width: 100%;">
+                                                data-placeholder="{{ trans('label.choose_topics_help') }} ({{ $topics->count() == 0 ? 'IELTS, TOEFL' : $topics->chunk(3)->first()->implode('name', ', ') }}, ...)" style="width: 100%;">
                                             @foreach($topics as $topic)
                                                 <option value="{{ $topic->id }}"{{ in_array($topic->id, $search_topics) ? ' selected' : '' }}>
                                                     {{ $topic->name }}
@@ -174,7 +174,9 @@
                                             </p>
                                             <p class="help-block">
                                                 <em class="color-normal bold-700">
-                                                    #{{ $teacher->topics->implode('name', ' #') }}
+                                                    @if($teacher->topics->count() > 0)
+                                                        #{{ $teacher->topics->implode('name', ' #') }}
+                                                    @endif
                                                 </em>
                                             </p>
                                         </div>

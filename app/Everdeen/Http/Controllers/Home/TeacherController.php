@@ -297,7 +297,9 @@ class TeacherController extends ViewController
 
         return $this->_any('teaching_time', [
             'teacher' => $teacher,
-            'available_times' => $teacher->available_times,
+            'available_times' => $teacher->available_times['times'],
+            'available_range_from' => $teacher->available_times['range_from'],
+            'available_range_to' => $teacher->available_times['range_to'],
         ]);
     }
 
@@ -308,6 +310,8 @@ class TeacherController extends ViewController
         $validator = Validator::make($request->all(), [
             'timezone' => 'required',
             'times' => 'required|array|in:0,1,2,3,4,5,6',
+            'range_from.*' => 'sometimes|date_format:H:i',
+            'range_to.*' => 'sometimes|date_format:H:i',
         ]);
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);
@@ -316,12 +320,25 @@ class TeacherController extends ViewController
         $this->teacherRepository->model($request->authUser()->teacherProfile);
 
         try {
-            $this->teacherRepository->updateAvailableTimes($request->input('times'));
-
             $settings = settings();
             $settings->setTimezone($request->input('timezone'));
             $settings->storeUser();
             $settings->storeSession();
+
+            $rangesFrom = [];
+            foreach ($request->input('range_from', []) as $key => $rangeFrom) {
+                $rangesFrom[$key] = DateTimeHelper::getInstance()->convertToCustomDatabaseFormat('H:i', $rangeFrom);
+            }
+            $rangesTo = [];
+            foreach ($request->input('range_to', []) as $key => $rangeTo) {
+                $rangesTo[$key] = DateTimeHelper::getInstance()->convertToCustomDatabaseFormat('H:i', $rangeTo);
+            }
+
+            $this->teacherRepository->updateAvailableTimes(
+                $request->input('times'),
+                $rangesFrom,
+                $rangesTo
+            );
         } catch (KatnissException $exception) {
             return $errorRdr->withErrors([$exception->getMessage()]);
         }

@@ -92,10 +92,17 @@ class DateTimeHelper
         return $now;
     }
 
-    public function convertToDatabaseFormat($current_format, $inputString, $no_offset = false)
+    public function convertToDatabaseFormat($currentFormat, $inputString, $no_offset = false)
     {
-        $now = $this->fromFormat($current_format, $inputString, $no_offset);
+        $now = $this->fromFormat($currentFormat, $inputString, $no_offset);
         return $now !== false ? $now->format('Y-m-d H:i:s') : false;
+    }
+
+    public function convertToCustomDatabaseFormat($currentFormat, $inputString, $toFormat = null, $no_offset = false)
+    {
+        if (empty($toFormat)) $toFormat = $currentFormat;
+        $now = $this->fromFormat($currentFormat, $inputString, $no_offset);
+        return $now !== false ? $now->format($toFormat) : false;
     }
 
     /**
@@ -103,15 +110,19 @@ class DateTimeHelper
      * @param string $time
      * @return string
      */
-    public function format($format, $time = 'now', $start = 0, $no_offset = false)
+    public function format($format, $time = 'now', $start = 0, $no_offset = false, &$diffDay = 0)
     {
         $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
         if (!$no_offset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
+                $day = $now->format('d');
                 $now->add(new \DateInterval('PT' . $offset . 'S'));
+                if ($now->format('d') != $day) $diffDay = 1;
             } elseif ($offset < 0) {
+                $day = $now->format('d');
                 $now->sub(new \DateInterval('PT' . abs($offset) . 'S'));
+                if ($now->format('d') != $day) $diffDay = -1;
             }
         }
         if ($start == 1) {

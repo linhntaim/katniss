@@ -8,6 +8,7 @@
 return [
     'utc_offsets' => 'UTC Offsets',
     'today' => 'Today',
+    'day_-1' => 'Sunday',
     'day_0' => 'Monday',
     'day_1' => 'Tuesday',
     'day_2' => 'Wednesday',
@@ -15,6 +16,7 @@ return [
     'day_4' => 'Friday',
     'day_5' => 'Saturday',
     'day_6' => 'Sunday',
+    'day_7' => 'Monday',
     'month_1' => 'January',
     'month_2' => 'February',
     'month_3' => 'March',

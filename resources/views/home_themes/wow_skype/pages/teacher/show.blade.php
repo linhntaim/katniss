@@ -1,4 +1,11 @@
 @extends('home_themes.wow_skype.master.master')
+@section('lib_styles')
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-bootstrap-css') }}">
+@endsection
+@section('lib_scripts')
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
+@endsection
 @section('extended_scripts')
     <script>
         $(function() {
@@ -12,8 +19,43 @@
                     media : {}
                 }
             });
+            $('.toggle-tooltip').tooltip();
+            $('.select2').select2({
+                theme: 'bootstrap'
+            });
         });
     </script>
+@endsection
+@section('modals')
+    <div class="modal fade" id="change-timezone-modal" tabindex="false" role="dialog"
+         aria-labelledby="change-timezone-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="change-timezone-modal-title">{{ trans('form.action_change') }} {{ trans('label.timezone') }}</h4>
+                </div>
+                <form method="post" action="{{ addErrorUrl(addRdrUrl(meUrl('timezone'))) }}">
+                    {{ csrf_field() }}
+                    {{ method_field('put') }}
+                    <div id="change-timezone-modal-content" class="modal-body">
+                        <div class="form-group">
+                            <label for="inputTimeZone">{{ trans('label.timezone') }}:</label>
+                            <select id="inputTimeZone" class="form-control select2" name="timezone" style="width: 100%;">
+                                {!!  timeZoneListAsOptions(settings()->timezone) !!}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">{{ trans('form.action_close') }}</button>
+                        <button type="submit" class="btn btn-success">{{ trans('form.action_update') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('main_content')
     <div id="page-teacher">
@@ -241,8 +283,42 @@
                                 @endif
                             </div>
                         </div>
+                        <div class="media">
+                            <div class="media-left">
+                                <i class="fa fa-calendar font-20 width-20"></i>
+                            </div>
+                            <?php $available_times = $teacher->available_times; ?>
+                            @if(!empty($available_times))
+                                <div class="media-body text-middle">
+                                    <strong class="color-master">{{ trans('label.available_times') }}</strong>
+                                </div>
+                                <div class="margin-v-10 padding-h-10 padding-v-5 br-4 bg-master color-white">
+                                        @foreach($available_times['times'] as $available_day)
+                                            <?php
+                                            $range_from = null;
+                                            if(!empty($available_times['range_from'][$available_day])) {
+                                                $range_from = dateFormatFromDatabase($available_times['range_from'][$available_day], 'H:i', $diffDay);
+                                            }
+                                            ?>
+                                            <p class="margin-v-5">
+                                                <strong>{{ trans('datetime.day_' . ($available_day + $diffDay)) }}</strong>
+                                                @if(!empty($range_from))
+                                                    {{ trans('label.from_lc') }} {{ $range_from }}
+                                                @endif
+                                                @if(!empty($available_times['range_to'][$available_day]))
+                                                    {{ trans('label.to_lc') }} {{ dateFormatFromDatabase($available_times['range_to'][$available_day], 'H:i') }}
+                                                @endif
+                                            </p>
+                                        @endforeach
+                                </div>
+                                <div>
+                                    {{ trans('label.your_timezone_is') }}
+                                    <a class="text-underline hover-none toggle-tooltip" title="{{ trans('form.action_change') }}" data-toggle="modal" data-target="#change-timezone-modal" href="#">{{ settings()->timezone }}</a>
+                                </div>
+                            @endif
+                        </div>
                         @if(!$is_auth)
-                            <a role="button" class="btn btn-primary btn-block uppercase bold-700 margin-top-10"
+                            <a role="button" class="btn btn-success btn-block uppercase bold-700 margin-top-10"
                                href="{{ homeUrl('student/sign-up') }}?teacher_id={{ $teacher->user_id }}">
                                 {{ trans('form.action_register_class') }}
                             </a>

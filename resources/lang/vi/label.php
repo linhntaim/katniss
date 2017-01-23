@@ -344,6 +344,7 @@ lộ trình học tập và học phí.',
     'choose_topics_help' => 'Bạn đang học gì?',
     'content_help_uc' => 'NHẬP NỘI DUNG CỦA BẠN Ở ĐÂY',
     'increase_30days' => 'Tăng thêm :number trong 30 ngày',
+    'your_timezone_is' => 'Múi giờ của bạn là',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',

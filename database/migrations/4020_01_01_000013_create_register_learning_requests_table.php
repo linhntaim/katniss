@@ -20,7 +20,6 @@ class CreateRegisterLearningRequestsTable extends Migration
             $table->bigInteger('processed_by_id')->unsigned()->nullable();
             $table->dateTime('processed_at')->nullable();
             $table->bigInteger('student_id')->unsigned();
-            $table->bigInteger('student_id')->unsigned();
             $table->bigInteger('teacher_id')->unsigned()->nullable();
             $table->integer('study_level_id')->unsigned()->nullable();
             $table->integer('study_problem_id')->unsigned()->nullable();

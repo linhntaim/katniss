@@ -190,39 +190,39 @@ class DefaultSeeder extends Seeder
         ));
         $supporter->attachRole($supporter_role);
 
-        $setting = UserSetting::create();
-        $teacher = User::create(array(
-            'display_name' => 'Teacher',
-            'name' => 'teacher',
-            'email' => 'teacher@katniss.linhntaim.com',
-            'password' => bcrypt('123456'),
-            'url_avatar' => appDefaultUserProfilePicture(),
-            'url_avatar_thumb' => appDefaultUserProfilePicture(),
-            'activation_code' => str_random(32),
-            'active' => true,
-            'setting_id' => $setting->id,
-        ));
-        $teacher->attachRole($teacher_role);
-        Teacher::create([
-            'user_id' => $teacher->id,
-        ]);
-
-        $setting = UserSetting::create();
-        $student = User::create(array(
-            'display_name' => 'Student',
-            'name' => 'student',
-            'email' => 'student@katniss.linhntaim.com',
-            'password' => bcrypt('123456'),
-            'url_avatar' => appDefaultUserProfilePicture(),
-            'url_avatar_thumb' => appDefaultUserProfilePicture(),
-            'activation_code' => str_random(32),
-            'active' => true,
-            'setting_id' => $setting->id,
-        ));
-        $student->attachRole($student_role);
-        Student::create([
-            'user_id' => $student->id,
-        ]);
+//        $setting = UserSetting::create();
+//        $teacher = User::create(array(
+//            'display_name' => 'Teacher',
+//            'name' => 'teacher',
+//            'email' => 'teacher@katniss.linhntaim.com',
+//            'password' => bcrypt('123456'),
+//            'url_avatar' => appDefaultUserProfilePicture(),
+//            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+//            'activation_code' => str_random(32),
+//            'active' => true,
+//            'setting_id' => $setting->id,
+//        ));
+//        $teacher->attachRole($teacher_role);
+//        Teacher::create([
+//            'user_id' => $teacher->id,
+//        ]);
+//
+//        $setting = UserSetting::create();
+//        $student = User::create(array(
+//            'display_name' => 'Student',
+//            'name' => 'student',
+//            'email' => 'student@katniss.linhntaim.com',
+//            'password' => bcrypt('123456'),
+//            'url_avatar' => appDefaultUserProfilePicture(),
+//            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+//            'activation_code' => str_random(32),
+//            'active' => true,
+//            'setting_id' => $setting->id,
+//        ));
+//        $student->attachRole($student_role);
+//        Student::create([
+//            'user_id' => $student->id,
+//        ]);
 
         AppOption::create([
             'key' => 'admin_theme',

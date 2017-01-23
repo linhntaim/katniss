@@ -101,9 +101,9 @@ Route::group([
         Route::get(homeRoute('knowledge/authors/{id}'), 'ArticleController@indexAuthor');
     });
 
-
     Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');
     Route::put(homeRoute('me/settings'), 'Admin\SettingsController@update');
+    Route::put(homeRoute('me/timezone'), 'Admin\SettingsController@updateTimezone');
 
     Route::group([
         'namespace' => 'Auth',

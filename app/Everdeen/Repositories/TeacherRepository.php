@@ -382,13 +382,17 @@ class TeacherRepository extends ModelRepository
         }
     }
 
-    public function updateAvailableTimes(array $times)
+    public function updateAvailableTimes(array $times, array $rangeFrom = [], array $rangeTo = [])
     {
         $teacher = $this->model();
 
         try {
             $teacher->update([
-                'available_times' => serialize($times),
+                'available_times' => serialize([
+                    'times' => $times,
+                    'range_from' => $rangeFrom,
+                    'range_to' => $rangeTo,
+                ]),
             ]);
             return $teacher;
         } catch (\Exception $ex) {

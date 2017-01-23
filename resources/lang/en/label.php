@@ -344,6 +344,7 @@ about your classes.',
     'choose_topics_help' => 'What do you want to learn?',
     'content_help_uc' => 'TYPE YOUR CONTENT HERE',
     'increase_30days' => ':number increase in 30 days',
+    'your_timezone_is' => 'Your timezone is',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

@@ -183,6 +183,24 @@ body {
     border-right: none;
 }
 
+.br-4 {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.br-8 {
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.br-10 {
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
 .border-master {
     border-color: #00aff0;
 }
@@ -1127,6 +1145,14 @@ a:active:focus {
 
 .text-middle {
     vertical-align: middle;
+}
+
+.text-underline {
+    text-decoration: underline;
+}
+
+.text-underline.hover-none:hover {
+    text-decoration: none;
 }
 
 .font-20 {
