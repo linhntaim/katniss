@@ -42,6 +42,9 @@ class Widget extends DefaultWidget
     {
         return array_merge(parent::viewAdminParams(), [
             'video_url' => $this->videoUrl,
+            'picture_1' => $this->picture1,
+            'picture_2' => $this->picture2,
+            'picture_3' => $this->picture3,
         ]);
     }
 
@@ -113,6 +116,9 @@ class Widget extends DefaultWidget
     {
         return array_merge(parent::fields(), [
             'video_url',
+            'picture_1',
+            'picture_2',
+            'picture_3',
         ]);
     }
 
@@ -120,27 +126,18 @@ class Widget extends DefaultWidget
     {
         return array_merge(parent::fields(), [
             'video_url' => 'sometimes|url',
+            'picture_1' => 'sometimes|url',
+            'picture_2' => 'sometimes|url',
+            'picture_3' => 'sometimes|url',
         ]);
     }
 
     public function localizedFields()
     {
         return array_merge(parent::localizedFields(), [
-            'picture_1',
             'review_1',
-            'picture_2',
             'review_2',
-            'picture_3',
             'review_3',
-        ]);
-    }
-
-    public function localizedValidationRules()
-    {
-        return array_merge(parent::localizedFields(), [
-            'picture_1' => 'sometimes|url',
-            'picture_2' => 'sometimes|url',
-            'picture_3' => 'sometimes|url',
         ]);
     }
 }
