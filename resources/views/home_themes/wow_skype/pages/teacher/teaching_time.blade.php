@@ -54,7 +54,7 @@
         </div>
         <div class="form-group">
             <label>{{ trans('label.available_times') }}:</label>
-            @for($i=0; $i<7; ++$i)
+            @for($i = 0; $i < 7; ++$i)
                 <div class="time-item">
                     <div class="checkbox">
                         <label>
@@ -67,14 +67,14 @@
                             <label for="inputFrom_{{ $i }}" class="bold-400">{{ trans('label.from') }}</label>
                             <input id="inputFrom_{{ $i }}" type="text" class="form-control time-picker"
                                    name="range_from[{{ $i }}]"{{ in_array($i, $available_times) ? '' : ' disabled' }}
-                                   value="{{ !empty($available_range_from[$i]) ? dateFormatFromDatabase($available_range_from[$i], 'H:i') : '' }}"
+                                   value="{{ !empty($available_range_from[$i]) ? $available_range_from[$i] : '' }}"
                                    data-inputmask="'mask':'99:99','placeholder':'23:59'">
                         </div>
                         <div class="form-group">
                             <label for="inputTo_{{ $i }}" class="bold-400">{{ trans('label.to') }}</label>
                             <input id="inputFrom_{{ $i }}" type="text" class="form-control time-picker"
                                    name="range_to[{{ $i }}]"{{ in_array($i, $available_times) ? '' : ' disabled' }}
-                                   value="{{ !empty($available_range_to[$i]) ? dateFormatFromDatabase($available_range_to[$i], 'H:i') : '' }}"
+                                   value="{{ !empty($available_range_to[$i]) ? $available_range_to[$i] : '' }}"
                                    data-inputmask="'mask':'99:99','placeholder':'23:59'">
                         </div>
                     </div>

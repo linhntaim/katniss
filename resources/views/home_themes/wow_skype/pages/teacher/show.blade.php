@@ -283,8 +283,7 @@
                                 @endif
                             </div>
                         </div>
-                        <?php $available_times = $teacher->available_times; ?>
-                        @if(!empty($available_times))
+                        @if(!empty($available_times['times']))
                             <div class="media">
                                 <div class="media-left">
                                     <i class="fa fa-calendar font-20 width-20"></i>
@@ -293,23 +292,17 @@
                                         <strong class="color-master">{{ trans('label.available_times') }}</strong>
                                     </div>
                                     <div class="margin-v-10 padding-h-10 padding-v-5 br-4 bg-master color-white">
-                                            @foreach($available_times['times'] as $available_day)
-                                                <?php
-                                                $range_from = null;
-                                                if(!empty($available_times['range_from'][$available_day])) {
-                                                    $range_from = dateFormatFromDatabase($available_times['range_from'][$available_day], 'H:i', $diffDay);
-                                                }
-                                                ?>
-                                                <p class="margin-v-5">
-                                                    <strong>{{ trans('datetime.day_' . ($available_day + $diffDay)) }}</strong>
-                                                    @if(!empty($range_from))
-                                                        {{ trans('label.from_lc') }} {{ $range_from }}
-                                                    @endif
-                                                    @if(!empty($available_times['range_to'][$available_day]))
-                                                        {{ trans('label.to_lc') }} {{ dateFormatFromDatabase($available_times['range_to'][$available_day], 'H:i') }}
-                                                    @endif
-                                                </p>
-                                            @endforeach
+                                        @foreach($available_times['times'] as $available_time)
+                                            <p class="margin-v-5">
+                                                <strong>{{ trans('datetime.day_' . $available_time) }}</strong>
+                                                @if(!empty($available_times['range_from'][$available_time]))
+                                                    {{ trans('label.from_lc') }} {{ $available_times['range_from'][$available_time] }}
+                                                @endif
+                                                @if(!empty($available_times['range_to'][$available_time]))
+                                                    {{ trans('label.to_lc') }} {{ $available_times['range_to'][$available_time] }}
+                                                @endif
+                                            </p>
+                                        @endforeach
                                     </div>
                                     <div>
                                         {{ trans('label.your_timezone_is') }}

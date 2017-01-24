@@ -39,4 +39,5 @@ return [
     'student_add_review_failed' => 'Cannot add student rating',
     'teacher_add_rich_review_failed' => 'Cannot add review for student',
     'student_add_rich_review_failed' => 'Cannot add review for teacher',
+    'new_class_time_must_be_in_classroom_time' => 'Duration of class times must be not over classroom\'s duration. (Currently :overtime overtime)',
 ];

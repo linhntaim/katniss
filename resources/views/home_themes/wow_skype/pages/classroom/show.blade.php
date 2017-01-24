@@ -279,6 +279,11 @@
                         $classroomSpentTime.attr('data-hours', spentTime).text(
                             formatter.format(spentTime) + (spentTime == 1 ? ' {{ trans_choice('label.hour_lc', 1) }}' : ' {{ trans_choice('label.hour_lc', 2) }}')
                         );
+
+                        if (data.overtime == 0) {
+                            $('.classroom-close').removeClass('hide');
+                            $('.class-time-add').remove();
+                        }
                     }
                 }, function () {
                     $alert.removeClass('hide').html('{{ trans('error.add_class_time_failed') }}');
@@ -860,12 +865,11 @@
                 </li>
             @endif
         </ul>
-        @if($can_classroom_close)
-            <div class="bg-warning text-warning padding-15 text-center margin-top-30 role-button classroom-close"
-                 data-put="{{ addRdrUrl(homeUrl('classrooms/{id}', ['id'=> $classroom->id]) . '?close=1') }}">
-                {{ trans('label.classroom_ready_to_close_message') }}
-            </div>
-        @elseif(!$classroom->isOpening)
+        <div class="bg-warning text-warning padding-15 text-center margin-top-30 role-button classroom-close{{ $can_classroom_close ? '' : ' hide' }}"
+             data-put="{{ addRdrUrl(homeUrl('classrooms/{id}', ['id'=> $classroom->id]) . '?close=1') }}">
+            {{ trans('label.classroom_ready_to_close_message') }}
+        </div>
+        @if(!$classroom->isOpening)
             <div class="bg-danger text-danger padding-15 text-center margin-top-30">
                 {{ trans('label.classroom_was_closed') }}
             </div>

@@ -39,4 +39,5 @@ return [
     'student_add_review_failed' => 'Không thể thêm đánh giá của học viên',
     'teacher_add_rich_review_failed' => 'Không thể thêm nhận xét cho học viên',
     'student_add_rich_review_failed' => 'Không thể thêm nhận xét cho giáo viên',
+    'new_class_time_must_be_in_classroom_time' => 'Thời lượng các buổi học không vượt quá thời lượng chung của lớp học. (Hiện tại đang vượt quá :overtime)',
 ];

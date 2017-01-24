@@ -292,15 +292,54 @@ class TeacherController extends ViewController
     {
         $teacher = $request->authUser()->teacherProfile;
 
+        $availableTimes = $this->formatAvailableTimes($teacher->available_times);
+
         $this->_title(trans('label.teaching_time'));
         $this->_description(trans('label.teaching_time'));
 
         return $this->_any('teaching_time', [
             'teacher' => $teacher,
-            'available_times' => $teacher->available_times['times'],
-            'available_range_from' => $teacher->available_times['range_from'],
-            'available_range_to' => $teacher->available_times['range_to'],
+            'available_times' => $availableTimes['times'],
+            'available_range_from' => $availableTimes['range_from'],
+            'available_range_to' => $availableTimes['range_to'],
         ]);
+    }
+
+    protected function formatAvailableTimes($availableTimes)
+    {
+        $sourceTimes = $availableTimes['times'];
+        $sourceRangesFrom = $availableTimes['range_from'];
+        $sourceRangesTo = $availableTimes['range_to'];
+
+        $times = [];
+        $rangesFrom = [];
+        $rangesTo = [];
+        foreach ($sourceTimes as $time) {
+            $diffDay = 0;
+            if (!empty($sourceRangesFrom[$time])) {
+                $rangeFrom = dateFormatFromDatabase($sourceRangesFrom[$time], 'H:i', $diffDay);
+            }
+            if (!empty($sourceRangesTo[$time])) {
+                if (!empty($rangeFrom)) {
+                    $rangeTo = dateFormatFromDatabase($sourceRangesTo[$time], 'H:i');
+                } else {
+                    $rangeTo = dateFormatFromDatabase($sourceRangesTo[$time], 'H:i', $diffDay);
+                }
+            }
+            $time += $diffDay;
+            $times[] = $time;
+            if (!empty($rangeFrom)) {
+                $rangesFrom[$time] = $rangeFrom;
+            }
+            if (!empty($rangeTo)) {
+                $rangesTo[$time] = $rangeTo;
+            }
+        }
+        return [
+            'times' => $times,
+            'range_from' => $rangesFrom,
+            'range_to' => $rangesTo,
+        ];
     }
 
     public function updateTeachingTime(Request $request)
@@ -325,17 +364,50 @@ class TeacherController extends ViewController
             $settings->storeUser();
             $settings->storeSession();
 
+            $times = [];
             $rangesFrom = [];
-            foreach ($request->input('range_from', []) as $key => $rangeFrom) {
-                $rangesFrom[$key] = DateTimeHelper::getInstance()->convertToCustomDatabaseFormat('H:i', $rangeFrom);
-            }
             $rangesTo = [];
-            foreach ($request->input('range_to', []) as $key => $rangeTo) {
-                $rangesTo[$key] = DateTimeHelper::getInstance()->convertToCustomDatabaseFormat('H:i', $rangeTo);
+
+            $inputRangesFrom = $request->input('range_from', []);
+            $inputRangesTo = $request->input('range_to', []);
+            foreach ($request->input('times') as $time) {
+                $hasRangeFrom = !empty($inputRangesFrom[$time]);
+                $hasRangeTo = !empty($inputRangesTo[$time]);
+                if ($hasRangeFrom) {
+                    $rangeFrom = $inputRangesFrom[$time];
+                }
+                if ($hasRangeTo) {
+                    $rangeTo = $inputRangesTo[$time];
+                }
+
+                $diffDay = 0;
+                if ($hasRangeFrom && $hasRangeTo && strcmp($rangeFrom, $rangeTo) > 0) {
+                    $tmp = $rangeTo;
+                    $rangeTo = $rangeFrom;
+                    $rangeFrom = $tmp;
+                }
+
+                if ($hasRangeFrom) {
+                    $rangeFrom = DateTimeHelper::getInstance()
+                        ->convertToCustomDatabaseFormat('H:i', $rangeFrom, null, false, $diffDay);
+                }
+                if ($hasRangeTo) {
+                    if (!empty($rangeFrom)) {
+                        $rangeTo = DateTimeHelper::getInstance()
+                            ->convertToCustomDatabaseFormat('H:i', $rangeTo, null, false, $tDiffDay);
+                    } else {
+                        $rangeTo = DateTimeHelper::getInstance()
+                            ->convertToCustomDatabaseFormat('H:i', $rangeTo);
+                    }
+                }
+                $time += $diffDay;
+                if (!empty($rangeFrom)) $rangesFrom[$time] = $rangeFrom;
+                if (!empty($rangeTo)) $rangesTo[$time] = $rangeTo;
+                $times[] = $time;
             }
 
             $this->teacherRepository->updateAvailableTimes(
-                $request->input('times'),
+                $times,
                 $rangesFrom,
                 $rangesTo
             );
@@ -764,6 +836,7 @@ class TeacherController extends ViewController
             'rates_for_teacher' => $ratesForTeacher,
             'average_rate' => $averageRate,
             'max_rate' => count(_k('rates')),
+            'available_times' => $this->formatAvailableTimes($teacher->available_times),
 
             'skype_id' => $theme->options('ts_skype_id', ''),
             'skype_name' => $theme->options('ts_skype_name', ''),

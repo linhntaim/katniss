@@ -68,11 +68,19 @@ class ClassTimeController extends WebApiController
             return $this->responseFail(trans('error.new_class_time_must_before_last_class_time'));
         }
 
+        $duration = NumberFormatHelper::getInstance()->fromFormat($request->input('duration'));
+        $overTime = $classroom->spentTime + $duration - $classroom->hours;
+        if ($overTime > 0) {
+            return $this->responseFail(trans('error.new_class_time_must_be_in_classroom_time', [
+                'overtime' => toFormattedNumber($overTime) . ' ' . trans_choice('label.hour_lc', $overTime),
+            ]));
+        }
+
         try {
             $classTimes = $this->classTimeRepository->create(
                 $classroom->id,
                 $request->input('subject'),
-                NumberFormatHelper::getInstance()->fromFormat($request->input('duration')),
+                $duration,
                 $startAt,
                 $request->input('content', '')
             );
@@ -108,6 +116,7 @@ class ClassTimeController extends WebApiController
                     'teacher_review' => null,
                     'student_review' => null
                 ],
+                'overtime' => $overTime,
             ]);
         } catch (KatnissException $exception) {
             return $this->responseFail($exception->getMessage());
