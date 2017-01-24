@@ -65,17 +65,17 @@ return [
         // custom disks
         'cache_assets' => [
             'driver' => 'local',
-            'root'   => storage_path('../public/assets/cache'),
+            'root'   => public_path('assets/cache'),
         ],
 
         'upload' => [
             'driver' => 'local',
-            'root'   => storage_path('../public/upload'),
+            'root'   => public_path('upload'),
         ],
 
         'file_manager' => [
             'driver' => 'local',
-            'root'   => storage_path('../public/files'),
+            'root'   => public_path('files'),
         ],
 
         'lang' => [

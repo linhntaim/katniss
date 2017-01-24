@@ -13,7 +13,7 @@
             @if($has_video)
                 <div class="{{ $has_reviews ? 'col-sm-6' : 'col-sm-12' }}">
                     <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="{{ $video_url }}"></iframe>
+                        <iframe class="embed-responsive-item" src="{{ $video_url }}" allowfullscreen></iframe>
                     </div>
                 </div>
             @endif
