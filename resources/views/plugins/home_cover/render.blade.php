@@ -14,13 +14,13 @@
                 </a>
             </div>
         @elseif($has_image)
-            <div class="cover-media">
+            <div class="cover-media" style="width:{{ !$has_text ? '100' : '75' }}%">
                 <div class="embed-responsive embed-responsive-16by9">
                     <img class="embed-responsive-item" src="{{ $image }}">
                 </div>
             </div>
         @elseif($has_video)
-            <div class="cover-media">
+            <div class="cover-media" style="width:{{ !$has_text ? '100' : '75' }}%">
                 <div class="embed-responsive embed-responsive-16by9">
                     <iframe class="embed-responsive-item" src="{{ $video_url }}"></iframe>
                 </div>
