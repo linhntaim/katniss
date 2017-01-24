@@ -41,7 +41,7 @@
                 <div class="content">
                     @include('home_themes.wow_skype.pages.teacher.sign_up_help')
                     @if(!empty($skype_id))
-                        <p>Skype: <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a></p>
+                        <p>Skype: <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ !empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a></p>
                     @endif
                     @if(!empty($hot_line))
                         <p>{{ trans('label.hot_line_short') }}: <a>{{ $hot_line }}</a></p>

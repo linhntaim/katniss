@@ -144,7 +144,7 @@ class ArticleController extends AdminController
             return $error_redirect->withErrors([$ex->getMessage()]);
         }
 
-        return redirect(adminUrl('articles'));
+        return redirect(adminUrl('published-articles'));
     }
 
     /**

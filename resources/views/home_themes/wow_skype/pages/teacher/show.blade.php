@@ -283,40 +283,40 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="media">
-                            <div class="media-left">
-                                <i class="fa fa-calendar font-20 width-20"></i>
+                        <?php $available_times = $teacher->available_times; ?>
+                        @if(!empty($available_times))
+                            <div class="media">
+                                <div class="media-left">
+                                    <i class="fa fa-calendar font-20 width-20"></i>
+                                </div>
+                                    <div class="media-body text-middle">
+                                        <strong class="color-master">{{ trans('label.available_times') }}</strong>
+                                    </div>
+                                    <div class="margin-v-10 padding-h-10 padding-v-5 br-4 bg-master color-white">
+                                            @foreach($available_times['times'] as $available_day)
+                                                <?php
+                                                $range_from = null;
+                                                if(!empty($available_times['range_from'][$available_day])) {
+                                                    $range_from = dateFormatFromDatabase($available_times['range_from'][$available_day], 'H:i', $diffDay);
+                                                }
+                                                ?>
+                                                <p class="margin-v-5">
+                                                    <strong>{{ trans('datetime.day_' . ($available_day + $diffDay)) }}</strong>
+                                                    @if(!empty($range_from))
+                                                        {{ trans('label.from_lc') }} {{ $range_from }}
+                                                    @endif
+                                                    @if(!empty($available_times['range_to'][$available_day]))
+                                                        {{ trans('label.to_lc') }} {{ dateFormatFromDatabase($available_times['range_to'][$available_day], 'H:i') }}
+                                                    @endif
+                                                </p>
+                                            @endforeach
+                                    </div>
+                                    <div>
+                                        {{ trans('label.your_timezone_is') }}
+                                        <a class="text-underline hover-none toggle-tooltip" title="{{ trans('form.action_change') }}" data-toggle="modal" data-target="#change-timezone-modal" href="#">{{ settings()->timezone }}</a>
+                                    </div>
                             </div>
-                            <?php $available_times = $teacher->available_times; ?>
-                            @if(!empty($available_times))
-                                <div class="media-body text-middle">
-                                    <strong class="color-master">{{ trans('label.available_times') }}</strong>
-                                </div>
-                                <div class="margin-v-10 padding-h-10 padding-v-5 br-4 bg-master color-white">
-                                        @foreach($available_times['times'] as $available_day)
-                                            <?php
-                                            $range_from = null;
-                                            if(!empty($available_times['range_from'][$available_day])) {
-                                                $range_from = dateFormatFromDatabase($available_times['range_from'][$available_day], 'H:i', $diffDay);
-                                            }
-                                            ?>
-                                            <p class="margin-v-5">
-                                                <strong>{{ trans('datetime.day_' . ($available_day + $diffDay)) }}</strong>
-                                                @if(!empty($range_from))
-                                                    {{ trans('label.from_lc') }} {{ $range_from }}
-                                                @endif
-                                                @if(!empty($available_times['range_to'][$available_day]))
-                                                    {{ trans('label.to_lc') }} {{ dateFormatFromDatabase($available_times['range_to'][$available_day], 'H:i') }}
-                                                @endif
-                                            </p>
-                                        @endforeach
-                                </div>
-                                <div>
-                                    {{ trans('label.your_timezone_is') }}
-                                    <a class="text-underline hover-none toggle-tooltip" title="{{ trans('form.action_change') }}" data-toggle="modal" data-target="#change-timezone-modal" href="#">{{ settings()->timezone }}</a>
-                                </div>
-                            @endif
-                        </div>
+                        @endif
                         @if(!$is_auth)
                             <a role="button" class="btn btn-success btn-block uppercase bold-700 margin-top-10"
                                href="{{ homeUrl('student/sign-up') }}?teacher_id={{ $teacher->user_id }}">
@@ -354,7 +354,7 @@
                                     <i class="fa fa-skype font-20 width-20"></i>
                                 </div>
                                 <div class="media-body text-middle">
-                                    <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a>
+                                    <a href="skype:{{ $skype_id }}?chat">{{ $skype_id }} {{ !empty($skype_name) ? '(' . $skype_name . ')' : '' }}</a>
                                 </div>
                             </div>
                         @endif

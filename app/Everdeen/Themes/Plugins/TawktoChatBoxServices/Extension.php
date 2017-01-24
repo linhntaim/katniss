@@ -14,9 +14,9 @@ use Katniss\Everdeen\Utils\HtmlTag\Html5;
 
 class Extension extends BaseExtension
 {
-    const NAME              = 'tawkto_chatbox_services';
-    const DISPLAY_NAME      = 'Tawk.to Chatbox Services';
-    const DESCRIPTION       = 'Set up Tawkto Chatbox Services';
+    const NAME = 'tawkto_chatbox_services';
+    const DISPLAY_NAME = 'Tawk.to Chatbox Services';
+    const DESCRIPTION = 'Set up Tawkto Chatbox Services';
     const DEFAULT_TAWKTO_ID = '54f6736dbd5fa428704c651a';
 
     public $cacheEnable;
@@ -24,18 +24,20 @@ class Extension extends BaseExtension
     public $chatboxAsync;
     public $chatboxId;
 
-    public function register ()
+    public function register()
     {
-        if(!isMobileClient()) {
-            if (!$this->cacheEnable && $this->chatboxEnable) {
-                enqueueThemeFooter($this->rawChatboxScript(), $this::NAME);
-            } else {
-                enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
+        if (!isMobileClient()) {
+            if ($this->chatboxEnable == 1) {
+                if ($this->cacheEnable == 1) {
+                    enqueueThemeFooter(Html5::js(AssetHelper::jsUrl($this::NAME)), $this::NAME);
+                } else {
+                    enqueueThemeFooter($this->rawChatboxScript(), $this::NAME);
+                }
             }
         }
     }
 
-    public function chatboxScript ()
+    public function chatboxScript()
     {
         if ($this->chatboxAsync) {
             $async = 'true';
@@ -53,12 +55,12 @@ class Extension extends BaseExtension
                 })();';
     }
 
-    public function rawChatboxScript ()
+    public function rawChatboxScript()
     {
         return '<!--Start of Tawk.to Script--> <script type="text/javascript">' . $this->chatboxScript() . '</script> <!--End of Tawk.to Script-->';
     }
 
-    public function cacheScripts ()
+    public function cacheScripts()
     {
         if ($this->cacheEnable) {
             $cache = '';
@@ -71,32 +73,32 @@ class Extension extends BaseExtension
         }
     }
 
-    protected function __init ()
+    protected function __init()
     {
         parent::__init();
 
-        $this->cacheEnable   = !empty($this->data['cache_enable']) && $this->data['cache_enable'] == 1;
+        $this->cacheEnable = defPr($this->getProperty('cache_enable'), 0);
 
-        $this->chatboxEnable = !empty($this->data['chatbox_enable']) && $this->data['chatbox_enable'] == 1;
-        $this->chatboxAsync  = !empty($this->data['chatbox_async']) && $this->data['chatbox_async'] == 1;
-        $this->chatboxId     = empty($this->data['chatbox_id']) ? $this::DEFAULT_TAWKTO_ID : $this->data['chatbox_id'];
+        $this->chatboxEnable = defPr($this->getProperty('chatbox_enable'), 0);
+        $this->chatboxAsync = defPr($this->getProperty('chatbox_async'), 0);
+        $this->chatboxId = defPr($this->getProperty('chatbox_id'), $this::DEFAULT_TAWKTO_ID);
 
         if (!$this->chatboxEnable) {
             $this->cacheEnable = false;
         }
     }
 
-    public function viewAdminParams ()
+    public function viewAdminParams()
     {
         return array_merge(parent::viewAdminParams(), [
-            'cache_enable'   => $this->cacheEnable,
+            'cache_enable' => $this->cacheEnable,
             'chatbox_enable' => $this->chatboxEnable,
-            'chatbox_id'     => $this->chatboxId,
-            'chatbox_async'  => $this->chatboxAsync,
+            'chatbox_id' => $this->chatboxId,
+            'chatbox_async' => $this->chatboxAsync,
         ]);
     }
 
-    public function fields ()
+    public function fields()
     {
         $fields = parent::fields();
         return array_merge($fields, [
@@ -107,18 +109,18 @@ class Extension extends BaseExtension
         ]);
     }
 
-    public function validationRules ()
+    public function validationRules()
     {
         $validationRules = parent::validationRules();
         return array_merge($validationRules, [
-            'cache_enable'   => 'sometimes|in:1',
+            'cache_enable' => 'sometimes|in:1',
             'chatbox_enable' => 'sometimes|in:1',
-            'chatbox_async'  => 'sometimes|in:1',
-            'chatbox_id'     => 'required_if:chatbox_enable,1',
+            'chatbox_async' => 'sometimes|in:1',
+            'chatbox_id' => 'required_if:chatbox_enable,1',
         ]);
     }
 
-    public function save (array $data = [], array $localizedData = [])
+    public function save(array $data = [], array $localizedData = [])
     {
         $result = parent::save($data, $localizedData);
 

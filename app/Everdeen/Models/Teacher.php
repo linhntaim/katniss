@@ -60,7 +60,7 @@ class Teacher extends Model
     public function getAvailableTimesAttribute()
     {
         if (empty($this->attributes['available_times'])) {
-            return [];
+            return ['times' => [], 'range_from' => '', 'range_to' => ''];
         }
         return unserialize($this->attributes['available_times']);
     }
