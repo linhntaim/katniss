@@ -14,9 +14,12 @@ use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Classroom;
 use Katniss\Everdeen\Models\ClassTime;
+use Katniss\Everdeen\Reports\ClassroomStudentReport;
 use Katniss\Everdeen\Repositories\ClassroomRepository;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ClassroomController extends ViewController
 {
@@ -74,11 +77,16 @@ class ClassroomController extends ViewController
 
     public function show(Request $request, $id)
     {
+        if ($request->has('export')) {
+            return $this->export($request, $id);
+        }
+
         $classroom = $this->classroomRepository->model($id);
         $user = $request->authUser();
         $isOwner = false;
         $canClassroomEdit = false;
         $userCanCloseClassroom = false;
+        $canExportClassroom = false;
         $canAddTeacherReview = false;
         $canAddStudentReview = false;
         if ($user->hasRole('teacher')) {
@@ -94,17 +102,20 @@ class ClassroomController extends ViewController
             }
             $isOwner = true;
             $canAddStudentReview = true;
+            $canExportClassroom = true;
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
                 abort(404);
             }
             $isOwner = true;
             $userCanCloseClassroom = true;
+            $canExportClassroom = false;
         } elseif ($user->hasRole(['manager', 'admin'])) {
             $canClassroomEdit = true;
             $userCanCloseClassroom = true;
             $canAddTeacherReview = true;
             $canAddStudentReview = true;
+            $canExportClassroom = true;
         }
         $canClassroomClose = $userCanCloseClassroom
             && $classroom->isOpening
@@ -143,6 +154,7 @@ class ClassroomController extends ViewController
             'previous_month' => $previousMonth,
             'can_classroom_edit' => $canClassroomEdit && $classroom->isOpening,
             'can_classroom_close' => $canClassroomClose,
+            'can_classroom_export' => $canExportClassroom,
             'can_add_teacher_review' => $canAddTeacherReview,
             'can_add_student_review' => $canAddStudentReview,
             'teacher' => $classroom->teacherProfile,
@@ -152,6 +164,87 @@ class ClassroomController extends ViewController
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
             'max_rate' => count(_k('rates')),
         ]);
+    }
+
+    public function export(Request $request, $id)
+    {
+        $classroom = $this->classroomRepository->model($id);
+        $user = $request->authUser();
+        if ($user->hasRole('student')) {
+            if ($classroom->student_id != $user->id) {
+                abort(404);
+            }
+        } elseif ($user->hasRole('supporter')) {
+            if ($classroom->supporter_id != $user->id) {
+                abort(404);
+            }
+        } elseif (!$user->hasRole(['manager', 'admin'])) {
+            abort(404);
+        }
+
+        try {
+            $report = new ClassroomStudentReport($classroom->id, $classroom->teacher_id);
+
+            return Excel::create('Classroom_Student_' . Str::slug($classroom->name, '_'), function ($excel) use ($report, $classroom) {
+                $excel->sheet('Sheet 1', function ($sheet) use ($report, $classroom) {
+                    $data = $report->getDataAsFlatArray();
+                    array_unshift($data, $report->getHeader());
+
+                    $sheet->cell('A1', function ($cell) use ($report, $classroom) {
+                        $cell->setValue(
+                            trans_choice('label.classroom', 1) . ': ' .
+                            $classroom->name .
+                            ' (#' . $classroom->id . ')'
+                        );
+                    });
+
+                    $sheet->cell('A2', function ($cell) use ($report, $classroom) {
+                        $cell->setValue(
+                            trans_choice('label.teacher', 1) . ': ' .
+                            $classroom->teacherUserProfile->display_name .
+                            ' (#' . $classroom->teacherUserProfile->id . ')'
+                        );
+                    });
+
+                    $sheet->cell('A3', function ($cell) use ($report, $classroom) {
+                        $cell->setValue(
+                            trans('label.class_duration') . ': ' .
+                            $classroom->duration . ' ' . trans_choice('label.hour_lc', $classroom->hours)
+                        );
+                    });
+
+                    $sheet->cell('A4', function ($cell) use ($report, $classroom) {
+                        $cell->setValue(
+                            trans('label.class_spent_time') . ': ' .
+                            toFormattedNumber($report->getSumHours()) . ' ' . trans_choice('label.hour_lc', $report->getSumHours())
+                        );
+                    });
+
+                    $startColumn = 'A';
+                    $startRow = 5;
+                    $endColumn = chr(count($data[0]) + ord($startColumn) - 1);
+                    $endRow = $startRow + count($data) - 1;
+
+                    $sheet->mergeCells('A1:' . $endColumn . '1');
+                    $sheet->mergeCells('A2:' . $endColumn . '2');
+                    $sheet->mergeCells('A3:' . $endColumn . '3');
+                    $sheet->mergeCells('A4:' . $endColumn . '4');
+                    $sheet->fromArray($data, null, $startColumn . $startRow, true, false);
+                    $sheet->cells($startColumn . $startRow . ':' . $endColumn . $startRow, function ($cells) {
+                        $cells->setBackground('#000000');
+                        $cells->setFontColor('#ffffff');
+                        $cells->setFontWeight('bold');
+                    });
+                    $sheet->cells($startColumn . $startRow . ':' . $endColumn . $endRow, function ($cells) {
+                        $cells->setValignment('top');
+                    });
+                    $sheet->setBorder($startColumn . $startRow . ':' . $endColumn . $endRow, 'thin');
+                    $sheet->getStyle($startColumn . $startRow . ':' . $endColumn . $endRow)->getAlignment()->setWrapText(true);
+                });
+            })->download('xls');
+        } catch (KatnissException $ex) {
+            return abort(500);
+        }
     }
 
     public function update(Request $request, $id)

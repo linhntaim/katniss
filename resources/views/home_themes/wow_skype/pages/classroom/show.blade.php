@@ -638,6 +638,13 @@
                 </div>
             </div>
         </div>
+        @if($can_classroom_export)
+            <div class="margin-v-10">
+                <a class="btn btn-success" target="_blank" href="?export=1">
+                    <i class="fa fa-download"></i> {{ trans('form.action_export') }}
+                </a>
+            </div>
+        @endif
         <ul id="class-time-list" class="media-list step-list margin-top-30">
             @if($has_previous_month_class_times)
                 <li class="media class-time-previous">
