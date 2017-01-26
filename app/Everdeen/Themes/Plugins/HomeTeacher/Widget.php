@@ -71,10 +71,10 @@ left: 1px;
 width: 148px;
 height: 148px;
 border-radius: 4px;
-background: red; /* For browsers that do not support gradients */
-background: -webkit-linear-gradient(red, yellow); /* For Safari 5.1 to 6.0 */
-background: -o-linear-gradient(red, yellow); /* For Opera 11.1 to 12.0 */
-background: -moz-linear-gradient(red, yellow); /* For Firefox 3.6 to 15 */
+background: transparent; /* For browsers that do not support gradients */
+background: -webkit-linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* For Safari 5.1 to 6.0 */
+background: -o-linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* For Opera 11.1 to 12.0 */
+background: -moz-linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* For Firefox 3.6 to 15 */
 background: linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* Standard syntax */
 }
 #home-teacher .teacher-item .media-left > a > .teacher-meta{position:absolute;left:0;bottom:8px}

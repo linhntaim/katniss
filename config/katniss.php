@@ -57,6 +57,7 @@ return [
         Katniss\Everdeen\Themes\Plugins\HomeClassRegister\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeClassRegister\Widget::class,
         Katniss\Everdeen\Themes\Plugins\HomeLearningSteps\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeLearningSteps\Widget::class,
         Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures2\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures2\Widget::class,
         Katniss\Everdeen\Themes\Plugins\HomeCover\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeCover\Widget::class,
         Katniss\Everdeen\Themes\Plugins\HomeStudent\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeStudent\Widget::class,
         Katniss\Everdeen\Themes\Plugins\HomeStudent2\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeStudent2\Widget::class,
