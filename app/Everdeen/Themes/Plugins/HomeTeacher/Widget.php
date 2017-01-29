@@ -104,6 +104,7 @@ background: linear-gradient(rgba(0,0,0,0) 50%, rgba(85,87,86,1)); /* Standard sy
                     ];
                 }
             }
+            ++$i;
         }
         return array_merge(parent::viewHomeParams(), [
             'teachers' => $teachers,

@@ -32,7 +32,7 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span><img src="{{ ThemeFacade::imageAsset('icon_pie.png') }}"></span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_coin.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">{{ trans('register_help.become_student_step_4') }}</div>
@@ -41,10 +41,19 @@
     <li class="media">
         <div class="media-line"></div>
         <div class="media-left">
-            <span><img src="{{ ThemeFacade::imageAsset('icon_coin.png') }}"></span>
+            <span><img src="{{ ThemeFacade::imageAsset('icon_trial_class.png') }}"></span>
         </div>
         <div class="media-body">
             <div class="color-master">{{ trans('register_help.become_student_step_5') }}</div>
+        </div>
+    </li>
+    <li class="media">
+        <div class="media-line"></div>
+        <div class="media-left">
+            <span><img src="{{ ThemeFacade::imageAsset('icon_pie.png') }}"></span>
+        </div>
+        <div class="media-body">
+            <div class="color-master">{{ trans('register_help.become_student_step_6') }}</div>
         </div>
     </li>
     <li class="media">

@@ -28,5 +28,6 @@ your teaching skills to the fullest potential.',
     'become_student_step_2' => 'Our consultants will contact you and give you further information.',
     'become_student_step_3' => 'Do an English test which is formed based on the international standard.',
     'become_student_step_4' => 'Complete the course entry procedure and pay the tuition.',
-    'become_student_step_5' => 'Begin studying with your own course plan.',
+    'become_student_step_5' => 'Take a free class time with our teachers.',
+    'become_student_step_6' => 'Begin studying with your own course plan.',
 ];

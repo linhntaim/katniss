@@ -201,6 +201,18 @@ body {
     border-radius: 10px;
 }
 
+.border-white {
+    border-color: #fff;
+}
+
+.border-white-1-2 {
+    border-color: rgba(255, 255, 255, .5);
+}
+
+.border-white-3-4 {
+    border-color: rgba(255, 255, 255, .5);
+}
+
 .border-master {
     border-color: #00aff0;
 }
@@ -276,6 +288,27 @@ body {
 .btn-primary:active:focus {
     background-color: #0083b3;
     border-color: #0083b3;
+}
+
+.btn-primary-inverse {
+    color: #00aff0;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.btn-primary-inverse:hover {
+    color: #009cd6;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+.btn-primary-inverse.active,
+.btn-primary-inverse:focus,
+.btn-primary-inverse:active,
+.btn-primary-inverse:active:focus {
+    color: #0083b3;
+    background-color: #fff;
+    border-color: #fff;
 }
 
 .btn-success {
@@ -365,6 +398,14 @@ textarea.form-control.as-text {
 
 .border-5x {
     border-width: 5px;
+}
+
+.border-8x {
+    border-width: 8px;
+}
+
+.border-10x {
+    border-width: 10px;
 }
 
 .box-shadow-none {
@@ -995,6 +1036,16 @@ a:active:focus {
 .padding-h-20 {
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.padding-h-25 {
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.padding-h-30 {
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
 .padding-v-none {

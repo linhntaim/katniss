@@ -28,5 +28,6 @@ your teaching skills to the fullest potential.',
     'become_student_step_2' => 'Chuyên viên tư vấn tuyển sinh gọi lại hỗ trợ thông tin.',
     'become_student_step_3' => 'Làm bài kiểm tra trình độ tiếng Anh theo chuẩn quốc tế.',
     'become_student_step_4' => 'Hoàn thành thủ tục nhập học và đóng học phí.',
-    'become_student_step_5' => 'Bắt đầu ngay với lộ trình học của riêng bạn.',
+    'become_student_step_5' => 'Học thử với giáo viên miễn phí.',
+    'become_student_step_6' => 'Bắt đầu ngay với lộ trình học của riêng bạn.',
 ];
