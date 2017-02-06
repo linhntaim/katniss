@@ -18,6 +18,7 @@ abstract class Plugin
     const DISPLAY_NAME = '';
     const DESCRIPTION = '';
     const THEME_ONLY = false;
+    const THEME_HOME = true;
     const EDITABLE = true;
     const TRANSLATABLE = false;
 
@@ -193,9 +194,11 @@ abstract class Plugin
 
     public function view($name)
     {
-        return !$this::THEME_ONLY ?
-            ThemeFacade::commonPluginPath($this::NAME, $name)
-            : ThemeFacade::pluginPath($this::NAME, $name);
+        if (!$this::THEME_ONLY) {
+            return ThemeFacade::commonPluginPath($this::NAME, $name);
+        }
+        $theme = $this::THEME_HOME ? homeTheme() : adminTheme();
+        return $theme->pluginPath($this::NAME, $name);
     }
 
     public function viewAdmin()

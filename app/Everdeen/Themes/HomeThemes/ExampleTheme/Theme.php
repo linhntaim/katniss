@@ -8,7 +8,6 @@
 
 namespace Katniss\Everdeen\Themes\HomeThemes\ExampleTheme;
 
-
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Controllers\ThemeAdminController;
 use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
