@@ -28,7 +28,11 @@ class LinkController extends AdminController
      */
     public function index(Request $request)
     {
-        $links = $this->linkRepository->getPaged();
+        $searchCategories = $request->input('categories', []);
+        $links = $this->linkRepository->getSearchPaged(
+            $searchCategories
+        );
+        $linkCategoryRepository = new LinkCategoryRepository();
 
         $this->_title(trans('pages.admin_links_title'));
         $this->_description(trans('pages.admin_links_desc'));
@@ -37,6 +41,11 @@ class LinkController extends AdminController
             'links' => $links,
             'pagination' => $this->paginationRender->renderByPagedModels($links),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchTitle) || !empty($searchAuthor) || !empty($searchCategories),
+            'search_categories' => $searchCategories,
+            'categories' => $linkCategoryRepository->getAll(),
         ]);
     }
 

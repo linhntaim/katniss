@@ -4,7 +4,7 @@
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('published-articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
+        <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
         <li><a href="#">{{ trans('form.action_add') }}</a></li>
     </ol>
 @endsection
@@ -149,7 +149,7 @@
                         <button class="btn btn-primary" type="submit">{{ trans('form.action_add') }}</button>
                         <div class="pull-right">
                             <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                            <a role="button" class="btn btn-warning" href="{{ adminUrl('published-articles') }}">{{ trans('form.action_cancel') }}</a>
+                            <a role="button" class="btn btn-warning" href="{{ adminUrl('articles') }}">{{ trans('form.action_cancel') }}</a>
                         </div>
                     </div>
                 </div>

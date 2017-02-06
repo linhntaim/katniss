@@ -200,14 +200,9 @@ class AdminMenuComposer
                     trans('pages.admin_article_categories_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
-                $subMenu->add(  // add an example menu item which have sub menu
-                    '#',
-                    trans('pages.admin_articles_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
-                );
                 $subMenu->add( // add a menu item
                     adminUrl('articles'),
-                    trans('pages.admin_published_articles_title'),
+                    trans('pages.admin_articles_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);

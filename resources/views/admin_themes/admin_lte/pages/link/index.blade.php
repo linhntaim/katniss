@@ -7,12 +7,55 @@
         <li><a href="{{ adminUrl('links') }}">{{ trans('pages.admin_links_title') }}</a></li>
     </ol>
 @endsection
+@section('lib_styles')
+    <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+@endsection
+@section('lib_scripts')
+    <script src="{{ _kExternalLink('select2-js') }}"></script>
+@endsection
 @section('extended_scripts')
     <script>
         $(function () {
+            $('.select2').select2();
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
     </script>
+@endsection
+@section('modals')
+    <div class="modal fade" id="search-modal" tabindex="false" role="dialog" aria-labelledby="search-modal-title">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="search-modal-title">{{ trans('form.action_search') }}</h4>
+                </div>
+                <form>
+                    <div id="search-modal-content" class="modal-body">
+                        <div class="form-group">
+                            <label for="inputCategories">{{ trans_choice('label.category', 2) }}</label>
+                            <select id="inputCategories" class="form-control select2" name="categories[]" multiple="multiple"
+                                    data-placeholder="{{ trans('form.action_select') }} {{ trans_choice('label.category', 2) }}" style="width: 100%;">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"{{ in_array($category->id, $search_categories) ? ' selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ trans('form.action_close') }}</button>
+                        <a role="button" class="btn btn-warning {{ $on_searching ? '' : 'hide' }}" href="{{ $clear_search_url }}">
+                            {{ trans('form.action_clear_search') }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">{{ trans('form.action_search') }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('page_content')
     <div class="row">
@@ -25,6 +68,11 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.link_lc', 2)]) }}</h3>
+                    <div class="box-tools">
+                        <button type="button" class="btn {{ $on_searching ? 'btn-warning' : 'btn-primary' }} btn-sm" data-toggle="modal" data-target="#search-modal">
+                            <i class="fa fa-search"></i> {{ trans('form.action_search') }}
+                        </button>
+                    </div>
                 </div><!-- /.box-header -->
             @if($links->count()>0)
                 <div class="box-body table-responsive no-padding">

@@ -28,16 +28,16 @@ class ThemeAdminController extends AdminController
             return $rdrResponse->withErrors($validator);
         }
 
-        $options = getOption('theme_example', []);
-        $options['default_map_marker_id'] = $request->input('default_map_marker_id');
-        setOption('theme_example', $options, 'theme:h:example');
+        homeTheme()->options([
+            'default_map_marker_id' => $request->input('default_map_marker_id'),
+        ]);
 
         return $rdrResponse;
     }
 
     public function options(Request $request)
     {
-        $options = getOption('theme_example', []);
+        $homeTheme = homeTheme();
 
         $isMapMarkerEnable = isActivatedExtension('google_maps_markers');
         $defaultMapMarkerId = 0;
@@ -45,7 +45,7 @@ class ThemeAdminController extends AdminController
         if ($isMapMarkerEnable) {
             $mapMarkerRepository = new MapMarkerRepository();
             $mapMarkers = $mapMarkerRepository->getAll();
-            $defaultMapMarkerId = empty($options['default_map_marker_id']) ? 0 : $options['default_map_marker_id'];
+            $defaultMapMarkerId = $homeTheme->options('default_map_marker_id', 0);
         }
 
         return $request->getTheme()->resolveExtraView(
@@ -53,6 +53,7 @@ class ThemeAdminController extends AdminController
             trans('example_theme.page_options_title'),
             trans('example_theme.page_options_desc'),
             [
+                'home_theme' => $homeTheme,
                 'is_map_marker_enable' => $isMapMarkerEnable,
                 'default_map_marker_id' => $defaultMapMarkerId,
                 'map_markers' => $mapMarkers,

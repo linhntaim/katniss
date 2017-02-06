@@ -15,6 +15,7 @@ class CreateSessionsTable extends Migration
     {
         Schema::create('user_sessions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->string('id')->unique();
             $table->integer('user_id')->nullable();

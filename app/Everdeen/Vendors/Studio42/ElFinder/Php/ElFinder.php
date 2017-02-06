@@ -16,7 +16,6 @@ class ElFinder extends \elFinder
         $ownDirectoryPath = userPublicPath(request()->authUser()->ownDirectory);
         $notDeletes = [
             concatDirectories($ownDirectoryPath, 'profile_pictures') => true,
-            concatDirectories($ownDirectoryPath, 'certificates') => true,
         ];
         foreach ($notDeletes as $pathDelete => $loose) {
             if (!$loose && $pathDelete == $path) {

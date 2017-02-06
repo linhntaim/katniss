@@ -15,6 +15,7 @@ class CreateConversations extends Migration
     {
         Schema::create('conversations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('channel_id')->unsigned();
@@ -29,6 +30,7 @@ class CreateConversations extends Migration
 
         Schema::create('conversations_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->integer('conversation_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
@@ -43,6 +45,7 @@ class CreateConversations extends Migration
 
         Schema::create('conversations_devices', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->integer('conversation_id')->unsigned();
             $table->bigInteger('device_id')->unsigned();

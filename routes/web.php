@@ -22,7 +22,17 @@ Route::group([
     Route::group([
         'namespace' => 'Home',
     ], function () {
-        Route::get('/', 'HomepageController@index');
+        Route::get('/', 'ExampleController@index');
+        Route::get(homeRoute('example/social-sharing'), 'ExampleController@getSocialSharing');
+        Route::get(homeRoute('example/facebook-comments'), 'ExampleController@getFacebookComments');
+        Route::get(homeRoute('example/widgets'), 'ExampleController@getWidgets');
+        Route::get(homeRoute('example/my-settings'), 'ExampleController@getMySettings');
+        Route::get(homeRoute('example/pages'), 'ExampleController@getPages');
+        Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')->where('id', '[0-9]+');
+        Route::get(homeRoute('example/articles'), 'ExampleController@getArticles');
+        Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')->where('id', '[0-9]+');
+        Route::get(homeRoute('example/article-categories/{id}'), 'ExampleController@getCategoryArticles')->where('id', '[0-9]+');
+        Route::get(homeRoute('example/public-conversation'), 'ExampleController@getPublicConversation');
     });
 
     Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');

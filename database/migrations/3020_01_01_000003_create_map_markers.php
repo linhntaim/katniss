@@ -15,6 +15,7 @@ class CreateMapMarkers extends Migration
     {
         Schema::create('map_markers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->text('data');
@@ -25,6 +26,7 @@ class CreateMapMarkers extends Migration
 
         Schema::create('map_marker_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('marker_id')->unsigned();

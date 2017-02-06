@@ -10,7 +10,6 @@ class Category extends Model
     const TYPE_LINK = 0;
     const TYPE_ARTICLE = 1;
     const TYPE_MEDIA = 2;
-    const TYPE_HELP = 3;
 
     use Translatable;
     public $useTranslationFallback = true;

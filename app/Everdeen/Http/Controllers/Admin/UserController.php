@@ -9,7 +9,6 @@ use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
-use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class UserController extends AdminController
 {
@@ -32,13 +31,9 @@ class UserController extends AdminController
     {
         $searchDisplayName = $request->input('display_name', null);
         $searchEmail = $request->input('email', null);
-        $searchSkypeId = $request->input('skype_id', null);
-        $searchPhoneNumber = $request->input('phone_number', null);
         $users = $this->userRepository->getSearchPaged(
             $searchDisplayName,
-            $searchEmail,
-            $searchSkypeId,
-            $searchPhoneNumber
+            $searchEmail
         );
 
         $this->_title(trans('pages.admin_users_title'));
@@ -53,8 +48,6 @@ class UserController extends AdminController
             'on_searching' => !empty($searchDisplayName) || !empty($searchEmail) || !empty($searchSkypeId) || !empty($searchPhoneNumber),
             'search_display_name' => $searchDisplayName,
             'search_email' => $searchEmail,
-            'search_skype_id' => $searchSkypeId,
-            'search_phone_number' => $searchPhoneNumber,
         ]);
     }
 
@@ -72,7 +65,6 @@ class UserController extends AdminController
 
         return $this->_create([
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
-            'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
 
@@ -84,16 +76,6 @@ class UserController extends AdminController
             'email' => 'required|email|max:255|unique:users,email',
             'name' => 'required|max:255|unique:users,name',
             'password' => 'required|min:6',
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
-            'gender' => 'required|in:' . implode(',', allGenders()),
-            'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
-            'phone_number' => 'required|max:255',
-            'address' => 'sometimes|max:255',
-            'city' => 'required|max:255',
-            'country' => 'required|in:' . implode(',', allCountryCodes()),
-            'nationality' => 'required|in:' . implode(',', allCountryCodes()),
-            'skype_id' => 'sometimes|max:255',
-            'facebook' => 'sometimes|max:255|url',
         ], $extra_rules));
     }
 
@@ -114,23 +96,11 @@ class UserController extends AdminController
         }
 
         try {
-            $this->userRepository->createAdmin([
-                'display_name' => $request->input('display_name'),
-                'email' => $request->input('email'),
-                'name' => $request->input('name'),
-                'password' => $request->input('password'),
-                'date_of_birth' => DateTimeHelper::getInstance()
-                    ->convertToDatabaseFormat(DateTimeHelper::shortDateFormat(), $request->input('date_of_birth'), true),
-                'gender' => $request->input('gender'),
-                'phone_code' => $request->input('phone_code'),
-                'phone_number' => $request->input('phone_number'),
-                'address' => $request->input('address', ''),
-                'city' => $request->input('city'),
-                'nationality' => $request->input('nationality'),
-                'skype_id' => $request->input('skype_id', ''),
-                'facebook' => $request->input('facebook', ''),
-            ],
-                $request->input('country'),
+            $this->userRepository->create(
+                $request->input('name'),
+                $request->input('display_name'),
+                $request->input('email'),
+                $request->input('password'),
                 $request->input('roles'),
                 $request->has('send_welcomed_mail')
             );
@@ -171,7 +141,6 @@ class UserController extends AdminController
             'user_roles' => $user->roles,
             'owner_role' => $roleRepository->getByName('owner'),
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
-            'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
 
@@ -199,23 +168,11 @@ class UserController extends AdminController
         }
 
         try {
-            $this->userRepository->updateAdmin([
-                'display_name' => $request->input('display_name'),
-                'email' => $request->input('email'),
-                'name' => $request->input('name'),
-                'password' => $request->input('password', ''),
-                'date_of_birth' => DateTimeHelper::getInstance()
-                    ->convertToDatabaseFormat(DateTimeHelper::shortDateFormat(), $request->input('date_of_birth'), true),
-                'gender' => $request->input('gender'),
-                'phone_code' => $request->input('phone_code'),
-                'phone_number' => $request->input('phone_number'),
-                'address' => $request->input('address', ''),
-                'city' => $request->input('city'),
-                'nationality' => $request->input('nationality'),
-                'skype_id' => $request->input('skype_id', ''),
-                'facebook' => $request->input('facebook', ''),
-            ],
-                $request->input('country'),
+            $this->userRepository->update(
+                $request->input('name'),
+                $request->input('display_name'),
+                $request->input('email'),
+                $request->input('password', ''),
                 $request->input('roles')
             );
         } catch (KatnissException $ex) {

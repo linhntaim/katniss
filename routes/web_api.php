@@ -25,6 +25,8 @@ Route::group([
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
 
+    Route::get('authors', 'UserController@indexAuthor');
+
     Route::group([
         'middleware' => 'auth'
     ], function () {

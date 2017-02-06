@@ -19,38 +19,20 @@ class Post extends Model
     const TYPE_ARTICLE = 1;
     const TYPE_HELP = 2;
 
-    const STATUS_PUBLISHED = 1;
-    const STATUS_TEACHER_EDITING = 2;
-
     use Translatable;
     use ExtendTranslatableTrait;
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
     protected $fillable = ['user_id', 'viewed', 'template', 'featured_image', 'type',
-        'title', 'slug', 'description', 'content', 'raw_content', 'status'];
+        'title', 'slug', 'description', 'content', 'raw_content'];
 
     protected $translationForeignKey = 'post_id';
     public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
 
-    public function getIsPublishedAttribute()
-    {
-        return $this->attributes['status'] == self::STATUS_PUBLISHED;
-    }
-
-    public function getDiffDaysAttribute()
-    {
-        return DateTimeHelper::diffDay($this->attributes['created_at']);
-    }
-
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    public function scopePublished($query)
-    {
-        return $query->where('status', self::STATUS_PUBLISHED);
     }
 
     public function scopeOfPage($query)

@@ -1,10 +1,10 @@
 @extends('admin_themes.admin_lte.master.admin')
-@section('page_title', trans('pages.admin_teacher_articles_title'))
-@section('page_description', trans('pages.admin_teacher_articles_desc'))
+@section('page_title', trans('pages.admin_articles_title'))
+@section('page_description', trans('pages.admin_articles_desc'))
 @section('page_breadcrumb')
     <ol class="breadcrumb">
         <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-        <li><a href="{{ adminUrl('teacher-articles') }}">{{ trans('pages.admin_teacher_articles_title') }}</a></li>
+        <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
     </ol>
 @endsection
 @section('lib_styles')
@@ -35,7 +35,9 @@
             }
 
             function dataMore(response) {
-                return response._success && response._data.pagination.last != response._data.pagination.current;
+                return response._success
+                    && response._data.pagination.last != 0
+                    && response._data.pagination.last != response._data.pagination.current;
             }
 
             function initAjaxSelect2($selector, url, templateFunc, selectionFunc, resultFunc, moreFunc) {
@@ -77,7 +79,6 @@
 
             $('#inputCategories').select2();
 
-            x_modal_put($('a.publish'), '{{ trans('form.action_publish') }}', '{{ trans('label.wanna_publish', ['name' => '']) }}');
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
     </script>
@@ -136,6 +137,11 @@
 @section('page_content')
     <div class="row">
         <div class="col-xs-12">
+            <div class="margin-bottom">
+                <a class="btn btn-primary" href="{{ adminUrl('articles/create') }}">
+                    {{ trans('form.action_add') }} {{ trans_choice('label.article_lc', 1) }}
+                </a>
+            </div>
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">{{ trans('form.list_of', ['name' => trans_choice('label.article_lc', 2)]) }}</h3>
@@ -186,9 +192,6 @@
                                         <td>
                                               <a href="{{ adminUrl('articles/{id}/edit', ['id'=> $article->id]) }}">
                                                   {{ trans('form.action_edit') }}
-                                              </a>
-                                              <a class="publish" href="{{ addRdrUrl(adminUrl('articles/{id}', ['id'=> $article->id]) . '?publish=1') }}">
-                                                  {{ trans('form.action_publish') }}
                                               </a>
                                               <a class="delete" href="{{ addRdrUrl(adminUrl('articles/{id}', ['id'=> $article->id])) }}">
                                                   {{ trans('form.action_delete') }}

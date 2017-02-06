@@ -15,6 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('user_settings', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->string('locale')->default('en');
@@ -34,6 +35,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->string('display_name');
@@ -42,16 +44,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('url_avatar');
             $table->string('url_avatar_thumb');
-
-            $table->string('gender', 10)->nullable();
-            $table->string('skype_id')->nullable();
-            $table->string('facebook')->nullable();
-            $table->string('phone_code')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->dateTime('date_of_birth')->nullable();
-            $table->string('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('nationality')->nullable();
 
             $table->string('activation_code')->default('');
             $table->boolean('active')->default(false);
@@ -67,6 +59,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('user_socials', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->bigInteger('user_id')->unsigned();
             $table->string('provider');
