@@ -4,7 +4,6 @@ namespace Katniss\Everdeen\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Connectors\ConnectionFactory;
-use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\MySqlConnection;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\DatabaseSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\FileSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Socialite\SocialiteManager;
