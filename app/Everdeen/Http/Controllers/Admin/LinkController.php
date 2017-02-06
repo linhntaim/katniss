@@ -88,7 +88,7 @@ class LinkController extends AdminController
 
         $validator = Validator::make($request->all(), [
             'categories' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
-            'image' => 'sometimes|url',
+            'image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $error_redirect->withErrors($validator);
@@ -163,7 +163,7 @@ class LinkController extends AdminController
 
         $validator = Validator::make($request->all(), [
             'categories' => 'required|exists:categories,id,type,' . Category::TYPE_LINK,
-            'image' => 'sometimes|url',
+            'image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $redirect->withErrors($validator);

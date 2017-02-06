@@ -71,7 +71,7 @@ class UserController extends AdminController
     protected function validator(array $data, array $extra_rules = [])
     {
         return Validator::make($data, array_merge([
-            'roles' => 'sometimes|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
+            'roles' => 'sometimes|nullable|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
             'display_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'name' => 'required|max:255|unique:users,name',
@@ -158,7 +158,7 @@ class UserController extends AdminController
         $rdr = redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
 
         $validator = $this->validator($request->all(), [
-            'password' => 'sometimes|min:6',
+            'password' => 'sometimes|nullable|min:6',
             'name' => ['required', 'max:255', Rule::unique('users', 'name')->ignore($user->id, 'id')],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id, 'id')],
         ]);
