@@ -44,8 +44,8 @@
                     else {
                         self.removeClass('theme-widget-empty');
                     }
-                    var api = new KatnissApi();
-                    api.put('widgets/sort', {
+                    var api = new KatnissApi(true);
+                    api.put('admin/widgets/sort', {
                         placeholder: self.attr('data-placeholder'),
                         widget_ids: items
                     });

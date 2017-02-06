@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Jenssegers\Agent\Facades\Agent;
@@ -158,6 +159,17 @@ function isValidWizardKey($key, $name = '')
 function methodParam($method)
 {
     return '_method=' . $method;
+}
+
+function parseEmbedVideoUrl($videoUrl)
+{
+    if (preg_match(AppConfig::REGEX_YOUTUBE_URL, $videoUrl, $matches)) {
+        return 'https://www.youtube.com/embed/' . $matches[4];
+    } elseif (preg_match(AppConfig::REGEX_VIMEO_URL, $videoUrl, $matches)) {
+        return 'https://player.vimeo.com/video/' . $matches[3];
+    } elseif (preg_match(AppConfig::REGEX_DAILYMOTION_URL, $videoUrl, $matches)) {
+        return 'http://www.dailymotion.com/embed/video/' . (empty($matches[4]) ? $matches[6] : $matches[4]);
+    } else return null;
 }
 
 #endregion
@@ -360,8 +372,10 @@ function currentFullUrl($localeCode = null)
         return request()->fullUrl();
     }
     $url_parts = parse_url(request()->fullUrl());
-    $localizedUrl = LaravelLocalization::getLocalizedUrl($localeCode, null);
-    return $localizedUrl . '?' . $url_parts['query'] . '#' . $url_parts['hash'];
+    $localizedUrl = LaravelLocalization::getLocalizedUrl($localeCode, request()->url());
+    $query = empty($url_parts['query']) ? '' : '?' . $url_parts['query'];
+    $hash = empty($url_parts['hash']) ? '' : '#' . $url_parts['hash'];
+    return $localizedUrl . $query . $hash;
 }
 
 function transUrl($route = '', array $params = [], $localeCode = null)
@@ -425,6 +439,17 @@ function addRdrUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
     if (!empty($separatedChar)) return $mainUrl . $separatedChar . $rdrParam;
     $parsed = parse_url($mainUrl);
     return empty($parsed['query']) ? $mainUrl . '?' . $rdrParam : $mainUrl . '&' . $rdrParam;
+}
+
+function addWizardUrl($mainUrl, $name, $key, $separatedChar = '')
+{
+    if (empty($mainUrl)) {
+        $mainUrl = request()->fullUrl();
+    }
+    $wizardParams = AppConfig::KEY_WIZARD_NAME . '=' . $name . '&' . AppConfig::KEY_WIZARD_KEY . '=' . $key;
+    if (!empty($separatedChar)) return $mainUrl . $separatedChar . $wizardParams;
+    $parsed = parse_url($mainUrl);
+    return empty($parsed['query']) ? $mainUrl . '?' . $wizardParams : $mainUrl . '&' . $wizardParams;
 }
 
 function addErrorUrl($mainUrl, $rdrUrl = null, $separatedChar = '')
@@ -514,6 +539,11 @@ function defPr($value, $default)
     return empty($value) ? $default : $value;
 }
 
+function defArrItem($arr, $index, $default)
+{
+    return isset($arr[$index]) ? $arr[$index] : $default;
+}
+
 function wrapContent($content, $before = '', $after = '', $default = '')
 {
     return empty($content) ? $default : $before . $content . $after;
@@ -550,9 +580,13 @@ function oldLocaleInput($name, $locale, $default = null)
     return old(AppConfig::KEY_LOCALE_INPUT . '.' . $locale . '.' . $name, $default);
 }
 
-function localeInputName($name, $locale)
+function localeInputName($name, $locale, $isArray = false, $indexKey = null)
 {
-    return AppConfig::KEY_LOCALE_INPUT . '[' . $locale . '][' . $name . ']';
+    $name = AppConfig::KEY_LOCALE_INPUT . '[' . $locale . '][' . $name . ']';
+    if ($isArray) {
+        $name .= empty($indexKey) ? '[]' : '[' . $indexKey . ']';
+    }
+    return $name;
 }
 
 /**
@@ -661,11 +695,11 @@ function toFormattedNumber($number, $mode = NumberFormatHelper::DEFAULT_NUMBER_O
  * @param int $mode
  * @return string
  */
-function toFormattedCurrency($number, $originalCurrencyCode = null, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
+function toFormattedCurrency($number, $originalCurrencyCode = null, $noSign = false, $mode = NumberFormatHelper::DEFAULT_NUMBER_OF_DECIMAL_POINTS)
 {
     $helper = NumberFormatHelper::getInstance();
     $helper->mode($mode);
-    $number = $helper->formatCurrency($number, $originalCurrencyCode);
+    $number = $helper->formatCurrency($number, $originalCurrencyCode, $noSign);
     $helper->modeNormal();
     return $number;
 }
@@ -721,6 +755,28 @@ function randomizeFilename($prefix = null, $extension = null)
         uniqid('', true),
         empty($extension) ? '' : '.' . $extension
     );
+}
+
+function tmpUploadPath()
+{
+    return public_path('upload/tmp');
+}
+
+function tmpUploadUrl()
+{
+    return asset('upload/tmp');
+}
+
+function uploadPath($time = 'now')
+{
+    $date = new \DateTime($time, new \DateTimeZone('UTC'));
+    return public_path('upload/' . $date->format('Y') . '/' . $date->format('m') . '/' . $date->format('d'));
+}
+
+function uploadUrl($time = 'now')
+{
+    $date = new \DateTime($time, new \DateTimeZone('UTC'));
+    return asset('upload/' . $date->format('Y') . '/' . $date->format('m') . '/' . $date->format('d'));
 }
 
 function makeUserPublicPath($userRelativePath)
@@ -1004,9 +1060,13 @@ function removePlace($id, $name)
  * @param string $id
  * @return string
  */
-function contentPlace($id, array $params = [])
+function contentPlace($id, array $params = [], $before = '', $after = '')
 {
-    return ActionContentPlace::flush($id, $params);
+    $content = ActionContentPlace::flush($id, $params);
+    if (!empty($content)) {
+        $content = $before . $content . $after;
+    }
+    return $content;
 }
 
 #endregion
@@ -1024,6 +1084,11 @@ function embedConversation($id)
 function libraryAsset($file_path = '')
 {
     return Theme::libraryAsset($file_path);
+}
+
+function themeImageAsset($file_path = '')
+{
+    return ThemeFacade::imageAsset($file_path);
 }
 
 function cdataOpen()
@@ -1196,6 +1261,12 @@ function homeThemeMockAdmin()
     }
 }
 
+function homeThemeExtensions()
+{
+    $homeTheme = homeTheme();
+    return $homeTheme !== false ? $homeTheme->extensions() : [];
+}
+
 /**
  * @return bool|\Katniss\Everdeen\Themes\AdminThemes\AdminTheme
  */
@@ -1337,7 +1408,7 @@ function callingCodesAsOptions($selected_country = 'VN')
     foreach (allCountries() as $code => $properties) {
         $options .= '<option value="' . $code . '"' . ($selected_country == $code ? ' selected' : '') . '>(+' . $properties['calling_code'] . ') ' . $properties['name'] . '</option>';
     }
-    return $options;
+    return new HtmlString($options);
 }
 
 function allCurrencies()
@@ -1410,6 +1481,62 @@ function shortTimeFormatsAsOptions($selected)
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
 }
 
+function dateFormatFromDatabase($inputString, $toFormat = 'Y-m-d H:i:s', &$diffDay = 0)
+{
+    return DateTimeHelper::getInstance()->format($toFormat, $inputString, 0, false, $diffDay);
+}
+
+function transMonthYear($dateString, $hideCurrentYear = true)
+{
+    $time = strtotime($dateString);
+    $year = date('Y', $time);
+    $return = trans('datetime.month_' . date('n', $time));
+    return $return . ($hideCurrentYear && $year == date('Y') ? '' : ', ' . $year);
+}
+
+function htmlRateSelection($name, $id = null, $class = null, $required = true, $selected = 0)
+{
+    $name = ' name="' . $name . '"';
+    if (!empty($id)) $id = ' id="' . $id . '"';
+    if (!empty($class)) $class = ' class="' . $class . '"';
+    $required = $required ? ' required' : '';
+    $select = '<select' . $id . $class . $name . $required . '>';
+    $i = 0;
+    foreach (_k('rates') as $rate) {
+        ++$i;
+        $select .= '<option value="' . $i . '" data-html="' . trans('label.rate_' . $rate) . '"' .
+            ($selected == $i ? ' selected' : '') . '>' .
+            $id . '</option>';
+    }
+    $select .= '</select>';
+    return new HtmlString($select);
+}
+
+function transRate($rate)
+{
+    if (is_array($rate)) {
+        $ret = [];
+        foreach ($rate as $key => $value) {
+            $ret[$key] = trans('label.rate_' . _k('rates')[$value - 1]);
+        }
+        return $ret;
+    }
+    return trans('label.rate_' . _k('rates')[$rate - 1]);
+}
+
+function transRateName($rate, $teacher = true)
+{
+    $teacher = $teacher ? 'student' : 'teacher';
+    if (is_array($rate)) {
+        $ret = [];
+        foreach ($rate as $key => $value) {
+            $ret[$key] = trans('label.' . $teacher . '_' . $key . '_rate');
+        }
+        return $ret;
+    }
+    return trans('label.' . $teacher . '_' . $rate . '_rate');
+}
+
 #endregion
 
 #region CurrentDevice
@@ -1450,5 +1577,16 @@ function rgbToHex($rgb = [])
     $hex[1] = str_pad(dechex($rgb[1]), 2, '0', STR_PAD_LEFT);
     $hex[2] = str_pad(dechex($rgb[2]), 2, '0', STR_PAD_LEFT);
     return implode('', $hex);
+}
+
+#endregion
+
+#region Logging
+function logInfo($text, $data)
+{
+    Log::info($text, [
+        'log_by_user_id' => isAuth() ? authUser()->id : request()->ip(),
+        'data' => $data,
+    ]);
 }
 #endregion

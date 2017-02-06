@@ -6,7 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*",
+        "laravel/framework": "5.4.*",
+        "laravel/tinker": "~1.0",
         "barryvdh/laravel-debugbar": "^2.3",
         "barryvdh/laravel-elfinder": "^0.3.8",
         "jenssegers/agent": "^2.3",
@@ -17,12 +18,13 @@
         "mcamara/laravel-localization": "^1.1",
         "larabros/elogram": "^1.2",
         "thunderer/shortcode": "^0.6.4",
-        "moontoast/math": "^1.1"
+        "moontoast/math": "^1.1",
+        "maatwebsite/excel": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
+        "phpunit/phpunit": "~5.7",
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
     },
@@ -38,9 +40,9 @@
         ]
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php"
-        ]
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "post-root-package-install": [
@@ -59,6 +61,7 @@
         ]
     },
     "config": {
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }

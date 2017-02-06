@@ -34,8 +34,8 @@
                     <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.category_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
                 @if($categories->count()>0)
-                    <div class="box-body">
-                        <table class="table table-bordered table-hover">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>

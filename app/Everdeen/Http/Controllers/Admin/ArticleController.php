@@ -29,7 +29,15 @@ class ArticleController extends AdminController
      */
     public function index(Request $request)
     {
-        $articles = $this->articleRepository->getPaged();
+        $searchTitle = $request->input('title', null);
+        $searchAuthor = $request->input('author', null);
+        $searchCategories = $request->input('categories', []);
+        $articles = $this->articleRepository->getSearchPaged(
+            $searchTitle,
+            $searchAuthor,
+            $searchCategories
+        );
+        $articleCategoryRepository = new ArticleCategoryRepository();
 
         $this->_title(trans('pages.admin_articles_title'));
         $this->_description(trans('pages.admin_articles_desc'));
@@ -38,6 +46,13 @@ class ArticleController extends AdminController
             'articles' => $articles,
             'pagination' => $this->paginationRender->renderByPagedModels($articles),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchTitle) || !empty($searchAuthor) || !empty($searchCategories),
+            'search_title' => $searchTitle,
+            'search_author' => $searchAuthor,
+            'search_categories' => $searchCategories,
+            'categories' => $articleCategoryRepository->getAll(),
         ]);
     }
 
@@ -55,7 +70,7 @@ class ArticleController extends AdminController
 
         return $this->_create([
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => ThemeFacade::articleTemplates(),
+            'templates' => homeTheme()->articleTemplates(),
         ]);
     }
 
@@ -70,7 +85,7 @@ class ArticleController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $error_redirect = redirect(adminUrl('articles/create'))
@@ -81,8 +96,8 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'featured_image' => 'sometimes|url',
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $error_redirect->withErrors($validator);
@@ -132,7 +147,7 @@ class ArticleController extends AdminController
             'article' => $article,
             'article_categories' => $article->categories,
             'categories' => $articleCategoryRepository->getExceptDefault(),
-            'templates' => ThemeFacade::articleTemplates(),
+            'templates' => homeTheme()->articleTemplates(),
         ]);
     }
 
@@ -152,7 +167,7 @@ class ArticleController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug,' . $page->id . ',post_id',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
@@ -160,8 +175,8 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'featured_image' => 'sometimes|url',
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $redirect->withErrors($validator);

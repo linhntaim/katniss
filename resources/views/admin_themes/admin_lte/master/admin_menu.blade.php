@@ -11,14 +11,14 @@
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ $auth_user->url_avatar_thumb }}" class="user-image" alt="{{ trans('label.profile_picture') }}">
-                        <span class="hidden-xs">{{ $auth_user->name }}</span>
+                        <img src="{{ $auth_user->url_avatar_thumb }}" class="user-image" alt="{{ $auth_user->display_name }}">
+                        <span class="hidden-xs">{{ $auth_user->display_name }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-header">
-                            <img src="{{ $auth_user->url_avatar_thumb }}" class="img-circle" alt="{{ trans('label.profile_picture') }}">
+                            <img src="{{ $auth_user->url_avatar_thumb }}" class="img-circle" alt="{{ $auth_user->display_name }}">
                             <p>
-                                {{ $auth_user->name }}
+                                {{ $auth_user->display_name }}
                                 <small>{{ trans('label._member_since', ['time' => $auth_user->memberSince]) }}</small>
                             </p>
                         </li>

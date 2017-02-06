@@ -19,6 +19,7 @@ class CreatePosts extends Migration
 
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
+            $table->integer('viewed')->unsigned()->default(0);
             $table->string('template')->nullable();
             $table->string('featured_image')->nullable();
             $table->tinyInteger('type')->unsigned()->default(0); // 0 = PAGE;

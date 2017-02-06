@@ -32,6 +32,7 @@ class DateTimeHelper
 
     private $transLongDate;
     private $transShortDate;
+    private $transShortMonth;
     private $transLongTime;
     private $transShortTime;
 
@@ -46,6 +47,7 @@ class DateTimeHelper
 
         $this->transLongDate = 'datetime.long_date_' . $settings->getLongDateFormat();
         $this->transShortDate = 'datetime.short_date_' . $settings->getShortDateFormat();
+        $this->transShortMonth = 'datetime.short_month_' . $settings->getShortDateFormat();
         $this->transLongTime = 'datetime.long_time_' . $settings->getLongTimeFormat();
         $this->transShortTime = 'datetime.short_time_' . $settings->getShortTimeFormat();
 
@@ -75,25 +77,36 @@ class DateTimeHelper
      * @param $inputString
      * @return \DateTime|bool
      */
-    public function fromFormat($format, $inputString, $no_offset = false)
+    public function fromFormat($format, $inputString, $no_offset = false, &$diffDay = 0)
     {
         $now = \DateTime::createFromFormat($format, $inputString);
         if ($now === false) return false;
         if (!$no_offset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
+                $day = $now->format('d');
                 $now->sub(new \DateInterval('PT' . $offset . 'S'));
+                if ($now->format('d') != $day) $diffDay = -1;
             } elseif ($offset < 0) {
+                $day = $now->format('d');
                 $now->add(new \DateInterval('PT' . abs($offset) . 'S'));
+                if ($now->format('d') != $day) $diffDay = 1;
             }
         }
         return $now;
     }
 
-    public function convertToDatabaseFormat($current_format, $inputString, $no_offset = false)
+    public function convertToDatabaseFormat($currentFormat, $inputString, $no_offset = false, &$diffDay = 0)
     {
-        $now = $this->fromFormat($current_format, $inputString, $no_offset);
+        $now = $this->fromFormat($currentFormat, $inputString, $no_offset, $diffDay);
         return $now !== false ? $now->format('Y-m-d H:i:s') : false;
+    }
+
+    public function convertToCustomDatabaseFormat($currentFormat, $inputString, $toFormat = null, $no_offset = false, &$diffDay = 0)
+    {
+        if (empty($toFormat)) $toFormat = $currentFormat;
+        $now = $this->fromFormat($currentFormat, $inputString, $no_offset, $diffDay);
+        return $now !== false ? $now->format($toFormat) : false;
     }
 
     /**
@@ -101,15 +114,19 @@ class DateTimeHelper
      * @param string $time
      * @return string
      */
-    public function format($format, $time = 'now', $start = 0, $no_offset = false)
+    public function format($format, $time = 'now', $start = 0, $no_offset = false, &$diffDay = 0)
     {
         $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
         if (!$no_offset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
+                $day = $now->format('d');
                 $now->add(new \DateInterval('PT' . $offset . 'S'));
+                if ($now->format('d') != $day) $diffDay = 1;
             } elseif ($offset < 0) {
+                $day = $now->format('d');
                 $now->sub(new \DateInterval('PT' . abs($offset) . 'S'));
+                if ($now->format('d') != $day) $diffDay = -1;
             }
         }
         if ($start == 1) {
@@ -163,8 +180,8 @@ class DateTimeHelper
         }
 
         return call_user_func(array($this, $func_1), $time, $no_offset)
-        . $separation
-        . call_user_func(array($this, $func_2), $time, $no_offset);
+            . $separation
+            . call_user_func(array($this, $func_2), $time, $no_offset);
     }
 
     public function compoundBags($func_1 = self::SHORT_DATE_FUNCTION, $separation = ' ', $func_2 = self::SHORT_TIME_FUNCTION, array $bags = [])
@@ -176,8 +193,8 @@ class DateTimeHelper
         $func_1 .= 'FromBags';
         $func_2 .= 'FromBags';
         return call_user_func(array($this, $func_1), $bags)
-        . $separation
-        . call_user_func(array($this, $func_2), $bags);
+            . $separation
+            . call_user_func(array($this, $func_2), $bags);
     }
 
     public function longDate($time = 'now', $no_offset = false)
@@ -188,6 +205,11 @@ class DateTimeHelper
     public function shortDate($time = 'now', $no_offset = false)
     {
         return $this->shortDateFromBags($this->getBags($time, $no_offset));
+    }
+
+    public function shortMonth($time = 'now', $no_offset = false)
+    {
+        return $this->shortMonthFromBags($this->getBags($time, $no_offset));
     }
 
     public function longTime($time = 'now', $no_offset = false)
@@ -208,6 +230,11 @@ class DateTimeHelper
     public function shortDateFromBags(array $bags)
     {
         return trans($this->transShortDate, $bags);
+    }
+
+    public function shortMonthFromBags(array $bags)
+    {
+        return trans($this->transShortMonth, $bags);
     }
 
     public function longTimeFromBags(array $bags)
@@ -427,15 +454,15 @@ class DateTimeHelper
     public static function compoundFormat($func_1, $separation, $func_2)
     {
         return call_user_func(array(self::class, $func_1 . 'Format'))
-        . $separation
-        . call_user_func(array(self::class, $func_2 . 'Format'));
+            . $separation
+            . call_user_func(array(self::class, $func_2 . 'Format'));
     }
 
     public static function compoundJsFormat($func_1, $separation, $func_2)
     {
         return call_user_func(array(self::class, $func_1 . 'JsFormat'))
-        . $separation
-        . call_user_func(array(self::class, $func_2 . 'JsFormat'));
+            . $separation
+            . call_user_func(array(self::class, $func_2 . 'JsFormat'));
     }
 
     public static function longDateFormat()
@@ -453,6 +480,11 @@ class DateTimeHelper
         return self::getInstance()->shortDateFromBags(self::getFormatBags());
     }
 
+    public static function shortMonthFormat()
+    {
+        return self::getInstance()->shortMonthFromBags(self::getFormatBags());
+    }
+
     public static function shortDateJsFormat()
     {
         return self::getInstance()->shortDateFromBags(self::getMomentJsFormatBags());
@@ -461,6 +493,11 @@ class DateTimeHelper
     public static function shortDatePickerJsFormat()
     {
         return self::getInstance()->shortDateFromBags(self::getDatePickerJsFormatBags());
+    }
+
+    public static function shortMonthPickerJsFormat()
+    {
+        return self::getInstance()->shortMonthFromBags(self::getDatePickerJsFormatBags());
     }
 
     public static function longTimeFormat()

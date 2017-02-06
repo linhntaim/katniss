@@ -29,7 +29,6 @@ class DefaultSeeder extends Seeder
             'description' => 'Owner of the system',
             'status' => Role::STATUS_HIDDEN,
         ));
-
         $owner_role->attachPermission($admin_access_permission);
 
         $admin_role = Role::create(array(
@@ -52,6 +51,13 @@ class DefaultSeeder extends Seeder
             'display_name' => 'User',
             'description' => 'Normal user'
         ));
+
+        $editor_role = Role::create(array(
+            'name' => 'editor',
+            'display_name' => 'Editor',
+            'description' => 'Editor'
+        ));
+        $editor_role->attachPermission($admin_access_permission);
 
         // TODO: Add 1 administrator
         $setting = UserSetting::create();
@@ -103,6 +109,20 @@ class DefaultSeeder extends Seeder
         ));
         $tester->attachRole($tester_role);
 
+        $setting = UserSetting::create();
+        $editor = User::create(array(
+            'display_name' => 'Editor',
+            'name' => 'editor',
+            'email' => 'editor@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $editor->attachRole($editor_role);
+
         AppOption::create([
             'key' => 'admin_theme',
             'rawValue' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
@@ -141,7 +161,7 @@ class DefaultSeeder extends Seeder
         $category->save();
         AppOption::create([
             'key' => 'extension_app_settings',
-            'rawValue' => '{"register_enable":"1","default_article_category":"' . $category->id . '"}',
+            'rawValue' => '{"register_enable":"0","default_article_category":"' . $category->id . '"}',
             'data_type' => 'array',
             'registered_by' => 'ext:app_settings',
         ]);

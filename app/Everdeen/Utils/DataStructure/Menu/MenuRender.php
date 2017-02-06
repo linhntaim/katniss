@@ -43,8 +43,9 @@ class MenuRender
         $url = $object->property('url');
         $name = $this->renderName($object);
         if (!empty($url)) {
-            $linkClass = $this->renderClass($this->itemClass, $object->property('link_class'));
-            return Str::format('<a{0} href="{1}">{2}</a>', $linkClass, $url, $name);
+            $linkClass = $this->renderClass($this->linkClass, $object->property('link_class'));
+            $target = $object->property('blank') == true ? ' target="_blank"' : '';
+            return Str::format('<a{0} href="{1}"{2}>{3}</a>', $linkClass, $url, $target, $name);
         }
         return $name;
     }

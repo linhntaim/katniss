@@ -23,9 +23,10 @@ class Extension extends BaseExtension
     public static function getSharedViewData()
     {
         $ext = Extension::getSharedData(self::NAME);
-        if(empty($ext)) return null;
+        if (empty($ext)) return null;
 
         $data = new \stdClass();
+        $data->facebook_enable = $ext->facebookEnable;
         $data->social_login_enable = $ext->facebookLoginEnable || $ext->googleLoginEnable;
         $data->facebook_login_enable = $ext->facebookLoginEnable;
         $data->google_login_enable = $ext->googleLoginEnable;
@@ -153,6 +154,7 @@ class Extension extends BaseExtension
         }
 
         $this->makeSharedData([
+            'facebookEnable',
             'facebookLoginEnable',
             'facebookCommentEnable',
             'googleLoginEnable',
@@ -212,13 +214,23 @@ class Extension extends BaseExtension
     protected function facebookJsSdk()
     {
         return '<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/' . currentFullLocaleCode() . '/sdk.js#xfbml=1&version=v2.5&facebookAppId=' . $this->facebookAppId . '";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, \'script\', \'facebook-jssdk\'));</script>';
+<script>
+window.fbAsyncInit = function() {
+    FB.init({
+        appId      : \'' . $this->facebookAppId . '\',
+        xfbml      : true,
+        version    : \'v2.8\'
+    });
+    FB.AppEvents.logPageView();
+};
+(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = \'//connect.facebook.net/' . currentFullLocaleCode() . '/sdk.js\';
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, \'script\', \'facebook-jssdk\'));
+</script>';
     }
 
     protected function twitterJsSdk()
@@ -294,7 +306,7 @@ class Extension extends BaseExtension
         if ($this->twitterEnable) {
             enqueueThemeFooter($this->twitterJsSdk(), 'twitter_js_sdk');
             if ($this->twitterShareEnable) {
-                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/share" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
+                $sharing_buttons['twitter_tweet'] = '<a href="https://twitter.com/intent/tweet" class="twitter-share-button" data-url="{sharing_url}" data-lang="' . currentLocaleCode() . '">Tweet</a>';
             }
         }
 
@@ -383,33 +395,33 @@ class Extension extends BaseExtension
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'facebook_enable' => 'sometimes|in:1',
+            'facebook_enable' => 'sometimes|nullable|in:1',
             'facebook_app_id' => 'required_if:facebook_enable,1',
-            'facebook_login_enable' => 'sometimes|in:1',
-            'facebook_comment_enable' => 'sometimes|in:1',
+            'facebook_login_enable' => 'sometimes|nullable|in:1',
+            'facebook_comment_enable' => 'sometimes|nullable|in:1',
             'facebook_comment_color_scheme' => 'required_if:facebook_comment_enable,1|in:' . implode(',', $this->facebookCommentColorSchemeValues),
             'facebook_comment_num_posts' => 'required_if:facebook_comment_enable,1|min:1',
             'facebook_comment_order_by' => 'required_if:facebook_comment_enable,1|in:' . implode(',', $this->facebookCommentOrderByValues),
-            'facebook_like_enable' => 'sometimes|in:1',
+            'facebook_like_enable' => 'sometimes|nullable|in:1',
             'facebook_like_layout' => 'required_if:facebook_like_enable,1|in:' . implode(',', $this->facebookLikeLayoutValues),
-            'facebook_share_enable' => 'sometimes|in:1',
+            'facebook_share_enable' => 'sometimes|nullable|in:1',
             'facebook_share_layout' => 'required_if:facebook_share_enable,1|in:' . implode(',', $this->facebookShareLayoutValues),
-            'facebook_recommend_enable' => 'sometimes|in:1',
+            'facebook_recommend_enable' => 'sometimes|nullable|in:1',
             'facebook_recommend_layout' => 'required_if:facebook_recommend_enable,1|in:' . implode(',', $this->facebookRecommendLayoutValues),
-            'facebook_send_enable' => 'sometimes|in:1',
-            'facebook_save_enable' => 'sometimes|in:1',
-            'twitter_enable' => 'sometimes|in:1',
-            'twitter_share_enable' => 'sometimes|in:1',
-            'linkedin_enable' => 'sometimes|in:1',
-            'linkedin_share_enable' => 'sometimes|in:1',
+            'facebook_send_enable' => 'sometimes|nullable|in:1',
+            'facebook_save_enable' => 'sometimes|nullable|in:1',
+            'twitter_enable' => 'sometimes|nullable|in:1',
+            'twitter_share_enable' => 'sometimes|nullable|in:1',
+            'linkedin_enable' => 'sometimes|nullable|in:1',
+            'linkedin_share_enable' => 'sometimes|nullable|in:1',
             'linkedin_share_count_mode' => 'required_if:linkedin_share_enable,1|in:' . implode(',', $this->linkedInShareCountModeValues),
-            'google_enable' => 'sometimes|in:1',
-            'google_login_enable' => 'sometimes|in:1',
-            'google_share_enable' => 'sometimes|in:1',
+            'google_enable' => 'sometimes|nullable|in:1',
+            'google_login_enable' => 'sometimes|nullable|in:1',
+            'google_share_enable' => 'sometimes|nullable|in:1',
             'google_share_button_size' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonSizeValues),
             'google_share_button_annotation' => 'required_if:google_share_enable,1|in:' . implode(',', $this->googleShareButtonAnnotationValues),
             'google_share_button_width' => 'required_if:google_share_button_annotation,inline|integer|min:1',
-            'instagram_enable' => 'sometimes|in:1',
+            'instagram_enable' => 'sometimes|nullable|in:1',
             'instagram_client_id' => 'required_if:instagram_enable,1',
             'instagram_client_secret' => 'required_if:instagram_enable,1',
             'instagram_access_token' => 'required_if:instagram_enable,1',

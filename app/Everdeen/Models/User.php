@@ -21,8 +21,8 @@ class User extends Authenticatable
     }
     use Notifiable;
 
-    const AVATAR_THUMB_WIDTH = 100; // pixels
-    const AVATAR_THUMB_HEIGHT = 100; // pixels
+    const AVATAR_THUMB_WIDTH = 150; // pixels
+    const AVATAR_THUMB_HEIGHT = 150; // pixels
 
     /**
      * The database table used by the model.
@@ -44,6 +44,7 @@ class User extends Authenticatable
         'url_avatar',
         'url_avatar_thumb',
         'activation_code',
+
         'active',
         'setting_id',
         'channel',
@@ -108,10 +109,5 @@ class User extends Authenticatable
     public function settings()
     {
         return $this->hasOne(UserSetting::class, 'id', 'setting_id');
-    }
-
-    public static function create(array $attributes = [])
-    {
-        return parent::create($attributes);
     }
 }

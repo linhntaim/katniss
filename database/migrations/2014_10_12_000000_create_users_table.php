@@ -44,6 +44,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('url_avatar');
             $table->string('url_avatar_thumb');
+
             $table->string('activation_code')->default('');
             $table->boolean('active')->default(false);
             $table->bigInteger('setting_id')->unsigned();

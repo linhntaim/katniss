@@ -22,7 +22,6 @@ return [
     'idle_switching_time' => 120, // seconds
 
     'admin_theme' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
-    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME,
     'admin_themes' => [
         Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
@@ -641,13 +640,20 @@ return [
         'jquery-ui-bootstrap' => '$.widget.bridge(\'uibutton\', $.ui.button); // Resolve conflict in jQuery UI tooltip with Bootstrap tooltip',
         'bootstrap' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js',
         'bootstrap-css' => 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
-        'font-awesome-css' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css',
+        'font-awesome-css' => 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css',
         'source-sans-pro-css' => 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic,300italic,300&subset=latin,vietnamese,latin-ext',
+        'open-sans-css' => 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&amp;subset=latin-ext,vietnamese',
         'handlebars' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js',
-        'select2-js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js',
-        'select2-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css',
+        'handlebars-runtime' => 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.runtime.js',
+        'select2-js' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+        'select2-js-full' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js',
+        'select2-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css',
+        'select2-bootstrap-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.6/select2-bootstrap.min.css',
         'gmap3' => 'https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js',
         'google-maps-js-api' => 'https://maps.googleapis.com/maps/api/js',
         'realtime-co-ortc' => 'http://messaging-public.realtime.co/js/2.1.0/ortc.js',
+        'medium-editor-css' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css',
+        'medium-editor-theme-default' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/themes/default.min.css',
+        'medium-editor-js' => 'http://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js',
     ],
 ];

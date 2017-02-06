@@ -36,7 +36,8 @@ class UserController extends ApiController
             );
 
             return $this->responseSuccess([
-                'store_path' => $user->url_avatar_thumb
+                'store_path' => $user->url_avatar,
+                'store_path_thumb' => $user->url_avatar_thumb,
             ]);
         } catch (KatnissException $ex) {
             return $this->responseFail($ex->getMessage());

@@ -19,6 +19,14 @@ class LinkCategoryRepository extends CategoryRepository
         parent::__construct(Category::TYPE_LINK, $id);
     }
 
+    public function getByIdWithTranslatedLinks($id)
+    {
+        return Category::with(['links', 'links.translations'])
+            ->where('id', $id)
+            ->where('type', $this->type)
+            ->firstOrFail();
+    }
+
     public function updateSort($linkIds)
     {
         $category = $this->model();

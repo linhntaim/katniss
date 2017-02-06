@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.3.28`.
+Current version: `5.4.9`.
 
 Latest version:
 
@@ -97,7 +97,7 @@ Customization:
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: `2.3.0`.
+Current version: `2.3.2`.
 
 Latest version:
 
@@ -109,7 +109,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: `0.3.8`.
+Current version: `0.3.10`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.4.0`.
+Current version: `2.4.1`.
 
 Latest version:
 
@@ -133,7 +133,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: `2.0.20`.
+Current version: `3.0.3`.
 
 Latest version:
 
@@ -157,7 +157,7 @@ For filtering HTML content.
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: `6.0.1`.
+Current version: `7.0`.
 
 Latest version:
 
@@ -188,7 +188,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.1.10`.
+Current version: `1.2.2`.
 
 Latest version:
 
@@ -219,7 +219,7 @@ For fetching data from Instagram API.
 
 [Shortcode](https://github.com/thunderer/Shortcode)
 
-Current version: `0.6.4`.
+Current version: `0.6.5`.
 
 Latest version:
 

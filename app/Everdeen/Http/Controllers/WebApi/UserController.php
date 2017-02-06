@@ -10,12 +10,58 @@ namespace Katniss\Everdeen\Http\Controllers\WebApi;
 
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\Models\User;
+use Katniss\Everdeen\Repositories\UserRepository;
+use Katniss\Everdeen\Utils\DataStructure\Pagination\Pagination;
 
 class UserController extends WebApiController
 {
+    protected $userRepository;
+
     public function __construct()
     {
         parent::__construct();
+
+        $this->userRepository = new UserRepository();
+    }
+
+    public function index(Request $request)
+    {
+        return $this->responseFail();
+    }
+
+    public function indexAuthor(Request $request)
+    {
+        if ($request->has('q')) {
+            return $this->indexAuthorCommon($request);
+        }
+
+        return $this->responseFail();
+    }
+
+    public function indexAuthorCommon(Request $request)
+    {
+        try {
+            $users = $this->userRepository->getAuthorSearchCommonPaged($request->input('q'));
+            $pagination = new Pagination($users);
+            $users = $users->map(function (User $user) {
+                return [
+                    'id' => $user->id,
+                    'url_avatar_thumb' => $user->url_avatar_thumb,
+                    'display_name' => $user->display_name,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'skype_id' => $user->skype_id,
+                    'phone' => $user->phone,
+                ];
+            });
+            return $this->responseSuccess([
+                'authors' => $users,
+                'pagination' => $pagination->toArray(),
+            ]);
+        } catch (\Exception $exception) {
+            return $this->responseFail($exception->getMessage());
+        }
     }
 
     public function getCsrfToken()

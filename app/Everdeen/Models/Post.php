@@ -11,17 +11,21 @@ namespace Katniss\Everdeen\Models;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
+use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class Post extends Model
 {
     const TYPE_PAGE = 0;
     const TYPE_ARTICLE = 1;
+    const TYPE_HELP = 2;
 
     use Translatable;
+    use ExtendTranslatableTrait;
     public $useTranslationFallback = true;
 
     protected $table = 'posts';
-    protected $fillable = ['user_id', 'template', 'featured_image', 'type', 'title', 'slug', 'description', 'content', 'raw_content'];
+    protected $fillable = ['user_id', 'viewed', 'template', 'featured_image', 'type',
+        'title', 'slug', 'description', 'content', 'raw_content'];
 
     protected $translationForeignKey = 'post_id';
     public $translatedAttributes = ['title', 'slug', 'description', 'content', 'raw_content'];
@@ -33,12 +37,12 @@ class Post extends Model
 
     public function scopeOfPage($query)
     {
-        return $query->where('type', $this::TYPE_PAGE);
+        return $query->where('type', self::TYPE_PAGE);
     }
 
     public function scopeOfArticle($query)
     {
-        return $query->where('type', $this::TYPE_ARTICLE);
+        return $query->where('type', self::TYPE_ARTICLE);
     }
 
     public function categories()

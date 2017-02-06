@@ -3,12 +3,12 @@
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
-use Katniss\Everdeen\Utils\DateTimeHelper;
 
 class UserController extends AdminController
 {
@@ -29,7 +29,12 @@ class UserController extends AdminController
      */
     public function index(Request $request)
     {
-        $users = $this->userRepository->getPaged();
+        $searchDisplayName = $request->input('display_name', null);
+        $searchEmail = $request->input('email', null);
+        $users = $this->userRepository->getSearchPaged(
+            $searchDisplayName,
+            $searchEmail
+        );
 
         $this->_title(trans('pages.admin_users_title'));
         $this->_description(trans('pages.admin_users_desc'));
@@ -38,6 +43,11 @@ class UserController extends AdminController
             'users' => $users,
             'pagination' => $this->paginationRender->renderByPagedModels($users),
             'start_order' => $this->paginationRender->getRenderedPagination()['start_order'],
+
+            'clear_search_url' => $request->url(),
+            'on_searching' => !empty($searchDisplayName) || !empty($searchEmail) || !empty($searchSkypeId) || !empty($searchPhoneNumber),
+            'search_display_name' => $searchDisplayName,
+            'search_email' => $searchEmail,
         ]);
     }
 
@@ -55,18 +65,17 @@ class UserController extends AdminController
 
         return $this->_create([
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
-            'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
 
     protected function validator(array $data, array $extra_rules = [])
     {
         return Validator::make($data, array_merge([
+            'roles' => 'sometimes|nullable|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
             'display_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'name' => 'required|max:255|unique:users,name',
             'password' => 'required|min:6',
-            'roles' => 'sometimes|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
         ], $extra_rules));
     }
 
@@ -132,7 +141,6 @@ class UserController extends AdminController
             'user_roles' => $user->roles,
             'owner_role' => $roleRepository->getByName('owner'),
             'roles' => $roleRepository->getByHavingStatuses([Role::STATUS_NORMAL]),
-            'date_js_format' => DateTimeHelper::shortDatePickerJsFormat(),
         ]);
     }
 
@@ -150,8 +158,9 @@ class UserController extends AdminController
         $rdr = redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
 
         $validator = $this->validator($request->all(), [
-            'password' => 'sometimes|min:6',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|nullable|min:6',
+            'name' => ['required', 'max:255', Rule::unique('users', 'name')->ignore($user->id, 'id')],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id, 'id')],
         ]);
 
         if ($validator->fails()) {

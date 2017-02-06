@@ -48,6 +48,9 @@ class Request extends BaseRequest
     {
         $this->isAuth = $isAuth;
         $this->authUser = $isAuth ? $authUser : null;
+        if ($isAuth) {
+            $this->authUser->load(['roles', 'roles.perms', 'settings']);
+        }
     }
 
     public function getUrlPathInfo()

@@ -16,6 +16,7 @@ class AdminController extends ViewController
     {
         parent::__construct();
 
+        $this->paginationRender->reset();
         $this->paginationRender->setDefault('wrapClass', 'pagination pagination-sm no-margin pull-right');
     }
 }

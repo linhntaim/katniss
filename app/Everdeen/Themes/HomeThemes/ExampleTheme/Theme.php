@@ -8,7 +8,6 @@
 
 namespace Katniss\Everdeen\Themes\HomeThemes\ExampleTheme;
 
-
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Controllers\ThemeAdminController;
 use Katniss\Everdeen\Themes\HomeThemes\HomeTheme;
@@ -95,7 +94,6 @@ class Theme extends HomeTheme
         parent::registerLibScripts($is_auth);
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, $this->jsAsset('jquery.js'));
-        $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, $this->jsAsset('bootstrap.min.js'));
         $this->libJsQueue->add('jquery-easing', $this->jsAsset('jquery.easing.min.js'));
     }
