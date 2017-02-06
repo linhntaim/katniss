@@ -3,6 +3,8 @@
 @endsection
 @section('lib_scripts')
     <script src="{{ libraryAsset('iCheck/icheck.min.js') }}"></script>
+    <script src="{{ libraryAsset('inputmask/jquery.inputmask.bundle.min.js') }}"></script>
+    <script src="{{ libraryAsset('inputmask/inputmask.binding.js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
@@ -30,6 +32,7 @@
                 <div class="col-sm-3">
                     <input id="inputExchange_{{ $currencyCode }}" class="form-control" type="text"
                            name="exchange_rates[{{ $currencyCode }}]"
+                           data-inputmask="'alias':'decimal','radixPoint':'{{ $number_format_chars[0] }}','groupSeparator':'{{ $number_format_chars[1] }}','autoGroup':true,'integerDigits':17,'digits':2,'digitsOptional':false,'placeholder':'0{{ $number_format_chars[0] }}00'"
                            value="{{ toFormattedNumber($exchange_rates[$currencyCode]) }}"{{ $main_currency_code == $currencyCode ? ' disabled' : '' }}>
                 </div>
                 <div class="col-sm-6">

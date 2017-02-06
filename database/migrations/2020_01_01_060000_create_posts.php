@@ -15,23 +15,23 @@ class CreatePosts extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
+            $table->integer('viewed')->unsigned()->default(0);
             $table->string('template')->nullable();
             $table->string('featured_image')->nullable();
+            $table->tinyInteger('status')->unsigned()->default(1); // 1 = PUBLISHED;
             $table->tinyInteger('type')->unsigned()->default(0); // 0 = PAGE;
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->index(['user_id', 'type', 'created_at']);
+            $table->index(['user_id', 'status', 'type', 'created_at']);
         });
 
         Schema::create('post_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->bigInteger('post_id')->unsigned();

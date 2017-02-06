@@ -41,7 +41,7 @@ class Widget extends DefaultWidget
         $links = collect([]);
         if (!empty($this->categoryId)) {
             $linkCategoryRepository = new LinkCategoryRepository();
-            $links = $linkCategoryRepository->model($this->categoryId)->orderedLinks;
+            $links = $linkCategoryRepository->getByIdWithTranslatedLinks($this->categoryId)->links->sortBy('pivot.order');
         }
         return array_merge(parent::viewHomeParams(), [
             'links' => $links,

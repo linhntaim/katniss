@@ -1,3 +1,19 @@
+.width-100 {
+    width: 100px;
+}
+
+.width-120 {
+    width: 120px;
+}
+
+.width-150 {
+    width: 150px;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
 .wp {
     width: 100%;
 }
@@ -262,4 +278,29 @@
     height: 88px;
     padding-top: 34px;
     margin-top: 6px;
+}
+
+.info-box.no-icon .info-box-content {
+    margin-left: 0;
+}
+
+.bg-purple a,
+.bg-aqua a,
+.bg-red a,
+.bg-green a,
+.bg-yellow a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.bg-purple a:hover,
+.bg-aqua a:hover,
+.bg-red a:hover,
+.bg-green a:hover,
+.bg-yellow a:hover {
+    text-decoration: none;
+}
+
+.bold-400 {
+    font-weight: 400;
 }

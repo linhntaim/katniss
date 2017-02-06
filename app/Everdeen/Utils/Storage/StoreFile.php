@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Utils\Storage;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -41,10 +42,10 @@ class StoreFile implements IStoreFile
      * @param \SplFileInfo|string $sourceFile
      * @param string $targetDirectory
      */
-    public function __construct($sourceFile, $targetDirectory = '')
+    public function __construct($sourceFile, $targetDirectory = '', $prefix = 'file')
     {
         $this->storePath = dirSeparator(storage_path('app/_store'));
-        $this->prefix = 'file';
+        $this->prefix = $prefix;
 
         $this->sourceFileInfo = $this->checkSourceFile($sourceFile);
 
@@ -61,7 +62,11 @@ class StoreFile implements IStoreFile
 
     public function getTargetFileRelativePath()
     {
-        return str_replace($this->storePath . DIRECTORY_SEPARATOR, '', $this->getTargetFileRealPath());
+        $realPath = $this->getTargetFileRealPath();
+        if (Str::startsWith($realPath, public_path())) {
+            return str_replace(public_path() . DIRECTORY_SEPARATOR, '', $realPath);
+        }
+        return str_replace($this->storePath . DIRECTORY_SEPARATOR, '', $realPath);
     }
 
     /**

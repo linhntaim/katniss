@@ -50,6 +50,11 @@ trait ViewControllerTrait
         return view()->exists($this->_page($this->viewPath . '.' . $view));
     }
 
+    protected function _viewPath($relativePath)
+    {
+        return $this->_page($this->viewPath . '.' . $relativePath);
+    }
+
     /**
      * @param array $data
      * @param array $mergeData

@@ -22,19 +22,8 @@ Route::group([
     Route::group([
         'namespace' => 'Home',
     ], function () {
-        Route::get('/', 'ExampleController@index');
-        Route::get(homeRoute('example/social-sharing'), 'ExampleController@getSocialSharing');
-        Route::get(homeRoute('example/facebook-comments'), 'ExampleController@getFacebookComments');
-        Route::get(homeRoute('example/widgets'), 'ExampleController@getWidgets');
-        Route::get(homeRoute('example/my-settings'), 'ExampleController@getMySettings');
-        Route::get(homeRoute('example/pages'), 'ExampleController@getPages');
-        Route::get(homeRoute('example/pages/{id}'), 'ExampleController@getPage')->where('id', '[0-9]+');
-        Route::get(homeRoute('example/articles'), 'ExampleController@getArticles');
-        Route::get(homeRoute('example/articles/{id}'), 'ExampleController@getArticle')->where('id', '[0-9]+');
-        Route::get(homeRoute('example/article-categories/{id}'), 'ExampleController@getCategoryArticles')->where('id', '[0-9]+');
-        Route::get(homeRoute('example/public-conversation'), 'ExampleController@getPublicConversation');
+        Route::get('/', 'HomepageController@index');
     });
-
 
     Route::get(homeRoute('me/settings'), 'Admin\SettingsController@index');
     Route::put(homeRoute('me/settings'), 'Admin\SettingsController@update');
@@ -132,6 +121,26 @@ Route::group([
                 Route::get(adminRoute('links/{id}/edit'), 'LinkController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('links/{id}'), 'LinkController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('links/{id}'), 'LinkController@destroy')->where('id', '[0-9]+');
+                //Media Categories
+                Route::get(adminRoute('media-categories'), 'MediaCategoryController@index');
+                Route::get(adminRoute('media-categories/create'), 'MediaCategoryController@create');
+                Route::post(adminRoute('media-categories'), 'MediaCategoryController@store');
+                Route::get(adminRoute('media-categories/{id}/edit'), 'MediaCategoryController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('media-categories/{id}'), 'MediaCategoryController@update');
+                Route::delete(adminRoute('media-categories/{id}'), 'MediaCategoryController@destroy')->where('id', '[0-9]+');
+                Route::get(adminRoute('media-categories/{id}/sort'), 'MediaCategoryController@sort')->where('id', '[0-9]+');
+                //Media
+                Route::get(adminRoute('media-items'), 'MediaController@index');
+                Route::get(adminRoute('media-items/create'), 'MediaController@create');
+                Route::post(adminRoute('media-items'), 'MediaController@store');
+                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:admin|editor'
+            ], function () {
                 //Pages
                 Route::get(adminRoute('pages'), 'PageController@index');
                 Route::get(adminRoute('pages/create'), 'PageController@create');
@@ -153,21 +162,6 @@ Route::group([
                 Route::get(adminRoute('articles/{id}/edit'), 'ArticleController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('articles/{id}'), 'ArticleController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('articles/{id}'), 'ArticleController@destroy')->where('id', '[0-9]+');
-                //Media Categories
-                Route::get(adminRoute('media-categories'), 'MediaCategoryController@index');
-                Route::get(adminRoute('media-categories/create'), 'MediaCategoryController@create');
-                Route::post(adminRoute('media-categories'), 'MediaCategoryController@store');
-                Route::get(adminRoute('media-categories/{id}/edit'), 'MediaCategoryController@edit')->where('id', '[0-9]+');
-                Route::put(adminRoute('media-categories/{id}'), 'MediaCategoryController@update');
-                Route::delete(adminRoute('media-categories/{id}'), 'MediaCategoryController@destroy')->where('id', '[0-9]+');
-                Route::get(adminRoute('media-categories/{id}/sort'), 'MediaCategoryController@sort')->where('id', '[0-9]+');
-                //Media
-                Route::get(adminRoute('media-items'), 'MediaController@index');
-                Route::get(adminRoute('media-items/create'), 'MediaController@create');
-                Route::post(adminRoute('media-items'), 'MediaController@store');
-                Route::get(adminRoute('media-items/{id}/edit'), 'MediaController@edit')->where('id', '[0-9]+');
-                Route::put(adminRoute('media-items/{id}'), 'MediaController@update')->where('id', '[0-9]+');
-                Route::delete(adminRoute('media-items/{id}'), 'MediaController@destroy')->where('id', '[0-9]+');
             });
         });
         #endregion

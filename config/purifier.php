@@ -126,7 +126,8 @@ return [
             'HTML.Allowed' => 'address,a[href|rel|rev|name|target],abbr,acronym,b,big,blockquote[cite],br,caption[align],
                 cite,code,col[align|charoff|span|valign|width],colgroup[align|charoff|span|valign|width],del,dd,dfn,
                 div[align],dl,dt,em,font[color|face|size],h1[align],h2[align],h3[align],h4[align],h5[align],h6[align],
-                hr[align|noshade|size|width],i,iframe[width|height|src],img[alt|align|border|height|hspace|longdesc|vspace|src|width],
+                hr[align|noshade|size|width],i,iframe[width|height|src|frameborder],
+                img[alt|align|border|height|hspace|longdesc|vspace|src|width],
                 ins[cite],kbd,li[value],menu,p[align],pre[width],q[cite],s,samp,span,small,strike,strong,sub,sup,
                 table[align|bgcolor|border|cellpadding|cellspacing|rules|summary|width],tbody[align|charoff|valign],
                 td[abbr|align|bgcolor|charoff|colspan|height|nowrap|rowspan|scope|valign|width],tfoot[align|charoff|valign],
@@ -146,7 +147,7 @@ return [
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty' => true,
             'HTML.SafeIframe' => true,
-            'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/|www.dailymotion.com/embed/video/)%',
+            'URI.SafeIframeRegexp' => '%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/|www.dailymotion.com/embed/video/|www.instagram.com/)%',
         ],
     ],
 

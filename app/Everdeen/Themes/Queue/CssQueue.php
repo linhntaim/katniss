@@ -13,6 +13,7 @@ use Katniss\Everdeen\Utils\HtmlTag\Html5;
 
 class CssQueue extends AssetQueue
 {
+    const LIB_OPEN_SANS_NAME = 'open-sans-css';
     const LIB_SOURCE_SANS_PRO_NAME = 'source-sans-pro-css';
     const LIB_BOOTSTRAP_NAME = 'bootstrap-css';
     const LIB_FONT_AWESOME_NAME = 'font-awesome-css';

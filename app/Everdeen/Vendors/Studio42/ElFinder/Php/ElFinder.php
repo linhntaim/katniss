@@ -13,9 +13,10 @@ class ElFinder extends \elFinder
 {
     protected function _rmCheck($path)
     {
-        $ownDirectory = request()->authUser->ownDirectory;
+        $ownDirectoryPath = userPublicPath(request()->authUser()->ownDirectory);
         $notDeletes = [
-            concatDirectories(userPublicPath($ownDirectory), 'profile_pictures') => true,
+            concatDirectories($ownDirectoryPath, 'profile_pictures') => true,
+            concatDirectories($ownDirectoryPath, 'certificates') => true,
         ];
         foreach ($notDeletes as $pathDelete => $loose) {
             if (!$loose && $pathDelete == $path) {

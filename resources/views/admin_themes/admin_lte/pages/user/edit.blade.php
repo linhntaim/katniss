@@ -10,6 +10,7 @@
 @endsection
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('extended_styles')
     <style>
@@ -20,10 +21,17 @@
 @endsection
 @section('lib_scripts')
     <script src="{{ _kExternalLink('select2-js') }}"></script>
+    <script src="{{ libraryAsset('bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ libraryAsset('bootstrap-datepicker/locales/bootstrap-datepicker.'.$site_locale.'.min.js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
         $(function () {
+            $('.date-picker').datepicker({
+                format: '{{ $date_js_format }}',
+                language: '{{ $site_locale }}',
+                enableOnReadonly : false
+            });
             $('.select2').select2();
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
@@ -48,13 +56,21 @@
                     {{ csrf_field() }}
                     {{ method_field('put') }}
                     <div class="box-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
+                            <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" data-placeholder="{{ trans_choice('label.role', 2) }}">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}"{{ $user_roles->contains('id', $role->id) ? ' selected' : '' }}>{{ $role->display_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    @endif
                         <div class="form-group">
                             <label class="required" for="inputDisplayName">{{ trans('label.display_name') }}</label>
                             <input class="form-control" id="inputDisplayName" name="display_name" maxlength="255" placeholder="{{ trans('label.display_name') }}" type="text" required value="{{ $user->display_name }}">
@@ -68,16 +84,87 @@
                             <input class="form-control" id="inputName" name="name" maxlength="255" placeholder="{{ trans('label.user_name') }}" type="text" required value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
-                            <label class="required" for="inputPassword">{{ trans('label.password') }}</label>
+                            <label for="inputPassword">{{ trans('label.password') }}</label>
                             <input class="form-control" id="inputPassword" name="password" placeholder="{{ trans('label.password') }}" type="text">
                         </div>
                         <div class="form-group">
-                            <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
-                            <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" data-placeholder="{{ trans_choice('label.role', 2) }}">
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}"{{ $user_roles->contains('id', $role->id) ? ' selected' : '' }}>{{ $role->display_name }}</option>
+                            <label for="inputBirthday" class="control-label required">{{ trans('label.birthday') }} ({{ $date_js_format }})</label>
+                            <input type="text" placeholder="{{ trans('label.birthday') }}" value="{{ $user->birthday }}"
+                                   class="form-control date-picker" name="date_of_birth" id="inputBirthday" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputGender" class="control-label required">{{ trans('label.gender') }}</label>
+                            <select id="inputGender" class="form-control" name="gender" required>
+                                <option value="">
+                                    - {{ trans('form.action_select') }} {{ trans('label.gender') }} -
+                                </option>
+                                @foreach(allGenders() as $gender)
+                                    <option value="{{ $gender }}"{{ $gender == $user->gender ? ' selected' : '' }}>
+                                        {{ trans('label.gender_'.$gender) }}
+                                    </option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="inputPhoneCode" class="control-label required">{{ trans('label.calling_code') }}</label>
+                                    <select id="inputPhoneCode" name="phone_code" class="form-control select2" style="width: 100%" required
+                                            data-placeholder="- {{ trans('form.action_select') }} {{ trans('label.calling_code_lc') }} -">
+                                        <option value="">
+                                            - {{ trans('form.action_select') }} {{ trans('label.calling_code') }} -
+                                        </option>
+                                        {{ callingCodesAsOptions($user->phone_code) }}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="inputPhoneNumber" class="control-label required">{{ trans('label.phone') }}</label>
+                                    <input id="inputPhoneNumber" type="tel" class="form-control" placeholder="{{ trans('label.phone') }}"
+                                           name="phone_number" required value="{{ $user->phone_number }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputAddress" class="control-label">{{ trans('label.address') }}</label>
+                            <input type="text" placeholder="{{ trans('label.address') }}" value="{{ $user->address }}"
+                                   class="form-control" id="inputAddress" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCity" class="control-label required">{{ trans('label.city') }}</label>
+                            <input type="text" placeholder="{{ trans('label.city') }}" value="{{ $user->city }}"
+                                   class="form-control" id="inputCity" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCountry" class="control-label required">{{ trans('label.country') }}</label>
+                            <select id="inputCountry" class="form-control select2" name="country" style="width: 100%;" required
+                                    data-placeholder="- {{ trans('form.action_select') }} {{ trans('label.country') }} -">
+                                <option value="">
+                                    - {{ trans('form.action_select') }} {{ trans('label.country') }} -
+                                </option>
+                                {!! countriesAsOptions($user->settings->country) !!}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputNationality" class="control-label required">{{ trans('label.nationality') }}</label>
+                            <select id="inputNationality" class="form-control select2" name="nationality" style="width: 100%;" required
+                                    data-placeholder="- {{ trans('form.action_select') }} {{ trans('label.nationality') }} -">
+                                <option value="">
+                                    - {{ trans('form.action_select') }} {{ trans('label.nationality') }} -
+                                </option>
+                                {!! countriesAsOptions($user->nationality) !!}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSkypeId" class="control-label">Skype ID</label>
+                            <input type="text" placeholder="Skype ID" value="{{ $user->skype_id }}"
+                                   class="form-control" id="inputSkypeId" name="skype_id">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFacebook" class="control-label">Facebook URL</label>
+                            <input type="text" placeholder="Facebook URL" value="{{ $user->facebook }}"
+                                   class="form-control" id="inputFacebook" name="facebook">
                         </div>
                     </div>
                     <div class="box-footer">

@@ -124,6 +124,8 @@ return [
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
+    'log_max_files' => env('APP_LOG_MAX_FILES', 5),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -174,6 +176,7 @@ return [
         Dimsav\Translatable\TranslatableServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
         Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         //
 
         /*
@@ -237,12 +240,15 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'ThemeFacade' => \Katniss\Everdeen\Themes\ThemeFacade::class,
+
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
-        'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
-        'LaravelLocalization'   => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

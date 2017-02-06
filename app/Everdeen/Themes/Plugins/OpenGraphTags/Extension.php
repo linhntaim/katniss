@@ -44,8 +44,8 @@ class Extension extends BaseExtension
 
         $this->ogType = 'website';
         $this->ogUrl = currentUrl();
-        $this->ogTitle = appName();
-        $this->ogDescription = appDescription();
+        $this->ogTitle = themeTitle();
+        $this->ogDescription = themeDescription();
         $this->ogImage = appLogo();
         $this->ogSiteName = appName();
         $this->ogLocale = currentFullLocaleCode();

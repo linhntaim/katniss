@@ -18,17 +18,20 @@ class LinkRepository extends ModelRepository
 {
     public function getById($id)
     {
-        return Link::findOrFail($id);
+        return Link::with(['translations', 'categories', 'categories.translations'])
+            ->findOrFail($id);
     }
 
     public function getPaged()
     {
-        return Link::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        return Link::with(['translations', 'categories', 'categories.translations'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAll()
     {
-        return Link::all();
+        return Link::with(['translations', 'categories', 'categories.translations'])->get();
     }
 
     public function create($image, array $categories = [], array $localizedData = [])

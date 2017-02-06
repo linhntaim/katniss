@@ -162,7 +162,27 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);
+                // Media
+                $menu->add(  // add an example menu item which have sub menu
+                    '#',
+                    trans('pages.admin_media_title'),
+                    '<i class="fa fa-photo"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                );
+                $subMenu = new Menu($currentUrl);
+                $subMenu->add( //add a menu item
+                    adminUrl('media-categories'),
+                    trans('pages.admin_media_categories_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('media-items'),
+                    trans('pages.admin_media_items_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $menu->addSubMenu($subMenu);
+            }
 
+            if ($user->hasRole(['admin', 'editor'])) {
                 //Posts
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
@@ -180,28 +200,14 @@ class AdminMenuComposer
                     trans('pages.admin_article_categories_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
-                $subMenu->add( //add a menu item
-                    adminUrl('articles'),
-                    trans('pages.admin_articles_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $menu->addSubMenu($subMenu);
-
-                //Posts
-                $menu->add(  // add an example menu item which have sub menu
+                $subMenu->add(  // add an example menu item which have sub menu
                     '#',
-                    trans('pages.admin_media_title'),
-                    '<i class="fa fa-photo"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                    trans('pages.admin_articles_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
-                $subMenu = new Menu($currentUrl);
-                $subMenu->add( //add a menu item
-                    adminUrl('media-categories'),
-                    trans('pages.admin_media_categories_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('media-items'),
-                    trans('pages.admin_media_items_title'),
+                $subMenu->add( // add a menu item
+                    adminUrl('articles'),
+                    trans('pages.admin_published_articles_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $menu->addSubMenu($subMenu);

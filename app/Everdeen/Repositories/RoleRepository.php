@@ -29,12 +29,18 @@ class RoleRepository extends ModelRepository
         return Role::all();
     }
 
-    public function getByHavingStatuses(array $statuses) {
+    public function getByHavingStatuses(array $statuses)
+    {
         return Role::haveStatuses($statuses)->get();
     }
 
     public function getByName($name)
     {
         return Role::where('name', $name)->firstOrFail();
+    }
+
+    public function getByNames(array $names)
+    {
+        return Role::whereIn('name', $names)->get();
     }
 }

@@ -20,6 +20,12 @@ class ViewController extends KatnissController
 
         $this->viewPath = '';
         $this->paginationRender = new PaginationRender();
+        if (!isMobileClient()) {
+            $this->paginationRender->firstText = trans('pagination.page_first');
+            $this->paginationRender->lastText = trans('pagination.page_last');
+            $this->paginationRender->prevText = '<i class="fa fa-caret-left"></i>';
+            $this->paginationRender->nextText = '<i class="fa fa-caret-right"></i>';
+        }
     }
 
     protected function _rdrUrl(Request $request, $url, &$rdrUrl, &$errorRdrUrl)
@@ -59,5 +65,40 @@ class ViewController extends KatnissController
             return response()->view($view, $params, $code, $headers);
         }
         return '';
+    }
+
+    protected function startWizard()
+    {
+        $wizardName = uniqid('', true);
+        $wizardKey = wizardKey($wizardName);
+        $this->currentRequest->session()->put($wizardName, $wizardKey);
+        return [
+            'name' => $wizardName,
+            'key' => $wizardKey,
+        ];
+    }
+
+    protected function checkWizard($no404 = null)
+    {
+        $wizardName = $this->currentRequest->input(AppConfig::KEY_WIZARD_NAME);
+        $wizardKey = $this->currentRequest->input(AppConfig::KEY_WIZARD_KEY);
+        $innerWizardKey = $this->currentRequest->session()->get($wizardName);
+        if (!(isValidWizardKey($wizardKey, $wizardName) && $innerWizardKey == $wizardKey)) {
+            if ($no404 == null || $no404 === false) {
+                abort(404);
+            } elseif ($no404 === true) {
+                return false;
+            }
+        }
+        return [
+            'name' => $wizardName,
+            'key' => $wizardKey,
+        ];
+    }
+
+    protected function endWizard()
+    {
+        $wizardName = $this->currentRequest->input(AppConfig::KEY_WIZARD_NAME);
+        $this->currentRequest->session()->pull($wizardName);
     }
 }

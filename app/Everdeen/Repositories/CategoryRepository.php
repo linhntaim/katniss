@@ -18,26 +18,41 @@ abstract class CategoryRepository extends ByTypeRepository
 {
     public function getById($id)
     {
-        return Category::where('id', $id)->where('type', $this->type)->firstOrFail();
+        return Category::with('translations')
+            ->where('id', $id)
+            ->where('type', $this->type)
+            ->firstOrFail();
+    }
+
+    public function getByIdWithTranslated($id)
+    {
+        return Category::with('translations')
+            ->where('id', $id)
+            ->where('type', $this->type)
+            ->firstOrFail();
     }
 
     public function getPaged()
     {
-        return Category::where('type', $this->type)
+        return Category::with('translations')
+            ->where('type', $this->type)
             ->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAll()
     {
-        return Category::where('type', $this->type)->get();
+        return Category::with('translations')
+            ->where('type', $this->type)
+            ->get();
     }
 
-    public function create($parentId, array $localizedData = [])
+    public function create($parentId, array $localizedData = [], $order = 0)
     {
         DB::beginTransaction();
         try {
             $category = new Category();
+            $category->order = $order;
             $category->type = $this->type;
             if ($parentId != 0) {
                 $category->parent_id = $parentId;
@@ -59,10 +74,11 @@ abstract class CategoryRepository extends ByTypeRepository
         }
     }
 
-    public function update($parentId, array $localizedData = [])
+    public function update($parentId, array $localizedData = [], $order = 0)
     {
         $category = $this->model();
         $category->parent_id = $parentId != 0 && $parentId !== $category->parent_id ? $parentId : null;
+        $category->order = $order;
 
         DB::beginTransaction();
         try {
