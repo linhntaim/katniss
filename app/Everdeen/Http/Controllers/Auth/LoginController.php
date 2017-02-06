@@ -15,7 +15,7 @@ class LoginController extends ViewController
 {
     /*
     |--------------------------------------------------------------------------
-    | Login ContactFormAdminController
+    | Login Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles authenticating users for the application and

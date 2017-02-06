@@ -67,11 +67,11 @@ class KatnissServiceProvider extends ServiceProvider
             return new SocialiteManager($app);
         });
 
-        $this->app['laravellocalization'] = $this->app->share(function () {
+        $this->app->singleton('laravellocalization', function () {
             return new LaravelLocalization();
         });
 
-        $this->app['settings'] = $this->app->share(function () {
+        $this->app->singleton('settings', function () {
             return new Settings();
         });
     }

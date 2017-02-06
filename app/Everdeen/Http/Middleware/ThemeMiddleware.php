@@ -83,19 +83,19 @@ class ThemeMiddleware
     {
         $app = app();
 
-        $app['theme'] = $app->share(function () use ($request) {
+        $app->singleton('theme', function () use ($request) {
             return $request->getTheme();
         });
 
-        $app['extensions'] = $app->share(function () {
+        $app->singleton('extensions', function () {
             return new Extensions();
         });
 
-        $app['widgets'] = $app->share(function () {
+        $app->singleton('widgets', function () {
             return new Widgets();
         });
 
-        $app['user_app'] = $app->share(function () {
+        $app->singleton('user_app', function () {
             $userAppRepository = new UserAppRepository(KATNISS_DEFAULT_APP);
             return $userAppRepository->model();
         });
