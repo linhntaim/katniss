@@ -25,13 +25,6 @@ Route::group([
     Route::get('messages', 'MessageController@index');
     Route::post('messages', 'MessageController@store');
 
-    Route::get('users', 'UserController@index');
-    Route::get('teachers', 'TeacherController@index');
-    Route::get('students', 'StudentController@index');
-    Route::get('supporters', 'UserController@indexSupporter');
-    Route::get('authors', 'UserController@indexAuthor');
-    Route::get('articles', 'ArticleController@index');
-
     Route::group([
         'middleware' => 'auth'
     ], function () {
@@ -40,43 +33,10 @@ Route::group([
 
         Route::put('admin/media-categories/{id}', 'MediaCategoryController@update');
 
-        Route::put('me/account/password', 'AccountController@updatePassword');
-        Route::put('me/account/skype-id', 'AccountController@updateSkypeId');
-        Route::post('me/account/connect-facebook', 'AccountController@storeFacebookConnect');
-        Route::post('me/account/disconnect-facebook', 'AccountController@storeFacebookDisconnect');
-
-        Route::group([
-            'middleware' => 'entrust:teacher|manager|admin'
-        ], function () {
-            Route::put('classrooms/{id}', 'ClassroomController@update');
-            Route::post('class-times', 'ClassTimeController@store');
-            Route::put('class-times/{id}', 'ClassTimeController@update');
-        });
-
         Route::group([
             'middleware' => 'entrust:admin'
         ], function () {
             Route::put('admin/widgets/sort', 'WidgetController@sort');
-        });
-
-        Route::group([
-            'middleware' => 'entrust:teacher|student|manager|admin'
-        ], function () {
-            Route::post('class-times/{id}/reviews', 'ClassTimeController@storeReviews');
-            Route::post('class-times/{id}/rich-reviews', 'ClassTimeController@storeRichReviews');
-        });
-
-        Route::group([
-            'middleware' => 'entrust:teacher|student|supporter|manager|admin'
-        ], function () {
-            Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
-        });
-
-        Route::group([
-            'middleware' => 'entrust:manager|admin'
-        ], function () {
-            Route::get('admin/learning-requests/{id}', 'LearningRequestController@show');
-            Route::get('admin/salary-report', 'SalaryReportController@index');
         });
     });
 });

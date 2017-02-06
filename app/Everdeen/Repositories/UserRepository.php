@@ -359,29 +359,6 @@ class UserRepository extends ModelRepository
                 $user->roles()->sync($roles);
             }
 
-            if ($user->hasRole('teacher')) {
-                if (Teacher::where('user_id', $user->id)->count() <= 0) {
-                    Teacher::create([
-                        'user_id' => $user->id,
-                    ]);
-                }
-            } else {
-                if (Teacher::where('user_id', $user->id)->count() > 0) {
-                    throw new \Exception(trans('error.cannot_remove_current_teacher_role'));
-                }
-            }
-            if ($user->hasRole('student')) {
-                if (Student::where('user_id', $user->id)->count() <= 0) {
-                    Student::create([
-                        'user_id' => $user->id,
-                    ]);
-                }
-            } else {
-                if (Student::where('user_id', $user->id)->count() > 0) {
-                    throw new \Exception(trans('error.cannot_remove_current_student_role'));
-                }
-            }
-
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
@@ -423,17 +400,6 @@ class UserRepository extends ModelRepository
         } catch (\Exception $ex) {
             DB::rollBack();
 
-            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
-        }
-    }
-
-    public function updateSkypeId($skypeId)
-    {
-        $user = $this->model();
-        try {
-            $user->skype_id = $skypeId;
-            $user->save();
-        } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }

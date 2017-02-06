@@ -36,12 +36,6 @@ Route::group([
             ], function () {
                 Route::put('link-categories/{id}', 'LinkCategoryController@update');
             });
-
-            Route::group([
-                'middleware' => 'entrust:admin|editor'
-            ], function () {
-                Route::put('help-categories/{id}', 'HelpCategoryController@update');
-            });
             #endregion
         });
     });
