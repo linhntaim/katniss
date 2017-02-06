@@ -23,21 +23,34 @@ class ArticleRepository extends PostRepository
         parent::__construct(Post::TYPE_ARTICLE, $id);
     }
 
-    public function getPagedByCategory($categoryId, &$category)
+    public function getSearchPaged($title = null, $author = null, $categories = null)
     {
-        $categoryRepository = new ArticleCategoryRepository();
-        $category = $categoryRepository->getById($categoryId);
-        return $category->posts()->where('type', $this->type)
-            ->orderBy('created_at', 'desc')
+        $posts = Post::with(['translations', 'categories', 'categories.translations', 'author'])
+            ->where('type', $this->type);
+
+        if (!empty($title)) {
+            $posts->whereTranslationLike('title', '%' . $title . '%');
+        }
+        if (!empty($author)) {
+            $posts->where('user_id', $author);
+        }
+        if (!empty($categories)) {
+            $posts->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('id', $categories);
+            });
+        }
+
+        return $posts->orderBy('created_at', 'desc')
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function create($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
+    public function create($userId, $template = null, $featuredImage = null,
+                           array $localizedData = [], array $categories = [])
     {
         DB::beginTransaction();
         try {
             $article = new Post();
-            $article->type = Post::TYPE_ARTICLE;
+            $article->type = $this->type;
             $article->user_id = $userId;
             $article->template = $template;
             $article->featured_image = $featuredImage;
@@ -71,7 +84,6 @@ class ArticleRepository extends PostRepository
     public function update($userId, $template = null, $featuredImage = null, array $localizedData = [], array $categories = [])
     {
         $article = $this->model();
-        $article->user_id = $userId;
         $article->template = $template;
         $article->featured_image = $featuredImage;
 
@@ -111,6 +123,17 @@ class ArticleRepository extends PostRepository
             DB::rollBack();
 
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function view()
+    {
+        $article = $this->model();
+        try {
+            $article->increment('viewed');
+            return true;
+        } catch (\Exception $exception) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $exception->getMessage() . ')');
         }
     }
 }

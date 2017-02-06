@@ -27,9 +27,43 @@ class UserRepository extends ModelRepository
         return User::findOrFail($id);
     }
 
+    public function getByIdLoosely($id)
+    {
+        return User::find($id);
+    }
+
     public function getPaged()
     {
         return User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSearchPaged($displayName = null, $email = null)
+    {
+        $users = User::with('roles')->orderBy('created_at', 'desc');
+        if (!empty($displayName)) {
+            $users->where('display_name', 'like', '%' . $displayName . '%');
+        }
+        if (!empty($email)) {
+            $users->where('email', 'like', '%' . $email . '%');
+        }
+        return $users->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getAuthorSearchCommonPaged($term = null)
+    {
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('roles.name', 'editor');
+            $query->orWhere('roles.name', 'admin');
+        });
+        if (!empty($term)) {
+            $users->where(function ($query) use ($term) {
+                $query->where('id', $term)
+                    ->orWhere('display_name', 'like', '%' . $term . '%')
+                    ->orWhere('name', 'like', '%' . $term . '%')
+                    ->orWhere('email', 'like', '%' . $term . '%');
+            });
+        }
+        return $users->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAll()
@@ -45,6 +79,11 @@ class UserRepository extends ModelRepository
     public function getLikeName($name)
     {
         return User::where('name', 'like', $name . '%')->get();
+    }
+
+    public function getByNameAndHashedPassword($name, $hashedPassword)
+    {
+        return User::where('name', $name)->where('password', $hashedPassword)->first();
     }
 
     /**
@@ -78,7 +117,6 @@ class UserRepository extends ModelRepository
                 'active' => false,
                 'setting_id' => $settings->id,
             ));
-            $user->save();
 
             if (empty($roles)) {
                 $roleRepository = new RoleRepository();
@@ -92,7 +130,7 @@ class UserRepository extends ModelRepository
 
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, !empty($social),
-                    array_merge(request()->theme()->viewParams(), [
+                    array_merge(request()->getTheme()->viewParams(), [
                         MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,
@@ -136,13 +174,38 @@ class UserRepository extends ModelRepository
 
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
-                    array_merge(request()->theme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
                         MailHelper::EMAIL_TO => $email,
                         MailHelper::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
+
+            DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updatePassword($password)
+    {
+        $user = $this->model();
+        DB::beginTransaction();
+        try {
+            $user->password = bcrypt($password);
+            $user->save();
+            event(new PasswordChanged($user, $password,
+                array_merge(request()->getTheme()->viewParams(), [
+                    MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        trans('form.action_change') . ' ' . trans('label.password'),
+                    MailHelper::EMAIL_TO => $user->email,
+                    MailHelper::EMAIL_TO_NAME => $user->display_name,
+                ])
+            ));
 
             DB::commit();
         } catch (\Exception $ex) {
@@ -181,6 +244,73 @@ class UserRepository extends ModelRepository
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
+    }
+
+    public function updateAttributes(array $attributes)
+    {
+        $user = $this->model();
+
+        try {
+            $user->update($attributes);
+            return $user;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function createFacebookConnection($providerId, $avatar)
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $user->socialProviders()->save(new UserSocial([
+                'provider' => UserSocial::PROVIDER_FACEBOOK,
+                'provider_id' => $providerId,
+            ]));
+            $user->url_avatar = $avatar;
+            $user->url_avatar_thumb = $avatar;
+            $user->save();
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function removeFacebookConnection()
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $user->socialProviders()
+                ->where('provider', UserSocial::PROVIDER_FACEBOOK)
+                ->delete();
+            $user->url_avatar = appDefaultUserProfilePicture();
+            $user->url_avatar_thumb = appDefaultUserProfilePicture();
+            $user->save();
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function hasFacebookConnected()
+    {
+        $user = $this->model();
+        return $user->socialProviders()
+                ->where('provider', UserSocial::PROVIDER_FACEBOOK)
+                ->count() > 0;
     }
 
     public function delete()

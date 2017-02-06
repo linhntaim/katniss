@@ -16,11 +16,13 @@ return [
     'accepted'             => ':attribute phải được đồng ý.',
     'active_url'           => ':attribute có giá trị không phải là đường dẫn.',
     'after'                => ':attribute phải có giá trị nằm sau ngày :date.',
+    'after_or_equal'       => ':attribute phải có giá trị nằm sau hoặc bằng với ngày :date.',
     'alpha'                => ':attribute phải có giá trị chỉ gồm các chữ cái.',
     'alpha_dash'           => ':attribute phải có giá trị chỉ gồm chữ cái, chữ số, và dấu gạch ngang.',
     'alpha_num'            => ':attribute phải có giá trị chỉ gồm chữ cái và chữ số.',
     'array'                => ':attribute phải có giá trị là mảng các phần tử dữ liệu.',
     'before'               => ':attribute phải có giá trị nằm trước ngày :date.',
+    'before_or_equal'      => ':attribute phải có giá trị nằm trước hoặc bằng với ngày to :date.',
     'between'              => [
         'numeric' => ':attribute phải có giá trị nằm giữa :min và :max.',
         'file'    => 'Tập tin :attribute phải có kích thước nằm giữa :min và :max KB.',

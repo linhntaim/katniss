@@ -22,6 +22,13 @@ class Theme extends AdminTheme
     public function __construct()
     {
         parent::__construct();
+
+        $homeTheme = homeTheme();
+
+        $this->description = $homeTheme->description();
+        $this->title = $homeTheme->title();
+        $this->titleRoot = $this->title;
+        $this->keywords = $homeTheme->keywords();
     }
 
     protected function registerComposers($is_auth = false)
@@ -54,8 +61,8 @@ class Theme extends AdminTheme
         parent::registerLibScripts($is_auth);
 
         $this->libJsQueue->add(JsQueue::LIB_JQUERY_NAME, _kExternalLink(JsQueue::LIB_JQUERY_NAME));
-        $this->libJsQueue->add(JsQueue::LIB_JQUERY_UI_NAME, _kExternalLink(JsQueue::LIB_JQUERY_UI_NAME));
         $this->libJsQueue->add(JsQueue::LIB_BOOTSTRAP_NAME, _kExternalLink(JsQueue::LIB_BOOTSTRAP_NAME));
+        $this->libJsQueue->add(JsQueue::LIB_JQUERY_UI_NAME, _kExternalLink(JsQueue::LIB_JQUERY_UI_NAME));
         $this->libJsQueue->add('slim-scroll', libraryAsset('slimScroll/jquery.slimscroll.min.js'));
         $this->libJsQueue->add('fast-click', libraryAsset('fastclick/fastclick.min.js'));
     }
@@ -69,12 +76,15 @@ class Theme extends AdminTheme
 
     public function resolveErrorView($code, $originalPath = null)
     {
-        $onAuthPath = beginsWith($originalPath, homePath('auth')) || beginsWith($originalPath, homePath('me'));
+        $onAuthViewPath = empty($originalPath)
+            || beginsWith($originalPath, homePath('auth'))
+            || beginsWith($originalPath, homePath('me'))
+            || !isAuth();
 
         $viewInstance = view();
-        $view = $this->error($onAuthPath ? 'auth.' . $code : $code);
+        $view = $this->error($onAuthViewPath ? 'auth.' . $code : $code);
         if (!$viewInstance->exists($view)) {
-            $view = $this->error($onAuthPath ? 'auth.common' : 'common');
+            $view = $this->error($onAuthViewPath ? 'auth.common' : 'common');
             if (!$viewInstance->exists($view)) {
                 $view = 'errors.' . $code;
                 if (!$viewInstance->exists($view)) {

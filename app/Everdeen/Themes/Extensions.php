@@ -8,7 +8,7 @@
 
 namespace Katniss\Everdeen\Themes;
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 
 class Extensions extends Plugins
@@ -21,7 +21,7 @@ class Extensions extends Plugins
 
     public function __construct()
     {
-        parent::__construct(array_merge(config('katniss.extensions'), HomeThemeFacade::extensions()));
+        parent::__construct(array_merge(config('katniss.extensions'), homeThemeExtensions()));
     }
 
     public function init()

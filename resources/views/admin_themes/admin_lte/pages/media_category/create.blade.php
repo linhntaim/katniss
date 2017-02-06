@@ -16,7 +16,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             $('.slug-from').each(function () {
@@ -43,7 +42,6 @@
                 }
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')

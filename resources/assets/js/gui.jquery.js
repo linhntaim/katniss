@@ -20,10 +20,10 @@ function quickForm(action, data, method) {
 
 $(function () {
     // fix stacked modals
-    var _zIndexModal = 1050;
-    $(document).on('shown.bs.modal', '.modal', function (e) {
-        $(this).css('z-index', ++_zIndexModal);
-    });
+    // var _zIndexModal = 1050;
+    // $(document).on('shown.bs.modal', '.modal', function (e) {
+    //     $(this).css('z-index', ++_zIndexModal);
+    // });
 
     $(document).on('click', '.go-url', function (e) {
         e.preventDefault();
@@ -75,5 +75,21 @@ $(function () {
         return (e.which >= 48 && e.which <= 57)
             || (e.which >= 96 && e.which <= 105)
             || [8, 9, 13, 35, 36, 37, 39, 46, 144].indexOf(e.which) != -1; // back space, tab, enter, end, home, left arrow, right arrow, delete, num lock
+    });
+
+    $('.pop-hover').popover({ trigger: 'manual' , html: true, animation:false})
+        .on('mouseenter', function () {
+            var _this = this;
+            $(this).popover('show');
+            $('.popover').on('mouseleave', function () {
+                $(_this).popover('hide');
+            });
+        }).on('mouseleave', function () {
+        var _this = this;
+        setTimeout(function () {
+            if (!$('.popover:hover').length) {
+                $(_this).popover('hide');
+            }
+        }, 300);
     });
 });

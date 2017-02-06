@@ -108,7 +108,7 @@ class ViewMiddleware
             return $localeRedirect;
         }
 
-        $request->theme(); // register theme
+        $request->resolveUrlPathInfo();
 
         return SettingsFacade::storeCookie($next($request));
     }

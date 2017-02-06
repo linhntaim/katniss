@@ -29,14 +29,14 @@ class AccountController extends AdminController
 
     public function update(Request $request)
     {
-        $this->userRepository->model($request->authUser);
+        $this->userRepository->model($request->authUser());
 
         $validator = Validator::make($request->all(), [
             'current_password' => 'required|password',
             'display_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $request->authUser->id . ',id',
-            'name' => 'required|max:255|unique:users,name,' . $request->authUser->id . ',id',
-            'password' => 'sometimes|confirmed|min:6',
+            'email' => 'required|email|max:255|unique:users,email,' . $request->authUser()->id . ',id',
+            'name' => 'required|max:255|unique:users,name,' . $request->authUser()->id . ',id',
+            'password' => 'sometimes|nullable|confirmed|min:6',
         ]);
 
         $redirect = redirect(meUrl('account'));

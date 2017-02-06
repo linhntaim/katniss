@@ -32,7 +32,7 @@ class MailHelper
         $locale = $params['site_locale'];
 
         try {
-            Mail::queue('emails.' . $path . '.' . $locale, $params, function ($message) use ($params) {
+            Mail::send('emails.' . $path . '.' . $locale, $params, function ($message) use ($params) {
                 $message->from($params[MailHelper::EMAIL_FROM], $params[MailHelper::EMAIL_FROM_NAME]);
                 $message->subject($params[MailHelper::EMAIL_SUBJECT]);
                 if (isset($params[MailHelper::EMAIL_TO_NAME])) {

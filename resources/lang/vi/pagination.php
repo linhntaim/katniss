@@ -17,9 +17,9 @@ return [
     'next'     => 'Tiếp &raquo;',
 
     '_page' => 'Trang :number',
-    'page_first' => 'Trang đầu tiên',
-    'page_last' => 'Trang cuối cùng',
-    'page_next' => 'Trang tiếp theo',
-    'page_prev' => 'Trang trước đó',
+    'page_first' => 'Trang đầu',
+    'page_last' => 'Trang cuối',
+    'page_next' => 'Trang tiếp',
+    'page_prev' => 'Trang trước',
     'page_current' => 'Trang hiện tại',
 ];

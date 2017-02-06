@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use Katniss\Everdeen\Models\AppOption;
 use Katniss\Everdeen\Models\Category;
+use Katniss\Everdeen\Models\Conversation;
 use Katniss\Everdeen\Models\Link;
 use Katniss\Everdeen\Models\Permission;
 use Katniss\Everdeen\Models\Role;
@@ -10,6 +11,7 @@ use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserApp;
 use Katniss\Everdeen\Models\UserSetting;
+use Katniss\Everdeen\Repositories\ConversationRepository;
 
 class DefaultSeeder extends Seeder
 {
@@ -27,7 +29,6 @@ class DefaultSeeder extends Seeder
             'description' => 'Owner of the system',
             'status' => Role::STATUS_HIDDEN,
         ));
-
         $owner_role->attachPermission($admin_access_permission);
 
         $admin_role = Role::create(array(
@@ -50,6 +51,13 @@ class DefaultSeeder extends Seeder
             'display_name' => 'User',
             'description' => 'Normal user'
         ));
+
+        $editor_role = Role::create(array(
+            'name' => 'editor',
+            'display_name' => 'Editor',
+            'description' => 'Editor'
+        ));
+        $editor_role->attachPermission($admin_access_permission);
 
         // TODO: Add 1 administrator
         $setting = UserSetting::create();
@@ -101,6 +109,33 @@ class DefaultSeeder extends Seeder
         ));
         $tester->attachRole($tester_role);
 
+        $setting = UserSetting::create();
+        $editor = User::create(array(
+            'display_name' => 'Editor',
+            'name' => 'editor',
+            'email' => 'editor@katniss.linhntaim.com',
+            'password' => bcrypt('123456'),
+            'url_avatar' => appDefaultUserProfilePicture(),
+            'url_avatar_thumb' => appDefaultUserProfilePicture(),
+            'activation_code' => str_random(32),
+            'active' => true,
+            'setting_id' => $setting->id,
+        ));
+        $editor->attachRole($editor_role);
+
+        AppOption::create([
+            'key' => 'admin_theme',
+            'rawValue' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
+            'data_type' => 'string',
+            'registered_by' => 'theme:admin',
+        ]);
+        AppOption::create([
+            'key' => 'home_theme',
+            'rawValue' => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME,
+            'data_type' => 'string',
+            'registered_by' => 'theme:home',
+        ]);
+
         $locales = ['en', 'vi'];
         $category = new Category();
         $category->type = Category::TYPE_ARTICLE;
@@ -126,7 +161,7 @@ class DefaultSeeder extends Seeder
         $category->save();
         AppOption::create([
             'key' => 'extension_app_settings',
-            'rawValue' => '{"register_enable":"1","default_article_category":"' . $category->id . '"}',
+            'rawValue' => '{"register_enable":"0","default_article_category":"' . $category->id . '"}',
             'data_type' => 'array',
             'registered_by' => 'ext:app_settings',
         ]);
@@ -221,5 +256,10 @@ class DefaultSeeder extends Seeder
             'active' => true,
             'order' => 2
         ]);
+
+        $conversationRepository = new ConversationRepository();
+        $conversationRepository->create();
+        $conversation = $conversationRepository->create(Conversation::TYPE_DIRECT);
+        $conversation->users()->attach([2, 3]);
     }
 }

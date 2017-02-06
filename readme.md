@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.3.28`.
+Current version: `5.4.9`.
 
 Latest version:
 
@@ -97,7 +97,7 @@ Customization:
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: `2.3.0`.
+Current version: `2.3.2`.
 
 Latest version:
 
@@ -109,7 +109,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: `0.3.8`.
+Current version: `0.3.10`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.4.0`.
+Current version: `2.4.1`.
 
 Latest version:
 
@@ -133,7 +133,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: `2.0.20`.
+Current version: `3.0.3`.
 
 Latest version:
 
@@ -157,7 +157,7 @@ For filtering HTML content.
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: `6.0.1`.
+Current version: `7.0`.
 
 Latest version:
 
@@ -188,7 +188,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.1.10`.
+Current version: `1.2.2`.
 
 Latest version:
 
@@ -219,7 +219,7 @@ For fetching data from Instagram API.
 
 [Shortcode](https://github.com/thunderer/Shortcode)
 
-Current version: `0.6.4`.
+Current version: `0.6.5`.
 
 Latest version:
 
@@ -277,7 +277,7 @@ Requests share sessions & cookies between connections (stateful).
 
 Request flow:
 
-- Request > Web Middleware (`ViewMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
+- Request > Web Middleware (`WebApiMiddleware`) > Web API Controller > Repository > Model > Response (JSON format).
 
 ### Action Hooking
 
@@ -305,7 +305,7 @@ Based on action hooking of Trigger.
 
 For processing extra routes defined by theme or plugins.
 
-See coding of extensions `Contact Form` or `Polls` for more.
+See coding of theme `Example Theme` or extensions `Contact Form`, `Polls` or `Google Maps Marker` for more.
 
 ### Short Codes
 
@@ -324,6 +324,8 @@ To store/retrieve runtime application's options in database.
 #### Theme
 
 To organize templates into themes for easily developing/extending.
+
+Themes can be extended by plugins.
 
 Request flow:
 
@@ -345,7 +347,7 @@ Sample Themes:
 
 Themes for business.
 
-Home themes are easily extended with plugins.
+Can extend admin themes by Extra Routes.
 
 Request flow:
 
@@ -371,6 +373,8 @@ Widgets can be extension-based.
 ##### Extension
 
 Define extensions for adding extra functions/features to themes (or even the system).
+
+Can extend admin themes by Extra Routes.
 
 Extensions can share its data to other components.
 
@@ -409,7 +413,7 @@ Sample Extensions:
 
 ##### Widget
 
-Define widgets of content for inserting into placeholders of any theme.
+Define widgets of content for inserting into placeholders of home themes.
 
 Widgets in a placeholder are sortable; their orders can be changed.
 
@@ -543,3 +547,18 @@ There's always a default category needs to be set for articles.
 Manage media (photos, videos) and categories of them.
 
 Media in a category can be sorted.
+
+### Conversation
+
+Users can send message to each others in a conversation.
+
+Support real-time messaging, based on [Realtime.co Messaging Service](https://framework.realtime.co/messaging/).
+
+Conversation is designed to easily embed into view (through HTML tag: `iframe`).
+
+Conversation can be type of:
+
+- 1-to-1: Messaging between 2 users.
+- Group: Messaging among a group of users.
+- Public: Messaging among everyone.
+- Support: Messaging between 1 anonymous vs 1 user

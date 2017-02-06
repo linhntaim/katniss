@@ -12,13 +12,19 @@ use Katniss\Everdeen\Http\Controllers\CallbackTrait;
 use Katniss\Everdeen\Http\Controllers\WebApiController;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Themes\Extension;
-use Katniss\Everdeen\Themes\Theme;
 use Katniss\Everdeen\Utils\InstagramHelper;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
 
 class InstagramController extends WebApiController
 {
     use CallbackTrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('theme')->only('getAccessToken');
+    }
 
     public function getAccessToken(Request $request)
     {
@@ -63,9 +69,5 @@ class InstagramController extends WebApiController
     {
         $this->setCallbackRedirectUrl($request, $request->input('rdr'));
         return redirect(InstagramHelper::getAuthorizeUrl($request->input('client_id')));
-    }
-
-    public function getMedia(Request $request) {
-
     }
 }

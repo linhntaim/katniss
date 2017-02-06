@@ -13,15 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 Route::group([
     'prefix' => 'v1',
 ], function () {
-    Route::any('extra', 'KatnissController@extra');
+    Route::any('extra', 'ApiController@extra');
 
     Route::group([
         'namespace' => 'Api\V1',
         'middleware' => 'auth'
     ], function () {
+        Route::post('upload/default-image', 'UploadController@useDefaultImage');
         Route::post('upload/cropper-js', 'UploadController@useJsCropper');
 
         Route::post('user/{id}/avatar/cropper-js', 'UserController@postAvatarUsingCropperJs');
@@ -33,7 +38,6 @@ Route::group([
             Route::group([
                 'middleware' => 'entrust:admin'
             ], function () {
-                Route::put('widgets/sort', 'WidgetController@sort');
                 Route::put('link-categories/{id}', 'LinkCategoryController@update');
             });
             #endregion

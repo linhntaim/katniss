@@ -26,6 +26,6 @@ trait CallbackTrait
 
     private function setCallbackRedirectUrl(Request $request, $url)
     {
-        $request->session()->set(AppConfig::KEY_CALLBACK_REDIRECT_URL, $url);
+        $request->session()->put(AppConfig::KEY_CALLBACK_REDIRECT_URL, $url);
     }
 }

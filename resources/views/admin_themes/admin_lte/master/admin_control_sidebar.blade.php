@@ -21,6 +21,14 @@
                         <a href="{{ meUrl('settings') }}">{{ trans('pages.my_settings_title') }}</a>
                     </li>
                 </ul>
+                <h3 class="control-sidebar-heading">{{ trans('label.language') }}</h3>
+                <ul class="control-sidebar-menu">
+                    @foreach(allSupportedLocales() as $locale => $properties)
+                        <li>
+                            <a href="{{ currentFullUrl($locale) }}">{{ $properties['native'] }}</a>
+                        </li>
+                    @endforeach
+                </ul>
             </form>
         </div>
     </div>

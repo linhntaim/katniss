@@ -9,7 +9,7 @@
 namespace Katniss\Everdeen\Themes;
 
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Plugin
@@ -18,6 +18,7 @@ abstract class Plugin
     const DISPLAY_NAME = '';
     const DESCRIPTION = '';
     const THEME_ONLY = false;
+    const THEME_HOME = true;
     const EDITABLE = true;
     const TRANSLATABLE = false;
 
@@ -85,7 +86,7 @@ abstract class Plugin
             }
         }
 
-        if(!$this::TRANSLATABLE) return $data;
+        if (!$this::TRANSLATABLE) return $data;
 
         $htmlFields = $this->localizedHtmlFields();
         foreach ($localizedData as $locale => &$values) {
@@ -125,22 +126,22 @@ abstract class Plugin
         return clean($value, $config);
     }
 
-    public function getProperty($name, $locale = '')
+    public function getProperty($name, $locale = '', $isArray = false, $indexKey = null)
     {
         if (!$this::EDITABLE) abort(404);
 
         if (empty($locale)) {
-            if (isset($this->data[$name])) return $this->data[$name];
+            if (isset($this->data[$name])) return !$isArray ? $this->data[$name] : defArrItem($this->data[$name], $indexKey, '');
             if ($this::TRANSLATABLE && isset($this->currentLocalizedData[$name])) {
-                return $this->currentLocalizedData[$name];
+                return !$isArray ? $this->currentLocalizedData[$name] : defArrItem($this->currentLocalizedData[$name], $indexKey, '');
             }
             return '';
         }
 
-        if(!$this::TRANSLATABLE) return '';
+        if (!$this::TRANSLATABLE) return '';
 
         return isset($this->localizedData[$locale]) && isset($this->localizedData[$locale][$name]) ?
-            $this->localizedData[$locale][$name] : '';
+            (!$isArray ? $this->localizedData[$locale][$name] : defArrItem($this->localizedData[$locale][$name], $indexKey, '')) : '';
     }
 
     public function register()
@@ -193,9 +194,11 @@ abstract class Plugin
 
     public function view($name)
     {
-        return !$this::THEME_ONLY ?
-            HomeThemeFacade::commonPluginPath($this::NAME, $name)
-            : HomeThemeFacade::pluginPath($this::NAME, $name);
+        if (!$this::THEME_ONLY) {
+            return ThemeFacade::commonPluginPath($this::NAME, $name);
+        }
+        $theme = $this::THEME_HOME ? homeTheme() : adminTheme();
+        return $theme->pluginPath($this::NAME, $name);
     }
 
     public function viewAdmin()

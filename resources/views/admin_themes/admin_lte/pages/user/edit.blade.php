@@ -10,6 +10,7 @@
 @endsection
 @section('lib_styles')
     <link rel="stylesheet" href="{{ _kExternalLink('select2-css') }}">
+    <link rel="stylesheet" href="{{ libraryAsset('bootstrap-datepicker/css/bootstrap-datepicker3.min.css') }}">
 @endsection
 @section('extended_styles')
     <style>
@@ -23,12 +24,10 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             x_modal_delete($('a.delete'), '{{ trans('form.action_delete') }}', '{{ trans('label.wanna_delete', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
@@ -50,13 +49,21 @@
                     {{ csrf_field() }}
                     {{ method_field('put') }}
                     <div class="box-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
+                            <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" data-placeholder="{{ trans_choice('label.role', 2) }}">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}"{{ $user_roles->contains('id', $role->id) ? ' selected' : '' }}>{{ $role->display_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    @endif
                         <div class="form-group">
                             <label class="required" for="inputDisplayName">{{ trans('label.display_name') }}</label>
                             <input class="form-control" id="inputDisplayName" name="display_name" maxlength="255" placeholder="{{ trans('label.display_name') }}" type="text" required value="{{ $user->display_name }}">
@@ -70,16 +77,8 @@
                             <input class="form-control" id="inputName" name="name" maxlength="255" placeholder="{{ trans('label.user_name') }}" type="text" required value="{{ $user->name }}">
                         </div>
                         <div class="form-group">
-                            <label class="required" for="inputPassword">{{ trans('label.password') }}</label>
+                            <label for="inputPassword">{{ trans('label.password') }}</label>
                             <input class="form-control" id="inputPassword" name="password" placeholder="{{ trans('label.password') }}" type="text">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
-                            <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" data-placeholder="{{ trans_choice('label.role', 2) }}">
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}"{{ $user_roles->contains('id', $role->id) ? ' selected' : '' }}>{{ $role->display_name }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
                     <div class="box-footer">

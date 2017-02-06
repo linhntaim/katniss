@@ -33,7 +33,7 @@ class PollAdminController extends AdminController
     {
         $polls = $this->pollRepository->getPaged();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.index', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
@@ -47,7 +47,7 @@ class PollAdminController extends AdminController
 
     public function create(Request $request)
     {
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.create', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc')
@@ -58,7 +58,7 @@ class PollAdminController extends AdminController
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -70,7 +70,7 @@ class PollAdminController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'multi_choice' => 'sometimes|in:1',
+            'multi_choice' => 'sometimes|nullable|in:1',
         ]);
         if ($validator->fails()) {
             return redirect($errorRdrUrl)
@@ -99,7 +99,7 @@ class PollAdminController extends AdminController
         $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_links_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('poll.edit', Extension::NAME),
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),
@@ -115,7 +115,7 @@ class PollAdminController extends AdminController
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -125,7 +125,7 @@ class PollAdminController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'multi_choice' => 'sometimes|in:1',
+            'multi_choice' => 'sometimes|nullable|in:1',
         ]);
         if ($validator->fails()) {
             return redirect($rdrUrl)->withErrors($validator);
@@ -165,7 +165,7 @@ class PollAdminController extends AdminController
         $this->_title([trans('pages.admin_link_categories_title'), trans('form.action_sort')]);
         $this->_description(trans('pages.admin_link_categories_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             'plugins.polls.admin.poll.sort',
             trans('polls.page_polls_title'),
             trans('polls.page_polls_desc'),

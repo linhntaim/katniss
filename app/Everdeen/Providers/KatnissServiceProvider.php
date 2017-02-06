@@ -3,15 +3,11 @@
 namespace Katniss\Everdeen\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Katniss\Everdeen\Models\UserApp;
-use Katniss\Everdeen\Repositories\UserAppRepository;
-use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\MySqlConnection;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Connectors\ConnectionFactory;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\DatabaseSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\FileSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Socialite\SocialiteManager;
 use Katniss\Everdeen\Vendors\Mcamara\LaravelLocalization\LaravelLocalization;
-use Katniss\Everdeen\Themes\Extensions;
-use Katniss\Everdeen\Themes\Widgets;
 use Katniss\Everdeen\Utils\Settings;
 
 class KatnissServiceProvider extends ServiceProvider
@@ -65,43 +61,20 @@ class KatnissServiceProvider extends ServiceProvider
     {
         $this->app->alias('request', \Katniss\Everdeen\Http\Request::class);
 
-        $this->app->bind('db.connection.mysql', MySqlConnection::class);
+        $this->app->singleton('db.factory', function ($app) {
+            return new ConnectionFactory($app);
+        });
 
         $this->app->singleton('Laravel\Socialite\Contracts\Factory', function ($app) {
             return new SocialiteManager($app);
         });
 
-        $this->app['laravellocalization'] = $this->app->share(function () {
+        $this->app->singleton('laravellocalization', function () {
             return new LaravelLocalization();
         });
 
-        $this->app['home_theme'] = $this->app->share(function () {
-            $homeThemeName = config('katniss.home_theme');
-            $homeTheme = config('katniss.home_themes.' . $homeThemeName);
-            return new $homeTheme;
-        });
-
-        $this->app['admin_theme'] = $this->app->share(function () {
-            $adminThemeName = config('katniss.admin_theme');
-            $adminTheme = config('katniss.admin_themes.' . $adminThemeName);
-            return new $adminTheme;
-        });
-
-        $this->app['extensions'] = $this->app->share(function () {
-            return new Extensions();
-        });
-
-        $this->app['widgets'] = $this->app->share(function () {
-            return new Widgets();
-        });
-
-        $this->app['settings'] = $this->app->share(function () {
+        $this->app->singleton('settings', function () {
             return new Settings();
-        });
-
-        $this->app['user_app'] = $this->app->share(function () {
-            $userAppRepository = new UserAppRepository(KATNISS_DEFAULT_APP);
-            return $userAppRepository->model();
         });
     }
 }

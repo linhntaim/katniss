@@ -9,12 +9,10 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             x_modal_put($('a.activate'), '{{ trans('form.action_activate') }}', '{{ trans('label.wanna_activate', ['name' => '']) }}');
             x_modal_put($('a.deactivate'), '{{ trans('form.action_deactivate') }}', '{{ trans('label.wanna_deactivate', ['name' => '']) }}');
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
@@ -32,8 +30,8 @@
                     <h3 class="box-title">{{ trans('form.list_of',['name' => trans_choice('label.extension_lc', 2)]) }}</h3>
                 </div><!-- /.box-header -->
                 @if(count($extensions)>0)
-                    <div class="box-body">
-                        <table class="table table-bordered table-hover">
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th class="order-col-2">#</th>

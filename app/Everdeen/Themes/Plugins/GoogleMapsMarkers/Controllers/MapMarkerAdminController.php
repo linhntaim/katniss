@@ -34,7 +34,7 @@ class MapMarkerAdminController extends AdminController
     {
         $mapMarkers = $this->mapMarkerRepository->getPaged();
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('index', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc'),
@@ -48,7 +48,7 @@ class MapMarkerAdminController extends AdminController
 
     public function create(Request $request)
     {
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('create', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc')
@@ -58,8 +58,8 @@ class MapMarkerAdminController extends AdminController
     public function store(Request $request)
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'sometimes|max:255',
-            'description' => 'sometimes|max:255',
+            'name' => 'sometimes|nullable|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -102,7 +102,7 @@ class MapMarkerAdminController extends AdminController
         $this->_title([trans('pages.admin_links_title'), trans('form.action_edit')]);
         $this->_description(trans('pages.admin_links_desc'));
 
-        return $request->theme()->resolveExtraView(
+        return $request->getTheme()->resolveExtraView(
             $this->_extra('edit', Extension::NAME),
             trans('google_maps_markers.page_map_markers_title'),
             trans('google_maps_markers.page_map_markers_desc'),
@@ -117,8 +117,8 @@ class MapMarkerAdminController extends AdminController
         $this->mapMarkerRepository->model($id);
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'sometimes|max:255',
-            'description' => 'sometimes|max:255',
+            'name' => 'sometimes|nullable|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);

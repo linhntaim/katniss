@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Themes\WidgetsFacade;
 
 class WidgetController extends AdminController
@@ -40,7 +40,7 @@ class WidgetController extends AdminController
             ];
         }
 
-        $placeholders = HomeThemeFacade::placeholders();
+        $placeholders = homeThemePlaceholders();
         asort($placeholders);
         $placeholderNames = array_keys($placeholders);
         $themeWidgets = $this->widgetRepository->getAll($placeholderNames, array_keys($widgets));
@@ -72,7 +72,7 @@ class WidgetController extends AdminController
 
         $validator = Validator::make($request->all(), [
             'widget' => 'required|in:' . implode(',', array_keys(WidgetsFacade::all())),
-            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
+            'placeholder' => 'required|in:' . implode(',', array_keys(homeThemePlaceholders())),
         ]);
 
         $redirect = redirect(adminUrl('widgets'));
@@ -94,7 +94,7 @@ class WidgetController extends AdminController
         $this->widgetRepository->model($request->input('id'));
 
         $validator = Validator::make($request->all(), [
-            'placeholder' => 'required|in:' . implode(',', array_keys(HomeThemeFacade::placeholders())),
+            'placeholder' => 'required|in:' . implode(',', array_keys(homeThemePlaceholders())),
         ]);
 
         $redirect = redirect(adminUrl('widgets'));

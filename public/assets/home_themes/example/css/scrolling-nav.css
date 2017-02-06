@@ -14,28 +14,12 @@ html {
     height: 100%;
 }
 
-@media(min-width:767px) {
-    .navbar {
-        padding: 20px 0;
-        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        transition: background .5s ease-in-out,padding .5s ease-in-out;
-    }
-
-    .top-nav-collapse {
-        padding: 0;
-    }
-}
-
-/* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
-The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children 
-of those sections to manage the look and feel of the site. */
-
 .odd-section {
     padding: 150px 0;
     text-align: center;
     background: #fff;
 }
+
 .even-section {
     padding: 150px 0;
     text-align: center;
@@ -53,13 +37,27 @@ footer p {
     margin: 0;
 }
 
-.widget-instagram-wall ul.media-list {
+#public-conversation iframe {
+    width: 480px;
+    height: 600px;
+    border: none;
 }
 
-.widget-instagram-wall ul.media-list li.media-item {
-    float: left;
+@media (min-width: 767px) {
+    .navbar {
+        padding: 20px 0;
+        -webkit-transition: background .5s ease-in-out, padding .5s ease-in-out;
+        -moz-transition: background .5s ease-in-out, padding .5s ease-in-out;
+        transition: background .5s ease-in-out, padding .5s ease-in-out;
+    }
+
+    .top-nav-collapse {
+        padding: 0;
+    }
 }
 
-.widget-instagram-wall ul.media-list li.media-item img {
-    max-width: 100%;
+@media (max-width: 767px) {
+    #public-conversation iframe {
+        width: 100%;
+    }
 }

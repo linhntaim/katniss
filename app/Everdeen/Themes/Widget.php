@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Themes;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\ThemeWidget;
 use Katniss\Everdeen\Repositories\ThemeWidgetRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\AppConfig;
 
 abstract class Widget extends Plugin
@@ -103,7 +103,7 @@ abstract class Widget extends Plugin
         try {
             $this->themeWidget = $widgetRepository->create(
                 $this::NAME,
-                $this::THEME_ONLY ? HomeThemeFacade::getName() : '',
+                $this::THEME_ONLY ? ThemeFacade::getName() : '',
                 $placeholder,
                 $this->toDataConstructAsJson($data, $localizedData)
             );

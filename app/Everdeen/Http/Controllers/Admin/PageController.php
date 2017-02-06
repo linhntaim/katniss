@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Repositories\PageRepository;
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 
 class PageController extends AdminController
 {
@@ -50,7 +50,7 @@ class PageController extends AdminController
         $this->_description(trans('pages.admin_pages_desc'));
 
         return $this->_create([
-            'templates' => HomeThemeFacade::pageTemplates(),
+            'templates' => ThemeFacade::pageTemplates(),
         ]);
     }
 
@@ -65,7 +65,7 @@ class PageController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $error_redirect = redirect(adminUrl('pages/create'))
@@ -76,7 +76,7 @@ class PageController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'featured_image' => 'sometimes|url',
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $error_redirect->withErrors($validator);
@@ -84,7 +84,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->create(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()
@@ -122,7 +122,7 @@ class PageController extends AdminController
 
         return $this->_edit([
             'page' => $page,
-            'templates' => HomeThemeFacade::pageTemplates(),
+            'templates' => ThemeFacade::pageTemplates(),
         ]);
     }
 
@@ -142,7 +142,7 @@ class PageController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug,' . $page->id . ',post_id',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
@@ -150,7 +150,7 @@ class PageController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'featured_image' => 'sometimes|url',
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $redirect->withErrors($validator);
@@ -158,7 +158,7 @@ class PageController extends AdminController
 
         try {
             $this->pageRepository->update(
-                $request->authUser->id,
+                $request->authUser()->id,
                 $request->input('template', ''),
                 $request->input('featured_image', ''),
                 $validateResult->getLocalizedInputs()

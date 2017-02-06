@@ -8,7 +8,7 @@
 
 namespace Katniss\Everdeen\Themes;
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 use Katniss\Everdeen\Utils\AppOptionHelper;
 
 abstract class Extension extends Plugin

@@ -23,7 +23,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
 
@@ -45,8 +44,8 @@
                     else {
                         self.removeClass('theme-widget-empty');
                     }
-                    var api = new KatnissApi();
-                    api.put('widgets/sort', {
+                    var api = new KatnissApi(true);
+                    api.put('admin/widgets/sort', {
                         placeholder: self.attr('data-placeholder'),
                         widget_ids: items
                     });
@@ -74,7 +73,6 @@
                 return false;
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('modals')

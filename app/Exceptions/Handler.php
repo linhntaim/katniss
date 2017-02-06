@@ -3,6 +3,8 @@
 namespace Katniss\Exceptions;
 
 use Exception;
+use Katniss\Everdeen\Http\Middleware\ThemeMiddleware;
+use Katniss\Everdeen\Utils\AppOptionHelper;
 use ReflectionException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -64,7 +66,8 @@ class Handler extends ExceptionHandler
     {
         $e = parent::prepareException($e);
         if ($e instanceof MethodNotAllowedHttpException
-        || $e instanceof ReflectionException) {
+            || $e instanceof ReflectionException
+        ) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 
@@ -80,12 +83,9 @@ class Handler extends ExceptionHandler
     protected function renderHttpException(HttpException $e)
     {
         // firstly, try to render error by theme
-        $checkPath = checkPath();
-        if (!$checkPath->api && !$checkPath->webApi && $checkPath->locale) {
-            $response = $this->renderHttpExceptionByTheme($e, $checkPath->admin);
-            if (!empty($response->getContent())) {
-                return $response;
-            }
+        $response = $this->renderHttpExceptionByTheme($e);
+        if ($response !== false) {
+            return $response;
         }
 
         return parent::renderHttpException($e);
@@ -95,28 +95,28 @@ class Handler extends ExceptionHandler
      * Get response of error by theme's rendering
      *
      * @param HttpException $e
-     * @param bool $isAdmin
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\Response|bool
      */
-    protected function renderHttpExceptionByTheme(HttpException $e, $isAdmin = false)
+    protected function renderHttpExceptionByTheme(HttpException $e)
     {
-        $requestPath = $isAdmin ? adminUrl('errors/{code}', ['code' => $e->getStatusCode()])
+        $request = request();
+
+        if (!$request->checkUrlPathInfo()) {
+            $request->resolveUrlPathInfo();
+        }
+        $checkPath = $request->getUrlPathInfo();
+        if ($checkPath->api || $checkPath->webApi || !$checkPath->locale) {
+            return false;
+        }
+
+        $requestPath = $checkPath->admin ? adminUrl('errors/{code}', ['code' => $e->getStatusCode()])
             : homeUrl('errors/{code}', ['code' => $e->getStatusCode()]);
-        $kernel = app()->make(\Illuminate\Contracts\Http\Kernel::class);
-        $request = SymfonyRequest::create(
-            $requestPath,
-            'GET',
-            [
+
+        return redirect($requestPath . '?' . http_build_query([
                 'message' => $e->getMessage(),
                 'headers' => $e->getHeaders(),
                 'original_path' => request()->path(),
-            ],
-            request()->cookies->all()
-        );
-        $request = Request::createFromBase($request);
-        $response = $kernel->handle($request);
-        $kernel->terminate($request, $response);
-        return $response;
+            ]));
     }
     #endregion
 

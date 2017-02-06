@@ -19,9 +19,7 @@ class Html5
     public static function jsInline($content)
     {
         return '<script>
-' . cdataOpen() . '
 ' . $content . '
-' . cdataClose() . '
 </script>';
     }
 
@@ -50,5 +48,10 @@ class Html5
     public static function title($title)
     {
         return '<title>' . $title . '</title>';
+    }
+
+    public static function frame($src)
+    {
+        return '<iframe src="' . $src . '"></iframe>';
     }
 }

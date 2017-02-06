@@ -57,12 +57,13 @@ class CallableObject
 
     public function execute($refresh = true)
     {
-        if (!empty($this->function)) {
-            return call_user_func_array($this->function, $this->tmpParams);
-        }
-
+        $tmpParams = $this->tmpParams;
         if ($refresh) {
             $this->tmpParams = $this->params;
+        }
+
+        if (!empty($this->function)) {
+            return call_user_func_array($this->function, $tmpParams);
         }
 
         return false;

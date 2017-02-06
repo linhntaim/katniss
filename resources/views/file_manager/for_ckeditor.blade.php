@@ -5,14 +5,11 @@
     <link rel="stylesheet" href="{{ libraryAsset('elfinder/css/theme.css') }}">
 @endsection
 @section('lib_scripts')
-    <script src="{{ _kExternalLink('jquery') }}"></script>
-    <script src="{{ _kExternalLink('jquery-ui') }}"></script>
     <script src="{{ libraryAsset('elfinder/js/elfinder.min.js') }}"></script>
     <script src="{{ libraryAsset('elfinder/js/i18n/elfinder.'.$site_locale.'.js') }}"></script>
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         function urlParam(name) {
             var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results == null) {
@@ -57,7 +54,6 @@
             }
             $('#elfinder').elfinder(elfinderOptions);
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('body')

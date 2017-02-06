@@ -9,11 +9,9 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('auth_form')

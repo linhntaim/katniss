@@ -14,8 +14,12 @@ class CreatePosts extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
+
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
+            $table->integer('viewed')->unsigned()->default(0);
             $table->string('template')->nullable();
             $table->string('featured_image')->nullable();
             $table->tinyInteger('type')->unsigned()->default(0); // 0 = PAGE;

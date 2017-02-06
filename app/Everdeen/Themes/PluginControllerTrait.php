@@ -8,14 +8,14 @@
 
 namespace Katniss\Everdeen\Themes;
 
-use Katniss\Everdeen\Themes\HomeThemes\HomeThemeFacade;
+use Katniss\Everdeen\Themes\ThemeFacade;
 
 trait PluginControllerTrait
 {
     public function _extra($name, $plugin, $themeOnly = false)
     {
         return !$themeOnly ?
-            HomeThemeFacade::commonPluginPath($plugin, 'extra.' . $name)
-            : HomeThemeFacade::pluginPath($plugin, 'extra.' . $name);
+            ThemeFacade::commonPluginPath($plugin, 'extra.' . $name)
+            : ThemeFacade::pluginPath($plugin, 'extra.' . $name);
     }
 }

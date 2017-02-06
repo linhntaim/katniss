@@ -21,6 +21,7 @@ return [
     'example/articles'                              => 'example/articles',
     'example/articles/{id}'                         => 'example/articles/{id}',
     'example/article-categories/{id}'               => 'example/article-categories/{id}',
+    'example/public-conversation'                   => 'example/public-conversation',
 
     'me'                                            => 'me',
     'me/settings'                                   => 'me/settings',

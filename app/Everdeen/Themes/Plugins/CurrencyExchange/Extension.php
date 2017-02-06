@@ -69,6 +69,7 @@ class Extension extends BaseExtension
             'exchange_rates' => $this->exchangeRates,
             'main_currency_code' => $this->mainCurrencyCode,
             'currencies' => allCurrencies(),
+            'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
         ]);
     }
 

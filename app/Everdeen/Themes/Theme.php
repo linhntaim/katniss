@@ -24,25 +24,6 @@ abstract class Theme
     const TYPE_ADMIN = 'admin_themes';
     const TYPE_HOME = 'home_themes';
 
-    public static $isAdmin = false;
-    public static $onWebApi = false;
-
-    /**
-     * @return Theme
-     */
-    public static function byRequest()
-    {
-        $checkPath = checkPath();
-        if ($checkPath->api) {
-            return null;
-        }
-        self::$onWebApi = $checkPath->webApi;
-        self::$isAdmin = $checkPath->admin;
-        $theme = self::$isAdmin ? app('admin_theme') : app('home_theme');
-        $theme->register(isAuth());
-        return $theme;
-    }
-
     protected $name;
     protected $view;
     protected $type;
@@ -95,6 +76,11 @@ abstract class Theme
         $this->extJsQueue = new JsQueue();
         $this->libCssQueue = new CssQueue();
         $this->extCssQueue = new CssQueue();
+    }
+
+    public function extensions()
+    {
+        return [];
     }
 
     public function getName()

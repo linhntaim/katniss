@@ -9,65 +9,108 @@
 namespace Katniss\Everdeen\Http;
 
 use Illuminate\Http\Request as BaseRequest;
+use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Themes\Theme;
 
 class Request extends BaseRequest
 {
-    public $isAuth;
-    public $authUser;
+    /**
+     * @var bool
+     */
+    protected $isAuth;
+
+    /**
+     * @var User
+     */
+    protected $authUser;
+
+    /**
+     * @var \stdClass
+     */
+    protected $urlPathInfo;
 
     /**
      * @var Theme
      */
     protected $theme;
 
-    public function setAuth($isAuth, $authUser)
+    public function isAuth()
+    {
+        return $this->isAuth;
+    }
+
+    public function authUser()
+    {
+        return $this->authUser;
+    }
+
+    public function setAuth($isAuth = false, User $authUser = null)
     {
         $this->isAuth = $isAuth;
         $this->authUser = $isAuth ? $authUser : null;
+        if ($isAuth) {
+            $this->authUser->load(['roles', 'roles.perms', 'settings']);
+        }
+    }
+
+    public function getUrlPathInfo()
+    {
+        return $this->urlPathInfo;
+    }
+
+    public function checkUrlPathInfo()
+    {
+        return !empty($this->urlPathInfo);
+    }
+
+    public function resolveUrlPathInfo()
+    {
+        $this->urlPathInfo = new \stdClass();
+        $this->urlPathInfo->locale = in_array($this->segment(1), allSupportedLocaleCodes());
+        $this->urlPathInfo->api = false;
+        $this->urlPathInfo->webApi = false;
+        $this->urlPathInfo->admin = false;
+        $this->urlPathInfo->home = false;
+
+        $apiPath = 'api'; // can be changed
+        if ($this->is($apiPath, $apiPath . '/*')) {
+            $this->urlPathInfo->api = true;
+            return;
+        }
+        $webApiPath = 'web-api'; // can be changed
+
+        $this->urlPathInfo->webApi = $this->is($webApiPath, $webApiPath . '/*');
+
+        $adminPaths = _k('paths_use_admin_theme');
+        foreach ($adminPaths as $adminPath) {
+            $adminPath = !$this->urlPathInfo->webApi ? homePath($adminPath) : $webApiPath . '/' . $adminPath;
+            if ($this->is($adminPath, $adminPath . '/*')) {
+                $this->urlPathInfo->admin = true;
+                break;
+            }
+        }
+
+        $this->urlPathInfo->home = !$this->urlPathInfo->admin;
     }
 
     /**
      * @return Theme
      */
-    public function theme()
+    public function getTheme()
     {
-        if (empty($this->theme)) {
-            $this->resolveTheme();
-        }
         return $this->theme;
     }
 
-    protected function resolveTheme()
+    /**
+     * @param Theme $theme
+     */
+    public function setTheme(Theme $theme)
     {
-        $this->theme = Theme::byRequest(); // register theme
-        $viewParams = [
-            'site_locale' => currentLocaleCode(),
-            'site_version' => appVersion(),
-            'site_name' => appName(),
-            'site_logo' => appLogo(),
-            'site_keywords' => appKeywords(),
-            'site_short_name' => appShortName(),
-            'site_description' => appDescription(),
-            'site_author' => appAuthor(),
-            'site_email' => appEmail(),
-            'site_domain' => appDomain(),
-            'site_home_url' => homeUrl(),
-            'is_auth' => isAuth(),
-            'auth_user' => authUser(),
-            'max_upload_file_size' => maxUploadFileSize()
-        ];
-        if ($this->hasSession()) {
-            $session = $this->session();
-            $viewParams['session_id'] = $session->getId();
-            $viewParams['successes'] = $session->has('successes') ?
-                collect((array)$session->get('successes')) : collect([]);
-            $viewParams['info'] = $session->has('info') ?
-                collect((array)$session->get('info')) : collect([]);
-        }
-        $viewParams = $this->theme->viewParams($viewParams);
-        foreach ($viewParams as $key => $value) {
-            view()->share($key, $value);
-        }
+        $this->theme = $theme;
+    }
+
+    public function checkTheme()
+    {
+        return !empty($this->theme);
     }
 }

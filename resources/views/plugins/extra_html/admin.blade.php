@@ -5,7 +5,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.ck-editor').ckeditor({
                 language: '{{ $site_locale }}',
@@ -17,6 +16,5 @@
                 customConfig: '{{ libraryAsset('ckeditor-4.5.5/config_typical.js') }}'
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection

@@ -7,11 +7,9 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('extended_widget_top')

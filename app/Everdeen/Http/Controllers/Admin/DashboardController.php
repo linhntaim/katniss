@@ -2,6 +2,12 @@
 
 namespace Katniss\Everdeen\Http\Controllers\Admin;
 
+use Katniss\Everdeen\Repositories\ArticleRepository;
+use Katniss\Everdeen\Repositories\ClassroomRepository;
+use Katniss\Everdeen\Repositories\RegisterLearningRequestRepository;
+use Katniss\Everdeen\Repositories\StudentRepository;
+use Katniss\Everdeen\Repositories\TeacherRepository;
+
 class DashboardController extends AdminController
 {
     public function __construct()

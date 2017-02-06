@@ -71,3 +71,10 @@ function htmlspecialchars(str) {
         return map[m];
     });
 }
+
+function strReplaceMany(text, replaces) {
+    for (var prop in replaces) {
+        text = text.replace(new RegExp('{' + prop + '}', 'g'), replaces[prop]);
+    }
+    return text;
+}

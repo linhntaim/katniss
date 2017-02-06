@@ -25,7 +25,6 @@
 @endsection
 @section('extended_scripts')
     <script>
-        {!! cdataOpen() !!}
         $(function () {
             $('.select2').select2();
             $('[type=checkbox]').iCheck({
@@ -34,74 +33,74 @@
                 increaseArea: '20%' // optional
             });
         });
-        {!! cdataClose() !!}
     </script>
 @endsection
 @section('page_content')
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</h3>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ trans('form.action_add') }} {{ trans_choice('label.user_lc', 1) }}</h3>
+                </div>
+                <form method="post" action="{{ adminUrl('users') }}">
+                    {{ csrf_field() }}
+                    <div class="box-body">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
+                            <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" style="width: 100%"
+                                    data-placeholder="{{ trans_choice('label.role', 2) }}">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}"{{ $role->name == 'user' ? ' selected' : '' }}>
+                                        {{ $role->display_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required" for="inputDisplayName">{{ trans('label.display_name') }}</label>
+                            <input class="form-control" id="inputDisplayName" name="display_name" maxlength="255"
+                                   placeholder="{{ trans('label.display_name') }}" type="text" required value="{{ old('display_name') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required" for="inputEmail">{{ trans('label.email') }}</label>
+                            <input class="form-control" id="inputEmail" name="email" maxlength="255" placeholder="{{ trans('label.email') }}" type="email" required value="{{ old('email') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required" for="inputName">{{ trans('label.user_name') }}</label>
+                            <input class="form-control" id="inputName" name="name" maxlength="255" placeholder="{{ trans('label.user_name') }}" type="text" required value="{{ old('name') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="required" for="inputPassword">{{ trans('label.password') }}</label>
+                            <input class="form-control" id="inputPassword" name="password" placeholder="{{ trans('label.password') }}" type="text" required value="{{ old('password') }}">
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox icheck">
+                                <label for="inputSendMail">
+                                    <input id="inputSendMail" name="send_welcomed_mail" type="checkbox" value="1" checked>
+                                    &nbsp; {{ trans('label.send_welcome_mail') }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <button class="btn btn-primary" type="submit">{{ trans('form.action_add') }}</button>
+                        <div class="pull-right">
+                            <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
+                            <a role="button" class="btn btn-warning" href="{{ adminUrl('users') }}">{{ trans('form.action_cancel') }}</a>
+                        </div>
+                    </div>
+                </form>
+                <!-- /.box-body -->
             </div>
-            <form method="post" action="{{ adminUrl('users') }}">
-                {{ csrf_field() }}
-                <div class="box-body">
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            @foreach ($errors->all() as $error)
-                                <p>{{ $error }}</p>
-                            @endforeach
-                        </div>
-                    @endif
-                    <div class="form-group">
-                        <label class="required" for="inputDisplayName">{{ trans('label.display_name') }}</label>
-                        <input class="form-control" id="inputDisplayName" name="display_name" maxlength="255" placeholder="{{ trans('label.display_name') }}" type="text" required value="{{ old('display_name') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="required" for="inputEmail">{{ trans('label.email') }}</label>
-                        <input class="form-control" id="inputEmail" name="email" maxlength="255" placeholder="{{ trans('label.email') }}" type="email" required value="{{ old('email') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="required" for="inputName">{{ trans('label.user_name') }}</label>
-                        <input class="form-control" id="inputName" name="name" maxlength="255" placeholder="{{ trans('label.user_name') }}" type="text" required value="{{ old('name') }}">
-                    </div>
-                    <div class="form-group">
-                        <label class="required" for="inputPassword">{{ trans('label.password') }}</label>
-                        <input class="form-control" id="inputPassword" name="password" placeholder="{{ trans('label.password') }}" type="text" required value="{{ old('password') }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="inputRoles">{{ trans_choice('label.role', 2) }}</label>
-                        <select id="inputRoles" class="form-control select2" name="roles[]" multiple="multiple" style="width: 100%"
-                                data-placeholder="{{ trans_choice('label.role', 2) }}">
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}"{{ $role->name == 'user' ? ' selected' : '' }}>
-                                    {{ $role->display_name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox icheck">
-                            <label for="inputSendMail">
-                                <input id="inputSendMail" name="send_welcomed_mail" type="checkbox" value="1" checked>
-                                &nbsp; {{ trans('label.send_welcome_mail') }}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <button class="btn btn-primary" type="submit">{{ trans('form.action_add') }}</button>
-                    <div class="pull-right">
-                        <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
-                        <a role="button" class="btn btn-warning" href="{{ adminUrl('users') }}">{{ trans('form.action_cancel') }}</a>
-                    </div>
-                </div>
-            </form>
-            <!-- /.box-body -->
+            <!-- /.box -->
         </div>
-        <!-- /.box -->
+        <!-- /.col -->
     </div>
-    <!-- /.col -->
-</div>
 @endsection
