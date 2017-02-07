@@ -22,7 +22,7 @@ class RegisterController extends ViewController
 {
     /*
     |--------------------------------------------------------------------------
-    | Register ContactFormAdminController
+    | Register Controller
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their

@@ -15,6 +15,7 @@ class CreateCategoriesLinks extends Migration
     {
         Schema::create('categories_links', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->integer('category_id')->unsigned();
             $table->integer('link_id')->unsigned();

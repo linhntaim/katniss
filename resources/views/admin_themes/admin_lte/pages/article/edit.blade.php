@@ -4,11 +4,7 @@
 @section('page_breadcrumb')
 <ol class="breadcrumb">
     <li><a href="{{ adminUrl() }}"><i class="fa fa-home"></i> {{ trans('pages.admin_dashboard_title') }}</a></li>
-    <li>
-        <a href="{{ $article->isPublished ? adminUrl('published-articles') : adminUrl('teacher-articles') }}">
-            {{ trans('pages.admin_articles_title') }}
-        </a>
-    </li>
+    <li><a href="{{ adminUrl('articles') }}">{{ trans('pages.admin_articles_title') }}</a></li>
     <li><a href="#">{{ trans('form.action_edit') }}</a></li>
 </ol>
 @endsection
@@ -185,7 +181,7 @@
                         <div class="pull-right">
                             <button class="btn btn-default" type="reset">{{ trans('form.action_reset') }}</button>
                             <a role="button" class="btn btn-warning"
-                               href="{{ $article->isPublished ? adminUrl('published-articles') : adminUrl('teacher-articles') }}">
+                               href="{{ $article->isPublished ? adminUrl('articles') : adminUrl('teacher-articles') }}">
                                 {{ trans('form.action_cancel') }}
                             </a>
                         </div>

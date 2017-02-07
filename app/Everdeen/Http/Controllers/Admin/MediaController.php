@@ -72,7 +72,7 @@ class MediaController extends AdminController
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $error_redirect = redirect(adminUrl('media-items/create'))
@@ -83,7 +83,7 @@ class MediaController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_MEDIA,
             'url' => 'required|url',
             'type' => 'required|in:' . implode(',', [Media::TYPE_PHOTO, Media::TYPE_VIDEO]),
         ]);
@@ -156,7 +156,7 @@ class MediaController extends AdminController
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
@@ -164,7 +164,7 @@ class MediaController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_MEDIA,
             'url' => 'required|url',
             'type' => 'required|in:' . implode(',', [Media::TYPE_PHOTO, Media::TYPE_VIDEO]),
         ]);

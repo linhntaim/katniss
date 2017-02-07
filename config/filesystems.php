@@ -51,41 +51,42 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
         's3' => [
             'driver' => 's3',
-            'key' => 'your-key',
-            'secret' => 'your-secret',
-            'region' => 'your-region',
-            'bucket' => 'your-bucket',
+            'key' => env('AWS_KEY'),
+            'secret' => env('AWS_SECRET'),
+            'region' => env('AWS_REGION'),
+            'bucket' => env('AWS_BUCKET'),
         ],
 
         // custom disks
         'cache_assets' => [
             'driver' => 'local',
-            'root'   => public_path('assets/cache'),
+            'root' => public_path('assets/cache'),
         ],
 
         'upload' => [
             'driver' => 'local',
-            'root'   => public_path('upload'),
+            'root' => public_path('upload'),
         ],
 
         'file_manager' => [
             'driver' => 'local',
-            'root'   => public_path('files'),
+            'root' => public_path('files'),
         ],
 
         'lang' => [
             'driver' => 'local',
-            'root'   => storage_path('../resources/lang'),
+            'root' => storage_path('../resources/lang'),
         ],
 
         'email' => [
             'driver' => 'local',
-            'root'   => storage_path('../resources/views/emails'),
+            'root' => storage_path('../resources/views/emails'),
         ],
     ],
 

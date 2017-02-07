@@ -5,7 +5,6 @@ namespace Katniss\Everdeen\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
-use Katniss\Everdeen\Repositories\AnnouncementRepository;
 use Katniss\Everdeen\Vendors\Zizaco\Entrust\Traits\EntrustUserTrait as OverriddenEntrustUserTrait;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -46,16 +45,6 @@ class User extends Authenticatable
         'url_avatar_thumb',
         'activation_code',
 
-        'gender',
-        'skype_id',
-        'facebook',
-        'phone_code',
-        'phone_number',
-        'date_of_birth',
-        'address',
-        'city',
-        'nationality',
-
         'active',
         'setting_id',
         'channel',
@@ -94,37 +83,9 @@ class User extends Authenticatable
         return $dir;
     }
 
-    public function getCertificateDirectoryAttribute()
-    {
-        $dir = concatDirectories('user_' . $this->id, 'certificates');
-        makeUserPublicPath($dir);
-        return $dir;
-    }
-
     public function getMemberSinceAttribute()
     {
         return DateTimeHelper::getInstance()->shortDate($this->attributes['created_at']);
-    }
-
-    public function getBirthdayAttribute()
-    {
-        return empty($this->attributes['date_of_birth']) ?
-            '' : DateTimeHelper::getInstance()->shortDate($this->attributes['date_of_birth']);
-    }
-
-    public function getAgeAttribute()
-    {
-        if (empty($this->attributes['date_of_birth']) || $this->attributes['date_of_birth'] == '0000-00-00 00:00:00') {
-            return '0';
-        }
-
-        return DateTimeHelper::diffYear($this->attributes['date_of_birth']);
-    }
-
-    public function getPhoneAttribute()
-    {
-        return empty($this->attributes['phone_code']) || empty($this->attributes['phone_number']) ?
-            '' : '(+' . allCountry($this->attributes['phone_code'], 'calling_code') . ') ' . $this->attributes['phone_number'];
     }
 
     public function socialProviders()
@@ -148,49 +109,5 @@ class User extends Authenticatable
     public function settings()
     {
         return $this->hasOne(UserSetting::class, 'id', 'setting_id');
-    }
-
-    public function teacherProfile()
-    {
-        return $this->hasOne(Teacher::class, 'user_id', 'id');
-    }
-
-    public function studentProfile()
-    {
-        return $this->hasOne(Student::class, 'user_id', 'id');
-    }
-
-    public function professionalSkills()
-    {
-        return $this->belongsToMany(ProfessionalSkill::class, 'professional_skills_users', 'user_id', 'skill_id');
-    }
-
-    public function educations()
-    {
-        return $this->hasMany(UserEducation::class, 'user_id', 'id');
-    }
-
-    public function certificates()
-    {
-        return $this->hasMany(UserCertificate::class, 'user_id', 'id');
-    }
-
-    public function works()
-    {
-        return $this->hasMany(UserWork::class, 'user_id', 'id');
-    }
-
-    public function announcements()
-    {
-        return $this->belongsToMany(Announcement::class, 'read_announcements', 'user_id', 'announcement_id');
-    }
-
-    public function getCountUnreadAnnouncementsAttribute()
-    {
-        $announcementRepository = new AnnouncementRepository();
-        $countAnnouncements = $announcementRepository->getCountByUser($userId, $this);
-        $countReadAnnouncements = $this->announcements()->count();
-        $countUnreadAnnouncements = $countAnnouncements - $countReadAnnouncements;
-        return $countUnreadAnnouncements > 0 ? $countUnreadAnnouncements : 0;
     }
 }

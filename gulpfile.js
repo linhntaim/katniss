@@ -14,55 +14,37 @@ require('laravel-elixir-vue-2');
  */
 
 elixir(function (mix) {
-    // mix.scripts([
-    //     'js.cookie.js',
-    //     'helpers.js',
-    //     'class.number_format_helper.js',
-    //     'class.katniss_api.js',
-    //     'refresh_session.js',
-    //     'gui.jquery.js'
-    // ], 'public/assets/libraries/katniss.home.js');
-    //
-    // mix.scripts([
-    //     'js.cookie.js',
-    //     'helpers.js',
-    //     'slug.js',
-    //     'slug.jquery.js',
-    //     'class.number_format_helper.js',
-    //     'class.katniss_api.js',
-    //     'refresh_session.js',
-    //     'gui.jquery.js'
-    // ], 'public/assets/libraries/katniss.admin.js');
+    mix.scripts([
+        'js.cookie.js',
+        'helpers.js',
+        'class.number_format_helper.js',
+        'class.katniss_api.js',
+        'refresh_session.js',
+        'gui.jquery.js'
+    ], 'public/assets/libraries/katniss.home.js');
 
-    // mix.scripts([
-    //     'realtime.pusher.js',
-    //     'sounds.js',
-    //     'conversation.js'
-    // ], 'public/assets/libraries/katniss.conversation.js');
-    // mix.styles('conversation.css', 'public/assets/libraries/katniss.conversation.css');
+    mix.scripts([
+        'js.cookie.js',
+        'helpers.js',
+        'slug.js',
+        'slug.jquery.js',
+        'class.number_format_helper.js',
+        'class.katniss_api.js',
+        'refresh_session.js',
+        'gui.jquery.js'
+    ], 'public/assets/libraries/katniss.admin.js');
 
-    // mix.styles('modal_cropper_image.css', 'public/assets/libraries/modal_cropper_image.css');
-    // mix.scripts('modal_cropper_image.js', 'public/assets/libraries/modal_cropper_image.js');
-    //
-    // mix.scripts([
-    //     'google_maps_markers.js'
-    // ], 'public/assets/libraries/google_maps_markers.js');
+    mix.scripts([
+        'realtime.pusher.js',
+        'sounds.js',
+        'conversation.js'
+    ], 'public/assets/libraries/katniss.conversation.js');
+    mix.styles('conversation.css', 'public/assets/libraries/katniss.conversation.css');
 
-    mix.styles([
-        'wow_skype/common.css',
-        'wow_skype/nav_wizard.css',
-        'wow_skype/header.css',
-        'wow_skype/main.css',
-        'wow_skype/footer.css',
-        'wow_skype/page.home.css',
-        'wow_skype/page.sign_up.css',
-        'wow_skype/page.teacher_sign_up.css',
-        'wow_skype/page.profile_account_information.css',
-        'wow_skype/page.teachers.css',
-        'wow_skype/page.student_sign_up.css',
-        'wow_skype/page.classrooms.css',
-        'wow_skype/page.helps.css',
-        'wow_skype/page.articles.css',
-        'wow_skype/page.announcements.css'
-    ], 'public/assets/home_themes/wow_skype/css/style.css');
+    mix.styles('modal_cropper_image.css', 'public/assets/libraries/modal_cropper_image.css');
+    mix.scripts('modal_cropper_image.js', 'public/assets/libraries/modal_cropper_image.js');
+
+    mix.scripts([
+        'google_maps_markers.js'
+    ], 'public/assets/libraries/google_maps_markers.js');
 });

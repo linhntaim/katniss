@@ -27,45 +27,7 @@ class UserController extends WebApiController
 
     public function index(Request $request)
     {
-        if ($request->has('normal_role')) {
-            return $this->indexNormalRole($request);
-        }
-
-        $this->responseFail();
-    }
-
-    public function indexSupporter(Request $request)
-    {
-        if ($request->has('q')) {
-            return $this->indexSupporterCommon($request);
-        }
-
         return $this->responseFail();
-    }
-
-    public function indexSupporterCommon(Request $request)
-    {
-        try {
-            $users = $this->userRepository->getSupporterSearchCommonPaged($request->input('q'));
-            $pagination = new Pagination($users);
-            $users = $users->map(function (User $user) {
-                return [
-                    'id' => $user->id,
-                    'url_avatar_thumb' => $user->url_avatar_thumb,
-                    'display_name' => $user->display_name,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'skype_id' => $user->skype_id,
-                    'phone' => $user->phone,
-                ];
-            });
-            return $this->responseSuccess([
-                'supporters' => $users,
-                'pagination' => $pagination->toArray(),
-            ]);
-        } catch (\Exception $exception) {
-            return $this->responseFail($exception->getMessage());
-        }
     }
 
     public function indexAuthor(Request $request)
@@ -95,40 +57,6 @@ class UserController extends WebApiController
             });
             return $this->responseSuccess([
                 'authors' => $users,
-                'pagination' => $pagination->toArray(),
-            ]);
-        } catch (\Exception $exception) {
-            return $this->responseFail($exception->getMessage());
-        }
-    }
-
-    public function indexNormalRole(Request $request)
-    {
-        if ($request->has('q')) {
-            return $this->indexNormalRoleCommon($request);
-        }
-
-        return $this->responseFail();
-    }
-
-    public function indexNormalRoleCommon(Request $request)
-    {
-        try {
-            $users = $this->userRepository->getNormalRoleSearchCommonPaged($request->input('q'));
-            $pagination = new Pagination($users);
-            $users = $users->map(function (User $user) {
-                return [
-                    'id' => $user->id,
-                    'url_avatar_thumb' => $user->url_avatar_thumb,
-                    'display_name' => $user->display_name,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'skype_id' => $user->skype_id,
-                    'phone' => $user->phone,
-                ];
-            });
-            return $this->responseSuccess([
-                'users' => $users,
                 'pagination' => $pagination->toArray(),
             ]);
         } catch (\Exception $exception) {

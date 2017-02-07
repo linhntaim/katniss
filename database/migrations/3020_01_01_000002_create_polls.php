@@ -15,6 +15,7 @@ class CreatePolls extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->tinyInteger('multi_choice')->default(0); // single choice
@@ -25,6 +26,7 @@ class CreatePolls extends Migration
 
         Schema::create('poll_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('poll_id')->unsigned();
@@ -40,6 +42,7 @@ class CreatePolls extends Migration
 
         Schema::create('poll_choices', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('poll_id')->unsigned();
@@ -54,6 +57,7 @@ class CreatePolls extends Migration
 
         Schema::create('poll_choice_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('choice_id')->unsigned();

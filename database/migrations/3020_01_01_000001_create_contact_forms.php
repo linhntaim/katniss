@@ -15,6 +15,7 @@ class CreateContactForms extends Migration
     {
         Schema::create('contact_forms', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->string('full_name');

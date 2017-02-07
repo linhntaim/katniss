@@ -29,6 +29,20 @@ class LinkRepository extends ModelRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchPaged($categories = null)
+    {
+        $links = Link::with(['translations', 'categories', 'categories.translations'])
+            ->orderBy('created_at', 'desc');
+
+        if (!empty($categories)) {
+            $links->whereHas('categories', function ($query) use ($categories) {
+                $query->whereIn('id', $categories);
+            });
+        }
+
+        return $links->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getAll()
     {
         return Link::with(['translations', 'categories', 'categories.translations'])->get();

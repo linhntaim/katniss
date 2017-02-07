@@ -3,7 +3,7 @@
 namespace Katniss\Everdeen\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\MySqlConnection;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Connectors\ConnectionFactory;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\DatabaseSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\FileSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Socialite\SocialiteManager;
@@ -61,17 +61,19 @@ class KatnissServiceProvider extends ServiceProvider
     {
         $this->app->alias('request', \Katniss\Everdeen\Http\Request::class);
 
-        $this->app->bind('db.connection.mysql', MySqlConnection::class);
+        $this->app->singleton('db.factory', function ($app) {
+            return new ConnectionFactory($app);
+        });
 
         $this->app->singleton('Laravel\Socialite\Contracts\Factory', function ($app) {
             return new SocialiteManager($app);
         });
 
-        $this->app['laravellocalization'] = $this->app->share(function () {
+        $this->app->singleton('laravellocalization', function () {
             return new LaravelLocalization();
         });
 
-        $this->app['settings'] = $this->app->share(function () {
+        $this->app->singleton('settings', function () {
             return new Settings();
         });
     }

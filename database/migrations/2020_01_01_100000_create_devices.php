@@ -15,6 +15,7 @@ class CreateDevices extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->engine = 'InnoDB';
+            $table->rowFormat = 'DYNAMIC';
 
             $table->bigIncrements('id');
             $table->uuid('uuid');

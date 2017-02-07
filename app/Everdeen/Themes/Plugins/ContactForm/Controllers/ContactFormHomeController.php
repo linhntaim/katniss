@@ -31,8 +31,8 @@ class ContactFormHomeController extends ViewController
             'full_name' => 'required|max:255',
             'phone' => 'required_without_all:email|max:255',
             'email' => 'required_without_all:phone|email|max:255',
-            'website' => 'sometimes|url|max:255',
-            'address' => 'sometimes|max:255',
+            'website' => 'sometimes|nullable|url|max:255',
+            'address' => 'sometimes|nullable|max:255',
         ]);
 
         $this->_rdrUrl($request, homeUrl(), $rdrUrl, $errorRdrUrl);
