@@ -135,13 +135,33 @@ class ClassTimeRepository extends ModelRepository
     {
         $classTime = $this->model();
 
+        DB::beginTransaction();
         try {
+            $nextClassTimes = ClassTime::where('classroom_id', $classTime->classroom_id)
+                ->where('start_at', '>=', $classTime->start_at)
+                ->where('id', '>', $classTime->id)
+                ->orderBy('start_at', 'asc')
+                ->orderBy('id', 'asc')
+                ->get();
+            if ($nextClassTimes->count() > 1) {
+                throw new \Exception(trans('error._cannot_delete', ['reason' => trans('error.not_last_class_time')]));
+            } elseif ($nextClassTimes->count() > 0) {
+                $nextClassTime = $nextClassTimes->first();
+                if ($nextClassTime->type == ClassTime::TYPE_PERIODIC) {
+                    $nextClassTime->delete();
+                } else {
+                    throw new \Exception(trans('error._cannot_delete', ['reason' => trans('error.not_last_class_time')]));
+                }
+            }
             $classTime->delete();
 
-            logInfo('Class time updated.', $classTime->toArray());
+            logInfo('Class time deleted.', $classTime->toArray());
 
+            DB::commit();
             return true;
         } catch (\Exception $ex) {
+            DB::rollBack();
+
             throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');
         }
     }

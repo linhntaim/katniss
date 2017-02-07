@@ -293,6 +293,18 @@
                 });
             });
 
+            $('.delete-class-time').on('click', function (e) {
+                e.preventDefault();
+
+                $updateClassTimeModal.modal('hide');
+
+                x_modal_form(
+                    '{{ trans('form.action_delete') }}',
+                    '{{ trans('label.wanna_delete', ['name' => '']) }}',
+                    $(this).attr('data-delete'),
+                    'delete'
+                );
+            });
             $(document).on('click', '.edit-class-time', function (e) {
                 e.preventDefault();
 
@@ -301,6 +313,15 @@
                 $updateClassTimeForm.find('[name="subject"]').val($classTime.attr('data-subject'));
                 $updateClassTimeForm.find('[name="content"]').val($classTime.attr('data-content'));
 
+                if($(this).closest('.class-time-item').attr('id') == $('.class-time-item:not(.class-time-periodic):last').attr('id')) {
+                    $updateClassTimeModal.find('.delete-class-time')
+                        .removeClass('hide')
+                        .attr('data-delete', '{{ homeUrl('class-times/{id}', ['id'=> '']) }}/' + $classTime.attr('data-id'));
+                }
+                else {
+                    $updateClassTimeModal.find('.delete-class-time')
+                        .addClass('hide');
+                }
                 $updateClassTimeModal.modal('show');
             });
             $updateClassTimeForm.on('submit', function (e) {
@@ -643,6 +664,13 @@
                 <a class="btn btn-success" target="_blank" href="?export=1">
                     <i class="fa fa-download"></i> {{ trans('form.action_export') }}
                 </a>
+            </div>
+        @endif
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
             </div>
         @endif
         <ul id="class-time-list" class="media-list step-list margin-top-30">
@@ -1007,6 +1035,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ trans('form.action_cancel') }}</button>
+                        <button type="button" class="btn btn-danger pull-left delete-class-time hide">{{ trans('form.action_delete') }}</button>
                         <span class="update-class-time-form-loading hide">
                             <i class="fa fa-refresh fa-spin fa-fw"></i>
                         </span>

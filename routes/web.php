@@ -76,6 +76,7 @@ Route::group([
             ], function () {
                 Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
                 Route::put(homeRoute('classrooms/{id}'), 'ClassroomController@update');
+                Route::delete(homeRoute('class-times/{id}'), 'ClassTimeController@destroy');
             });
         });
 

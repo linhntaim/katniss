@@ -22,6 +22,7 @@ return [
     'opening-classrooms'                            => 'opening-classrooms',
     'closed-classrooms'                             => 'closed-classrooms',
     'classrooms/{id}'                               => 'classrooms/{id}',
+    'class-times/{id}'                              => 'class-times/{id}',
     'helps'                                         => 'helps',
     'helps/{slug}'                                  => 'helps/{slug}',
     'knowledge'                                     => 'knowledge',
