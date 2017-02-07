@@ -44,6 +44,28 @@ class AccountController extends WebApiController
         }
     }
 
+    public function updateSkypeId(Request $request)
+    {
+        $this->userRepository->model($request->authUser());
+
+        if (!$this->customValidate($request, [
+            'skype_id' => 'required|max:255',
+        ])
+        ) {
+            return $this->responseFail($this->getValidationErrors());
+        }
+
+        try {
+            $this->userRepository->updateSkypeId(
+                $request->input('skype_id')
+            );
+
+            return $this->responseSuccess();
+        } catch (KatnissException $ex) {
+            return $this->responseFail();
+        }
+    }
+
     public function storeFacebookConnect(Request $request)
     {
         $this->userRepository->model($request->authUser());

@@ -60,4 +60,26 @@ class SettingsController extends AdminController
         $settings->storeSession();
         return $settings->storeCookie(redirect(meUrl('settings', [], $settings->getLocale())));
     }
+
+    public function updateTimezone(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'timezone' => 'required',
+        ]);
+
+        $this->_rdrUrl($request, meUrl('settings'), $rdrUrl, $errRdrUrl);
+
+        if ($validator->fails()) {
+            return redirect($errRdrUrl)
+                ->withErrors($validator);
+        }
+
+        $settings = settings();
+        $settings->setTimezone($request->input('timezone'));
+
+        $settings->storeUser();
+        $settings->storeSession();
+
+        return $settings->storeCookie(redirect($rdrUrl));
+    }
 }

@@ -21,23 +21,6 @@
 
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">{{ trans('app_settings.authentication') }}</h3>
-    </div>
-    <div class="box-body">
-        <div class="form-group">
-            <div class="checkbox icheck">
-                <label for="inputRegisterEnable">
-                    <input id="inputRegisterEnable" type="checkbox" name="register_enable"
-                           value="1"{{ $register_enable ? ' checked' : '' }}>
-                    &nbsp; {{ trans('app_settings.register_enable') }}
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="box">
-    <div class="box-header with-border">
         <h3 class="box-title">{{ trans('app_settings.short_code') }}</h3>
     </div>
     <div class="box-body">

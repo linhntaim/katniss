@@ -13,6 +13,8 @@ use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Role;
+use Katniss\Everdeen\Models\Student;
+use Katniss\Everdeen\Models\Teacher;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSetting;
 use Katniss\Everdeen\Models\UserSocial;
@@ -37,7 +39,7 @@ class UserRepository extends ModelRepository
         return User::orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
-    public function getSearchPaged($displayName = null, $email = null)
+    public function getSearchPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
         $users = User::with('roles')->orderBy('created_at', 'desc');
         if (!empty($displayName)) {
@@ -46,13 +48,38 @@ class UserRepository extends ModelRepository
         if (!empty($email)) {
             $users->where('email', 'like', '%' . $email . '%');
         }
+        if (!empty($skypeId)) {
+            $users->where('skype_id', 'like', '%' . $skypeId . '%');
+        }
+        if (!empty($phoneNumber)) {
+            $users->where('phone_number', 'like', '%' . $phoneNumber . '%');
+        }
         return $users->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getSupporterSearchCommonPaged($term = null)
+    {
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('roles.name', 'supporter');
+        });
+        if (!empty($term)) {
+            $users->where(function ($query) use ($term) {
+                $query->where('id', $term)
+                    ->orWhere('display_name', 'like', '%' . $term . '%')
+                    ->orWhere('name', 'like', '%' . $term . '%')
+                    ->orWhere('email', 'like', '%' . $term . '%')
+                    ->orWhere('skype_id', 'like', '%' . $term . '%')
+                    ->orWhere('phone_number', 'like', '%' . $term . '%');
+            });
+        }
+        return $users->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
     public function getAuthorSearchCommonPaged($term = null)
     {
         $users = User::whereHas('roles', function ($query) {
-            $query->where('roles.name', 'editor');
+            $query->where('roles.name', 'teacher');
+            $query->orWhere('roles.name', 'editor');
             $query->orWhere('roles.name', 'admin');
         });
         if (!empty($term)) {
@@ -60,7 +87,27 @@ class UserRepository extends ModelRepository
                 $query->where('id', $term)
                     ->orWhere('display_name', 'like', '%' . $term . '%')
                     ->orWhere('name', 'like', '%' . $term . '%')
-                    ->orWhere('email', 'like', '%' . $term . '%');
+                    ->orWhere('email', 'like', '%' . $term . '%')
+                    ->orWhere('skype_id', 'like', '%' . $term . '%')
+                    ->orWhere('phone_number', 'like', '%' . $term . '%');
+            });
+        }
+        return $users->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
+    public function getNormalRoleSearchCommonPaged($term = null)
+    {
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('roles.status', Role::STATUS_NORMAL);
+        });
+        if (!empty($term)) {
+            $users->where(function ($query) use ($term) {
+                $query->where('id', $term)
+                    ->orWhere('display_name', 'like', '%' . $term . '%')
+                    ->orWhere('name', 'like', '%' . $term . '%')
+                    ->orWhere('email', 'like', '%' . $term . '%')
+                    ->orWhere('skype_id', 'like', '%' . $term . '%')
+                    ->orWhere('phone_number', 'like', '%' . $term . '%');
             });
         }
         return $users->orderBy('created_at', 'desc')->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
@@ -124,6 +171,17 @@ class UserRepository extends ModelRepository
             }
             $user->attachRoles($roles);
 
+            if ($user->hasRole('teacher')) {
+                Teacher::create([
+                    'user_id' => $user->id,
+                ]);
+            }
+            if ($user->hasRole('student')) {
+                Student::create([
+                    'user_id' => $user->id,
+                ]);
+            }
+
             if (!empty($social)) {
                 $user->socialProviders()->save(new UserSocial($social));
             }
@@ -172,6 +230,29 @@ class UserRepository extends ModelRepository
                 $user->roles()->sync($roles);
             }
 
+            if ($user->hasRole('teacher')) {
+                if (Teacher::where('user_id', $user->id)->count() <= 0) {
+                    Teacher::create([
+                        'user_id' => $user->id,
+                    ]);
+                }
+            } else {
+                if (Teacher::where('user_id', $user->id)->count() > 0) {
+                    throw new \Exception(trans('error.cannot_remove_current_teacher_role'));
+                }
+            }
+            if ($user->hasRole('student')) {
+                if (Student::where('user_id', $user->id)->count() <= 0) {
+                    Student::create([
+                        'user_id' => $user->id,
+                    ]);
+                }
+            } else {
+                if (Student::where('user_id', $user->id)->count() > 0) {
+                    throw new \Exception(trans('error.cannot_remove_current_student_role'));
+                }
+            }
+
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
@@ -184,6 +265,137 @@ class UserRepository extends ModelRepository
             }
 
             DB::commit();
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function createAdmin(array $userAttributes, $country, array $roles = null, $sendWelcomeMail = false)
+    {
+        DB::beginTransaction();
+        try {
+            $settings = UserSetting::create([
+                'country' => $country,
+            ]);
+
+            $password = $userAttributes['password'];
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $userAttributes = array_merge([
+                'url_avatar' => appDefaultUserProfilePicture(),
+                'url_avatar_thumb' => appDefaultUserProfilePicture(),
+                'activation_code' => str_random(32),
+                'active' => true,
+                'setting_id' => $settings->id,
+            ], $userAttributes);
+            $userAttributes['password'] = bcrypt($userAttributes['password']);
+            $user = User::create($userAttributes);
+
+            if (empty($roles)) {
+                $roleRepository = new RoleRepository();
+                $roles = [$roleRepository->getByName('user')->id];
+            }
+            $user->attachRoles($roles);
+
+            if ($user->hasRole('teacher')) {
+                Teacher::create([
+                    'user_id' => $user->id,
+                ]);
+            }
+            if ($user->hasRole('student')) {
+                Student::create([
+                    'user_id' => $user->id,
+                ]);
+            }
+
+            if ($sendWelcomeMail) {
+                event(new UserCreated($user, $password, false,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateAdmin(array $userAttributes, $country, array $roles = null)
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $passwordChanged = false;
+            $password = $userAttributes['password'];
+            if (!empty($password)) {
+                $userAttributes['password'] = bcrypt($userAttributes['password']);
+            } else {
+                unset($userAttributes['password']);
+            }
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $user->update($userAttributes);
+            $user->settings()->update([
+                'country' => $country,
+            ]);
+
+            if ($roles != null) {
+                $hiddenRoles = $user->roles()->where('status', Role::STATUS_HIDDEN)->get();
+                if ($hiddenRoles->count() > 0) {
+                    $hiddenRoles = $hiddenRoles->pluck('id')->all();
+                    $roles = array_merge($roles, $hiddenRoles);
+                }
+                $user->roles()->sync($roles);
+            }
+
+            if ($user->hasRole('teacher')) {
+                if (Teacher::where('user_id', $user->id)->count() <= 0) {
+                    Teacher::create([
+                        'user_id' => $user->id,
+                    ]);
+                }
+            } else {
+                if (Teacher::where('user_id', $user->id)->count() > 0) {
+                    throw new \Exception(trans('error.cannot_remove_current_teacher_role'));
+                }
+            }
+            if ($user->hasRole('student')) {
+                if (Student::where('user_id', $user->id)->count() <= 0) {
+                    Student::create([
+                        'user_id' => $user->id,
+                    ]);
+                }
+            } else {
+                if (Student::where('user_id', $user->id)->count() > 0) {
+                    throw new \Exception(trans('error.cannot_remove_current_student_role'));
+                }
+            }
+
+            if ($passwordChanged) {
+                event(new PasswordChanged($user, $password,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $user;
         } catch (\Exception $ex) {
             DB::rollBack();
 
@@ -211,6 +423,17 @@ class UserRepository extends ModelRepository
         } catch (\Exception $ex) {
             DB::rollBack();
 
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateSkypeId($skypeId)
+    {
+        $user = $this->model();
+        try {
+            $user->skype_id = $skypeId;
+            $user->save();
+        } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
         }
     }
@@ -322,6 +545,12 @@ class UserRepository extends ModelRepository
         }
         if ($user->hasRole('owner')) {
             throw new KatnissException(trans('error._cannot_delete', ['reason' => trans('error.is_role_owner')]));
+        }
+        if ($user->hasRole('teacher')) {
+            throw new KatnissException(trans('error._cannot_delete', ['reason' => trans('error.cannot_remove_current_teacher_role')]));
+        }
+        if ($user->hasRole('student')) {
+            throw new KatnissException(trans('error._cannot_delete', ['reason' => trans('error.cannot_remove_current_student_role')]));
         }
 
         try {

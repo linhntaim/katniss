@@ -75,7 +75,7 @@ class MessageController extends WebApiController
     {
         if (!$this->customValidate($request, [
             'conversation_id' => 'required|exists:conversations,id',
-            'message_id' => 'sometimes|nullable|exists:messages,id',
+            'message_id' => 'sometimes|exists:messages,id',
         ])
         ) {
             return $this->responseFail($this->getValidationErrors());

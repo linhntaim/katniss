@@ -77,7 +77,7 @@ class MediaCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_MEDIA,
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA,
             ]);
             if ($validator->fails()) {
                 return $errorRedirect->withErrors($validator);
@@ -148,7 +148,7 @@ class MediaCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_MEDIA
+                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA
             ]);
             if ($validator->fails()) {
                 return $redirect->withErrors($validator);

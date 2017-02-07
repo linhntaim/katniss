@@ -89,9 +89,9 @@ class Extension extends BaseExtension
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'register_enable' => 'sometimes|nullable|in:1',
-            'short_code_enable' => 'sometimes|nullable|in:1',
-            'default_article_category' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'register_enable' => 'sometimes|in:1',
+            'short_code_enable' => 'sometimes|in:1',
+            'default_article_category' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
         ]);
     }
 }

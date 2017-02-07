@@ -15,7 +15,6 @@ class CreateLinks extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->string('image')->default('');
@@ -26,14 +25,13 @@ class CreateLinks extends Migration
 
         Schema::create('link_translations', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->integer('link_id')->unsigned();
             $table->string('locale');
             $table->string('name');
             $table->string('url');
-            $table->text('description');
+            $table->text('description')->nullable();
 
             $table->foreign('link_id')->references('id')->on('links')->onDelete('cascade');
 

@@ -38,7 +38,21 @@
                                 <div class="form-group">
                                     <label for="inputEmail" class="control-label">{{ trans('label.email') }}</label>
                                     <input id="inputEmail" type="text" class="form-control" value="{{ $search_email }}"
-                                           name="email" placeholder="{{ trans('label.email') }}">
+                                           name="email" placeholder="{{ trans('label.display_name') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputSkypeId" class="control-label">Skype ID</label>
+                                    <input id="inputSkypeId" type="text" class="form-control" value="{{ $search_skype_id }}"
+                                           name="skype_id" placeholder="Skype ID">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputPhoneNumber" class="control-label">{{ trans('label.phone') }}</label>
+                                    <input id="inputPhoneNumber" type="text" class="form-control" value="{{ $search_phone_number }}"
+                                           name="phone_number" placeholder="{{ trans('label.phone') }}">
                                 </div>
                             </div>
                         </div>
@@ -86,8 +100,9 @@
                                 <th>{{ trans('label.display_name') }}</th>
                                 <th>{{ trans('label.user_name') }}</th>
                                 <th>{{ trans('label.email') }}</th>
+                                <th>Skype ID</th>
+                                <th>{{ trans('label.phone') }}</th>
                                 <th>{{ trans_choice('label.role', 2) }}</th>
-                                <th>{{ trans('label.status') }}</th>
                                 <th>{{ trans('form.action') }}</th>
                             </tr>
                         </thead>
@@ -97,8 +112,9 @@
                                 <th>{{ trans('label.display_name') }}</th>
                                 <th>{{ trans('label.user_name') }}</th>
                                 <th>{{ trans('label.email') }}</th>
+                                <th>Skype ID</th>
+                                <th>{{ trans('label.phone') }}</th>
                                 <th>{{ trans_choice('label.role', 2) }}</th>
-                                <th>{{ trans('label.status') }}</th>
                                 <th>{{ trans('form.action') }}</th>
                             </tr>
                         </tfoot>
@@ -109,15 +125,10 @@
                                 <td>{{ $user->display_name }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
+                                <td>{{ $user->skype_id }}</td>
+                                <td>{{ $user->phone }}</td>
                                 <td>
                                     {{ $user->roles->implode('display_name', ', ') }}
-                                </td>
-                                <td>
-                                    @if($user->active)
-                                        <span class="label label-success">{{ trans('label.status_activated') }}</span>
-                                    @else
-                                        <span class="label label-danger">{{ trans('label.status_not_activated') }}</span>
-                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ adminUrl('users/{id}/edit', ['id'=> $user->id]) }}">{{ trans('form.action_edit') }}</a>

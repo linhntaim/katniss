@@ -36,7 +36,7 @@ class AccountController extends AdminController
             'display_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $request->authUser()->id . ',id',
             'name' => 'required|max:255|unique:users,name,' . $request->authUser()->id . ',id',
-            'password' => 'sometimes|nullable|confirmed|min:6',
+            'password' => 'sometimes|confirmed|min:6',
         ]);
 
         $redirect = redirect(meUrl('account'));

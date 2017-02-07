@@ -155,11 +155,11 @@ mixpanel.track(\'pageview\');';
     {
         $validationRules = parent::validationRules();
         return array_merge($validationRules, [
-            'cache_enable' => 'sometimes|nullable|in:1',
-            'ga_enable' => 'sometimes|nullable|in:1',
+            'cache_enable' => 'sometimes|in:1',
+            'ga_enable' => 'sometimes|in:1',
             'ga_id' => 'required_if:ga_enable,1',
-            'ga_async' => 'sometimes|nullable|in:1',
-            'mix_panel_enable' => 'sometimes|nullable|in:1',
+            'ga_async' => 'sometimes|in:1',
+            'mix_panel_enable' => 'sometimes|in:1',
             'mix_panel_token' => 'required_if:mix_panel_enable,1',
         ]);
     }

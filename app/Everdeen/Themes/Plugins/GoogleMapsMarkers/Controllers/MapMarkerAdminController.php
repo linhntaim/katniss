@@ -58,8 +58,8 @@ class MapMarkerAdminController extends AdminController
     public function store(Request $request)
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'sometimes|nullable|max:255',
-            'description' => 'sometimes|nullable|max:255',
+            'name' => 'sometimes|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -117,8 +117,8 @@ class MapMarkerAdminController extends AdminController
         $this->mapMarkerRepository->model($id);
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
-            'name' => 'sometimes|nullable|max:255',
-            'description' => 'sometimes|nullable|max:255',
+            'name' => 'sometimes|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);

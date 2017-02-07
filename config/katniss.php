@@ -7,6 +7,19 @@
  */
 
 return [
+    'certificates' => ['IELTS', 'TESOL', 'TOEIC', 'TEFL', 'TOEFL', 'CELTA', 'Others'],
+    'certificate_types' => ['TOEIC', 'TOEFL', 'IELTS', 'TESOL', 'Others'],
+    'age_ranges' => [1, 2, 3, 4, 5],
+    'age_ranges_children' => [11, 12, 13, 14],
+    'learning_targets' => [1, 2, 3, 4, 5, 6, 100],
+    'learning_targets_children' => [11, 12, 13, 101],
+    'learning_forms' => [1, 2, 3, 4, 5, 100],
+    'learning_forms_children' => [11, 12, 13, 14, 15, 101],
+    'periodic_class_time' => 4,
+    'rates' => ['poor', 'fair', 'good', 'very_good', 'excellent'],
+    'rates_for_teacher' => ['document', 'attitude', 'quality'],
+    'rates_for_student' => ['attitude', 'progression', 'quality'],
+
     'settings' => [
         'city' => 'LA',
         'country' => 'US',
@@ -22,6 +35,7 @@ return [
     'idle_switching_time' => 120, // seconds
 
     'admin_theme' => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME,
+    'home_theme' => Katniss\Everdeen\Themes\HomeThemes\WowSkype\Theme::NAME,
     'admin_themes' => [
         Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::NAME => Katniss\Everdeen\Themes\AdminThemes\AdminLte\Theme::class,
     ],
@@ -30,6 +44,7 @@ return [
     'home_themes' => [
         Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ExampleTheme\Theme::class,
         Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::class,
+        Katniss\Everdeen\Themes\HomeThemes\WowSkype\Theme::NAME => Katniss\Everdeen\Themes\HomeThemes\WowSkype\Theme::class,
     ],
     'home_except_themes' => [
         Katniss\Everdeen\Themes\HomeThemes\ConversationTheme\Theme::NAME,
@@ -38,8 +53,25 @@ return [
         Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ExtraHtml\Widget::class,
         Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\BaseLinks\Widget::class,
         Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategories\Widget::class,
-        Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
-        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
+        Katniss\Everdeen\Themes\Plugins\WallNewestArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\WallNewestArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeClassRegister\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeClassRegister\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeLearningSteps\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeLearningSteps\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures2\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures2\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures3\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeIntroduceFeatures3\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeCover\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeCover\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeStudent\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeStudent\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeStudent2\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeStudent2\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\HomeTeacher\Widget::NAME => Katniss\Everdeen\Themes\Plugins\HomeTeacher\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\FooterLinks\Widget::NAME => Katniss\Everdeen\Themes\Plugins\FooterLinks\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\ArticleCategory\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ArticleCategory\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\FeaturedArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\FeaturedArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\RecentArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\RecentArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\TeacherArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\TeacherArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\MostViewedArticles\Widget::NAME => Katniss\Everdeen\Themes\Plugins\MostViewedArticles\Widget::class,
+        Katniss\Everdeen\Themes\Plugins\ClassRegisterForm\Widget::NAME => Katniss\Everdeen\Themes\Plugins\ClassRegisterForm\Widget::class,
+//        Katniss\Everdeen\Themes\Plugins\Pages\Widget::NAME => Katniss\Everdeen\Themes\Plugins\Pages\Widget::class,
+//        Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\GalleryWidget::class,
     ],
     'extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::class,
@@ -47,18 +79,24 @@ return [
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::class,
         Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::NAME => Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension::class,
         Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME => Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::class,
-        Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
-        Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
-        Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
-        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
+//        Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::NAME => Katniss\Everdeen\Themes\Plugins\ContactForm\Extension::class,
+//        Katniss\Everdeen\Themes\Plugins\Polls\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Polls\Extension::class,
+//        Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::NAME => Katniss\Everdeen\Themes\Plugins\GoogleMapsMarkers\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::NAME => Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\RelatedArticles\Extension::NAME => Katniss\Everdeen\Themes\Plugins\RelatedArticles\Extension::class,
+        Katniss\Everdeen\Themes\Plugins\HomeAds\Extension::NAME => Katniss\Everdeen\Themes\Plugins\HomeAds\Extension::class,
+//        Katniss\Everdeen\Themes\Plugins\Galleries\Extension::NAME => Katniss\Everdeen\Themes\Plugins\Galleries\Extension::class,
     ],
     'static_extensions' => [
         Katniss\Everdeen\Themes\Plugins\AppSettings\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\CurrencyExchange\Extension::NAME
     ],
     'admin_except_extensions' => [
         Katniss\Everdeen\Themes\Plugins\OpenGraphTags\Extension::NAME,
         Katniss\Everdeen\Themes\Plugins\AnalyticServices\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\TawktoChatBoxServices\Extension::NAME,
+        Katniss\Everdeen\Themes\Plugins\HomeAds\Extension::NAME,
     ],
     'paths_use_admin_theme' => [
         'admin', 'auth', 'documents', 'password', 'me'

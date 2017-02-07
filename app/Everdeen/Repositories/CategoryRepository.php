@@ -24,6 +24,14 @@ abstract class CategoryRepository extends ByTypeRepository
             ->firstOrFail();
     }
 
+    public function getByIdWithTranslated($id)
+    {
+        return Category::with('translations')
+            ->where('id', $id)
+            ->where('type', $this->type)
+            ->firstOrFail();
+    }
+
     public function getPaged()
     {
         return Category::with('translations')

@@ -15,7 +15,6 @@ class CreateAppOptions extends Migration
     {
         Schema::create('app_options', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->string('key')->unique();

@@ -76,7 +76,7 @@ class ChoiceAdminController extends AdminController
 
         $validator = Validator::make($request->all(), [
             'poll' => 'required|exists:polls,id',
-            'votes' => 'sometimes|nullable|integer',
+            'votes' => 'sometimes|integer',
         ]);
         if ($validator->fails()) {
             return redirect($errorRdrUrl)
@@ -135,7 +135,7 @@ class ChoiceAdminController extends AdminController
 
         $validator = Validator::make($request->all(), [
             'poll' => 'required|exists:polls,id',
-            'votes' => 'sometimes|nullable|integer',
+            'votes' => 'sometimes|integer',
         ]);
         if ($validator->fails()) {
             return redirect($rdrUrl)->withErrors($validator);

@@ -56,8 +56,8 @@ class Widget extends BaseWidget
     public function localizedValidationRules()
     {
         return array_merge(parent::localizedValidationRules(), [
-            'name' => 'sometimes|nullable|max:255',
-            'description' => 'sometimes|nullable|max:255',
+            'name' => 'sometimes|max:255',
+            'description' => 'sometimes|max:255',
         ]);
     }
 }

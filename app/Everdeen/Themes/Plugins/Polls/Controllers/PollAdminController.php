@@ -58,7 +58,7 @@ class PollAdminController extends AdminController
     {
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
-            'description' => 'sometimes|nullable|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -70,7 +70,7 @@ class PollAdminController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'multi_choice' => 'sometimes|nullable|in:1',
+            'multi_choice' => 'sometimes|in:1',
         ]);
         if ($validator->fails()) {
             return redirect($errorRdrUrl)
@@ -115,7 +115,7 @@ class PollAdminController extends AdminController
 
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'name' => 'required|max:255',
-            'description' => 'sometimes|nullable|max:255',
+            'description' => 'sometimes|max:255',
         ]);
 
         $this->_rdrUrl($request, adminUrl(), $rdrUrl, $errorRdrUrl);
@@ -125,7 +125,7 @@ class PollAdminController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'multi_choice' => 'sometimes|nullable|in:1',
+            'multi_choice' => 'sometimes|in:1',
         ]);
         if ($validator->fails()) {
             return redirect($rdrUrl)->withErrors($validator);

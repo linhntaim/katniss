@@ -16,7 +16,6 @@ class EntrustSetupTables extends Migration
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->string('name')->unique();
@@ -31,7 +30,6 @@ class EntrustSetupTables extends Migration
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('roles_users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->bigInteger('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
@@ -47,7 +45,6 @@ class EntrustSetupTables extends Migration
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->increments('id');
             $table->string('name')->unique();
@@ -61,7 +58,6 @@ class EntrustSetupTables extends Migration
         // Create table for associating permissions to roles (Many-to-Many)
         Schema::create('permissions_roles', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->rowFormat = 'DYNAMIC';
 
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
