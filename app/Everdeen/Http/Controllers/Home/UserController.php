@@ -71,7 +71,7 @@ class UserController extends ViewController
     {
         $validator = Validator::make($request->all(), [
             'display_name' => 'required|max:255',
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'date_of_birth' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
             'gender' => 'required|in:' . implode(',', allGenders()),
             'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
             'phone_number' => 'required|max:255',
@@ -164,9 +164,9 @@ class UserController extends ViewController
         $validator = Validator::make($request->all(), [
             'company' => 'required|max:255',
             'position' => 'required|max:255',
-            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_month' => 'sometimes|nullable|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
-            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_month' => 'sometimes|nullable|integer|min:0|max:12',
             'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
         ]);
 
@@ -201,9 +201,9 @@ class UserController extends ViewController
         $validator = Validator::make($request->all(), [
             'company' => 'required|max:255',
             'position' => 'required|max:255',
-            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_month' => 'sometimes|nullable|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
-            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_month' => 'sometimes|nullable|integer|min:0|max:12',
             'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
         ]);
 
@@ -250,9 +250,9 @@ class UserController extends ViewController
         $validator = Validator::make($request->all(), [
             'school' => 'required|max:255',
             'field' => 'required|max:255',
-            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_month' => 'sometimes|nullable|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
-            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_month' => 'sometimes|nullable|integer|min:0|max:12',
             'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
         ]);
 
@@ -287,9 +287,9 @@ class UserController extends ViewController
         $validator = Validator::make($request->all(), [
             'school' => 'required|max:255',
             'field' => 'required|max:255',
-            'start_month' => 'sometimes|integer|min:0|max:12',
+            'start_month' => 'sometimes|nullable|integer|min:0|max:12',
             'start_year' => 'required_with:start_month|integer|min:0|max:' . date('Y'),
-            'end_month' => 'sometimes|integer|min:0|max:12',
+            'end_month' => 'sometimes|nullable|integer|min:0|max:12',
             'end_year' => 'required_with:end_month|integer|min:0|max:' . date('Y'),
         ]);
 
@@ -335,10 +335,10 @@ class UserController extends ViewController
     {
         $validator = Validator::make($request->all(), [
             'type' => 'required|in:' . implode(',', _k('certificate_types')),
-            'meta' => 'sometimes|array',
+            'meta' => 'sometimes|nullable|array',
             'provided_by' => 'required|max:255',
-            'provided_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
-            'image' => 'sometimes|image',
+            'provided_at' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
+            'image' => 'sometimes|nullable|image',
         ]);
 
         $redirect = redirect(homeUrl('profile/educations-and-works') . '#fresh-certificates');
@@ -370,10 +370,10 @@ class UserController extends ViewController
 
         $validator = Validator::make($request->all(), [
             'type' => 'required|in:' . implode(',', _k('certificate_types')),
-            'meta' => 'sometimes|array',
+            'meta' => 'sometimes|nullable|array',
             'provided_by' => 'required|max:255',
-            'provided_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
-            'image' => 'sometimes|image',
+            'provided_at' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
+            'image' => 'sometimes|nullable|image',
         ]);
 
         $redirect = redirect(homeUrl('profile/educations-and-works') . '#certificate-' . $id);

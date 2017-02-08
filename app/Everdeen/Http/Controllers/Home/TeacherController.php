@@ -150,7 +150,7 @@ class TeacherController extends ViewController
     public function postSignUpStep1(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'date_of_birth' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
             'gender' => 'required|in:' . implode(',', allGenders()),
             'city' => 'required|max:255',
             'country' => 'required|in:' . implode(',', allCountryCodes()),
@@ -349,8 +349,8 @@ class TeacherController extends ViewController
         $validator = Validator::make($request->all(), [
             'timezone' => 'required',
             'times' => 'required|array|in:0,1,2,3,4,5,6',
-            'range_from.*' => 'sometimes|date_format:H:i',
-            'range_to.*' => 'sometimes|date_format:H:i',
+            'range_from.*' => 'sometimes|nullable|date_format:H:i',
+            'range_to.*' => 'sometimes|nullable|date_format:H:i',
         ]);
         if ($validator->fails()) {
             return $errorRdr->withErrors($validator);

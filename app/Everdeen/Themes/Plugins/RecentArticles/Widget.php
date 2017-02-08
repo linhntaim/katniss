@@ -64,7 +64,7 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'number_of_items' => 'sometimes|integer|min:1',
+            'number_of_items' => 'sometimes|nullable|integer|min:1',
         ]);
     }
 }

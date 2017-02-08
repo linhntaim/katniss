@@ -23,7 +23,7 @@ class LearningRequestController extends AdminController
     public function indexRegistering(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'created_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'created_at' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
         ]);
         if ($validator->fails()) {
             $searchCreatedAt = null;
@@ -58,7 +58,7 @@ class LearningRequestController extends AdminController
     public function indexProcessed(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'created_at' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'created_at' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
         ]);
         if ($validator->fails()) {
             $searchCreatedAt = null;

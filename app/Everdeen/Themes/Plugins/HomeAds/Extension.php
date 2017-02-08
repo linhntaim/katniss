@@ -75,7 +75,7 @@ $(function() {
     {
         $validationRules = parent::validationRules();
         return array_merge($validationRules, [
-            'url' => 'sometimes|url',
+            'url' => 'sometimes|nullable|url',
         ]);
     }
 }

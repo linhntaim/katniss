@@ -73,8 +73,8 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::fields(), [
-            'video_url_1' => 'sometimes|url',
-            'video_url_2' => 'sometimes|url',
+            'video_url_1' => 'sometimes|nullable|url',
+            'video_url_2' => 'sometimes|nullable|url',
         ]);
     }
 }

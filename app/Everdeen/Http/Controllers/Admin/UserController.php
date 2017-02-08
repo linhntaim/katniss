@@ -79,21 +79,21 @@ class UserController extends AdminController
     protected function validator(array $data, array $extra_rules = [])
     {
         return Validator::make($data, array_merge([
-            'roles' => 'sometimes|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
+            'roles' => 'sometimes|nullable|array|exists:roles,id,status,' . Role::STATUS_NORMAL,
             'display_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'name' => 'required|max:255|unique:users,name',
             'password' => 'required|min:6',
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'date_of_birth' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
             'gender' => 'required|in:' . implode(',', allGenders()),
             'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
             'phone_number' => 'required|max:255',
-            'address' => 'sometimes|max:255',
+            'address' => 'sometimes|nullable|max:255',
             'city' => 'required|max:255',
             'country' => 'required|in:' . implode(',', allCountryCodes()),
             'nationality' => 'required|in:' . implode(',', allCountryCodes()),
-            'skype_id' => 'sometimes|max:255',
-            'facebook' => 'sometimes|max:255|url',
+            'skype_id' => 'sometimes|nullable|max:255',
+            'facebook' => 'sometimes|nullable|max:255|url',
         ], $extra_rules));
     }
 
@@ -189,7 +189,7 @@ class UserController extends AdminController
         $rdr = redirect(adminUrl('users/{id}/edit', ['id' => $user->id]));
 
         $validator = $this->validator($request->all(), [
-            'password' => 'sometimes|min:6',
+            'password' => 'sometimes|nullable|min:6',
             'name' => ['required', 'max:255', Rule::unique('users', 'name')->ignore($user->id, 'id')],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id, 'id')],
         ]);

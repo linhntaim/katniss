@@ -116,8 +116,8 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::fields(), [
-            'image' => 'sometimes|url',
-            'video_url' => 'sometimes|url',
+            'image' => 'sometimes|nullable|url',
+            'video_url' => 'sometimes|nullable|url',
         ]);
     }
 
@@ -132,7 +132,7 @@ class Widget extends DefaultWidget
     public function localizedValidationRules()
     {
         return array_merge(parent::localizedFields(), [
-            'link' => 'sometimes|url',
+            'link' => 'sometimes|nullable|url',
         ]);
     }
 }

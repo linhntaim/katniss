@@ -84,8 +84,8 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'articles' => 'sometimes|array',
-            'show_button' => 'sometimes|in:1',
+            'articles' => 'sometimes|nullable|array',
+            'show_button' => 'sometimes|nullable|in:1',
         ]);
     }
 }

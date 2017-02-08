@@ -140,16 +140,16 @@ class StudentController extends AdminController
             'email' => 'required|email|max:255|unique:users,email',
             'name' => 'required|max:255|unique:users,name',
             'password' => 'required|min:6',
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'date_of_birth' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
             'gender' => 'required|in:' . implode(',', allGenders()),
             'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
             'phone_number' => 'required|max:255',
-            'address' => 'sometimes|max:255',
+            'address' => 'sometimes|nullable|max:255',
             'city' => 'required|max:255',
             'country' => 'required|in:' . implode(',', allCountryCodes()),
             'nationality' => 'required|in:' . implode(',', allCountryCodes()),
-            'skype_id' => 'sometimes|max:255',
-            'facebook' => 'sometimes|max:255|url',
+            'skype_id' => 'sometimes|nullable|max:255',
+            'facebook' => 'sometimes|nullable|max:255|url',
         ]);
 
         $errorRdr = redirect(adminUrl('students/create'))->withInput();
@@ -214,17 +214,17 @@ class StudentController extends AdminController
             'display_name' => 'required|max:255',
             'name' => ['required', 'max:255', Rule::unique('users', 'name')->ignore($id, 'id')],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($id, 'id')],
-            'password' => 'sometimes|min:6',
-            'date_of_birth' => 'sometimes|date_format:' . DateTimeHelper::shortDateFormat(),
+            'password' => 'sometimes|nullable|min:6',
+            'date_of_birth' => 'sometimes|nullable|date_format:' . DateTimeHelper::shortDateFormat(),
             'gender' => 'required|in:' . implode(',', allGenders()),
             'phone_code' => 'required|in:' . implode(',', allCountryCodes()),
             'phone_number' => 'required|max:255',
-            'address' => 'sometimes|max:255',
+            'address' => 'sometimes|nullable|max:255',
             'city' => 'required|max:255',
             'country' => 'required|in:' . implode(',', allCountryCodes()),
             'nationality' => 'required|in:' . implode(',', allCountryCodes()),
-            'skype_id' => 'sometimes|max:255',
-            'facebook' => 'sometimes|max:255|url',
+            'skype_id' => 'sometimes|nullable|max:255',
+            'facebook' => 'sometimes|nullable|max:255|url',
         ]);
 
         $errorRdr = redirect(adminUrl('students/{id}/edit', ['id' => $id]))->withInput();

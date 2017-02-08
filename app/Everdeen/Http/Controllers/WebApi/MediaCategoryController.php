@@ -39,7 +39,7 @@ class MediaCategoryController extends WebApiController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             if (!$this->customValidate($request, [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_MEDIA
+                'parent' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_MEDIA
             ])
             ) {
                 return $this->responseFail($this->getValidationErrors());

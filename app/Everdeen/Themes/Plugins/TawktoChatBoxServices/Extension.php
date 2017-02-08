@@ -113,9 +113,9 @@ class Extension extends BaseExtension
     {
         $validationRules = parent::validationRules();
         return array_merge($validationRules, [
-            'cache_enable' => 'sometimes|in:1',
-            'chatbox_enable' => 'sometimes|in:1',
-            'chatbox_async' => 'sometimes|in:1',
+            'cache_enable' => 'sometimes|nullable|in:1',
+            'chatbox_enable' => 'sometimes|nullable|in:1',
+            'chatbox_async' => 'sometimes|nullable|in:1',
             'chatbox_id' => 'required_if:chatbox_enable,1',
         ]);
     }

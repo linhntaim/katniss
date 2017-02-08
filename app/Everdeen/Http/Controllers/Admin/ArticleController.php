@@ -114,7 +114,7 @@ class ArticleController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $error_redirect = redirect(adminUrl('articles/create'))
@@ -125,8 +125,8 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'featured_image' => 'sometimes|url',
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $error_redirect->withErrors($validator);
@@ -200,7 +200,7 @@ class ArticleController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug,' . $page->id . ',post_id',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
@@ -208,8 +208,8 @@ class ArticleController extends AdminController
         }
 
         $validator = Validator::make($request->all(), [
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'featured_image' => 'sometimes|url',
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|nullable|url',
         ]);
         if ($validator->fails()) {
             return $redirect->withErrors($validator);

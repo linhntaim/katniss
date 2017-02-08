@@ -80,8 +80,8 @@ class Widget extends DefaultWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'teachers' => 'sometimes|array',
-            'number_of_items' => 'sometimes|integer|min:1',
+            'teachers' => 'sometimes|nullable|array',
+            'number_of_items' => 'sometimes|nullable|integer|min:1',
         ]);
     }
 }

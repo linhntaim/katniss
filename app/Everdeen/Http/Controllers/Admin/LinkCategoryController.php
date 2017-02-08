@@ -77,7 +77,7 @@ class LinkCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_LINK,
+                'parent' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_LINK,
             ]);
             if ($validator->fails()) {
                 return $errorRedirect->withErrors($validator);
@@ -148,7 +148,7 @@ class LinkCategoryController extends AdminController
         $parentId = intval($request->input('parent'), 0);
         if ($parentId != 0) {
             $validator = Validator::make($request->all(), [
-                'parent' => 'sometimes|exists:categories,id,type,' . Category::TYPE_LINK
+                'parent' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_LINK
             ]);
             if ($validator->fails()) {
                 return $redirect->withErrors($validator);

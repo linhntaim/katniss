@@ -61,12 +61,12 @@ class AnnouncementController extends AdminController
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|max:255',
+            'title' => 'sometimes|nullable|max:255',
             'content' => 'required',
             'to' => 'required|array',
-            'to.all' => 'sometimes|in:1',
-            'to.roles' => 'sometimes|array',
-            'to.users' => 'sometimes|array',
+            'to.all' => 'sometimes|nullable|in:1',
+            'to.roles' => 'sometimes|nullable|array',
+            'to.users' => 'sometimes|nullable|array',
         ]);
 
         $errorRedirect = redirect(adminUrl('announcements/create'))->withInput();
@@ -121,13 +121,13 @@ class AnnouncementController extends AdminController
         $redirect = redirect(adminUrl('announcements/{id}/edit', ['id' => $announcement->id]));
 
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|max:255',
+            'title' => 'sometimes|nullable|max:255',
             'content' => 'required',
             'to' => 'required|array',
-            'to.all' => 'sometimes|in:1',
-            'to.roles' => 'sometimes|array',
-            'to.users' => 'sometimes|array',
-            'existed_ids' => 'sometimes|array',
+            'to.all' => 'sometimes|nullable|in:1',
+            'to.roles' => 'sometimes|nullable|array',
+            'to.users' => 'sometimes|nullable|array',
+            'existed_ids' => 'sometimes|nullable|array',
         ]);
 
         if ($validator->fails()) {

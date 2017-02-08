@@ -98,11 +98,11 @@ class Widget extends BaseWidget
     public function validationRules()
     {
         return array_merge(parent::validationRules(), [
-            'image' => 'sometimes|url',
+            'image' => 'sometimes|nullable|url',
             'category_id' => 'required|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'show_button' => 'sometimes|in:1',
-            'show_articles' => 'sometimes|in:1',
-            'number_of_items' => 'sometimes|integer|min:1',
+            'show_button' => 'sometimes|nullable|in:1',
+            'show_articles' => 'sometimes|nullable|in:1',
+            'number_of_items' => 'sometimes|nullable|integer|min:1',
         ]);
     }
 }

@@ -188,17 +188,17 @@ class StudentController extends ViewController
 
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|exists:students,user_id',
-            'teacher_id' => 'sometimes|exists:teachers,user_id',
-            'for_children' => 'sometimes|in:1',
+            'teacher_id' => 'sometimes|nullable|exists:teachers,user_id',
+            'for_children' => 'sometimes|nullable|in:1',
             'age_range' => 'required|in:' . implode(',', $ageRanges),
             'professional_skills' => 'required|array|exists:professional_skills,id',
             'skype_id' => 'required|max:255',
             'learning_targets' => 'required|array|in:' . implode(',', $learningTargets),
             'learning_forms' => 'required|array|in:' . implode(',', $learningForms),
 
-            'study_level' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
-            'study_problem' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
-            'study_course' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
+            'study_level' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
+            'study_problem' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
+            'study_course' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
         ]);
 
         $studyParams = http_build_query([
@@ -272,16 +272,16 @@ class StudentController extends ViewController
 
         $validator = Validator::make($request->all(), [
             'student_id' => 'required|exists:students,user_id',
-            'teacher_id' => 'sometimes|exists:teachers,user_id',
+            'teacher_id' => 'sometimes|nullable|exists:teachers,user_id',
             'age_range' => 'required|in:' . implode(',', $ageRanges),
             'children_full_name' => 'required|max:255',
             'skype_id' => 'required|max:255',
             'learning_targets' => 'required|array|in:' . implode(',', $learningTargets),
             'learning_forms' => 'required|array|in:' . implode(',', $learningForms),
 
-            'study_level' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
-            'study_problem' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
-            'study_course' => 'sometimes|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
+            'study_level' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_LEVEL,
+            'study_problem' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_PROBLEM,
+            'study_course' => 'sometimes|nullable|exists:meta,id,type,' . Meta::TYPE_STUDY_COURSE,
         ]);
 
         $studyParams = http_build_query([

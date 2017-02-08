@@ -195,8 +195,8 @@ class ArticleController extends ViewController
         $validator = Validator::make($request->all(), [
             'title' => 'required|max:255',
             'content' => 'required',
-            'categories' => 'sometimes|exists:categories,id,type,' . Category::TYPE_ARTICLE,
-            'featured_image' => 'sometimes|url',
+            'categories' => 'sometimes|nullable|exists:categories,id,type,' . Category::TYPE_ARTICLE,
+            'featured_image' => 'sometimes|nullable|url',
         ]);
 
         $errorRedirect = redirect(homeUrl('knowledge/articles/create'))

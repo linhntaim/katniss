@@ -193,9 +193,9 @@ class ClassroomController extends AdminController
         $redirect = redirect(adminUrl('classrooms/{id}/edit', ['id' => $id]));
 
         $validator = Validator::make($request->all(), [
-            'teacher' => 'sometimes|exists:teachers,user_id,status,' . Teacher::APPROVED,
-            'student' => 'sometimes|exists:students,user_id,status,' . Student::APPROVED,
-            'supporter' => 'sometimes|exists:users,id',
+            'teacher' => 'sometimes|nullable|exists:teachers,user_id,status,' . Teacher::APPROVED,
+            'student' => 'sometimes|nullable|exists:students,user_id,status,' . Student::APPROVED,
+            'supporter' => 'sometimes|nullable|exists:users,id',
             'name' => 'required|max:255',
             'duration' => ['required', 'regex:' . NumberFormatHelper::getInstance()->getRegEx(8, 2)],
         ]);

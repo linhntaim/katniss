@@ -70,7 +70,7 @@ class HelpController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         $error_redirect = redirect(adminUrl('helps/create'))
@@ -150,7 +150,7 @@ class HelpController extends AdminController
         $validateResult = $this->validateMultipleLocaleInputs($request, [
             'title' => 'required|max:255',
             'slug' => 'required|max:255|unique:post_translations,slug,' . $page->id . ',post_id',
-            'description' => 'sometimes|max:255',
+            'description' => 'sometimes|nullable|max:255',
         ]);
 
         if ($validateResult->isFailed()) {
