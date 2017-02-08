@@ -34,12 +34,12 @@
         <div class="form-group">
             <label for="inputVideoIntroduceUrl" class="control-label">{{ trans('label.video_introduce_url') }}</label>
             <input type="text" placeholder="Youtube URL" value="{{ $teacher->video_introduce_url }}"
-                   class="form-control" id="inputVideoIntroduceUrl" name="video_introduce_url" required>
+                   class="form-control" id="inputVideoIntroduceUrl" name="video_introduce_url">
         </div>
         <div class="form-group">
             <label for="inputVideoTeachingUrl" class="control-label">{{ trans('label.video_teaching_url') }}</label>
             <input type="text" placeholder="Youtube URL" value="{{ $teacher->video_teaching_url }}"
-                   class="form-control" id="inputVideoTeachingUrl" name="video_teaching_url" required>
+                   class="form-control" id="inputVideoTeachingUrl" name="video_teaching_url">
         </div>
         <div class="form-group">
             <label for="inputTopics" class="control-label required">{{ trans_choice('label.topic', 2) }}</label>

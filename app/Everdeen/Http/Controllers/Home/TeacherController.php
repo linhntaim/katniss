@@ -197,7 +197,7 @@ class TeacherController extends ViewController
             'experience' => 'required',
             'methodology' => 'required',
             'certificates' => 'required|array|in:' . implode(',', $certificates),
-            'video_introduce_url' => 'required|max:255|url',
+            'video_introduce_url' => 'sometimes|nullable|max:255|url',
         ]);
 
         $errorRdr = redirect(homeUrl('teacher/sign-up/step/{step}', ['step' => 2]))->withInput();
@@ -225,7 +225,7 @@ class TeacherController extends ViewController
                 $request->input('methodology'),
                 $request->input('certificates'),
                 $request->input('other_certificates'),
-                $request->input('video_introduce_url')
+                $request->input('video_introduce_url', '')
             );
         } catch (KatnissException $exception) {
             return $errorRdr->withErrors([$exception->getMessage()]);
@@ -259,8 +259,8 @@ class TeacherController extends ViewController
             'about_me' => 'required',
             'experience' => 'required',
             'methodology' => 'required',
-            'video_introduce_url' => 'required|max:255|url',
-            'video_teaching_url' => 'required|max:255|url',
+            'video_introduce_url' => 'sometimes|nullable|max:255|url',
+            'video_teaching_url' => 'sometimes|nullable|max:255|url',
         ]);
 
         $errorRdr = redirect(homeUrl('profile/teacher-information'))->withInput();
@@ -277,8 +277,8 @@ class TeacherController extends ViewController
                 $request->input('about_me'),
                 $request->input('experience'),
                 $request->input('methodology'),
-                $request->input('video_introduce_url'),
-                $request->input('video_teaching_url')
+                $request->input('video_introduce_url', ''),
+                $request->input('video_teaching_url', '')
             );
         } catch (KatnissException $exception) {
             return $errorRdr->withErrors([$exception->getMessage()]);

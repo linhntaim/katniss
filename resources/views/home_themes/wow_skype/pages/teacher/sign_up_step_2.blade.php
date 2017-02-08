@@ -116,7 +116,7 @@
             <div class="form-group">
                 <label for="inputVideoIntroduceUrl" class="control-label">{{ trans('label.video_introduce_url') }}</label>
                 <input type="text" placeholder="Youtube URL" value="{{ $teacher->video_introduce_url }}"
-                       class="form-control" id="inputVideoIntroduceUrl" name="video_introduce_url" required>
+                       class="form-control" id="inputVideoIntroduceUrl" name="video_introduce_url">
             </div>
             <div class="form-group text-right">
                 <button type="submit" class="btn btn-success uppercase"><strong>{{ trans('form.action_complete') }}</strong></button>
