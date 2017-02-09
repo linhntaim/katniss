@@ -11,10 +11,15 @@ function openWindow(url, name, specs, replace) {
 
 function quickForm(action, data, method) {
     if (typeof method === 'undefined') method = 'post';
-    $form = $('<form action="' + action + '" method="' + method + '"></form>');
+    var $quickForm = $('#quick-form');
+    if ($quickForm.length > 0) {
+        $quickForm.remove();
+    }
+    $form = $('<form id="quick-form" action="' + action + '" method="' + method + '" class="hide"></form>');
     for (var name in data) {
         $form.append('<input type="hidden" name="' + name + '" value="' + data[name] + '">');
     }
+    $form.appendTo('body');
     return $form;
 }
 
