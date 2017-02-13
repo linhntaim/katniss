@@ -29,6 +29,10 @@ class Extension extends BaseExtension
 .home-ads .inner .object img{max-width:80%;max-height:80%}
 .home-ads .inner .object .video{max-width:80%;max-height:80%;margin:0 auto}
 .home-ads .ads-close{position:absolute;top:15px;right:20px}
+@media (min-width: 992px) {
+    .home-ads .inner .object img{max-width:800px;max-height:600px}
+    .home-ads .inner .object .video{max-width:800px;max-height:600px;margin:0 auto}
+}
 </style>', 'ext:home_ads');
         $block = '<div class="home-ads" style="display: none"><div class="inner"><a href="#" class="ads-close"><i class="fa fa-close color-white font-24"></i></a><div class="object">{inner}</div></div></div>
 <script>

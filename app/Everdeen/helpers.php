@@ -343,7 +343,7 @@ function transPath($route = '', array $params = [], $localeCode = null)
     if (empty($route)) {
         return $localeCode;
     }
-    $route = trans('routes.' . $route, [], '', $localeCode);
+    $route = trans('routes.' . $route, [], $localeCode);
     return $localeCode . '/' . embedParamsInRoute($route, $params);
 }
 
