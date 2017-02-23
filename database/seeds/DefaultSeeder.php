@@ -98,6 +98,13 @@ class DefaultSeeder extends Seeder
         ));
         $supporter_role->attachPermission($admin_access_permission);
 
+        $student_agent_role = Role::create(array(
+            'name' => 'student_agent',
+            'display_name' => 'Student Agent',
+            'description' => 'Student Agent'
+        ));
+        $student_agent_role->attachPermission($admin_access_permission);
+
         // TODO: Add 1 administrator
         $setting = UserSetting::create();
         $owner = User::create(array(

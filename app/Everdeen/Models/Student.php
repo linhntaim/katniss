@@ -17,7 +17,7 @@ class Student extends Model
     public $incrementing = false;
 
     protected $fillable = [
-        'user_id', 'approving_user_id', 'approving_at', 'status',
+        'user_id', 'agent_id', 'approving_user_id', 'approving_at', 'status'
     ];
 
     public function getIsApprovedAttribute()
@@ -33,6 +33,11 @@ class Student extends Model
     public function approvingUser()
     {
         return $this->belongsTo(User::class, 'approving_user_id', 'id');
+    }
+
+    public function agent()
+    {
+        return $this->belongsTo(User::class, 'agent_id', 'id');
     }
 
     public function classrooms()

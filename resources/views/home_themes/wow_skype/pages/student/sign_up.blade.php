@@ -58,6 +58,9 @@
                         <p class="big text-center">{{ trans('label.student_register_help') }}</p>
                         <form method="post">
                             {{ csrf_field() }}
+                            @if(!empty($agent_id))
+                                <input type="hidden" name="agent_id" value="{{ $agent_id }}">
+                            @endif
                             @if(!empty($teacher_id))
                                 <input type="hidden" name="teacher_id" value="{{ $teacher_id }}">
                             @endif

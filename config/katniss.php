@@ -693,5 +693,6 @@ return [
         'medium-editor-css' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css',
         'medium-editor-theme-default' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/themes/default.min.css',
         'medium-editor-js' => 'http://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js',
+        'clipboard-js' => 'https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.6.0/clipboard.min.js',
     ],
 ];

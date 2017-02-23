@@ -41,6 +41,7 @@ class StudentController extends ViewController
         $this->_description(trans('pages.home_student_sign_up_desc'));
 
         return $this->_any('sign_up', [
+            'agent' => $request->input('agent', null),
             'teacher_id' => $request->input('teacher_id', null),
             'study_level' => $request->input('study_level', null),
             'study_problem' => $request->input('study_problem', null),
@@ -56,6 +57,7 @@ class StudentController extends ViewController
             'phone_number' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:6',
+            'agent' => 'sometimes|nullable|exists:users,id',
         ]);
 
         $studyParams = http_build_query([
@@ -77,7 +79,8 @@ class StudentController extends ViewController
                 $request->input('email'),
                 $request->input('password'),
                 $request->input('phone_code'),
-                $request->input('phone_number')
+                $request->input('phone_number'),
+                $request->input('agent', null)
             );
 
             $wizard = $this->startWizard();

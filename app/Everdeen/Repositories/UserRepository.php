@@ -57,6 +57,26 @@ class UserRepository extends ModelRepository
         return $users->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getStudentAgentSearchPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('roles.name', 'student_agent');
+        })->orderBy('created_at', 'desc');
+        if (!empty($displayName)) {
+            $users->where('display_name', 'like', '%' . $displayName . '%');
+        }
+        if (!empty($email)) {
+            $users->where('email', 'like', '%' . $email . '%');
+        }
+        if (!empty($skypeId)) {
+            $users->where('skype_id', 'like', '%' . $skypeId . '%');
+        }
+        if (!empty($phoneNumber)) {
+            $users->where('phone_number', 'like', '%' . $phoneNumber . '%');
+        }
+        return $users->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getSupporterSearchCommonPaged($term = null)
     {
         $users = User::whereHas('roles', function ($query) {
@@ -403,6 +423,92 @@ class UserRepository extends ModelRepository
         }
     }
 
+    public function createStudentAgentAdmin(array $userAttributes, $country, $sendWelcomeMail = false)
+    {
+        DB::beginTransaction();
+        try {
+            $settings = UserSetting::create([
+                'country' => $country,
+            ]);
+
+            $password = $userAttributes['password'];
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $userAttributes = array_merge([
+                'url_avatar' => appDefaultUserProfilePicture(),
+                'url_avatar_thumb' => appDefaultUserProfilePicture(),
+                'activation_code' => str_random(32),
+                'active' => true,
+                'setting_id' => $settings->id,
+            ], $userAttributes);
+            $userAttributes['password'] = bcrypt($userAttributes['password']);
+            $user = User::create($userAttributes);
+
+            $roleRepository = new RoleRepository();
+            $roles = [$roleRepository->getByName('student_agent')->id];
+            $user->attachRoles($roles);
+
+            if ($sendWelcomeMail) {
+                event(new UserCreated($user, $password, false,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_insert') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function updateStudentAgentAdmin(array $userAttributes, $country)
+    {
+        $user = $this->model();
+
+        DB::beginTransaction();
+        try {
+            $passwordChanged = false;
+            $password = $userAttributes['password'];
+            if (!empty($password)) {
+                $userAttributes['password'] = bcrypt($userAttributes['password']);
+            } else {
+                unset($userAttributes['password']);
+            }
+            $displayName = $userAttributes['display_name'];
+            $email = $userAttributes['email'];
+            $user->update($userAttributes);
+            $user->settings()->update([
+                'country' => $country,
+            ]);
+
+            if ($passwordChanged) {
+                event(new PasswordChanged($user, $password,
+                    array_merge(request()->getTheme()->viewParams(), [
+                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                            trans('form.action_change') . ' ' . trans('label.password'),
+                        MailHelper::EMAIL_TO => $email,
+                        MailHelper::EMAIL_TO_NAME => $displayName,
+                    ])
+                ));
+            }
+
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $ex) {
+            DB::rollBack();
+
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
     public function updatePassword($password)
     {
         $user = $this->model();
@@ -555,6 +661,19 @@ class UserRepository extends ModelRepository
 
         try {
             $user->delete();
+            return true;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function deleteStudentAgent()
+    {
+        $user = $this->model();
+
+        try {
+            $roleRepository = new RoleRepository();
+            $user->detachRole($roleRepository->getByName('student_agent')->id);
             return true;
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.database_delete') . ' (' . $ex->getMessage() . ')');

@@ -99,4 +99,5 @@ return [
     'action_mark_as' => 'Đánh dấu là',
     'action_mark_all_as' => 'Đánh dấu tất cả là',
     'action_disconnect' => 'Xóa kết nối',
+    'action_copy' => 'Sao chép',
 ];

@@ -227,6 +227,8 @@ return [
     'hot_line' => 'Hot line',
     'hot_line_short' => 'Hotline',
     'email_short' => 'Email',
+    'student_sign_up_url' => 'Student sign-up URL',
+    'signed_up_students' => 'Registered students',
 
     'settings' => 'Settings',
     'country' => 'Country',
@@ -345,6 +347,7 @@ about your classes.',
     'content_help_uc' => 'TYPE YOUR CONTENT HERE',
     'increase_30days' => ':number increase in 30 days',
     'your_timezone_is' => 'Your timezone is',
+    'copied' => 'Copied!',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',
@@ -405,6 +408,8 @@ about your classes.',
     'days_ago_lc' => 'day ago|days ago',
     'announcement' => 'Announcement|Announcements',
     'announcement_lc' => 'announcement|announcements',
+    'student_agent' => 'Student agent|Student agents',
+    'student_agent_lc' => 'student agent|student agents',
 
     'no_widget' => 'No widget is placed here',
 

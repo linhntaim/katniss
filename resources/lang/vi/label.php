@@ -227,6 +227,8 @@ return [
     'hot_line' => 'Đường dây nóng',
     'hot_line_short' => 'Đường dây nóng',
     'email_short' => 'Email',
+    'student_sign_up_url' => 'Đường dẫn đăng ký học viên',
+    'signed_up_students' => 'Học viên đã đăng ký',
 
     'settings' => 'Thiết lập',
     'country' => 'Quốc gia',
@@ -345,6 +347,7 @@ lộ trình học tập và học phí.',
     'content_help_uc' => 'NHẬP NỘI DUNG CỦA BẠN Ở ĐÂY',
     'increase_30days' => 'Tăng thêm :number trong 30 ngày',
     'your_timezone_is' => 'Múi giờ của bạn là',
+    'copied' => 'Đã sao chép!',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',
@@ -405,6 +408,8 @@ lộ trình học tập và học phí.',
     'days_ago_lc' => 'ngày trước đây',
     'announcement' => 'Thông báo',
     'announcement_lc' => 'thông báo',
+    'student_agent' => 'Cộng tác viên',
+    'student_agent_lc' => 'cộng tác viên',
 
     'no_widget' => 'Không có công cụ hiển thị nào được đặt ở đây',
 

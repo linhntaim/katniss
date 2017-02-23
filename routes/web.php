@@ -304,6 +304,13 @@ Route::group([
                 Route::get(adminRoute('topics/{id}/edit'), 'TopicController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('topics/{id}'), 'TopicController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('topics/{id}'), 'TopicController@destroy')->where('id', '[0-9]+');
+                //Student Agents
+                Route::get(adminRoute('student-agents'), 'StudentAgentController@index');
+                Route::get(adminRoute('student-agents/create'), 'StudentAgentController@create');
+                Route::post(adminRoute('student-agents'), 'StudentAgentController@store');
+                Route::get(adminRoute('student-agents/{id}/edit'), 'StudentAgentController@edit')->where('id', '[0-9]+');
+                Route::put(adminRoute('student-agents/{id}'), 'StudentAgentController@update')->where('id', '[0-9]+');
+                Route::delete(adminRoute('student-agents/{id}'), 'StudentAgentController@destroy')->where('id', '[0-9]+');
                 //Teacher
                 Route::get(adminRoute('approved-teachers'), 'TeacherController@indexApproved');
                 Route::get(adminRoute('registering-teachers'), 'TeacherController@indexRegistering');
@@ -336,6 +343,12 @@ Route::group([
                 Route::get(adminRoute('register-learning-requests'), 'LearningRequestController@indexRegistering');
                 Route::get(adminRoute('processed-learning-requests'), 'LearningRequestController@indexProcessed');
                 Route::put(adminRoute('learning-requests/{id}'), 'LearningRequestController@update');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:admin|manager|student_agent'
+            ], function () {
+                Route::get(adminRoute('student-agents/{id}/students'), 'StudentAgentController@students')->where('id', '[0-9]+');
             });
         });
         #endregion

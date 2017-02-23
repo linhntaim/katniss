@@ -16,6 +16,10 @@ class DocumentController extends AdminController
 
     public function index(Request $request)
     {
+        if ($request->authUser()->hasRole('student_agent')) {
+            abort(401);
+        }
+
         $this->_title(trans('pages.my_documents_title'));
         $this->_description(trans('pages.my_documents_desc'));
 

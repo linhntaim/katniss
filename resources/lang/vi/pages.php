@@ -107,6 +107,8 @@ return [
     'admin_professional_skills_desc' => 'Quản lý kỹ năng chuyên môn',
     'admin_topics_title' => 'Chủ đề',
     'admin_topics_desc' => 'Quản lý chủ đề',
+    'admin_student_agents_title' => 'Cộng tác viên',
+    'admin_student_agents_desc' => 'Quản lý cộng tác viên',
     'admin_teachers_title' => 'Giáo viên',
     'admin_teachers_desc' => 'Quản lý giáo viên',
     'admin_approved_teachers_title' => 'Giáo viên đã duyệt',

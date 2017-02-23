@@ -107,6 +107,8 @@ return [
     'admin_professional_skills_desc' => 'Manage professional skills',
     'admin_topics_title' => 'Topics',
     'admin_topics_desc' => 'Manage topics',
+    'admin_student_agents_title' => 'Student Agents',
+    'admin_student_agents_desc' => 'Manage student agents',
     'admin_teachers_title' => 'Teachers',
     'admin_teachers_desc' => 'Manage teachers',
     'admin_approved_teachers_title' => 'Approved Teachers',

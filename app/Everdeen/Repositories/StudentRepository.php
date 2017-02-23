@@ -91,6 +91,30 @@ class StudentRepository extends ModelRepository
         return $student->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getSearchPagedByAgentId($agentId, $displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
+    {
+        $student = Student::with(['userProfile', 'learningRequest'])
+            ->where('agent_id', $agentId)
+            ->orderBy('created_at', 'desc');
+        if (!empty($displayName) || !empty($email) || !empty($skypeId) || !empty($phoneNumber)) {
+            $student->whereHas('userProfile', function ($query) use ($displayName, $email, $skypeId, $phoneNumber) {
+                if (!empty($displayName)) {
+                    $query->where('display_name', 'like', '%' . $displayName . '%');
+                }
+                if (!empty($email)) {
+                    $query->where('email', 'like', '%' . $email . '%');
+                }
+                if (!empty($skypeId)) {
+                    $query->where('skype_id', 'like', '%' . $skypeId . '%');
+                }
+                if (!empty($phoneNumber)) {
+                    $query->where('phone_number', 'like', '%' . $phoneNumber . '%');
+                }
+            });
+        }
+        return $student->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function getSearchRegisteringPaged($displayName = null, $email = null, $skypeId = null, $phoneNumber = null)
     {
         $student = Student::with(['userProfile', 'learningRequest'])
@@ -132,7 +156,7 @@ class StudentRepository extends ModelRepository
         return $name;
     }
 
-    public function create($displayName, $email, $password, $phoneCode, $phoneNumber)
+    public function create($displayName, $email, $password, $phoneCode, $phoneNumber, $agent = null)
     {
         DB::beginTransaction();
         try {
@@ -157,8 +181,16 @@ class StudentRepository extends ModelRepository
             $roles = $roleRepository->getByNames(['user', 'student'])->pluck('id')->all();
             $user->attachRoles($roles);
 
+            if (!empty($agent)) {
+                $agentUser = User::find($agent);
+                if (!$agentUser->hasRole('student_agent')) {
+                    $agent = null;
+                }
+            }
+
             $student = Student::create([
                 'user_id' => $user->id,
+                'agent_id' => $agent,
             ]);
 
             event(new UserCreated($user, $password, false,

@@ -160,6 +160,11 @@ class User extends Authenticatable
         return $this->hasOne(Student::class, 'user_id', 'id');
     }
 
+    public function agentStudents()
+    {
+        return $this->hasMany(Student::class, 'agent_id', 'id');
+    }
+
     public function professionalSkills()
     {
         return $this->belongsToMany(ProfessionalSkill::class, 'professional_skills_users', 'user_id', 'skill_id');

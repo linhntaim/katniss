@@ -74,14 +74,23 @@ class AdminMenuComposer
                 trans('pages.my_settings_title'),
                 '<i class="fa fa-circle-o"></i> <span>', '</span>'
             );
-            // File Manager
-            $subMenu->add( // add a menu item
-                adminUrl('my-documents'),
-                trans('pages.my_documents_title'),
-                '<i class="fa fa-circle-o"></i> <span>', '</span>'
-            );
+            if(!$user->hasRole('student_agent')) {
+                // File Manager
+                $subMenu->add( // add a menu item
+                    adminUrl('my-documents'),
+                    trans('pages.my_documents_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+            }
             $menu->addSubMenu($subMenu);
 
+            if($user->hasRole('student_agent')) {
+                $menu->add(  // add an example menu item which have sub menu
+                    adminUrl('student-agents/{id}/students', ['id' => $user->id]),
+                    trans('pages.admin_students_title'),
+                    '<i class="fa fa-users"></i> <span>', '</span>'
+                );
+            }
 
             if ($user->hasRole('admin')) {
                 // System Settings
@@ -265,6 +274,11 @@ class AdminMenuComposer
                 $subMenu->add( //add a menu item
                     adminUrl('topics'),
                     trans('pages.admin_topics_title'),
+                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                );
+                $subMenu->add( //add a menu item
+                    adminUrl('student-agents'),
+                    trans('pages.admin_student_agents_title'),
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subMenu->add(  // add an example menu item which have sub menu
