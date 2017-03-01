@@ -28,7 +28,7 @@ class SalaryReportController extends WebApiController
 
         try {
             $date = DateTimeHelper::getInstance()->fromFormat(
-                DateTimeHelper::shortMonthFormat(), $request->input('month_year'));
+                DateTimeHelper::shortMonthFormat(), $request->input('month_year'), true);
 
             $report = new TeacherSalaryReport($date->format('Y'), $date->format('n'));
 
