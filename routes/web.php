@@ -111,12 +111,12 @@ Route::group([
     ], function () {
         Route::get(homeRoute('auth/login'), 'LoginController@showLoginForm')->name('login');
         Route::post(homeRoute('auth/login'), 'LoginController@login');
-        Route::get(homeRoute('auth/logout'), 'LoginController@logout');
+        Route::get(homeRoute('auth/logout'), 'LoginController@logout')->name('logout');
 
         Route::get(homeRoute('auth/social/{provider}'), 'LoginController@redirectToSocialAuthProvider');
         Route::get(homeRoute('auth/social/callback/{provider}'), 'LoginController@handleSocialAuthProviderCallback');
 
-        Route::get(homeRoute('auth/register'), 'RegisterController@showRegistrationForm');
+        Route::get(homeRoute('auth/register'), 'RegisterController@showRegistrationForm')->name('register');
         Route::post(homeRoute('auth/register'), 'RegisterController@register');
 
         Route::get(homeRoute('auth/register/social'), 'RegisterController@showSocialRegistrationForm');
@@ -126,9 +126,9 @@ Route::group([
         Route::get(homeRoute('auth/inactive'), 'ActivateController@getInactive');
         Route::post(homeRoute('auth/inactive'), 'ActivateController@postInactive');
 
-        Route::get(homeRoute('password/email'), 'ForgotPasswordController@getEmail');
-        Route::post(homeRoute('password/email'), 'ForgotPasswordController@postEmail');
-        Route::get(homeRoute('password/reset/{token}'), 'ResetPasswordController@getReset');
+        Route::get(homeRoute('password/email'), 'ForgotPasswordController@getEmail')->name('password.request');
+        Route::post(homeRoute('password/email'), 'ForgotPasswordController@postEmail')->name('password.email');
+        Route::get(homeRoute('password/reset/{token}'), 'ResetPasswordController@getReset')->name('password.reset');
         Route::post(homeRoute('password/reset'), 'ResetPasswordController@postReset');
     });
 
