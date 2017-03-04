@@ -1,0 +1,11 @@
+{
+  "/mix.js": "/mix.js",
+  "/assets/libraries/katniss.home.js": "/assets/libraries/katniss.home.js",
+  "/assets/libraries/katniss.admin.js": "/assets/libraries/katniss.admin.js",
+  "/assets/libraries/katniss.conversation.js": "/assets/libraries/katniss.conversation.js",
+  "/assets/libraries/katniss.conversation.css": "/assets/libraries/katniss.conversation.css",
+  "/assets/libraries/modal_cropper_image.css": "/assets/libraries/modal_cropper_image.css",
+  "/assets/libraries/modal_cropper_image.js": "/assets/libraries/modal_cropper_image.js",
+  "/assets/libraries/google_maps_markers.js": "/assets/libraries/google_maps_markers.js",
+  "/assets/home_themes/wow_skype/css/style.css": "/assets/home_themes/wow_skype/css/style.css"
+}
