@@ -58,15 +58,19 @@ KatnissApi.prototype.buildOptions = function (requestType, params, options) {
     if (!isSet(options)) {
         options = {};
     }
-    options.type = requestType;
-    options.data = this.buildParams(params);
     if (!isSet(options.dataType)) {
         options.dataType = 'json';
     }
     if (isObject(params, 'FormData')) {
         options.processData = false;
         options.contentType = false;
+        if (requestType == 'put') {
+            params.append('_method', requestType);
+            requestType = 'post';
+        }
     }
+    options.type = requestType;
+    options.data = this.buildParams(params);
     return options;
 };
 KatnissApi.prototype.beforeRequest = function () {
