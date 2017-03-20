@@ -52,4 +52,14 @@ return [
         'client_secret'     =>  env('INSTAGRAM_CLIENT_SECRET'),
         'redirect'          =>  '',
     ],
+
+    'ortc' => [
+        'client_key'         =>  env('ORTC_CLIENT_KEY'),
+        'client_secret'     =>  env('ORTC_CLIENT_SECRET'),
+        'server'          =>  env('ORTC_SERVER'),
+    ],
+
+    'google_maps' => [
+        'api_key' => env('GOOGLE_MAPS_API_KEY'),
+    ]
 ];

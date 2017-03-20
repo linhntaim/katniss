@@ -1309,27 +1309,27 @@ function appKey()
 
 function appName()
 {
-    return env('APP_NAME');
+    return config('app.name');
 }
 
 function appDescription()
 {
-    return env('APP_DESCRIPTION');
+    return _k('app.description');
 }
 
 function appKeywords()
 {
-    return env('APP_KEYWORDS');
+    return _k('app.keywords');
 }
 
 function appShortName()
 {
-    return env('APP_SHORT_NAME');
+    return _k('app.short_name');
 }
 
 function appVersion()
 {
-    return env('APP_VERSION');
+    return _k('app.version');
 }
 
 function frameworkVersion()
@@ -1339,17 +1339,17 @@ function frameworkVersion()
 
 function appAuthor()
 {
-    return env('APP_AUTHOR');
+    return _k('app.author');
 }
 
 function appEmail()
 {
-    return env('APP_EMAIL');
+    return _k('app.email');
 }
 
 function appLogo()
 {
-    return asset(env('APP_LOGO'));
+    return asset(_k('app.logo'));
 }
 
 function appDomain()
@@ -1360,7 +1360,7 @@ function appDomain()
 
 function appDefaultUserProfilePicture()
 {
-    return asset(env('APP_DEFAULT_USER_PICTURE'));
+    return asset(_k('app.default_user_picture'));
 }
 
 /**
