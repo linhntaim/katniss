@@ -1121,9 +1121,9 @@ function isStaticExtension($extension)
     return ExtensionsFacade::isStatic($extension);
 }
 
-function themeTitle($titles = '', $use_root = true, $separator = '&raquo;')
+function themeTitle($titles = '', $use_root = true)
 {
-    return ThemeFacade::title($titles, $use_root, $separator);
+    return ThemeFacade::title($titles, $use_root);
 }
 
 function themeDescription($description = '')
