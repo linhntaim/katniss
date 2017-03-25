@@ -18,6 +18,14 @@ Duplicate the file named `.env.example` at the root directory of the application
 
 Change some configuration as you want.
 
+```
+chmod -R 777 bootstrap/cache
+chmod -R 777 storage
+chmod -R 777 public/assets/cache
+chmod -R 777 public/files
+chmod -R 777 public/upload
+```
+
 ### PHP
 
 Require PHP >= `5.6.4`.
