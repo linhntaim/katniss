@@ -75,7 +75,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.4.9`.
+Current version: `5.4.16`.
 
 Latest version:
 
@@ -121,7 +121,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.4.1`.
+Current version: `2.5.1`.
 
 Latest version:
 
@@ -188,7 +188,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.2.2`.
+Current version: `1.2.3`.
 
 Latest version:
 
