@@ -33,15 +33,24 @@ class ClassTimeController extends ViewController
         $userCanDeleteClassTime = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $userCanDeleteClassTime = true;
+            else {
+	            $userCanDeleteClassTime = true;
+            }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $userCanDeleteClassTime = true;
-        } elseif ($user->hasRole(['manager', 'admin'])) {
+            else {
+	            $userCanDeleteClassTime = true;
+            }
+        }
+        if ($user->hasRole(['manager', 'admin'])) {
             $userCanDeleteClassTime = true;
         }
         if (!$userCanDeleteClassTime

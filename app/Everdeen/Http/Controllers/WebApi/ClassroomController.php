@@ -44,15 +44,21 @@ class ClassroomController extends WebApiController
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         }
 
@@ -64,8 +70,8 @@ class ClassroomController extends WebApiController
             return $this->responseFail($this->getValidationErrors());
         }
 
-        $classTimesOfMonth = $classroom->getClassTimesOfMonth($request->input('year'), $request->input('month'));
-        $countAllClassTimes = $classroom->getCountTillClassTimesOfMonth($request->input('year'), $request->input('month'));
+        $classTimesOfMonth = $classroom->getClassTimesOfMonth(intval($request->input('year')), intval($request->input('month')));
+        $countAllClassTimes = $classroom->getCountTillClassTimesOfMonth(intval($request->input('year')), intval($request->input('month')));
         $countLastMonthClassTimes = $classTimesOfMonth->count();
         $hasPreviousMonthClassTimes = false;
         $previousYear = false;
@@ -75,7 +81,13 @@ class ClassroomController extends WebApiController
             $datetime->sub(new \DateInterval('P1M'));
             $previousYear = $datetime->format('Y');
             $previousMonth = $datetime->format('m');
-            $hasPreviousMonthClassTimes = $classroom->getCountClassTimesOfMonth($previousYear, $previousMonth) > 0;
+            $lastClassTimeBeforeMonth = $classroom->getLastClassTimeBeforeMonth($previousYear, $previousMonth);
+            $hasPreviousMonthClassTimes = !empty($lastClassTimeBeforeMonth);
+            if($hasPreviousMonthClassTimes) {
+                $datetime = new \DateTime($lastClassTimeBeforeMonth->start_at);
+                $previousYear = $datetime->format('Y');
+                $previousMonth = $datetime->format('m');
+            }
         }
 
         return $this->responseSuccess([
@@ -176,7 +188,9 @@ class ClassroomController extends WebApiController
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         }
 

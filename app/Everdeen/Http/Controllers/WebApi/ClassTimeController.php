@@ -44,7 +44,9 @@ class ClassTimeController extends WebApiController
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         }
 
@@ -140,7 +142,9 @@ class ClassTimeController extends WebApiController
         $user = $request->authUser();
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         }
 
@@ -182,15 +186,24 @@ class ClassTimeController extends WebApiController
         $reviewUserId = null;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+            	if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $reviewUserId = $classroom->teacher_id;
+            else {
+            	$reviewUserId = $classroom->teacher_id;
+            }
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $reviewUserId = $classroom->student_id;
-        } else {
+            else {
+            	$reviewUserId = $classroom->student_id;
+            }
+        }
+        if ($user->hasRole(['manager', 'admin'])) {
             if ($request->has('teacher')) {
                 $reviewUserId = $classroom->teacher_id;
             } elseif ($request->has('student')) {
@@ -243,16 +256,21 @@ class ClassTimeController extends WebApiController
         $forTeacher = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
             $reviewUserId = $classroom->teacher_id;
             $forTeacher = true;
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
             $reviewUserId = $classroom->student_id;
-        } else {
+        }
+        if ($user->hasRole(['manager', 'admin'])) {
             if ($request->has('teacher')) {
                 $reviewUserId = $classroom->teacher_id;
                 $forTeacher = true;

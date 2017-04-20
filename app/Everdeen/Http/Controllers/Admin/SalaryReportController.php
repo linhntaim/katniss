@@ -56,7 +56,7 @@ class SalaryReportController extends AdminController
         try {
             $monthYear = $request->input('month_year');
             $date = DateTimeHelper::getInstance()->fromFormat(
-                DateTimeHelper::shortMonthFormat(), $monthYear);
+                DateTimeHelper::shortMonthFormat(), $monthYear, true);
 
             $report = new TeacherSalaryReport($date->format('Y'), $date->format('n'));
 

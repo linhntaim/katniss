@@ -91,26 +91,39 @@ class ClassroomController extends ViewController
         $canAddStudentReview = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $isOwner = true;
-            $canClassroomEdit = true;
-            $canAddTeacherReview = true;
+            else {
+	            $isOwner = true;
+	            $canClassroomEdit = true;
+	            $canAddTeacherReview = true;
+            }
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $isOwner = true;
-            $canAddStudentReview = true;
-            $canExportClassroom = true;
+            else {
+	            $isOwner = true;
+	            $canAddStudentReview = true;
+	            $canExportClassroom = true;
+            }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $isOwner = true;
-            $userCanCloseClassroom = true;
-            $canExportClassroom = false;
-        } elseif ($user->hasRole(['manager', 'admin'])) {
+            else {
+	            $isOwner = true;
+	            $userCanCloseClassroom = true;
+	            $canExportClassroom = false;
+            }
+        }
+        if ($user->hasRole(['manager', 'admin'])) {
             $canClassroomEdit = true;
             $userCanCloseClassroom = true;
             $canAddTeacherReview = true;
@@ -172,13 +185,18 @@ class ClassroomController extends ViewController
         $user = $request->authUser();
         if ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-        } elseif (!$user->hasRole(['manager', 'admin'])) {
+        } 
+        if (!$user->hasRole(['manager', 'admin'])) {
             abort(404);
         }
 
@@ -264,10 +282,15 @@ class ClassroomController extends ViewController
         $userCanCloseClassroom = false;
         if ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                	abort(404);
+                }
             }
-            $userCanCloseClassroom = true;
-        } elseif ($user->hasRole(['manager', 'admin'])) {
+            else {
+	            $userCanCloseClassroom = true;
+            }
+        }
+        if ($user->hasRole(['manager', 'admin'])) {
             $userCanCloseClassroom = true;
         }
         if (!$userCanCloseClassroom

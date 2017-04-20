@@ -138,6 +138,21 @@ class Classroom extends Model
             ->get();
     }
 
+    public function getLastClassTimeBeforeMonth($year, $month)
+    {
+        return $this->classTimes()
+            ->orderBy('start_at', 'desc')
+            ->orderBy('id', 'desc')
+            ->where(function($query) use ($year, $month) {
+            	$query->whereYear('start_at', '<', $year)
+	            ->orWhere(function($query) use ($year, $month) {
+	            	$query->whereYear('start_at', $year)->whereMonth('start_at', '<=', $month);
+	            });
+            })
+            ->take(1)
+            ->first();
+    }
+
     public function getCountClassTimesOfMonth($year, $month)
     {
         return $this->classTimes()
@@ -151,8 +166,12 @@ class Classroom extends Model
     {
         return $this->classTimes()
             ->where('type', ClassTime::TYPE_NORMAL)
-            ->whereYear('start_at', '<=', $year)
-            ->whereMonth('start_at', '<=', $month)
+            ->where(function($query) use ($year, $month) {
+            	$query->whereYear('start_at', '<', $year)
+	            ->orWhere(function($query) use ($year, $month) {
+	            	$query->whereYear('start_at', $year)->whereMonth('start_at', '<=', $month);
+	            });
+            })
             ->count();
     }
 }
