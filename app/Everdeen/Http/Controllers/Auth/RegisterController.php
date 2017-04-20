@@ -4,19 +4,15 @@ namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
-use Katniss\Everdeen\Models\Role;
+use Katniss\Everdeen\Mail\BaseMailable;
 use Katniss\Everdeen\Models\User;
-use Katniss\Everdeen\Models\UserSocial;
-use Katniss\Everdeen\Repositories\RoleRepository;
 use Katniss\Everdeen\Repositories\UserRepository;
 use Katniss\Everdeen\Themes\Plugins\AppSettings\Extension as AppSettingsExtension;
 use Katniss\Everdeen\Themes\Plugins\SocialIntegration\Extension as SocialIntegrationExtension;
-use Katniss\Everdeen\Utils\MailHelper;
 
 class RegisterController extends ViewController
 {
@@ -200,9 +196,9 @@ class RegisterController extends ViewController
         if ($storedUser) {
             event(new UserCreated($storedUser, $request->input('password'), true,
                 array_merge($this->_params(), [
-                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                    MailHelper::EMAIL_TO => $storedUser->email,
-                    MailHelper::EMAIL_TO_NAME => $storedUser->display_name,
+                    BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    BaseMailable::EMAIL_TO => $storedUser->email,
+                    BaseMailable::EMAIL_TO_NAME => $storedUser->display_name,
 
                     'provider' => ucfirst($request->input('provider')),
                     'provider_id' => $request->input('provider_id'),

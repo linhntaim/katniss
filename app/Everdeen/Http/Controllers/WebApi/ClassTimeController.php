@@ -26,6 +26,8 @@ class ClassTimeController extends WebApiController
         parent::__construct();
 
         $this->classTimeRepository = new ClassTimeRepository();
+
+        $this->middleware('theme')->only('store');
     }
 
     /**
@@ -45,7 +47,7 @@ class ClassTimeController extends WebApiController
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
         }
@@ -143,7 +145,7 @@ class ClassTimeController extends WebApiController
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
         }
@@ -186,21 +188,19 @@ class ClassTimeController extends WebApiController
         $reviewUserId = null;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-            	if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                if (!$user->hasRole(['manager', 'admin'])) {
+                    abort(404);
                 }
-            }
-            else {
-            	$reviewUserId = $classroom->teacher_id;
+            } else {
+                $reviewUserId = $classroom->teacher_id;
             }
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
-            }
-            else {
-            	$reviewUserId = $classroom->student_id;
+            } else {
+                $reviewUserId = $classroom->student_id;
             }
         }
         if ($user->hasRole(['manager', 'admin'])) {
@@ -257,7 +257,7 @@ class ClassTimeController extends WebApiController
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
             $reviewUserId = $classroom->teacher_id;
@@ -265,7 +265,7 @@ class ClassTimeController extends WebApiController
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
             $reviewUserId = $classroom->student_id;

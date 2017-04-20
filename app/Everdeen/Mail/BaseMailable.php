@@ -59,9 +59,9 @@ class BaseMailable extends Mailable
         $this->from($this->params[self::EMAIL_FROM], $this->params[self::EMAIL_FROM_NAME]);
         $this->subject($this->params[self::EMAIL_SUBJECT]);
         if (isset($this->params[self::EMAIL_TO_NAME])) {
-            $this->to($this->params[self::EMAIL_TO]);
-        } else {
             $this->to($this->params[self::EMAIL_TO], $this->params[self::EMAIL_TO_NAME]);
+        } else {
+            $this->to($this->params[self::EMAIL_TO]);
         }
         return $this->view($this->mailPath())
             ->with($this->params);

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Mail\BaseMailable;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\Student;
 use Katniss\Everdeen\Models\Teacher;
@@ -19,7 +20,6 @@ use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSetting;
 use Katniss\Everdeen\Models\UserSocial;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\MailHelper;
 use Katniss\Everdeen\Utils\Storage\StorePhotoByCropperJs;
 
 class UserRepository extends ModelRepository
@@ -209,9 +209,9 @@ class UserRepository extends ModelRepository
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, !empty($social),
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -276,10 +276,10 @@ class UserRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                             trans('form.action_change') . ' ' . trans('label.password'),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -333,9 +333,9 @@ class UserRepository extends ModelRepository
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, false,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -405,10 +405,10 @@ class UserRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                             trans('form.action_change') . ' ' . trans('label.password'),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -451,9 +451,9 @@ class UserRepository extends ModelRepository
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, false,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -491,10 +491,10 @@ class UserRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                             trans('form.action_change') . ' ' . trans('label.password'),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -518,10 +518,10 @@ class UserRepository extends ModelRepository
             $user->save();
             event(new PasswordChanged($user, $password,
                 array_merge(request()->getTheme()->viewParams(), [
-                    MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                    BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                         trans('form.action_change') . ' ' . trans('label.password'),
-                    MailHelper::EMAIL_TO => $user->email,
-                    MailHelper::EMAIL_TO_NAME => $user->display_name,
+                    BaseMailable::EMAIL_TO => $user->email,
+                    BaseMailable::EMAIL_TO_NAME => $user->display_name,
                 ])
             ));
 

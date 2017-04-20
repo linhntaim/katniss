@@ -2,10 +2,11 @@
 
 namespace Katniss\Providers;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Katniss\Everdeen\Events\ClassTimeCreated;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Events\UserCreated;
+use Katniss\Everdeen\Listeners\ClassTimeCreatedEmailing;
 use Katniss\Everdeen\Listeners\PasswordChangedEmailing;
 use Katniss\Everdeen\Listeners\UserActivationEmailing;
 
@@ -22,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         PasswordChanged::class => [
             PasswordChangedEmailing::class,
+        ],
+        ClassTimeCreated::class => [
+            ClassTimeCreatedEmailing::class,
         ]
     ];
 

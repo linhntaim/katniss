@@ -12,12 +12,11 @@ use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
-use Katniss\Everdeen\Models\Role;
+use Katniss\Everdeen\Mail\BaseMailable;
 use Katniss\Everdeen\Models\Student;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSetting;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\MailHelper;
 
 class StudentRepository extends ModelRepository
 {
@@ -195,9 +194,9 @@ class StudentRepository extends ModelRepository
 
             event(new UserCreated($user, $password, false,
                 array_merge(request()->getTheme()->viewParams(), [
-                    MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                    MailHelper::EMAIL_TO => $email,
-                    MailHelper::EMAIL_TO_NAME => $displayName,
+                    BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                    BaseMailable::EMAIL_TO => $email,
+                    BaseMailable::EMAIL_TO_NAME => $displayName,
                 ])
             ));
 
@@ -250,9 +249,9 @@ class StudentRepository extends ModelRepository
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, false,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -291,10 +290,10 @@ class StudentRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                             trans('form.action_change') . ' ' . trans('label.password'),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        BaseMailable::EMAIL_TO => $email,
+                        BaseMailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }

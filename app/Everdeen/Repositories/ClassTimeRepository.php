@@ -9,7 +9,9 @@
 namespace Katniss\Everdeen\Repositories;
 
 use Illuminate\Support\Facades\DB;
+use Katniss\Everdeen\Events\ClassTimeCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Mail\BaseMailable;
 use Katniss\Everdeen\Models\ClassTime;
 use Katniss\Everdeen\Utils\AppConfig;
 
@@ -54,6 +56,13 @@ class ClassTimeRepository extends ModelRepository
                     'type' => ClassTime::TYPE_PERIODIC,
                 ]);
             }
+
+            $studentUserProfile = $classTime->classroom->studentUserProfile;
+            event(new ClassTimeCreated($studentUserProfile, $classTime, array_merge(request()->getTheme()->viewParams(), [
+                BaseMailable::EMAIL_SUBJECT => '[' . appName() . '] ' . trans_choice('label.class_time', 1) . ': ' . $classTime->subject,
+                BaseMailable::EMAIL_TO => $studentUserProfile->email,
+                BaseMailable::EMAIL_TO_NAME => $studentUserProfile->display_name,
+            ])));
 
             logInfo('Class time created.', $classTime->toArray());
 
