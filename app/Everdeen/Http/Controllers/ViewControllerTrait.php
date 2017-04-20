@@ -26,9 +26,9 @@ trait ViewControllerTrait
         return $this->currentRequest->getTheme()->viewParams();
     }
 
-    protected function _title($title, $use_root = true, $separator = '&raquo;')
+    protected function _title($title, $use_root = true)
     {
-        return $this->currentRequest->getTheme()->title($title, $use_root, $separator);
+        return $this->currentRequest->getTheme()->title($title, $use_root);
     }
 
     protected function _description($description = '')
