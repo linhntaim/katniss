@@ -57,8 +57,8 @@ class LaravelLocalization extends BaseLaravelLocalization
         // Regional locale such as de_DE, so formatLocalized works in Carbon
         $regional = $this->getCurrentLocaleRegional();
         if ($regional) {
-            setlocale(LC_TIME, $regional.'.UTF-8');
-            setlocale(LC_MONETARY, $regional.'.UTF-8');
+            setlocale(LC_TIME, $regional . '.UTF-8');
+            setlocale(LC_MONETARY, $regional . '.UTF-8');
         }
 
         return $locale;
@@ -78,7 +78,7 @@ class LaravelLocalization extends BaseLaravelLocalization
         return $matchedLocale;
     }
 
-    public function getLocalizedURL($locale = null, $url = null, $attributes = array())
+    public function getLocalizedURL($locale = null, $url = null, $attributes = array(), $forceDefaultLocation = false)
     {
         if ($locale === null) {
             $locale = $this->getCurrentLocale();
@@ -94,7 +94,7 @@ class LaravelLocalization extends BaseLaravelLocalization
 
         if (empty($url)) {
             if (!empty($this->routeName)) {
-                return $this->getURLFromRouteNameTranslated($locale, $this->routeName, $attributes);
+                return $this->getURLFromRouteNameTranslated($locale, $this->routeName, $attributes, $forceDefaultLocation);
             }
 
             $url = $this->request->fullUrl();
@@ -131,7 +131,7 @@ class LaravelLocalization extends BaseLaravelLocalization
 //            if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($url, $attributes, $this->currentLocale)) { // if no fixed, uncomment
             if ($locale && $translatedRoute = $this->findTranslatedRouteByUrl($tmpUrl, $attributes, $this->currentLocale)) { // if no fixed, delete
                 // linhnt.aim@outlook.com
-                $translatedUrl = $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+                $translatedUrl = $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes, $forceDefaultLocation);
                 if (!empty($parsed_url['query'])) {
                     $translatedUrl .= '?' . $parsed_url['query'];
                 }
@@ -171,11 +171,13 @@ class LaravelLocalization extends BaseLaravelLocalization
         $parsed_url['path'] = ltrim($parsed_url['path'], '/');
 
         if ($translatedRoute = $this->findTranslatedRouteByPath($parsed_url['path'], $url_locale)) {
-            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes);
+            return $this->getURLFromRouteNameTranslated($locale, $translatedRoute, $attributes, $forceDefaultLocation);
         }
 
-        if (!empty($locale) && ($locale != $this->defaultLocale || !$this->hideDefaultLocaleInURL())) {
-            $parsed_url['path'] = $locale . '/' . ltrim($parsed_url['path'], '/');
+        if (!empty($locale)) {
+            if ($locale != $this->getDefaultLocale() || !$this->hideDefaultLocaleInURL() || $forceDefaultLocation) {
+                $parsed_url['path'] = $locale . '/' . ltrim($parsed_url['path'], '/');
+            }
         }
         $parsed_url['path'] = ltrim(ltrim($base_path, '/') . '/' . $parsed_url['path'], '/');
 
