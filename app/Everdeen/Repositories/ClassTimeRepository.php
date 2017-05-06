@@ -43,6 +43,7 @@ class ClassTimeRepository extends ModelRepository
                 'content' => $content,
                 'hours' => $hours,
                 'start_at' => $startAt,
+                'confirmed' => ClassTime::CONFIRMED_FALSE,
             ]);
 
             $countClassTimes = $classTime->classroom->countClassTimes;
@@ -130,6 +131,25 @@ class ClassTimeRepository extends ModelRepository
             $classTime->update([
                 'subject' => $subject,
                 'content' => $content,
+            ]);
+
+            logInfo('Class time updated.', $classTime->toArray());
+
+            return $classTime;
+        } catch (\Exception $ex) {
+            throw new KatnissException(trans('error.database_update') . ' (' . $ex->getMessage() . ')');
+        }
+    }
+
+    public function confirm()
+    {
+        $classTime = $this->model();
+
+        try {
+            logInfo('Class time before updated.', $classTime->toArray());
+
+            $classTime->update([
+                'confirmed' => ClassTime::CONFIRMED_TRUE,
             ]);
 
             logInfo('Class time updated.', $classTime->toArray());

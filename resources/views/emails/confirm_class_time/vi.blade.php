@@ -17,6 +17,9 @@
     <blockquote>{!! $html_content !!}</blockquote>
 </div>
 <div>
+    Nếu bạn đồng ý với thông tin lớp học phía trên, hãy xác nhận bằng cách bấm vào đường dẫn bên dưới:<br>
+    <a href="{{ $url_confirmation }}">{{ $url_confirmation }}</a><br>
+    Giáo viên của bạn chỉ được trả công khi buổi học đã được xác nhận.<br><br>
     Hãy kiểm tra lại diễn biến lớp học theo đường dẫn sau và cho chúng tôi biết nếu bạn gặp bất cứ vấn đề gì với buổi học mới này:<br>
     <a href="{{ $url_classroom }}">{{ $url_classroom }}</a><br>
     <br>

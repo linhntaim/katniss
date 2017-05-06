@@ -10,10 +10,13 @@ class ClassTime extends Model
     const TYPE_NORMAL = 0;
     const TYPE_PERIODIC = 1;
 
+    const CONFIRMED_TRUE = 1;
+    const CONFIRMED_FALSE = 0;
+
     protected $table = 'class_times';
 
     protected $fillable = [
-        'classroom_id', 'subject', 'content', 'hours', 'start_at', 'type',
+        'classroom_id', 'subject', 'content', 'hours', 'start_at', 'confirmed', 'type',
     ];
 
     public function getFormattedStartAtAttribute()
@@ -43,6 +46,11 @@ class ClassTime extends Model
     public function getDurationAttribute()
     {
         return toFormattedNumber($this->attributes['hours']);
+    }
+
+    public function getIsConfirmedAttribute()
+    {
+        return $this->attributes['confirmed'] == self::CONFIRMED_TRUE;
     }
 
     public function getIsPeriodicAttribute()

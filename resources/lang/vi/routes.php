@@ -23,6 +23,7 @@ return [
     'closed-classrooms'                             => 'lop-da-hoc-xong',
     'classrooms/{id}'                               => 'lop-hoc/{id}',
     'class-times/{id}'                              => 'buoi-hoc/{id}',
+    'class-times/{id}/confirm'                      => 'buoi-hoc/{id}/xac-nhan',
     'helps'                                         => 'tro-giup',
     'helps/{slug}'                                  => 'tro-giup/{slug}',
     'knowledge'                                     => 'kien-thuc',

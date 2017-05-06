@@ -45,6 +45,7 @@
                                 '</a>' +
                             @endif
                             '<span class="class-time-subject">' + classTime.subject + '</span>' +
+                            (classTime.confirmed ? '' : '<label class="label label-danger">{{ trans('label.status_student_not_confirmed') }}</label>') +
                             '</div>' +
                             '<div class="help-block">' + classTime.duration + ' - {{ trans('label.start_at') }} ' + classTime.start_at + '</div>' +
                             '<div class="bg-warning padding-10 class-time-content' + (classTime.content != '' ? '' : ' hide') + '">' +

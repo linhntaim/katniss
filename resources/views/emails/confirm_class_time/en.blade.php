@@ -17,7 +17,10 @@
     <blockquote>{!! $html_content !!}</blockquote>
 </div>
 <div>
-    Please check it at the link below and let us know if you have any issue with this new class time:<br>
+    If you agree with your teacher about the information of the class time above, please confirm it by clicking on this link:<br>
+    <a href="{{ $url_confirmation }}">{{ $url_confirmation }}</a><br>
+    Your teacher will be only paid when the class time is confirmed.<br><br>
+    For more details, please check at the link below and let us know if you have any issue with this new class time:<br>
     <a href="{{ $url_classroom }}">{{ $url_classroom }}</a><br>
     <br>
     <br>

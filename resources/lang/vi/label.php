@@ -41,6 +41,8 @@ return [
     'status_teaching_available' => 'Có thể nhận thêm học viên',
     'status_full_schedule' => 'Lịch dạy đã đầy',
     'status_selected' => 'Đã chọn',
+    'status_confirmed' => 'Đã xác nhận',
+    'status_student_not_confirmed' => 'Chưa được học viên xác nhận',
 
     'wanna_delete' => 'Bạn có muốn xóa :name ?',
     'wanna_verify' => 'Bạn có muốn xác thực :name ?',

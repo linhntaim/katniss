@@ -124,6 +124,7 @@ class ClassroomController extends WebApiController
                         'review' => $studentReview->review,
                         'html_review' => $studentReview->htmlReview,
                     ],
+                    'confirmed' => $classTime->isConfirmed,
                 ] : [
                     'id' => $classTime->id,
                     'is_periodic' => $classTime->isPeriodic,

@@ -10,6 +10,7 @@ namespace Katniss\Everdeen\Reports;
 
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Models\ClassTime;
 use Katniss\Everdeen\Models\SalaryJump;
 use Katniss\Everdeen\Repositories\SalaryJumpRepository;
 
@@ -86,6 +87,7 @@ class TeacherSalaryReport extends Report
                 ->join('classrooms', 'classrooms.id', '=', 'class_times.classroom_id')
                 ->whereYear('class_times.start_at', $this->year)
                 ->whereMonth('class_times.start_at', $this->month)
+                ->where('class_times.confirmed', ClassTime::CONFIRMED_TRUE)
                 ->groupBy('classrooms.teacher_id')
                 ->get();
 

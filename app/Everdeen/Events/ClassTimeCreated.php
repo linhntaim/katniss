@@ -42,6 +42,7 @@ class ClassTimeCreated extends Event
             'start_at' => $this->classTime->inverseFullFormattedStartAt,
             'html_content' => $this->classTime->htmlContent,
             'url_classroom' => homeUrl('classrooms/{id}', ['id' => $this->classTime->classroom_id]),
+            'url_confirmation' => homeUrl('class-times/{id}/confirm', ['id' => $this->classTime->id]),
         ], $this->params);
     }
 }

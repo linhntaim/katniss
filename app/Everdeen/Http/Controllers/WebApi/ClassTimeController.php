@@ -111,6 +111,7 @@ class ClassTimeController extends WebApiController
                     'html_content' => $classTime->html_content,
                     'teacher_review' => null,
                     'student_review' => null,
+                    'confirmed' => $classTime->isConfirmed,
                 ],
                 'class_time_periodic' => empty($classTimePeriodic) ? null : [
                     'id' => $classTimePeriodic->id,
@@ -178,9 +179,9 @@ class ClassTimeController extends WebApiController
 
     public function storeReviews(Request $request, $id)
     {
-        $review = $this->classTimeRepository->model($id);
+        $classTime = $this->classTimeRepository->model($id);
 
-        $classroom = $review->classroom;
+        $classroom = $classTime->classroom;
         if (!$classroom->isOpening) {
             abort(404);
         }
@@ -245,9 +246,9 @@ class ClassTimeController extends WebApiController
 
     public function storeRichReviews(Request $request, $id)
     {
-        $review = $this->classTimeRepository->model($id);
+        $classTime = $this->classTimeRepository->model($id);
 
-        $classroom = $review->classroom;
+        $classroom = $classTime->classroom;
         if (!$classroom->isOpening) {
             abort(404);
         }

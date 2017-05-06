@@ -41,6 +41,7 @@ return [
     'status_teaching_available' => 'Available',
     'status_full_schedule' => 'Full schedule',
     'status_selected' => 'Selected',
+    'status_student_not_confirmed' => 'Not confirmed by student yet',
 
     'wanna_delete' => 'Do you really want to delete :name ?',
     'wanna_verify' => 'Do you really want to verify :name ?',

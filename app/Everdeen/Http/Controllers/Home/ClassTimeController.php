@@ -25,6 +25,30 @@ class ClassTimeController extends ViewController
         $this->classTimeRepository = new ClassTimeRepository();
     }
 
+    public function confirm(Request $request, $id)
+    {
+        $classTime = $this->classTimeRepository->model($id);
+
+        $classroom = $classTime->classroom;
+        $user = $request->authUser();
+        $reviewUserId = null;
+        if (!$user->hasRole('student')) {
+            abort(404);
+        }
+        if ($classroom->student_id != $user->id) {
+            abort(404);
+        }
+
+        try {
+            $this->classTimeRepository->confirm();
+
+            return redirect(homeUrl('classrooms/{id}', ['id' => $classroom->id]));
+        } catch (KatnissException $exception) {
+            abort(500, $exception->getMessage());
+            return '';
+        }
+    }
+
     public function destroy(Request $request, $id)
     {
         $classTime = $this->classTimeRepository->model($id);
@@ -34,20 +58,18 @@ class ClassTimeController extends ViewController
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
-            }
-            else {
-	            $userCanDeleteClassTime = true;
+            } else {
+                $userCanDeleteClassTime = true;
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
-            }
-            else {
-	            $userCanDeleteClassTime = true;
+            } else {
+                $userCanDeleteClassTime = true;
             }
         }
         if ($user->hasRole(['manager', 'admin'])) {
