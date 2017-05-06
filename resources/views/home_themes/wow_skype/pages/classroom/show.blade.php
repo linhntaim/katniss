@@ -26,6 +26,8 @@
         $(function () {
             var _canAddTeacherReview = '{{ $can_add_teacher_review ? 1 : 0 }}';
             var _canAddStudentReview = '{{ $can_add_student_review ? 1 : 0 }}';
+            var _canConfirmClassTime = '{{ $can_confirm_class_time ? 1 : 0 }}';
+            var _urlConfirm = '{{ homeUrl('class-times/{id}/confirm', ['id' => '{id}']) }}';
 
             function renderClassTime(classTime, maxRate) {
                 if(classTime.is_periodic) {
@@ -45,8 +47,9 @@
                                 '</a>' +
                             @endif
                             '<span class="class-time-subject">' + classTime.subject + '</span>' +
-                            (classTime.confirmed ? '' : '<label class="label label-danger">{{ trans('label.status_student_not_confirmed') }}</label>') +
                             '</div>' +
+                            (classTime.confirmed ? '' : '<div class="help-block"><label class="label label-danger">{{ trans('label.status_student_not_confirmed') }}</label>' +
+                                (_canConfirmClassTime ? ' <a class="btn btn-xs btn-success" href="' + _urlConfirm.replace('{id}', classTime.id) + '">{{ trans('form.action_confirm') }}</a>' : '') + '</div>') +
                             '<div class="help-block">' + classTime.duration + ' - {{ trans('label.start_at') }} ' + classTime.start_at + '</div>' +
                             '<div class="bg-warning padding-10 class-time-content' + (classTime.content != '' ? '' : ' hide') + '">' +
                             classTime.html_content +
@@ -803,6 +806,14 @@
                                             @endif
                                             <span class="class-time-subject">{{ $class_time->subject }}</span>
                                         </div>
+                                        @if(!$class_time->isConfirmed)
+                                            <div class="help-block">
+                                                <label class="label label-danger">{{ trans('label.status_student_not_confirmed') }}</label>
+                                                @if($can_confirm_class_time)
+                                                    <a class="btn btn-xs btn-success" href="{{ homeUrl('class-times/{id}/confirm', ['id' => $class_time->id]) }}">{{ trans('form.action_confirm') }}</a>
+                                                @endif
+                                            </div>
+                                        @endif
                                         <div class="help-block">
                                             {{ $class_time->duration }} {{ trans_choice('label.hour_lc', $class_time->hours) }}
                                             - {{ trans('label.start_at') }} {{ $class_time->inverseFullFormattedStartAt }}

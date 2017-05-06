@@ -89,6 +89,7 @@ class ClassroomController extends ViewController
         $canExportClassroom = false;
         $canAddTeacherReview = false;
         $canAddStudentReview = false;
+        $canConfirmClassTime = false;
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
@@ -110,6 +111,7 @@ class ClassroomController extends ViewController
 	            $isOwner = true;
 	            $canAddStudentReview = true;
 	            $canExportClassroom = true;
+                $canConfirmClassTime = true;
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
@@ -170,6 +172,7 @@ class ClassroomController extends ViewController
             'can_classroom_export' => $canExportClassroom,
             'can_add_teacher_review' => $canAddTeacherReview,
             'can_add_student_review' => $canAddStudentReview,
+            'can_confirm_class_time' => $canConfirmClassTime,
             'teacher' => $classroom->teacherProfile,
             'student' => $classroom->studentProfile,
             'supporter' => $classroom->supporter,

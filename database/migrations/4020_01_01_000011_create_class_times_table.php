@@ -22,6 +22,7 @@ class CreateClassTimesTable extends Migration
             $table->dateTime('start_at');
             $table->decimal('hours');
             $table->longText('content');
+            $table->tinyInteger('confirmed')->default(1);
             $table->tinyInteger('type')->default(0);
             $table->timestamps();
 
