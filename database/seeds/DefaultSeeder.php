@@ -69,6 +69,13 @@ class DefaultSeeder extends Seeder
         ));
         $manager_role->attachPermission($admin_access_permission);
 
+        $student_visor_role = Role::create(array(
+            'name' => 'student_visor',
+            'display_name' => 'Student-visor',
+            'description' => 'Student-visor'
+        ));
+        $student_visor_role->attachPermission($admin_access_permission);
+
         $editor_role = Role::create(array(
             'name' => 'editor',
             'display_name' => 'Editor',

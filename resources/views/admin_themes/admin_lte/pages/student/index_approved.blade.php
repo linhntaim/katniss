@@ -183,6 +183,9 @@
                         </a>
                     </div>
                 </div><!-- /.box-header -->
+                @php
+                    $canDoAction = $auth_user->hasRole(['admin', 'manager']);
+                @endphp
                 @if($students->count()>0)
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-bordered">
@@ -194,7 +197,9 @@
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
                                     <th>{{ trans_choice('label.learning_request', 1) }}</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tfoot>
@@ -205,7 +210,9 @@
                                     <th>Skype ID</th>
                                     <th>{{ trans('label.phone') }}</th>
                                     <th>{{ trans_choice('label.learning_request', 1) }}</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -224,17 +231,19 @@
                                                 </a>
                                             @endif
                                         </td>
-                                        <td>
-                                            <a href="{{ adminUrl('students/{id}/edit', ['id'=> $student->user_id]) }}">
-                                                {{ trans('form.action_edit') }}
-                                            </a>
-                                            <a class="reject" href="{{ addRdrUrl(adminUrl('students/{id}', ['id'=> $student->user_id]) . '?reject=1') }}">
-                                                {{ trans('form.action_reject') }}
-                                            </a>
-                                            <a class="delete" href="{{ addRdrUrl(adminUrl('students/{id}', ['id'=> $student->user_id])) }}">
-                                                {{ trans('form.action_delete') }}
-                                            </a>
-                                        </td>
+                                        @if($canDoAction)
+                                            <td>
+                                                <a href="{{ adminUrl('students/{id}/edit', ['id'=> $student->user_id]) }}">
+                                                    {{ trans('form.action_edit') }}
+                                                </a>
+                                                <a class="reject" href="{{ addRdrUrl(adminUrl('students/{id}', ['id'=> $student->user_id]) . '?reject=1') }}">
+                                                    {{ trans('form.action_reject') }}
+                                                </a>
+                                                <a class="delete" href="{{ addRdrUrl(adminUrl('students/{id}', ['id'=> $student->user_id])) }}">
+                                                    {{ trans('form.action_delete') }}
+                                                </a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                              </tbody>

@@ -67,15 +67,20 @@ Route::group([
         });
 
         Route::group([
-            'middleware' => 'entrust:teacher|student|supporter|manager|admin'
+            'middleware' => 'entrust:teacher|student|supporter|student_visor|manager|admin'
         ], function () {
             Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
         });
 
         Route::group([
-            'middleware' => 'entrust:manager|admin'
+            'middleware' => 'entrust:student_visor|manager|admin'
         ], function () {
             Route::get('admin/learning-requests/{id}', 'LearningRequestController@show');
+        });
+
+        Route::group([
+            'middleware' => 'entrust:manager|admin'
+        ], function () {
             Route::get('admin/salary-report', 'SalaryReportController@index');
         });
     });

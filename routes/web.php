@@ -72,11 +72,21 @@ Route::group([
             });
 
             Route::group([
-                'middleware' => 'entrust:teacher|student|supporter|manager|admin'
+                'middleware' => 'entrust:teacher|student|supporter|student_visor|manager|admin'
             ], function () {
                 Route::get(homeRoute('classrooms/{id}'), 'ClassroomController@show');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:teacher|manager|admin'
+            ], function () {
                 Route::put(homeRoute('classrooms/{id}'), 'ClassroomController@update');
                 Route::delete(homeRoute('class-times/{id}'), 'ClassTimeController@destroy');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:student'
+            ], function () {
                 Route::get(homeRoute('class-times/{id}/confirm'), 'ClassTimeController@confirm');
             });
         });
@@ -321,17 +331,12 @@ Route::group([
                 Route::put(adminRoute('teachers/{id}'), 'TeacherController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('teachers/{id}'), 'TeacherController@destroy')->where('id', '[0-9]+');
                 //Student
-                Route::get(adminRoute('approved-students'), 'StudentController@indexApproved');
-                Route::get(adminRoute('registering-students'), 'StudentController@indexRegistering');
                 Route::get(adminRoute('students/create'), 'StudentController@create');
                 Route::post(adminRoute('students'), 'StudentController@store');
                 Route::get(adminRoute('students/{id}/edit'), 'StudentController@edit')->where('id', '[0-9]+');
                 Route::put(adminRoute('students/{id}'), 'StudentController@update')->where('id', '[0-9]+');
                 Route::delete(adminRoute('students/{id}'), 'StudentController@destroy')->where('id', '[0-9]+');
                 //Classroom
-                Route::get(adminRoute('opening-classrooms'), 'ClassroomController@indexOpening');
-                Route::get(adminRoute('closed-classrooms'), 'ClassroomController@indexClosed');
-                Route::get(adminRoute('ready-classrooms'), 'ClassroomController@indexReady');
                 Route::get(adminRoute('classrooms/create'), 'ClassroomController@create');
                 Route::post(adminRoute('classrooms'), 'ClassroomController@store');
                 Route::get(adminRoute('classrooms/{id}/edit'), 'ClassroomController@edit')->where('id', '[0-9]+');
@@ -341,9 +346,22 @@ Route::group([
                 Route::get(adminRoute('salary-report'), 'SalaryReportController@index');
                 Route::post(adminRoute('salary-report'), 'SalaryReportController@store');
                 //Register learning request
+                Route::put(adminRoute('learning-requests/{id}'), 'LearningRequestController@update');
+            });
+
+            Route::group([
+                'middleware' => 'entrust:admin|manager|student_visor'
+            ], function () {
+                //Student
+                Route::get(adminRoute('approved-students'), 'StudentController@indexApproved');
+                Route::get(adminRoute('registering-students'), 'StudentController@indexRegistering');
+                //Classroom
+                Route::get(adminRoute('opening-classrooms'), 'ClassroomController@indexOpening');
+                Route::get(adminRoute('closed-classrooms'), 'ClassroomController@indexClosed');
+                Route::get(adminRoute('ready-classrooms'), 'ClassroomController@indexReady');
+                //Register learning request
                 Route::get(adminRoute('register-learning-requests'), 'LearningRequestController@indexRegistering');
                 Route::get(adminRoute('processed-learning-requests'), 'LearningRequestController@indexProcessed');
-                Route::put(adminRoute('learning-requests/{id}'), 'LearningRequestController@update');
             });
 
             Route::group([

@@ -90,47 +90,48 @@ class ClassroomController extends ViewController
         $canAddTeacherReview = false;
         $canAddStudentReview = false;
         $canConfirmClassTime = false;
+
+        $canAccessAnyway = $user->hasRole(['student_visor', 'manager', 'admin']);
         if ($user->hasRole('teacher')) {
             if ($classroom->teacher_id != $user->id) {
-                if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                if (!$canAccessAnyway) {
+                    abort(404);
                 }
-            }
-            else {
-	            $isOwner = true;
-	            $canClassroomEdit = true;
-	            $canAddTeacherReview = true;
+            } else {
+                $isOwner = true;
+                $canClassroomEdit = true;
+                $canAddTeacherReview = true;
             }
         } elseif ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
-                if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                if (!$canAccessAnyway) {
+                    abort(404);
                 }
-            }
-            else {
-	            $isOwner = true;
-	            $canAddStudentReview = true;
-	            $canExportClassroom = true;
+            } else {
+                $isOwner = true;
+                $canAddStudentReview = true;
+                $canExportClassroom = true;
                 $canConfirmClassTime = true;
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
-                if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                if (!$canAccessAnyway) {
+                    abort(404);
                 }
-            }
-            else {
-	            $isOwner = true;
-	            $userCanCloseClassroom = true;
-	            $canExportClassroom = false;
+            } else {
+                $isOwner = true;
+                $userCanCloseClassroom = true;
+                $canExportClassroom = true;
             }
         }
-        if ($user->hasRole(['manager', 'admin'])) {
-            $canClassroomEdit = true;
-            $userCanCloseClassroom = true;
-            $canAddTeacherReview = true;
-            $canAddStudentReview = true;
+        if ($canAccessAnyway) {
             $canExportClassroom = true;
+            if ($user->hasRole(['manager', 'admin'])) {
+                $canClassroomEdit = true;
+                $userCanCloseClassroom = true;
+                $canAddTeacherReview = true;
+                $canAddStudentReview = true;
+            }
         }
         $canClassroomClose = $userCanCloseClassroom
             && $classroom->isOpening
@@ -189,16 +190,16 @@ class ClassroomController extends ViewController
         if ($user->hasRole('student')) {
             if ($classroom->student_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
         } elseif ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
             }
-        } 
+        }
         if (!$user->hasRole(['manager', 'admin'])) {
             abort(404);
         }
@@ -286,11 +287,10 @@ class ClassroomController extends ViewController
         if ($user->hasRole('supporter')) {
             if ($classroom->supporter_id != $user->id) {
                 if (!$user->hasRole(['manager', 'admin'])) {
-                	abort(404);
+                    abort(404);
                 }
-            }
-            else {
-	            $userCanCloseClassroom = true;
+            } else {
+                $userCanCloseClassroom = true;
             }
         }
         if ($user->hasRole(['manager', 'admin'])) {

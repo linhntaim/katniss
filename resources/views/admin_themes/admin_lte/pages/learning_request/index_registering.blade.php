@@ -165,6 +165,9 @@
                         </button>
                     </div>
                 </div><!-- /.box-header -->
+                @php
+                    $canDoAction = $auth_user->hasRole(['admin', 'manager']);
+                @endphp
                 @if($learning_requests->count()>0)
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-bordered">
@@ -178,7 +181,9 @@
                                     <th>{{ trans_choice('label.study_level', 1) }}</th>
                                     <th>{{ trans_choice('label.study_problem', 1) }}</th>
                                     <th>{{ trans_choice('label.study_course', 1) }}</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tfoot>
@@ -191,7 +196,9 @@
                                     <th>{{ trans_choice('label.study_level', 1) }}</th>
                                     <th>{{ trans_choice('label.study_problem', 1) }}</th>
                                     <th>{{ trans_choice('label.study_course', 1) }}</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -232,9 +239,11 @@
                                                href="{{ adminUrl('learning-requests/{id}', ['id'=> $learning_request->id]) }}">
                                                 {{ trans('form.action_view_detail') }}
                                             </a>
-                                            <a class="process" href="{{ addRdrUrl(adminUrl('learning-requests/{id}', ['id'=> $learning_request->id]) . '?process=1') }}">
-                                                {{ trans('form.action_process') }}
-                                            </a>
+                                            @if($canDoAction)
+                                                <a class="process" href="{{ addRdrUrl(adminUrl('learning-requests/{id}', ['id'=> $learning_request->id]) . '?process=1') }}">
+                                                    {{ trans('form.action_process') }}
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

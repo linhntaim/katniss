@@ -74,7 +74,7 @@ class AdminMenuComposer
                 trans('pages.my_settings_title'),
                 '<i class="fa fa-circle-o"></i> <span>', '</span>'
             );
-            if(!$user->hasRole('student_agent')) {
+            if (!$user->hasRole('student_agent')) {
                 // File Manager
                 $subMenu->add( // add a menu item
                     adminUrl('my-documents'),
@@ -84,7 +84,7 @@ class AdminMenuComposer
             }
             $menu->addSubMenu($subMenu);
 
-            if($user->hasRole('student_agent')) {
+            if ($user->hasRole('student_agent')) {
                 $menu->add(  // add an example menu item which have sub menu
                     adminUrl('student-agents/{id}/students', ['id' => $user->id]),
                     trans('pages.admin_students_title'),
@@ -244,60 +244,62 @@ class AdminMenuComposer
                 $menu->addSubMenu($subMenu);
             }
 
-            if ($user->hasRole(['admin', 'manager'])) {
+            if ($user->hasRole(['admin', 'manager', 'student_visor'])) {
                 $menu->add(  // add an example menu item which have sub menu
                     '#',
                     trans('pages.admin_learning_title'),
                     '<i class="fa fa-graduation-cap"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
                 );
                 $subMenu = new Menu($currentUrl);
-                $subMenu->add( //add a menu item
-                    adminUrl('study-levels'),
-                    trans('pages.admin_study_levels_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('study-problems'),
-                    trans('pages.admin_study_problems_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('study-courses'),
-                    trans('pages.admin_study_courses_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('professional-skills'),
-                    trans('pages.admin_professional_skills_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('topics'),
-                    trans('pages.admin_topics_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add( //add a menu item
-                    adminUrl('student-agents'),
-                    trans('pages.admin_student_agents_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->add(  // add an example menu item which have sub menu
-                    '#',
-                    trans('pages.admin_teachers_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
-                );
-                $subSubMenu = new Menu($currentUrl);
-                $subSubMenu->add( // add a menu item
-                    adminUrl('approved-teachers'),
-                    trans('pages.admin_approved_teachers_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subSubMenu->add( // add a menu item
-                    adminUrl('registering-teachers'),
-                    trans('pages.admin_registering_teachers_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
-                $subMenu->addSubMenu($subSubMenu);
+                if ($user->hasRole(['admin', 'manager'])) {
+                    $subMenu->add( //add a menu item
+                        adminUrl('study-levels'),
+                        trans('pages.admin_study_levels_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add( //add a menu item
+                        adminUrl('study-problems'),
+                        trans('pages.admin_study_problems_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add( //add a menu item
+                        adminUrl('study-courses'),
+                        trans('pages.admin_study_courses_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add( //add a menu item
+                        adminUrl('professional-skills'),
+                        trans('pages.admin_professional_skills_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add( //add a menu item
+                        adminUrl('topics'),
+                        trans('pages.admin_topics_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add( //add a menu item
+                        adminUrl('student-agents'),
+                        trans('pages.admin_student_agents_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->add(  // add an example menu item which have sub menu
+                        '#',
+                        trans('pages.admin_teachers_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span> <i class="fa fa-angle-left pull-right"></i>', 'treeview'
+                    );
+                    $subSubMenu = new Menu($currentUrl);
+                    $subSubMenu->add( // add a menu item
+                        adminUrl('approved-teachers'),
+                        trans('pages.admin_approved_teachers_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subSubMenu->add( // add a menu item
+                        adminUrl('registering-teachers'),
+                        trans('pages.admin_registering_teachers_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                    $subMenu->addSubMenu($subSubMenu);
+                }
                 $subMenu->add(  // add an example menu item which have sub menu
                     '#',
                     trans('pages.admin_students_title'),
@@ -354,11 +356,13 @@ class AdminMenuComposer
                     '<i class="fa fa-circle-o"></i> <span>', '</span>'
                 );
                 $subMenu->addSubMenu($subSubMenu);
-                $subMenu->add( //add a menu item
-                    adminUrl('salary-report'),
-                    trans('pages.admin_salary_report_title'),
-                    '<i class="fa fa-circle-o"></i> <span>', '</span>'
-                );
+                if ($user->hasRole(['admin', 'manager'])) {
+                    $subMenu->add( //add a menu item
+                        adminUrl('salary-report'),
+                        trans('pages.admin_salary_report_title'),
+                        '<i class="fa fa-circle-o"></i> <span>', '</span>'
+                    );
+                }
                 $menu->addSubMenu($subMenu);
             }
         }

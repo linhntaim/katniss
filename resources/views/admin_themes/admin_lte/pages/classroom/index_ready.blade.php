@@ -183,6 +183,9 @@
                         </button>
                     </div>
                 </div><!-- /.box-header -->
+                @php
+                    $canDoAction = $auth_user->hasRole(['admin', 'manager']);
+                @endphp
                 @if($classrooms->count()>0)
                     <div class="box-body table-responsive no-padding">
                         <table class="table table-bordered">
@@ -196,7 +199,9 @@
                                     <th>{{ trans_choice('label.supporter', 1) }}</th>
                                     <th>{{ trans('label.class_duration') }} ({{ trans_choice('label.hour_lc', 1) }})</th>
                                     <th>{{ trans('label.class_spent_time') }} ({{ trans_choice('label.hour_lc', 1) }})</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tfoot>
@@ -209,7 +214,9 @@
                                     <th>{{ trans_choice('label.supporter', 1) }}</th>
                                     <th>{{ trans('label.class_duration') }} ({{ trans_choice('label.hour_lc', 1) }})</th>
                                     <th>{{ trans('label.class_spent_time') }} ({{ trans_choice('label.hour_lc', 1) }})</th>
-                                    <th>{{ trans('form.action') }}</th>
+                                    @if($canDoAction)
+                                        <th>{{ trans('form.action') }}</th>
+                                    @endif
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -227,17 +234,19 @@
                                         <td>{{ $classroom->supporter->display_name }}</td>
                                         <td>{{ $classroom->duration }}</td>
                                         <td>{{ $classroom->spentTimeDuration }}</td>
-                                        <td>
-                                            <a href="{{ addRdrUrl(adminUrl('classrooms/{id}/edit', ['id'=> $classroom->id])) }}">
-                                                {{ trans('form.action_edit') }}
-                                            </a>
-                                            <a class="classroom-close" href="{{ addRdrUrl(adminUrl('classrooms/{id}', ['id'=> $classroom->id]) . '?close=1') }}">
-                                                {{ trans('form.action_close') }}
-                                            </a>
-                                            <a class="delete" href="{{ addRdrUrl(adminUrl('classrooms/{id}', ['id'=> $classroom->id])) }}">
-                                                {{ trans('form.action_delete') }}
-                                            </a>
-                                        </td>
+                                        @if($canDoAction)
+                                            <td>
+                                                <a href="{{ addRdrUrl(adminUrl('classrooms/{id}/edit', ['id'=> $classroom->id])) }}">
+                                                    {{ trans('form.action_edit') }}
+                                                </a>
+                                                <a class="classroom-close" href="{{ addRdrUrl(adminUrl('classrooms/{id}', ['id'=> $classroom->id]) . '?close=1') }}">
+                                                    {{ trans('form.action_close') }}
+                                                </a>
+                                                <a class="delete" href="{{ addRdrUrl(adminUrl('classrooms/{id}', ['id'=> $classroom->id])) }}">
+                                                    {{ trans('form.action_delete') }}
+                                                </a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                              </tbody>
