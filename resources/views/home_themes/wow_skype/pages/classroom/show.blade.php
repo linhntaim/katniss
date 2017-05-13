@@ -595,6 +595,11 @@
 @endsection
 @section('main_content')
     <div id="page-classrooms-detail">
+{{--        @if($isOwner && $canAddStudentReview)--}}
+            <div class="bg-warning text-warning padding-10 text-center margin-bottom-20 bold-600">
+                <i class="fa fa-life-ring"></i> {!! trans('label.classroom_info_message', ['skype_id' => $ss_skype_id, 'skype_name' => $ss_skype_name]) !!}
+            </div>
+        {{--@endif--}}
         <ol class="breadcrumb big">
             <li>
                 <a href="{{ $classrooms_url }}">{{ trans_choice('label.classroom', 2) }}</a>

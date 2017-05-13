@@ -350,6 +350,8 @@ lộ trình học tập và học phí.',
     'increase_30days' => 'Tăng thêm :number trong 30 ngày',
     'your_timezone_is' => 'Múi giờ của bạn là',
     'copied' => 'Đã sao chép!',
+    'classroom_info_message' => 'Chúng tôi chỉ chấp nhận yêu cầu hủy buổi học từ học viên trong trường hợp buổi học diễn ra nhiều hơn hoặc ít nhất là 
+4 tiếng kể từ thời điểm tiếp nhận yêu cầu. Nếu bạn có bất kỳ thắc mắc gì, hãy liên hệ với chúng tôi trên Skype: <a href="skype::skype_id?chat">:skype_id (:skype_name)</a>.',
 
     'user_lc' => 'người dùng',
     'user' => 'Người dùng',

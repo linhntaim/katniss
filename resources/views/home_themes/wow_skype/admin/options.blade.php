@@ -264,6 +264,17 @@
                     </div>
                     <hr>
                     <div class="form-group">
+                        <label for="inputStudentSupportSkypeId">{{ trans('wow_skype_theme.ss_skype_id') }}</label>
+                        <input class="form-control" id="inputStudentSupportSkypeId" name="ss_skype_id"
+                               placeholder="{{ trans('wow_skype_theme.ss_skype_id') }}" type="text" value="{{ $ss_skype_id }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStudentSupportSkypeName">{{ trans('wow_skype_theme.ss_skype_name') }}</label>
+                        <input class="form-control" id="inputStudentSupportSkypeName" name="ss_skype_name"
+                               placeholder="{{ trans('wow_skype_theme.ss_skype_name') }}" type="text" value="{{ $ss_skype_name }}">
+                    </div>
+                    <hr>
+                    <div class="form-group">
                         <label for="inputKnowledgeCoverImage">{{ trans('wow_skype_theme.knowledge_cover_image') }}</label>
                         <div class="input-group">
                             <input class="form-control" id="inputKnowledgeCoverImage" name="knowledge_cover_image"

@@ -349,6 +349,8 @@ about your classes.',
     'increase_30days' => ':number increase in 30 days',
     'your_timezone_is' => 'Your timezone is',
     'copied' => 'Copied!',
+    'classroom_info_message' => 'We only accept the cancellation from student when the class time occurs greater than or equal to 4 hours after the cancelling time. 
+If you have any problem, please contact us on Skype: <a href="skype::skype_id?chat">:skype_id (:skype_name)</a>.',
 
     'user_lc' => 'user|users',
     'user' => 'User|Users',

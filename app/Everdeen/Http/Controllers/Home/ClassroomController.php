@@ -151,6 +151,8 @@ class ClassroomController extends ViewController
         }
         $countAllClassTimes = $classroom->countClassTimes;
 
+        $theme = $request->getTheme();
+
         return $this->_show([
             'classrooms_url' => $isOwner ?
                 ($classroom->isOpening ?
@@ -180,6 +182,8 @@ class ClassroomController extends ViewController
             'date_js_format' => DateTimeHelper::compoundJsFormat('shortDate', ' ', 'shortTime'),
             'number_format_chars' => NumberFormatHelper::getInstance()->getChars(),
             'max_rate' => count(_k('rates')),
+            'ss_skype_id' => $theme->options('ss_skype_id', ''),
+            'ss_skype_name' => $theme->options('ss_skype_name', ''),
         ]);
     }
 

@@ -28,6 +28,8 @@ return [
     'ts_skype_name' => 'Hỗ trợ giáo viên - Tên tài khoản Skype',
     'ts_email' => 'Hỗ trợ giáo viên - Thư điện tử',
     'ts_hot_line' => 'Hỗ trợ giáo viên - Đường dây nóng',
+    'ss_skype_id' => 'Hỗ trợ học viên - ID tài khoản Skype',
+    'ss_skype_name' => 'Hỗ trợ học viên - Tên tài khoản Skype',
     'knowledge_cover_image' => 'Bìa ảnh trang kiến thức',
     'knowledge_default_article_image' => 'Ảnh mặc định cho bài viết',
 ];

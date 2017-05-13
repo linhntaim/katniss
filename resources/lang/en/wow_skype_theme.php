@@ -29,6 +29,8 @@ return [
     'ts_skype_name' => 'Support teachers - Skype name',
     'ts_email' => 'Support teachers - Email',
     'ts_hot_line' => 'Support teachers - Hot line',
+    'ss_skype_id' => 'Support students - Skype ID',
+    'ss_skype_name' => 'Support students - Skype name',
     'knowledge_cover_image' => 'Knowledge cover image',
     'knowledge_default_article_image' => 'Knowledge default article image',
 ];
