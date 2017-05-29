@@ -41,9 +41,11 @@ class DateTimeHelper
      */
     private $dateTimeOffset;
 
-    private function __construct()
+    public function __construct($settings = null)
     {
-        $settings = settings();
+        if (empty($settings)) {
+            $settings = settings();
+        }
 
         $this->transLongDate = 'datetime.long_date_' . $settings->getLongDateFormat();
         $this->transShortDate = 'datetime.short_date_' . $settings->getShortDateFormat();
@@ -256,6 +258,7 @@ class DateTimeHelper
     }
 
     #region Static Methods
+
     /**
      * @param string $selected_zone
      * @return string

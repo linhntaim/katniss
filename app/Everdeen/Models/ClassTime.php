@@ -4,6 +4,7 @@ namespace Katniss\Everdeen\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Utils\Settings;
 
 class ClassTime extends Model
 {
@@ -64,6 +65,16 @@ class ClassTime extends Model
             return '';
         }
         return '<p>' . implode('</p><p>', preg_split('/\r*\n/', htmlspecialchars($this->attributes['content']))) . '</p>';
+    }
+
+    public function getInverseFullFormattedStartAtByStudent()
+    {
+        $settings = new Settings();
+        $settings->fromUser($this->classroom->studentUserProfile);
+        $helper = new DateTimeHelper($settings);
+
+        return empty($this->attributes['start_at']) ?
+            '' : $helper->compound('shortTime', ' ', 'longDate', $this->attributes['start_at']);
     }
 
     public function classroom()
