@@ -3,6 +3,8 @@
 namespace Katniss\Everdeen\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\Utils\Storage\StoreFile;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Database\Connectors\ConnectionFactory;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\DatabaseSessionHandler;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Session\FileSessionHandler;
