@@ -92,12 +92,12 @@
                     </ul>
                     <div class="tab-content">
                         @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
-                            <?php
-                            $trans = $link->translate($locale);
-                            $name = $trans ? $trans->name : '';
-                            $description = $trans ? $trans->description : '';
-                            $url = $trans ? $trans->url : '';
-                            ?>
+                            @php
+                                $trans = $link->translate($locale);
+                                $name = $trans ? $trans->name : '';
+                                $description = $trans ? $trans->description : '';
+                                $url = $trans ? $trans->url : '';
+                            @endphp
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
                                     <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>

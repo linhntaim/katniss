@@ -94,7 +94,6 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'email' => 'emails.password',
             'table' => 'sys_password_resets',
             'expire' => 60,
         ],

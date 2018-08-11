@@ -18,6 +18,15 @@ Duplicate the file named `.env.example` at the root directory of the application
 
 Change some configuration as you want.
 
+Enable write permission for some directories:
+
+```
+chmod -R 777 bootstrap/cache
+chmod -R 777 storage
+chmod -R 777 public/assets/cache
+chmod -R 777 public/files
+```
+
 ### PHP
 
 Require PHP >= `5.6.4`.
@@ -75,7 +84,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.4.9`.
+Current version: `5.4.21`.
 
 Latest version:
 
@@ -121,7 +130,7 @@ For file managing/uploading.
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.4.1`.
+Current version: `2.5.1`.
 
 Latest version:
 
@@ -133,7 +142,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: `3.0.3`.
+Current version: `3.0.6`.
 
 Latest version:
 
@@ -149,7 +158,7 @@ Customization:
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: `2.0.6`.
+Current version: `2.0.7`.
 
 For filtering HTML content.
 
@@ -169,7 +178,7 @@ For multilingual models (Database Entities & App Models).
 
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
-Current version: `1.7.0`.
+Current version: `1.8.0`.
 
 Latest version:
 
@@ -188,7 +197,7 @@ Customization:
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.2.2`.
+Current version: `1.2.4`.
 
 Latest version:
 

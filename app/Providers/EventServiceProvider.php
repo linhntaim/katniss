@@ -22,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         PasswordChanged::class => [
             PasswordChangedEmailing::class,
-        ]
+        ],
     ];
 
     /**

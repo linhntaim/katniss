@@ -130,13 +130,13 @@
                     </ul>
                     <div class="tab-content">
                         @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
-                            <?php
-                            $trans = $page->translate($locale);
-                            $title = $trans ? $trans->title : '';
-                            $slug = $trans ? $trans->slug : '';
-                            $description = $trans ? $trans->description : '';
-                            $content = $trans ? $trans->raw_content : '';
-                            ?>
+                            @php
+                                $trans = $page->translate($locale);
+                                $title = $trans ? $trans->title : '';
+                                $slug = $trans ? $trans->slug : '';
+                                $description = $trans ? $trans->description : '';
+                                $content = $trans ? $trans->raw_content : '';
+                            @endphp
                             <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
                                 <div class="form-group">
                                     <label class="required separated" for="{{ localeInputId('inputTitle', $locale) }}">{{ trans('label.title') }}</label>

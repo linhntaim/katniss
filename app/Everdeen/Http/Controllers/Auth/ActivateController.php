@@ -4,9 +4,9 @@ namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
-use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Repositories\UserRepository;
-use Katniss\Everdeen\Utils\MailHelper;
+use Katniss\Everdeen\Utils\Mailing\Mailable;
+use Katniss\Everdeen\Utils\Mailing\MailHelper;
 
 class ActivateController extends ViewController
 {
@@ -35,9 +35,9 @@ class ActivateController extends ViewController
     {
         $authUser = $request->authUser();
         MailHelper::sendTemplate('welcome', array_merge([
-            MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-            MailHelper::EMAIL_TO => $authUser->email,
-            MailHelper::EMAIL_TO_NAME => $authUser->display_name,
+            Mailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+            Mailable::EMAIL_TO => $authUser->email,
+            Mailable::EMAIL_TO_NAME => $authUser->display_name,
 
             'id' => $authUser->id,
             'display_name' => $authUser->display_name,

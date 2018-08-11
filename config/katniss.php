@@ -7,6 +7,20 @@
  */
 
 return [
+    'file_url' => env('FILE_URL', ''),
+    'file_path' => env('FILE_PATH', ''),
+
+    'app' => [
+        'description' => env('APP_DESCRIPTION', ''),
+        'keywords' => env('APP_KEYWORDS', ''),
+        'short_name' => env('APP_SHORT_NAME', ''),
+        'version' => env('APP_VERSION', ''),
+        'author' => env('APP_AUTHOR', ''),
+        'email' => env('APP_EMAIL', ''),
+        'logo' => env('APP_LOGO', ''),
+        'default_user_picture' => env('APP_DEFAULT_USER_PICTURE', ''),
+    ],
+
     'settings' => [
         'city' => 'LA',
         'country' => 'US',

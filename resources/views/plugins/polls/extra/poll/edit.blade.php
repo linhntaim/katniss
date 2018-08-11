@@ -62,11 +62,11 @@
                 <div class="tab-content">
                     @foreach(supportedLocalesAsInputTabs() as $locale => $properties)
                         <div class="tab-pane{{ $locale == $site_locale ? ' active' : '' }}" id="{{ localeInputId('tab', $locale) }}">
-                            <?php
+                            @php
                                 $trans = $poll->translate($locale);
                                 $name = $trans ? $trans->name : '';
                                 $description = $trans ? $trans->description : '';
-                            ?>
+                            @endphp
                             <div class="form-group">
                                 <label class="required separated" for="{{ localeInputId('inputName', $locale) }}">{{ trans('label.name') }}</label>
                                 <input class="form-control" id="{{ localeInputId('inputName', $locale) }}"

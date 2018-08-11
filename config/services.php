@@ -22,7 +22,7 @@ return [
     'ses' => [
         'key' => env('SES_KEY'),
         'secret' => env('SES_SECRET'),
-        'region' => 'us-east-1',
+        'region' => env('SES_REGION', 'us-east-1'),
     ],
 
     'sparkpost' => [
@@ -33,6 +33,7 @@ return [
         'model' => Katniss\Everdeen\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+        'version' => env('STRIPE_VERSION'),
     ],
 
     'facebook' => [
@@ -51,5 +52,20 @@ return [
         'client_id'         =>  env('INSTAGRAM_CLIENT_ID'),
         'client_secret'     =>  env('INSTAGRAM_CLIENT_SECRET'),
         'redirect'          =>  '',
+    ],
+
+    'ortc' => [
+        'client_key'         =>  env('ORTC_CLIENT_KEY'),
+        'client_secret'     =>  env('ORTC_CLIENT_SECRET'),
+        'server'          =>  env('ORTC_SERVER'),
+    ],
+
+    'google_maps' => [
+        'api_key' => env('GOOGLE_MAPS_API_KEY'),
+    ],
+
+    'google_re_captcha' => [
+        'url' => env('GOOGLE_RE_CAPTCHA_URL'),
+        'secret' => env('GOOGLE_RE_CAPTCHA_SECRET'),
     ],
 ];

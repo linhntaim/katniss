@@ -15,10 +15,8 @@ use Illuminate\Support\Fluent;
 
 class MySqlGrammar extends BaseMySqlGrammar
 {
-    public function compileCreate(Blueprint $blueprint, Fluent $command, Connection $connection)
+    protected function compileCreateRowFormat($sql, Connection $connection, Blueprint $blueprint)
     {
-        $sql = parent::compileCreate($blueprint, $command, $connection);
-
         if (isset($blueprint->rowFormat)) {
             $sql .= ' row_format = ' . $blueprint->rowFormat;
         } elseif (!is_null($rowFormat = $connection->getConfig('row_format'))) {
@@ -26,5 +24,14 @@ class MySqlGrammar extends BaseMySqlGrammar
         }
 
         return $sql;
+    }
+
+    public function compileCreate(Blueprint $blueprint, Fluent $command, Connection $connection)
+    {
+        return $this->compileCreateRowFormat(
+            parent::compileCreate($blueprint, $command, $connection),
+            $connection,
+            $blueprint
+        );
     }
 }

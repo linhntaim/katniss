@@ -143,14 +143,14 @@
                                 </div>
                             </div>
                         </div>
-                        <?php
-                        $locale = '--';
-                        $trans = $article->translate($locale);
-                        $title = $trans ? $trans->title : '';
-                        $slug = $trans ? $trans->slug : '';
-                        $description = $trans ? $trans->description : '';
-                        $content = $trans ? $trans->raw_content : '';
-                        ?>
+                        @php
+                            $locale = '--';
+                            $trans = $article->translate($locale);
+                            $title = $trans ? $trans->title : '';
+                            $slug = $trans ? $trans->slug : '';
+                            $description = $trans ? $trans->description : '';
+                            $content = $trans ? $trans->raw_content : '';
+                        @endphp
                         <div class="form-group">
                             <label class="required separated" for="{{ localeInputId('inputTitle', $locale) }}">{{ trans('label.title') }}</label>
                             <input class="form-control slug-from" id="{{ localeInputId('inputTitle', $locale) }}"

@@ -10,6 +10,7 @@ return [
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
     | any other location as required by the application or its packages.
+    |
     */
 
     'name' => env('APP_NAME', 'Laravel'),
@@ -109,25 +110,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Logging Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure the log settings for your application. Out of
-    | the box, Laravel uses the Monolog PHP logging library. This gives
-    | you a variety of powerful log handlers / formatters to utilize.
-    |
-    | Available Settings: "single", "daily", "syslog", "errorlog"
-    |
-    */
-
-    'log' => env('APP_LOG', 'single'),
-
-    'log_level' => env('APP_LOG_LEVEL', 'debug'),
-
-    'log_max_files' => env('APP_LOG_MAX_FILES', 5),
-
-    /*
-    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |
@@ -168,17 +150,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Laravel\Tinker\TinkerServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
-        Barryvdh\Elfinder\ElfinderServiceProvider::class,
-        Jenssegers\Agent\AgentServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
-        Mews\Purifier\PurifierServiceProvider::class,
-        Dimsav\Translatable\TranslatableServiceProvider::class,
-        Zizaco\Entrust\EntrustServiceProvider::class,
-        Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider::class,
-        Maatwebsite\Excel\ExcelServiceProvider::class,
-        //
 
         /*
          * Application Service Providers...
@@ -244,13 +215,13 @@ return [
 
         'ThemeFacade' => \Katniss\Everdeen\Themes\ThemeFacade::class,
 
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
-        'Agent' => Jenssegers\Agent\Facades\Agent::class,
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-        'Purifier' => Mews\Purifier\Facades\Purifier::class,
-        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
-        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+//        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+//        'Agent' => Jenssegers\Agent\Facades\Agent::class,
+//        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+//        'Purifier' => Mews\Purifier\Facades\Purifier::class,
+//        'Entrust' => Zizaco\Entrust\EntrustFacade::class,
+//        'LaravelLocalization' => Mcamara\LaravelLocalization\Facades\LaravelLocalization::class,
+//        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

@@ -18,9 +18,11 @@ class UploadController extends ApiController
     public function useJsCropper(Request $request)
     {
         try {
-            $store = new StorePhotoByCropperJs($request->file('cropper_image_file')->getRealPath(), $request->input('cropper_image_data'));
+            $store = new StorePhotoByCropperJs($request->file('cropper_image_file')->getRealPath());
+            $store->moveToCollection();
+            $store->process($request->input('cropper_image_data'));
             return $this->responseSuccess([
-                'store_path' => $store->getTargetFileRelativePath()
+                'store_path' => $store->getRelativePath()
             ]);
         } catch (\Exception $ex) {
             return $this->responseFail($ex->getMessage());
@@ -31,12 +33,12 @@ class UploadController extends ApiController
     {
         try {
             $defaultSize = 1000; // pixels
-            $store = new StorePhoto($request->file('image_file')->getRealPath());
-            $store->resize($defaultSize, $defaultSize);
-            $store->save();
-            $store->move(uploadPath());
+            $storePhoto = new StorePhoto($request->file('image_file')->getRealPath());
+            $storePhoto->resize($defaultSize, $defaultSize);
+            $storePhoto->save();
+            $storePhoto->moveToCollection();
             return $this->responseSuccess([
-                'url' => asset($store->getTargetFileRelativePath()),
+                'url' => $storePhoto->getUrl(),
             ]);
         } catch (\Exception $ex) {
             return $this->responseFail($ex->getMessage());

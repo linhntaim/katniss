@@ -32,6 +32,8 @@ abstract class Theme
 
     protected $titleRoot;
     protected $title;
+    protected $reversedTitle;
+    protected $titleSeparator;
     protected $description;
     protected $applicationName;
     protected $author;
@@ -64,6 +66,8 @@ abstract class Theme
         $this->assetPath = empty($type) ? 'assets/' . $this->view . '/' : 'assets/' . $this->type . '/' . $this->view . '/';
         $this->titleRoot = appName();
         $this->title = appName();
+        $this->reversedTitle = false;
+        $this->titleSeparator = '&raquo;';
         $this->description = appDescription();
         $this->applicationName = appName();
         $this->author = appAuthor() . ' (' . appEmail() . ')';
@@ -133,14 +137,14 @@ abstract class Theme
         return $this->asset('img/' . $filePath);
     }
 
-    public function cssAsset($filePath)
+    public function cssAsset($filePath, $version = false)
     {
-        return $this->asset('css/' . $filePath);
+        return $this->asset('css/' . $filePath) . ($version ? '?v=' . appVersion() : '');
     }
 
-    public function jsAsset($filePath)
+    public function jsAsset($filePath, $version = false)
     {
-        return $this->asset('js/' . $filePath);
+        return $this->asset('js/' . $filePath) . ($version ? '?v=' . appVersion() : '');
     }
 
     public function pluginAsset($filePath)
@@ -175,13 +179,16 @@ abstract class Theme
      * @param string $separator
      * @return string
      */
-    public function title($titles = '', $use_root = true, $separator = '&raquo;')
+    public function title($titles = '', $use_root = true)
     {
         if (!empty($titles)) {
-            $separator = ' ' . trim($separator) . ' ';
+            $separator = ' ' . $this->titleSeparator . ' ';
             $titles = (array)$titles;
             if ($use_root) {
                 array_unshift($titles, $this->titleRoot);
+            }
+            if ($this->reversedTitle) {
+                $titles = array_reverse($titles);
             }
             $this->title = implode($separator, $titles);
 

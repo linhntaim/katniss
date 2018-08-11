@@ -34,6 +34,14 @@ class MultipleLocaleValidationResult
         return $this->isFailed() ? $this->failed[0] : null;
     }
 
+    public function getValidationErrors()
+    {
+        if (!$this->isFailed()) return null;
+        $failed = $this->failed[0];
+        if (is_string($failed)) return $failed;
+        return $failed->errors()->all();
+    }
+
     public function isFailed()
     {
         return count($this->failed) > 0;
