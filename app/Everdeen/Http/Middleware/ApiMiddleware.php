@@ -42,7 +42,7 @@ class ApiMiddleware
     protected function checkSettings(Request $request)
     {
         if (!SettingsFacade::fromApi($request)) {
-            SettingsFacade::fromUser($request);
+            SettingsFacade::fromUser();
         }
     }
 

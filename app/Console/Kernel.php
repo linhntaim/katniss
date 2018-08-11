@@ -29,12 +29,14 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * Register the Closure based commands for the application.
+     * Register the commands for the application.
      *
      * @return void
      */
     protected function commands()
     {
+        $this->load(app_path() . '/Everdeen/Commands');
+
         require base_path('routes/console.php');
     }
 }

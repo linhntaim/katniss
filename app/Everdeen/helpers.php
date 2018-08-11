@@ -1481,11 +1481,6 @@ function shortTimeFormatsAsOptions($selected)
     return DateTimeHelper::getShortTimeFormatsAsOptions($selected);
 }
 
-function dateFormatFromDatabase($inputString, $toFormat = 'Y-m-d H:i:s', &$diffDay = 0)
-{
-    return DateTimeHelper::getInstance()->format($toFormat, $inputString, 0, false, $diffDay);
-}
-
 function transMonthYear($dateString, $hideCurrentYear = true)
 {
     $time = strtotime($dateString);

@@ -119,7 +119,9 @@
                                 </div>
                             </div>
                         </div>
-                        <?php $locale = '--'; ?>
+                        @php
+                            $locale = '--';
+                        @endphp
                         <div class="form-group">
                             <label class="required separated" for="{{ localeInputId('inputTitle', $locale) }}">{{ trans('label.title') }}</label>
                             <input class="form-control slug-from" id="{{ localeInputId('inputTitle', $locale) }}"

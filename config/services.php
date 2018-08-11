@@ -33,6 +33,7 @@ return [
         'model' => Katniss\Everdeen\Models\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
+        'version' => env('STRIPE_VERSION'),
     ],
 
     'facebook' => [
@@ -61,5 +62,10 @@ return [
 
     'google_maps' => [
         'api_key' => env('GOOGLE_MAPS_API_KEY'),
-    ]
+    ],
+
+    'google_re_captcha' => [
+        'url' => env('GOOGLE_RE_CAPTCHA_URL'),
+        'secret' => env('GOOGLE_RE_CAPTCHA_SECRET'),
+    ],
 ];

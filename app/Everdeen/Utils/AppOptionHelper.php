@@ -23,9 +23,11 @@ class AppOptionHelper
         return self::$appOptions != null;
     }
 
-    public static function load()
+    public static function load($force = false)
     {
-        self::$appOptions = AppOption::all();
+        if ($force || self::$appOptions == null) {
+            self::$appOptions = AppOption::all();
+        }
         return self::$appOptions;
     }
 

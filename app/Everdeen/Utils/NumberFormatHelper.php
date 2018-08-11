@@ -43,13 +43,20 @@ class NumberFormatHelper
      */
     private $currencyCode;
 
-    private function __construct()
+    public function __construct($settings = null)
     {
-        $settings = settings();
+        if ($settings == null) {
+            $settings = settings();
+        }
         $this->type = $settings->getNumberFormat();
         $this->currencyCode = $settings->getCurrency();
 
         $this->modeNormal();
+    }
+
+    public function setType($value)
+    {
+        $this->type = $value;
     }
 
     public function modeInt()
@@ -85,7 +92,7 @@ class NumberFormatHelper
         if ($noSign) {
             return $this->format($number);
         }
-        return $this->format($number) . ' ' . $this->currencyCode;
+        return $this->format($number) . ' ' . $originalCurrencyCode;
     }
 
     /**
@@ -107,6 +114,14 @@ class NumberFormatHelper
             default:
                 return $number;
         }
+    }
+
+    public function formatInt($number)
+    {
+        $this->modeInt();
+        $number = $this->format($number);
+        $this->modeNormal();
+        return $number;
     }
 
     /**

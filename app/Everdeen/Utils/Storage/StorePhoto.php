@@ -23,9 +23,14 @@ class StorePhoto extends StoreFile
      */
     public function __construct($sourceFile)
     {
-        parent::__construct($sourceFile, '_photos', 'img');
+        parent::__construct($sourceFile, 'img');
 
-        $this->image = ImageManagerStatic::make($this->targetFileInfo->getRealPath());
+        $this->prepare();
+    }
+
+    public function prepare()
+    {
+        $this->image = ImageManagerStatic::make($this->fileInfo->getRealPath());
     }
 
     /**
@@ -66,21 +71,56 @@ class StorePhoto extends StoreFile
         $this->image->rotate($angle, $bgColor);
     }
 
-    public function save($quality = null)
+    public function save($quality = null, $path = null)
     {
-        $this->image->save(null, $quality);
+        $this->image->save($path, $quality);
+        $this->prepare();
     }
 
-    public function duplicate($targetDirectory, $name = null, $autoExtension = true)
+    public function move($targetDirectory, $name = null)
     {
-        $targetFileInfo = clone $this->targetFileInfo;
-        $image = clone $this->image;
-        $this->targetFileInfo = $this->copy($targetDirectory, $name);
-        $this->image = ImageManagerStatic::make($this->targetFileInfo->getRealPath());
+        parent::move($targetDirectory, $name);
+        $this->prepare();
+    }
 
-        $clonedStore = clone $this;
-        $this->targetFileInfo = $targetFileInfo;
-        $this->image = $image;
+    public function moveRelative($targetDirectory, $name = null)
+    {
+        parent::moveRelative($targetDirectory, $name);
+        $this->prepare();
+    }
+
+    public function copy($targetDirectory, $name = null)
+    {
+        parent::copy($targetDirectory, $name);
+        $this->prepare();
+    }
+
+    public function copyRelative($targetDirectory, $name = null)
+    {
+        parent::copyRelative($targetDirectory, $name);
+        $this->prepare();
+    }
+
+    public function duplicate($targetDirectory, $name = null)
+    {
+        $clonedStore = parent::duplicate($targetDirectory, $name = null);
+        $clonedStore->image = ImageManagerStatic::make($clonedStore->fileInfo->getRealPath());
         return $clonedStore;
+    }
+
+    public function duplicateRelative($targetDirectory, $name = null)
+    {
+        $clonedStore = parent::duplicateRelative($targetDirectory, $name = null);
+        $clonedStore->image = ImageManagerStatic::make($clonedStore->fileInfo->getRealPath());
+        return $clonedStore;
+    }
+
+    public function createThumbnail($width, $height, $separator1 = '_', $separator2 = 'x')
+    {
+        $thumbnailStoreFile = $this->duplicate($this->fileInfo->getPath(),
+            $this->fileInfo->getFilename() . $separator1 . $width . $separator2 . $height . $this->fileInfo->getExtension());
+        $thumbnailStoreFile->resize($width, $height);
+        $thumbnailStoreFile->save();
+        return $thumbnailStoreFile;
     }
 }

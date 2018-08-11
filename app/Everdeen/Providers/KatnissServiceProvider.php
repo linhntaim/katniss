@@ -38,6 +38,18 @@ class KatnissServiceProvider extends ServiceProvider
         validator()->extend('wizard', function ($attribute, $value, $parameters) {
             return isValidWizardKey($value, $parameters[0]);
         });
+        validator()->extend('extensions', function ($attribute, $value, $parameters) {
+            if (!($value instanceof UploadedFile)) {
+                return false;
+            }
+            return in_array($value->getClientOriginalExtension(), $parameters);
+        });
+        validator()->extend('decimal', function ($attribute, $value, $parameters) {
+            $fractional = intval($parameters[1]);
+            $integer = intval($parameters[0]) - $fractional;
+            return preg_match('/^\d{0,' . $integer . '}(\.\d{0,' . $fractional . '}){0,1}$/', $value) === 1;
+        });
+        validator()->extend('re_captcha', 'Katniss\Everdeen\Validators\GoogleReCaptcha@validate');
 
         if (!defined('ELFINDER_IMG_PARENT_URL')) {
             define('ELFINDER_IMG_PARENT_URL', libraryAsset('elfinder'));
@@ -50,6 +62,9 @@ class KatnissServiceProvider extends ServiceProvider
         if (!defined('KATNISS_DEFAULT_APP')) {
             define('KATNISS_DEFAULT_APP', 1);
         }
+
+        DateTimeHelper::syncNow(true);
+        StoreFile::init();
     }
 
     /**
@@ -63,6 +78,10 @@ class KatnissServiceProvider extends ServiceProvider
 
         $this->app->singleton('db.factory', function ($app) {
             return new ConnectionFactory($app);
+        });
+
+        $this->app->singleton(\Illuminate\Notifications\ChannelManager::class, function ($app) {
+            return new ChannelManager($app);
         });
 
         $this->app->singleton('Laravel\Socialite\Contracts\Factory', function ($app) {

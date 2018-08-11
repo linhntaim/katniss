@@ -12,15 +12,15 @@ class UploadController extends WebApiController
     {
         try {
             $defaultSize = 1000; // pixels
-            $store = new StorePhoto($request->file('image_file')->getRealPath());
-            $store->resize($defaultSize, $defaultSize);
-            $store->save();
-            $store->move(uploadPath());
+            $storePhoto = new StorePhoto($request->file('image_file')->getRealPath());
+            $storePhoto->resize($defaultSize, $defaultSize);
+            $storePhoto->save();
+            $storePhoto->moveToCollection();
             return response()->json([
                 'files' => [
                     [
-                        'url' => asset(urlSeparator($store->getTargetFileRelativePath())),
-                    ]
+                        'url' => $storePhoto->getUrl(),
+                    ],
                 ],
             ]);
         } catch (\Exception $ex) {

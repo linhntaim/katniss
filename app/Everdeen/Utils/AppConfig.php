@@ -21,6 +21,7 @@ class AppConfig
     const KEY_LOCALE_INPUT = 'x_locale';
     const KEY_CALLBACK_REDIRECT_URL = 'x_callback_redirect_uri';
     const KEY_EXTRA_ROUTE = 'x_route';
+    const KEY_PASSPORT_TOKEN = 'x_passport_token';
 
     const REGEX_YOUTUBE_URL = '/^(http:\/\/|https:\/\/|\/\/)(www.|m.|)(youtube.com\/watch\?v=|youtube.com\/embed\/|youtu.be\/)(.+)$/';
     const REGEX_VIMEO_URL = '/^(http:\/\/|https:\/\/|\/\/)(vimeo.com\/|player.vimeo.com\/video\/)([0-9]+).*$/';
@@ -28,6 +29,15 @@ class AppConfig
 
     const DEFAULT_HTML_CLEAN_SETTING = 'typical';
     const DEFAULT_ITEMS_PER_PAGE = 10;
+    const SMALL_ITEMS_PER_PAGE = 20;
+    const MEDIUM_ITEMS_PER_PAGE = 50;
+    const LARGE_ITEMS_PER_PAGE = 100;
+    const HUGE_ITEMS_PER_PAGE = 1000;
+    const ALLOWED_ITEMS_PER_PAGE = [10, 20, 50, 100];
+
+    const FETCH_QUERY = 0;
+    const FETCH_PAGING_YES = 1;
+    const FETCH_PAGING_NO = 2;
 
     const TITLE_SHORTEN_TEXT_LENGTH = 25;
     const TINY_SHORTEN_TEXT_LENGTH = 75;
@@ -42,4 +52,6 @@ class AppConfig
 
     const DEFAULT_PAGINATION_ITEMS = 5;
     const ON_PHONE_PAGINATION_ITEMS = 4;
+
+    const RATING_MAX_VALUE = 5;
 }

@@ -8,14 +8,28 @@
 
 namespace Katniss\Everdeen\Utils\Storage;
 
+use Illuminate\Http\UploadedFile;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\File;
 
 class StoreFile implements IStoreFile
 {
-    private $storePath;
+    private static $fileSizeType = ['byte', 'bytes', 'KB', 'MB', 'GB'];
+
+    protected static $fileUrl;
+    protected static $filePath;
+    protected static $collectionPath;
+    protected static $tmpPath;
+    protected static $userFolderPrefix;
+
+    public static function init()
+    {
+        self::$fileUrl = _k('file_url');
+        self::$filePath = _k('file_path');
+        self::$collectionPath = self::toRealPath('collection');
+        self::$tmpPath = self::toRealPath('collection/tmp');
+        self::$userFolderPrefix = 'user_';
+    }
 
     /**
      * @var string
@@ -23,50 +37,19 @@ class StoreFile implements IStoreFile
     protected $prefix;
 
     /**
-     * @var string
-     */
-    protected $targetPath;
-
-    /**
      * @var File
      */
-    protected $sourceFileInfo;
-
-    /**
-     * @var File
-     */
-    protected $targetFileInfo;
+    protected $fileInfo;
 
     /**
      * StoreFile constructor.
      * @param \SplFileInfo|string $sourceFile
-     * @param string $targetDirectory
+     * @param string $prefix
      */
-    public function __construct($sourceFile, $targetDirectory = '', $prefix = 'file')
+    public function __construct($sourceFile, $prefix = 'file')
     {
-        $this->storePath = dirSeparator(storage_path('app/_store'));
+        $this->fileInfo = $this->checkSourceFile($sourceFile);
         $this->prefix = $prefix;
-
-        $this->sourceFileInfo = $this->checkSourceFile($sourceFile);
-
-        $this->checkTargetDirectory($targetDirectory);
-        $this->targetPath = concatDirectories($this->storePath, $targetDirectory);
-
-        $this->targetFileInfo = $this->sourceFileInfo->move($this->targetPath, $this->generateTargetBaseName());
-    }
-
-    public function getTargetFileRealPath()
-    {
-        return $this->targetFileInfo->getRealPath();
-    }
-
-    public function getTargetFileRelativePath()
-    {
-        $realPath = $this->getTargetFileRealPath();
-        if (Str::startsWith($realPath, public_path())) {
-            return str_replace(public_path() . DIRECTORY_SEPARATOR, '', $realPath);
-        }
-        return str_replace($this->storePath . DIRECTORY_SEPARATOR, '', $realPath);
     }
 
     /**
@@ -90,107 +73,261 @@ class StoreFile implements IStoreFile
         return new File($sourceFile->getRealPath());
     }
 
-    private function checkTargetDirectory($targetDirectory)
+    protected function autoFilename()
     {
-        if (containBackDirectory($targetDirectory)
-            || (!is_dir(concatDirectories($this->storePath, $targetDirectory))
-                && !mkdir(concatDirectories($this->storePath, $targetDirectory), 0777, true))
-        ) {
-            throw new KatnissException(trans('error.directory_not_found'));
+        $extension = $this->fileInfo->guessExtension();
+        if (empty($extension)) {
+            $extension = $this->fileInfo->getExtension();
         }
+        return self::randomizeFilename($this->prefix, $extension);
     }
 
-    protected function getPrefix()
+    public function moveRelative($targetDirectory, $name = null)
     {
-        return $this->prefix;
+        $this->move(self::toRealPath($targetDirectory), $name);
     }
 
-    protected function generateTargetBaseName()
+    public function move($targetDirectory, $name = null)
     {
-        return randomizeFilename($this->getPrefix(), $this->sourceFileInfo->guessExtension());
-    }
+        self::checkDirectory($targetDirectory);
 
-    protected function tmpFilename($name = null, $autoExtension = true)
-    {
-        if (!empty($name)) {
-            if ($autoExtension) {
-                $name .= '.' . $this->targetFileInfo->getExtension();
-            }
-        } else {
-            $name = null;
+        if (empty($name)) {
+            $name = $this->autoFilename();
         }
-        return $name;
+
+        $this->fileInfo = $this->fileInfo->move($targetDirectory, $name);
     }
 
-    protected function fileGetTarget($directory, $name = null)
+    public function copyRelative($targetDirectory, $name = null)
     {
+        $this->copy(self::toRealPath($targetDirectory), $name);
+    }
+
+    public function copy($targetDirectory, $name = null)
+    {
+        self::checkDirectory($targetDirectory);
+
+        if (empty($name)) {
+            $name = $this->autoFilename();
+        }
+
+        $this->fileInfo = $this->fileInfo->copy($targetDirectory, $name);
+    }
+
+    public function duplicateRelative($targetDirectory, $name = null)
+    {
+        return $this->duplicate(self::toRealPath($targetDirectory), $name);
+    }
+
+    public function duplicate($targetDirectory, $name = null)
+    {
+        self::checkDirectory($targetDirectory);
+
+        if (empty($name)) {
+            $name = $this->autoFilename();
+        }
+
+        $targetFileInfo = $this->fileInfo->copy($targetDirectory, $name);
+
+        $clonedStoreFile = clone $this;
+        $clonedStoreFile->fileInfo = $targetFileInfo;
+
+        return $clonedStoreFile;
+    }
+
+    public function moveToTmp()
+    {
+        $this->move(self::$tmpPath);
+    }
+
+    public function moveToCollection($time = 'now', $name = null)
+    {
+        $this->move(self::collectionPath($time), $name);
+    }
+
+    public function moveToUser($userId, $relativePath = '')
+    {
+        $this->move(self::userPath($userId, $relativePath));
+    }
+
+    public function getUrl()
+    {
+        return self::toUrl($this->getRelativePath());
+    }
+
+    public function getRelativePath()
+    {
+        return self::toRelativePath($this->fileInfo->getRealPath());
+    }
+
+    public function getRealPath()
+    {
+        return $this->fileInfo->getRealPath();
+    }
+
+    public function getFileInfo()
+    {
+        return $this->fileInfo;
+    }
+
+    #region Static
+    public static function checkDirectory($directory)
+    {
+        if (self::containBackDirectory($directory)) {
+            throw new KatnissException(trans('error.directory_not_allowed') . ' (' . $directory . ')');
+        }
         if (!is_dir($directory)) {
             if (false === @mkdir($directory, 0777, true) && !is_dir($directory)) {
-                throw new FileException(sprintf('Unable to create the "%s" directory', $directory));
+                throw new KatnissException(trans('error.directory_not_found') . ' (' . $directory . ')');
             }
-        } elseif (!is_writable($directory)) {
-            throw new FileException(sprintf('Unable to write in the "%s" directory', $directory));
+        }
+        if (!is_writable($directory)) {
+            throw new KatnissException(trans('error.directory_not_writable') . ' (' . $directory . ')');
+        }
+    }
+
+    public static function randomizeFilename($prefix = null, $extension = null, $needTime = true, $needUnique = true, $moreUnique = true)
+    {
+        return Str::format('{0}{1}{2}{3}',
+            empty($prefix) ? '' : $prefix . '_',
+            $needTime ? time() . '_' : '',
+            $needUnique ? uniqid('', $moreUnique) : '',
+            empty($extension) ? '' : '.' . $extension
+        );
+    }
+
+    public static function urlSeparator($path)
+    {
+        return str_replace('\\', '/', $path);
+    }
+
+    public static function dirSeparator($path)
+    {
+        return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+    }
+
+    public static function containBackDirectory($path)
+    {
+        return Str::startsWith('..\\', $path)
+            || Str::contains('\\..\\', $path)
+            || Str::startsWith('../', $path)
+            || Str::contains('/../', $path);
+    }
+
+    public static function concatDirectories()
+    {
+        $args = func_get_args();
+        return implode(DIRECTORY_SEPARATOR, $args);
+    }
+
+    public static function concatUrl()
+    {
+        $args = func_get_args();
+        return implode('/', $args);
+    }
+
+    public static function delete($url)
+    {
+        $file = self::concatDirectories(_k('file_path'), str_replace(_k('file_url'), '', $url));
+        if (file_exists($file)) {
+            return @unlink($file);
         }
 
-        $target = rtrim($directory, '/\\') . DIRECTORY_SEPARATOR . (null === $name ? $this->targetFileInfo->getBasename() : $this->fileGetName($name));
+        return false;
+    }
 
-        return new File($target, false);
+    public static function collectionPath($time = 'now')
+    {
+        $date = new \DateTime($time, new \DateTimeZone('UTC'));
+        return self::concatDirectories(self::$collectionPath, $date->format('Y'), $date->format('m'), $date->format('d'));
+    }
+
+    public static function userFolder($userId)
+    {
+        return self::$userFolderPrefix . $userId;
+    }
+
+    public static function userPath($userId, $relativePath = '')
+    {
+        if (empty($relativePath)) {
+            return self::toRealPath(self::userFolder($userId));
+        }
+        return self::toRealPath(self::userFolder($userId) . DIRECTORY_SEPARATOR . $relativePath);
+    }
+
+    public static function toRealPath($relativePath = '')
+    {
+        if (empty($relativePath)) return self::$filePath;
+        return self::concatDirectories(self::$filePath, $relativePath);
+    }
+
+    public static function toRelativePath($realPath)
+    {
+        return trim(str_replace(self::$filePath, '', $realPath), DIRECTORY_SEPARATOR);
+    }
+
+    public static function fileExistsRelative($relativePath)
+    {
+        return file_exists(self::toRealPath($relativePath));
+    }
+
+    public static function toUrl($relativePath)
+    {
+        return self::urlSeparator(self::concatDirectories(self::$fileUrl, $relativePath));
+    }
+
+    public static function toUrlFromRealPath($realPath)
+    {
+        return self::toUrl(self::toRelativePath($realPath));
     }
 
     /**
-     * Returns locale independent base name of the given path.
+     * Returns the maximum size of an uploaded file as configured in php.ini.
      *
-     * @param string $name The new file name
-     *
-     * @return string containing
+     * @return int The maximum size of an uploaded file in bytes
      */
-    protected function fileGetName($name)
+    public static function maxUploadFileSize()
     {
-        $originalName = str_replace('\\', '/', $name);
-        $pos = strrpos($originalName, '/');
-        $originalName = false === $pos ? $originalName : substr($originalName, $pos + 1);
-
-        return $originalName;
-    }
-
-    public function move($targetDirectory, $name = null, $autoExtension = true)
-    {
-        $name = $this->tmpFilename($name, $autoExtension);
-
-        $targetFileInfo = $this->targetFileInfo->move($targetDirectory, $name);
-        @unlink($this->targetFileInfo->getRealPath());
-        $this->targetFileInfo = $targetFileInfo;
-    }
-
-    public function copy($targetDirectory, $name = null, $autoExtension = true)
-    {
-        $name = $this->tmpFilename($name, $autoExtension);
-
-        $target = $this->fileGetTarget($targetDirectory, $name);
-
-        if (!@copy($this->targetFileInfo->getPathname(), $target)) {
-            $error = error_get_last();
-            throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $this->targetFileInfo->getPathname(), $target, strip_tags($error['message'])));
-        }
-
-        @chmod($target, 0666 & ~umask());
-
-        return $target;
+        return UploadedFile::getMaxFilesize();
     }
 
     /**
-     * @param string $targetDirectory
-     * @param string|null $name
-     * @param bool $autoExtension
-     * @return IStoreFile
+     * @param int $fileSize File size in bytes
+     * @return string
      */
-    public function duplicate($targetDirectory, $name = null, $autoExtension = true)
+    public static function asByte($fileSize)
     {
-        $targetFileInfo = clone $this->targetFileInfo;
-        $this->targetFileInfo = $this->copy($targetDirectory, $name);
-
-        $cloneStore = clone $this;
-        $this->targetFileInfo = $targetFileInfo;
-        return $cloneStore;
+        return $fileSize . ' byte' . ($fileSize > 1 ? 's' : '');
     }
+
+    /**
+     * @param int $fileSize File size in bytes
+     * @return string
+     */
+    public static function asKb($fileSize)
+    {
+        return round($fileSize / 1024) . 'KB';
+    }
+
+    /**
+     * @param int $fileSize File size in bytes
+     * @return string
+     */
+    public static function asMb($fileSize)
+    {
+        return round($fileSize / 1024 / 1024) . 'MB';
+    }
+
+    public static function asSize($fileSize, $typeIndex = 1)
+    {
+        if ($fileSize > 1024) {
+            return self::asSize($fileSize / 1024, ++$typeIndex);
+        }
+
+        if ($typeIndex == 1 && $fileSize <= 1) {
+            $typeIndex = 0;
+        }
+        return toFormattedNumber($fileSize) . ' ' . self::$fileSizeType[$typeIndex];
+    }
+    #endregion
 }

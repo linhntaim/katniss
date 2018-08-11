@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Utils\DataStructure\Pagination;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Katniss\Everdeen\Utils\AppConfig;
 
 class Pagination
@@ -22,14 +23,17 @@ class Pagination
     public $atFirst;
     public $atLast;
     public $startOrder;
+    public $totalItems;
+    public $itemsPerPage;
 
-    public function __construct($pagedCollection, $maxPageShow = AppConfig::DEFAULT_PAGINATION_ITEMS)
+    public function __construct(LengthAwarePaginator $pagedCollection, $maxPageShow = AppConfig::DEFAULT_PAGINATION_ITEMS)
     {
         $current = $pagedCollection->currentPage();
         $last = $pagedCollection->lastPage();
-        $itemsPerPage = $pagedCollection->perPage();
+        $this->itemsPerPage = intval($pagedCollection->perPage());
+        $this->totalItems = $pagedCollection->total();
 
-        $this->startOrder = ($current - 1) * $itemsPerPage;
+        $this->startOrder = ($current - 1) * $this->itemsPerPage;
         $pivot = round($maxPageShow / 2);
         $distance = floor($maxPageShow / 2);
         $this->last = $last;
@@ -60,7 +64,10 @@ class Pagination
             'range' => [
                 'start' => $this->start,
                 'end' => $this->end,
-            ]
+            ],
+            'total_items' => $this->totalItems,
+            'formatted_total_items' => toFormattedInt($this->totalItems),
+            'items_per_page' => $this->itemsPerPage,
         ];
     }
 }

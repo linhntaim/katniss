@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Utils\Storage;
 
 interface IStoreFile
 {
-    public function move($targetDirectory, $name = null, $autoExtension = true);
-    public function copy($targetDirectory, $name = null, $autoExtension = true);
-    public function duplicate($targetDirectory, $name = null, $autoExtension = true);
+    public function move($targetDirectory, $name = null);
+    public function copy($targetDirectory, $name = null);
+    public function duplicate($targetDirectory, $name = null);
 }

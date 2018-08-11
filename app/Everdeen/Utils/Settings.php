@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Utils;
 
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
-use Illuminate\Session\Store;
+use Katniss\Everdeen\Models\User;
 
 class Settings
 {
@@ -213,12 +213,24 @@ class Settings
         return $this->changingDataStore;
     }
 
-    public function fromUser()
+    /**
+     * @param integer|User|null $user
+     * @return bool
+     */
+    public function fromUser($user = null)
     {
         $this->isApi = false;
 
-        if (isAuth()) {
-            $userSettings = authUser()->settings;
+        $parsedUser = null;
+
+        if (!empty($user)) {
+            $parsedUser = $user instanceof User ? $user : User::find($user);
+        } elseif (isAuth()) {
+            $parsedUser = authUser();
+        }
+
+        if ($parsedUser) {
+            $userSettings = $parsedUser->settings;
             $this->setLocale($userSettings->locale);
             $this->setCountry($userSettings->country);
             $this->setTimezone($userSettings->timezone);

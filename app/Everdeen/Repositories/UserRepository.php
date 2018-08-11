@@ -9,15 +9,15 @@
 namespace Katniss\Everdeen\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Events\PasswordChanged;
+use Katniss\Everdeen\Events\UserCreated;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Models\Role;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Models\UserSetting;
 use Katniss\Everdeen\Models\UserSocial;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\MailHelper;
+use Katniss\Everdeen\Utils\Mailing\Mailable;
 use Katniss\Everdeen\Utils\Storage\StorePhotoByCropperJs;
 
 class UserRepository extends ModelRepository
@@ -131,9 +131,9 @@ class UserRepository extends ModelRepository
             if ($sendWelcomeMail) {
                 event(new UserCreated($user, $password, !empty($social),
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        Mailable::EMAIL_SUBJECT => trans('label.welcome_to_') . appName(),
+                        Mailable::EMAIL_TO => $email,
+                        Mailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -175,10 +175,10 @@ class UserRepository extends ModelRepository
             if ($passwordChanged) {
                 event(new PasswordChanged($user, $password,
                     array_merge(request()->getTheme()->viewParams(), [
-                        MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                        Mailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                             trans('form.action_change') . ' ' . trans('label.password'),
-                        MailHelper::EMAIL_TO => $email,
-                        MailHelper::EMAIL_TO_NAME => $displayName,
+                        Mailable::EMAIL_TO => $email,
+                        Mailable::EMAIL_TO_NAME => $displayName,
                     ])
                 ));
             }
@@ -200,10 +200,10 @@ class UserRepository extends ModelRepository
             $user->save();
             event(new PasswordChanged($user, $password,
                 array_merge(request()->getTheme()->viewParams(), [
-                    MailHelper::EMAIL_SUBJECT => '[' . appName() . '] ' .
+                    Mailable::EMAIL_SUBJECT => '[' . appName() . '] ' .
                         trans('form.action_change') . ' ' . trans('label.password'),
-                    MailHelper::EMAIL_TO => $user->email,
-                    MailHelper::EMAIL_TO_NAME => $user->display_name,
+                    Mailable::EMAIL_TO => $user->email,
+                    Mailable::EMAIL_TO_NAME => $user->display_name,
                 ])
             ));
 
@@ -223,14 +223,13 @@ class UserRepository extends ModelRepository
         $urlAvatarThumb = null;
 
         try {
-            $storePhoto = new StorePhotoByCropperJs($imageRealPath, $imageCropData);
-            $storePhoto->move(userPublicPath($user->profilePictureDirectory), randomizeFilename());
-            $urlAvatar = publicUrl($storePhoto->getTargetFileRealPath());
+            $storePhoto = new StorePhotoByCropperJs($imageRealPath);
+            $storePhoto->process($imageCropData);
+            $storePhoto->moveToUser($user->id, $user->profilePictureDirectory);
+            $urlAvatar = $storePhoto->getUrl();
 
-            $storePhoto = $storePhoto->duplicate(userPublicPath($user->profilePictureDirectory), randomizeFilename('thumb'));
-            $storePhoto->resize(User::AVATAR_THUMB_WIDTH, User::AVATAR_THUMB_HEIGHT);
-            $storePhoto->save();
-            $urlAvatarThumb = publicUrl($storePhoto->getTargetFileRealPath());
+            $storePhoto = $storePhoto->createThumbnail(User::AVATAR_THUMB_WIDTH, User::AVATAR_THUMB_HEIGHT);
+            $urlAvatarThumb = $storePhoto->getUrl();
         } catch (\Exception $ex) {
             throw new KatnissException(trans('error.application') . ' (' . $ex->getMessage() . ')');
         }

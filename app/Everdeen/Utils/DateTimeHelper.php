@@ -9,6 +9,10 @@
 namespace Katniss\Everdeen\Utils;
 
 
+use Carbon\Carbon;
+use Katniss\Everdeen\Exceptions\KatnissException;
+use Katniss\Everdeen\Models\User;
+
 class DateTimeHelper
 {
     const LONG_DATE_FUNCTION = 'longDate';
@@ -16,7 +20,17 @@ class DateTimeHelper
     const LONG_TIME_FUNCTION = 'longTime';
     const SHORT_TIME_FUNCTION = 'shortTime';
 
+    const DATABASE_FORMAT = 'Y-m-d H:i:s';
+    const WEEKS_PER_YEAR = 52;
+
+    const DAY_TYPE_NONE = 0;
+    const DAY_TYPE_START = -1;
+    const DAY_TYPE_END = 1;
+    const DAY_TYPE_NEXT_START = 2;
+
     private static $instance;
+
+    private static $now;
 
     /**
      * @return DateTimeHelper
@@ -30,6 +44,33 @@ class DateTimeHelper
         return self::$instance;
     }
 
+    public static function syncNow($reset = false)
+    {
+        if ($reset) {
+            self::$now = new \DateTime();
+        }
+        return self::$now->format(self::DATABASE_FORMAT);
+    }
+
+    public static function syncNowObject($reset = false)
+    {
+        if ($reset) {
+            self::$now = new \DateTime();
+        }
+        return self::$now;
+    }
+
+    /**
+     * @param integer|User $user
+     * @return DateTimeHelper
+     */
+    public static function fromUser($user)
+    {
+        $settings = new Settings();
+        $settings->fromUser($user);
+        return new DateTimeHelper($settings);
+    }
+
     private $transLongDate;
     private $transShortDate;
     private $transShortMonth;
@@ -37,13 +78,17 @@ class DateTimeHelper
     private $transShortTime;
 
     /**
+     * Seconds
+     *
      * @var float|int
      */
     private $dateTimeOffset;
 
-    private function __construct()
+    public function __construct($settings = null)
     {
-        $settings = settings();
+        if ($settings == null) {
+            $settings = settings();
+        }
 
         $this->transLongDate = 'datetime.long_date_' . $settings->getLongDateFormat();
         $this->transShortDate = 'datetime.short_date_' . $settings->getShortDateFormat();
@@ -51,73 +96,108 @@ class DateTimeHelper
         $this->transLongTime = 'datetime.long_time_' . $settings->getLongTimeFormat();
         $this->transShortTime = 'datetime.short_time_' . $settings->getShortTimeFormat();
 
-        $timeZone = $settings->getTimezone();
-        if (empty($timeZone)) {
-            $this->dateTimeOffset = 0;
-            return;
-        }
-        if ($timeZone != 'UTC' && strpos($timeZone, 'UTC') === 0) {
-            $this->dateTimeOffset = floatval(str_replace('UTC', '', $timeZone)) * 3600;
-        } else {
-            $currentTimeZone = new \DateTimeZone($timeZone);
-            $this->dateTimeOffset = $currentTimeZone->getOffset(new \DateTime('now', new \DateTimeZone('UTC')));
-        }
+        $this->dateTimeOffset = self::parseDateTimeOffsetByTimezone($settings->getTimezone());
+    }
+
+    public function setTransLongDate($value)
+    {
+        $this->transLongDate = 'datetime.long_date_' . $value;
+    }
+
+    public function setTransShortDate($value)
+    {
+        $this->transShortDate = 'datetime.short_date_' . $value;
+    }
+
+    public function setTransLongTime($value)
+    {
+        $this->transLongTime = 'datetime.long_time_' . $value;
+    }
+
+    public function setTransShortTime($value)
+    {
+        $this->transShortTime = 'datetime.short_time_' . $value;
     }
 
     /**
-     * @return float|int
+     * @return int
      */
     public function getDateTimeOffset()
     {
         return $this->dateTimeOffset;
     }
 
-    /**
-     * @param $format
-     * @param $inputString
-     * @return \DateTime|bool
-     */
-    public function fromFormat($format, $inputString, $no_offset = false, &$diffDay = 0)
+    public function getTimeZoneOffset()
     {
-        $now = \DateTime::createFromFormat($format, $inputString);
-        if ($now === false) return false;
-        if (!$no_offset) {
+        $offset = round($this->getDateTimeOffset() / 3600, 2);
+        $offset = $offset >= 0 ? '+' . $offset : '' . $offset;
+        return 'UTC' . str_replace(['.25', '.50', '.75'], [':15', ':30', ':45'], $offset);
+    }
+
+    #region From Local Time to UTC
+    public function from(\DateTime $time, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
+    {
+        if (!$noOffset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
-                $day = $now->format('d');
-                $now->sub(new \DateInterval('PT' . $offset . 'S'));
-                if ($now->format('d') != $day) $diffDay = -1;
+                $day = $time->format('d');
+                $time->sub(new \DateInterval('PT' . $offset . 'S'));
+                if ($time->format('d') != $day) $diffDay = -1;
             } elseif ($offset < 0) {
-                $day = $now->format('d');
-                $now->add(new \DateInterval('PT' . abs($offset) . 'S'));
-                if ($now->format('d') != $day) $diffDay = 1;
+                $day = $time->format('d');
+                $time->add(new \DateInterval('PT' . abs($offset) . 'S'));
+                if ($time->format('d') != $day) $diffDay = 1;
             }
         }
-        return $now;
+        return self::applyStartType($time, $start);
     }
 
-    public function convertToDatabaseFormat($currentFormat, $inputString, $no_offset = false, &$diffDay = 0)
+    public function fromFormat($format, $inputString, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
     {
-        $now = $this->fromFormat($currentFormat, $inputString, $no_offset, $diffDay);
-        return $now !== false ? $now->format('Y-m-d H:i:s') : false;
+        return $this->from(\DateTime::createFromFormat($format, $inputString, new \DateTimeZone('UTC')), $noOffset, $diffDay, $start);
     }
 
-    public function convertToCustomDatabaseFormat($currentFormat, $inputString, $toFormat = null, $no_offset = false, &$diffDay = 0)
+    public function fromFormatToFormat($currentFormat, $inputString, $toFormat = null, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
     {
         if (empty($toFormat)) $toFormat = $currentFormat;
-        $now = $this->fromFormat($currentFormat, $inputString, $no_offset, $diffDay);
+        $now = $this->fromFormat($currentFormat, $inputString, $noOffset, $diffDay, $start);
         return $now !== false ? $now->format($toFormat) : false;
     }
 
-    /**
-     * @param string $format
-     * @param string $time
-     * @return string
-     */
-    public function format($format, $time = 'now', $start = 0, $no_offset = false, &$diffDay = 0)
+    public function fromFormatToDatabaseFormat($currentFormat, $inputString, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
+    {
+        return $this->fromFormatToFormat($currentFormat, $inputString, self::DATABASE_FORMAT, $noOffset, $diffDay, $start);
+    }
+
+    public function fromToFormat(\DateTime $time, $toFormat, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
+    {
+        return $this->from($time, $noOffset, $diffDay, $start)
+            ->format($toFormat);
+    }
+
+    public function fromToDatabaseFormat(\DateTime $time, $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
+    {
+        return $this->from($time, $noOffset, $diffDay, $start)
+            ->format(self::DATABASE_FORMAT);
+    }
+
+    public function convertToUTC(\DateTime $time)
+    {
+        $offset = $this->getDateTimeOffset();
+        if ($offset > 0) {
+            $time->sub(new \DateInterval('PT' . $offset . 'S'));
+        } elseif ($offset < 0) {
+            $time->add(new \DateInterval('PT' . abs($offset) . 'S'));
+        }
+        return $time;
+    }
+    #endregion
+
+    #region From UTC to Local Time
+    public function getObject($time = 'now', $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
     {
         $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
-        if (!$no_offset) {
+        if (!$noOffset) {
             $offset = $this->getDateTimeOffset();
             if ($offset > 0) {
                 $day = $now->format('d');
@@ -129,29 +209,12 @@ class DateTimeHelper
                 if ($now->format('d') != $day) $diffDay = -1;
             }
         }
-        if ($start == 1) {
-            $now->setTime(23, 59, 59);
-        } elseif ($start == -1) {
-            $now->setTime(0, 0);
-        }
-        return $now->format($format);
+        return self::applyStartType($now, $start);
     }
 
-    /**
-     * @param string $time
-     * @return array
-     */
-    public function getBags($time = 'now', $no_offset = false)
+    public function getBags($time = 'now', $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
     {
-        $now = $time instanceof \DateTime ? $time : new \DateTime($time, new \DateTimeZone('UTC'));
-        if (!$no_offset) {
-            $offset = $this->getDateTimeOffset();
-            if ($offset > 0) {
-                $now->add(new \DateInterval('PT' . $offset . 'S'));
-            } elseif ($offset < 0) {
-                $now->sub(new \DateInterval('PT' . abs($offset) . 'S'));
-            }
-        }
+        $now = $this->getObject($time, $noOffset, $diffDay, $start);
         return [
             'ld' => $now->format('l'),
             'sd' => $now->format('D'),
@@ -169,6 +232,8 @@ class DateTimeHelper
             '2s' => $now->format('s'),
             'ut' => $now->format('A'),
             'lt' => $now->format('a'),
+            'lw' => self::transPhpDayOfWeek($now->format('w')),
+            'sw' => self::transShortPhpDayOfWeek($now->format('w')),
         ];
     }
 
@@ -176,7 +241,7 @@ class DateTimeHelper
     {
         $allowedFunctions = [self::LONG_DATE_FUNCTION, self::LONG_TIME_FUNCTION, self::SHORT_DATE_FUNCTION, self::SHORT_TIME_FUNCTION];
         if (!in_array($func_1, $allowedFunctions) || !in_array($func_2, $allowedFunctions)) {
-            throw new \Exception('Not allowed methods');
+            throw new KatnissException('Not allowed methods');
         }
 
         return call_user_func(array($this, $func_1), $time, $no_offset)
@@ -188,13 +253,23 @@ class DateTimeHelper
     {
         $allowedFunctions = [self::LONG_DATE_FUNCTION, self::LONG_TIME_FUNCTION, self::SHORT_DATE_FUNCTION, self::SHORT_TIME_FUNCTION];
         if (!in_array($func_1, $allowedFunctions) || !in_array($func_2, $allowedFunctions)) {
-            throw new \Exception('Not allowed methods');
+            throw new KatnissException('Not allowed methods');
         }
         $func_1 .= 'FromBags';
         $func_2 .= 'FromBags';
         return call_user_func(array($this, $func_1), $bags)
             . $separation
             . call_user_func(array($this, $func_2), $bags);
+    }
+
+    public function longDayOfWeek($time = 'now', $no_offset = false)
+    {
+        return $this->getBags($time, $no_offset)['lw'];
+    }
+
+    public function shortDayOfWeek($time = 'now', $no_offset = false)
+    {
+        return $this->getBags($time, $no_offset)['sw'];
     }
 
     public function longDate($time = 'now', $no_offset = false)
@@ -247,15 +322,170 @@ class DateTimeHelper
         return trans($this->transShortTime, $bags);
     }
 
-    public function getCurrentTimeZone()
+    public function format($format, $time = 'now', $noOffset = false, &$diffDay = 0, $start = self::DAY_TYPE_NONE)
     {
-        $offset = round($this->getDateTimeOffset() / 3600, 2);
-        $offset = $offset >= 0 ? '+' . $offset : '' . $offset;
-
-        return 'UTC' . str_replace(array('.25', '.50', '.75'), array(':15', ':30', ':45'), $offset);
+        return $this->getObject($time, $noOffset, $diffDay, $start)
+            ->format($format);
     }
 
+    public function sampleTimeFromSchedule($schedule, $noOffset = false)
+    {
+        $times = explode(':', $schedule->time_from);
+        $from = (new Carbon())->modify('this week')->modify('this ' . DateTimeHelper::transDayOfWeek($schedule->day_of_week_from, 'en'))
+            ->setTime($times[0], $times[1], $times[2]);
+        $times = explode(':', $schedule->time_to);
+        $to = (new Carbon())->modify('this week')->modify('this ' . DateTimeHelper::transDayOfWeek($schedule->day_of_week_to, 'en'))
+            ->setTime($times[0], $times[1], $times[2]);
+        if ($to->lt($from)) {
+            $to->addDays(7);
+        }
+        if (!$noOffset) {
+            if ($this->dateTimeOffset > 0) {
+                $from->addSeconds($this->dateTimeOffset);
+                $to->addSeconds($this->dateTimeOffset);
+            } else {
+                $from->subSeconds($this->dateTimeOffset);
+                $to->subSeconds($this->dateTimeOffset);
+            }
+        }
+        return [
+            'from' => $from,
+            'to' => $to,
+            'duration_in_minutes' => abs($from->diffInMinutes($to)), // minutes
+        ];
+    }
+    #endregion
+
     #region Static Methods
+    public static function parseDateTimeOffsetByTimezone($timeZone)
+    {
+        if (empty($timeZone)) {
+            return 0;
+        }
+        if ($timeZone != 'UTC' && strpos($timeZone, 'UTC') === 0) {
+            return floatval(str_replace('UTC', '', $timeZone)) * 3600;
+        }
+        $currentTimeZone = new \DateTimeZone($timeZone);
+        return $currentTimeZone->getOffset(new \DateTime('now', new \DateTimeZone('UTC')));
+    }
+
+    public static function applyStartType(\DateTime $time, $start = self::DAY_TYPE_NONE)
+    {
+        if ($start == self::DAY_TYPE_NEXT_START) {
+            $time->setTime(0, 0, 0)->add(new \DateInterval('P1D'));
+        } elseif ($start == self::DAY_TYPE_END) {
+            $time->setTime(23, 59, 59);
+        } elseif ($start == self::DAY_TYPE_START) {
+            $time->setTime(0, 0, 0);
+        }
+        return $time;
+    }
+
+    public static function dayOfWeek($phpDayOfWeek)
+    {
+        return $phpDayOfWeek == 0 ? 6 : ($phpDayOfWeek - 1);
+    }
+
+    public static function phpDayOfWeek($dayOfWeek)
+    {
+        return $dayOfWeek == 6 ? 0 : ($dayOfWeek + 1);
+    }
+
+    public static function transDayOfWeek($dayOfWeek, $locale = null)
+    {
+        return trans('datetime.day_' . $dayOfWeek, [], $locale);
+    }
+
+    public static function transPhpDayOfWeek($phpDayOfWeek, $locale = null)
+    {
+        return trans('datetime.day_' . self::dayOfWeek($phpDayOfWeek), [], $locale);
+    }
+
+    public static function transShortDayOfWeek($dayOfWeek, $locale = null)
+    {
+        return trans('datetime.short_day_' . $dayOfWeek, [], $locale);
+    }
+
+    public static function transShortPhpDayOfWeek($phpDayOfWeek, $locale = null)
+    {
+        return trans('datetime.short_day_' . self::dayOfWeek($phpDayOfWeek), [], $locale);
+    }
+
+    /**
+     * Get list timezone
+     * @return array
+     */
+    public static function getTimezoneList()
+    {
+        $zones = array(
+            'Africa' => [],
+            'America' => [],
+            'Antarctica' => [],
+            'Arctic' => [],
+            'Asia' => [],
+            'Atlantic' => [],
+            'Australia' => [],
+            'Europe' => [],
+            'Indian' => [],
+            'Pacific' => []
+        );
+
+        foreach (\DateTimeZone::listIdentifiers() as $zone) {
+            $zonePart = explode('/', $zone);
+            $continent = $zonePart[0];
+            $city = isset($zonePart[1]) ? $zonePart[1] : '';
+            $subCity = isset($zonePart[2]) ? $zonePart[2] : '';
+
+            if (!isset($zones[$continent])) {
+                continue;
+            }
+
+            $zones[$continent][$zone] = str_replace('_', ' ', $city) . (empty($subCity) ? '' : ' - ' . str_replace('_', ' ', $subCity));
+        }
+
+        $structure = array();
+        // UTC
+        $structure['UTC']['UTC'] = 'UTC';
+        // UTC offset
+        $structure[trans('datetime.utc_offsets')] = [];
+        $offset_range = array(-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, -6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5,
+            0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.75, 13, 13.75, 14);
+
+        foreach ($offset_range as $offset) {
+            $offset_value = 0 <= $offset ? '+' . $offset : (string)$offset;
+            $offset_name = str_replace(array('.25', '.5', '.75'), array(':15', ':30', ':45'), $offset_value);
+            $offset_name = 'UTC' . $offset_name;
+            $offset_value = 'UTC' . $offset_value;
+            $structure[trans('datetime.utc_offsets')][$offset_value] = $offset_name;
+        }
+
+        // PHP Timezones
+        foreach ($zones as $continent => $cities) {
+            $structure[$continent] = [];
+
+            foreach ($cities as $zone => $city) {
+                $structure[$continent][$zone] = $city;
+            }
+        }
+
+        return $structure;
+    }
+
+    public static function getTimezoneValues()
+    {
+        $timezoneValues = [];
+        $timezoneValues[] = 'UTC';
+        $offset_range = [-12, -11.5, -11, -10.5, -10, -9.5, -9, -8.5, -8, -7.5, -7, -6.5, -6, -5.5, -5, -4.5, -4, -3.5, -3, -2.5, -2, -1.5, -1, -0.5,
+            0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 5.75, 6, 6.5, 7, 7.5, 8, 8.5, 8.75, 9, 9.5, 10, 10.5, 11, 11.5, 12, 12.75, 13, 13.75, 14];
+        foreach ($offset_range as $offset) {
+            $timezoneValues[] = 'UTC' . (0 <= $offset ? '+' . $offset : (string)$offset);
+        }
+        foreach (\DateTimeZone::listIdentifiers() as $zone) {
+            $timezoneValues[] = $zone;
+        }
+        return $timezoneValues;
+    }
+
     /**
      * @param string $selected_zone
      * @return string
@@ -451,6 +681,29 @@ class DateTimeHelper
         ];
     }
 
+    public static function getAndroidFormatBags()
+    {
+        return [
+            'ld' => 'EEEE',
+            'sd' => 'EEE',
+            '1d' => 'd',
+            '2d' => 'dd',
+            'sm' => 'MMM',
+            'lm' => 'MMMM',
+            '1m' => 'M',
+            '2m' => 'MM',
+            '2y' => 'yy',
+            '4y' => 'yyyy',
+            '1h' => 'h',
+            '1hf' => 'hh',
+            '2h' => 'HH',
+            '2i' => 'mm',
+            '2s' => 'ss',
+            'ut' => 'a',
+            'lt' => 'a',
+        ];
+    }
+
     public static function compoundFormat($func_1, $separation, $func_2)
     {
         return call_user_func(array(self::class, $func_1 . 'Format'))
@@ -473,6 +726,11 @@ class DateTimeHelper
     public static function longDateJsFormat()
     {
         return self::getInstance()->longDateFromBags(self::getMomentJsFormatBags());
+    }
+
+    public static function longDatePickerJsFormat()
+    {
+        return self::getInstance()->longDateFromBags(self::getDatePickerJsFormatBags());
     }
 
     public static function shortDateFormat()
@@ -520,6 +778,26 @@ class DateTimeHelper
         return self::getInstance()->shortTimeFromBags(self::getMomentJsFormatBags());
     }
 
+    public static function shortDateAndroidFormat()
+    {
+        return self::getInstance()->shortDateFromBags(self::getAndroidFormatBags());
+    }
+
+    public static function longDateAndroidFormat()
+    {
+        return self::getInstance()->longDateFromBags(self::getAndroidFormatBags());
+    }
+
+    public static function shortTimeAndroidFormat()
+    {
+        return self::getInstance()->shortTimeFromBags(self::getAndroidFormatBags());
+    }
+
+    public static function longTimeAndroidFormat()
+    {
+        return self::getInstance()->longTimeFromBags(self::getAndroidFormatBags());
+    }
+
     public static function diff($time_from, $time_to = 'now')
     {
         $time_from = new \DateTime($time_from, new \DateTimeZone('UTC'));
@@ -541,6 +819,36 @@ class DateTimeHelper
     public static function diffMonth($time_from, $time_to = 'now')
     {
         return self::diff($time_from, $time_to)->m;
+    }
+
+    public static function diffMinute($time_from, $time_to = 'now')
+    {
+        return self::diff($time_from, $time_to)->i;
+    }
+
+    public static function diffInRealWeeks($timeFrom, $timeTo)
+    {
+        return Carbon::parse($timeTo)->modify('this week')->modify('this Monday')
+            ->diffInWeeks(Carbon::parse($timeFrom)->modify('this week')->modify('this Monday'));
+    }
+
+    public static function full($time = 'now')
+    {
+        return date(self::DATABASE_FORMAT, strtotime($time));
+    }
+
+    public static function fullWithTimeOffset($time = 'now', $offset = 0)
+    {
+        $time = new \DateTime($time);
+        return $time->modify($offset . ' hours')->format(self::DATABASE_FORMAT);
+    }
+
+    public static function diffWeek($time_from, $time_to = 'now')
+    {
+        $time_from = new \DateTime($time_from, new \DateTimeZone('UTC'));
+        $time_to = new \DateTime($time_to, new \DateTimeZone('UTC'));
+        $diff = (($time_to->format('W') - $time_from->format('W')) >= 0) ? ($time_to->format('W') - $time_from->format('W')) : ($time_to->format('W') - $time_from->format('W') + self::WEEKS_PER_YEAR);
+        return $diff;
     }
     #endregion
 }

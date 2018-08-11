@@ -11,7 +11,7 @@ namespace Katniss\Everdeen\Models;
 
 use Dimsav\Translatable\Translatable;
 use Illuminate\Database\Eloquent\Model;
-use Katniss\Everdeen\Utils\DateTimeHelper;
+use Katniss\Everdeen\ModelTraits\ExtendTranslatableTrait;
 
 class Post extends Model
 {
