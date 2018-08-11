@@ -6,6 +6,15 @@
  * Time: 13:52
  */
 return [
+    'level_0' => 'Lỗi Người dùng: :message',
+    'level_1' => 'Lỗi Cơ sở dữ liệu: :message',
+    'level_2' => 'Lỗi Ứng dụng: :message',
+    'level_3' => 'Lỗi: :message',
+    'level_0_failed' => 'Có lỗi xảy ra do thao tác của người dùng',
+    'level_1_failed' => 'Có lỗi xảy xa với Cơ sở dữ liệu',
+    'level_2_failed' => 'Có lỗi xảy ra bên trong Ưng dụng',
+    'level_3_failed' => 'Có lỗi xảy ra',
+
     'unknown' => 'Không xác định',
     'token_mismatch' => 'Yêu cầu của bạn không được đáp ứng. Hãy thử lại.',
     'database_insert' => 'Lỗi thêm mới dữ liệu vào CSDL.',

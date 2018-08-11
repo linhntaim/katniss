@@ -24,6 +24,7 @@ class User extends Authenticatable
 
     const AVATAR_THUMB_WIDTH = 150; // pixels
     const AVATAR_THUMB_HEIGHT = 150; // pixels
+    const AVATAR_FOLDER = 'profile_pictures';
 
     /**
      * The database table used by the model.

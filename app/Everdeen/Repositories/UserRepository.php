@@ -224,8 +224,8 @@ class UserRepository extends ModelRepository
 
         try {
             $storePhoto = new StorePhotoByCropperJs($imageRealPath);
+            $storePhoto->moveToUser($user->id, User::AVATAR_FOLDER);
             $storePhoto->process($imageCropData);
-            $storePhoto->moveToUser($user->id, $user->profilePictureDirectory);
             $urlAvatar = $storePhoto->getUrl();
 
             $storePhoto = $storePhoto->createThumbnail(User::AVATAR_THUMB_WIDTH, User::AVATAR_THUMB_HEIGHT);

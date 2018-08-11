@@ -11,16 +11,6 @@ namespace Katniss\Everdeen\ModelTraits;
 
 trait ExtendTranslatableTrait
 {
-    public function scopeOrWhereTranslation($query, $key, $value, $locale = null)
-    {
-        return $query->orWhereHas('translations', function ($query) use ($key, $value, $locale) {
-            $query->where($this->getTranslationsTable() . '.' . $key, $value);
-            if ($locale) {
-                $query->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), $locale);
-            }
-        });
-    }
-
     public function scopeOrManyWhereTranslation($query, $values, $locale = null)
     {
         return $query->orWhereHas('translations', function ($query) use ($values, $locale) {
@@ -70,16 +60,6 @@ trait ExtendTranslatableTrait
                     }
                 }
                 $first = false;
-            }
-        });
-    }
-
-    public function scopeOrWhereTranslationLike($query, $key, $value, $locale = null)
-    {
-        return $query->orWhereHas('translations', function ($query) use ($key, $value, $locale) {
-            $query->where($this->getTranslationsTable() . '.' . $key, 'LIKE', $value);
-            if ($locale) {
-                $query->where($this->getTranslationsTable() . '.' . $this->getLocaleKey(), 'LIKE', $locale);
             }
         });
     }

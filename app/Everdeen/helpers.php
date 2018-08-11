@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
+use Jenssegers\Agent\Agent as AgentInstance;
 use Jenssegers\Agent\Facades\Agent;
+use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Themes\ExtensionsFacade;
@@ -33,6 +35,7 @@ use Katniss\Everdeen\Utils\HtmlTag\Html5;
 use Katniss\Everdeen\Utils\NumberFormatHelper;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Ramsey\Uuid\Uuid;
 
 #region Katniss Configuration
 /**
@@ -95,7 +98,51 @@ function _kWidgets($key = null, $default = null)
 
 #endregion
 
-#region Detect Client
+
+#region Logging
+function logInfo(\Exception $exception, $group = 0)
+{
+    $id = Uuid::uuid1();
+    $ip = request()->ip();
+    $device = stringifyClientInfo();
+    $user = authUser();
+
+    $message = $exception instanceof KatnissException ?
+        $exception->getMessage() . ' (Data: ' . json_encode($exception->getAttachedData()) . ')' : $exception->getMessage();
+    Log::info(implode(' ', [
+        $id,
+        $group,
+        empty($user) ? 0 : $user->id,
+        $ip . '[' . $device . ']',
+        $exception->getFile(),
+        $exception->getLine(),
+        $message
+    ]));
+}
+
+function logError(\Exception $exception, $group = 0)
+{
+    $id = Uuid::uuid1();
+    $ip = request()->ip();
+    $device = stringifyClientInfo();
+    $user = authUser();
+
+    $message = $exception instanceof KatnissException ?
+        $exception->getMessage() . ' (Data: ' . json_encode($exception->getAttachedData()) . ')' : $exception->getMessage();
+    Log::error(implode(' ', [
+        $id,
+        $group,
+        empty($user) ? 0 : $user->id,
+        $ip . '[' . $device . ']',
+        $exception->getFile(),
+        $exception->getLine(),
+        $message
+    ]));
+}
+
+#endregion
+
+#region Current User / Device / Client
 function isPhoneClient()
 {
     return Agent::isPhone();
@@ -116,12 +163,22 @@ function isTabletClient()
     return Agent::isTablet();
 }
 
-#endregion
-
-#region User
 function clientIp()
 {
     return request()->ip();
+}
+
+function stringifyClientInfo()
+{
+    $agent = new AgentInstance();
+    $device = [];
+    if ($agent->isMobile() || $agent->isTablet()) {
+        $device[] = $agent->device();
+    }
+    $device[] = $agent->platform() . ' (' . $agent->version($agent->platform()) . ')';
+    $device[] = $agent->browser() . ' (' . $agent->version($agent->browser()) . ')';
+    $device[] = request()->header('User-Agent');
+    return implode(', ', $device);
 }
 
 function isAuth()
@@ -131,7 +188,40 @@ function isAuth()
 
 function authUser()
 {
-    return isAuth() ? auth()->user() : false;
+    return isAuth() ? auth()->user() : null;
+}
+
+function device()
+{
+    return CurrentDevice::getDevice();
+}
+
+function hasDevice()
+{
+    return !empty(CurrentDevice::getDevice());
+}
+
+function deviceId()
+{
+    return CurrentDevice::getDeviceId();
+}
+
+function deviceSecret()
+{
+    return CurrentDevice::getDeviceSecret();
+}
+
+function deviceRealId()
+{
+    return CurrentDevice::getDeviceRealId();
+}
+
+/**
+ * @return Katniss\Everdeen\Utils\Settings
+ */
+function settings()
+{
+    return app('settings');
 }
 
 #endregion
@@ -1363,14 +1453,6 @@ function appDefaultUserProfilePicture()
     return asset(_k('app.default_user_picture'));
 }
 
-/**
- * @return Katniss\Everdeen\Utils\Settings
- */
-function settings()
-{
-    return app('settings');
-}
-
 function allGenders()
 {
     return config('katniss.genders');
@@ -1534,34 +1616,6 @@ function transRateName($rate, $teacher = true)
 
 #endregion
 
-#region CurrentDevice
-function device()
-{
-    return CurrentDevice::getDevice();
-}
-
-function hasDevice()
-{
-    return !empty(CurrentDevice::getDevice());
-}
-
-function deviceId()
-{
-    return CurrentDevice::getDeviceId();
-}
-
-function deviceSecret()
-{
-    return CurrentDevice::getDeviceSecret();
-}
-
-function deviceRealId()
-{
-    return CurrentDevice::getDeviceRealId();
-}
-
-#endregion
-
 #region Colors
 function rgbToHex($rgb = [])
 {
@@ -1574,14 +1628,4 @@ function rgbToHex($rgb = [])
     return implode('', $hex);
 }
 
-#endregion
-
-#region Logging
-function logInfo($text, $data)
-{
-    Log::info($text, [
-        'log_by_user_id' => isAuth() ? authUser()->id : request()->ip(),
-        'data' => $data,
-    ]);
-}
 #endregion

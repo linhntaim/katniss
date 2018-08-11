@@ -25,7 +25,6 @@ chmod -R 777 bootstrap/cache
 chmod -R 777 storage
 chmod -R 777 public/assets/cache
 chmod -R 777 public/files
-chmod -R 777 public/upload
 ```
 
 ### PHP

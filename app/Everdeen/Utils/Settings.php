@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Utils;
 
 
+use Illuminate\Session\Store;
 use Katniss\Everdeen\Exceptions\KatnissException;
 use Katniss\Everdeen\Http\Request;
 use Katniss\Everdeen\Models\User;

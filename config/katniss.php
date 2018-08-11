@@ -7,6 +7,9 @@
  */
 
 return [
+    'file_url' => env('FILE_URL', ''),
+    'file_path' => env('FILE_PATH', ''),
+
     'app' => [
         'description' => env('APP_DESCRIPTION', ''),
         'keywords' => env('APP_KEYWORDS', ''),

@@ -19,8 +19,8 @@ class UploadController extends ApiController
     {
         try {
             $store = new StorePhotoByCropperJs($request->file('cropper_image_file')->getRealPath());
-            $store->process($request->input('cropper_image_data'));
             $store->moveToCollection();
+            $store->process($request->input('cropper_image_data'));
             return $this->responseSuccess([
                 'store_path' => $store->getRelativePath()
             ]);

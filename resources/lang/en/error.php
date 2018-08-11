@@ -6,6 +6,15 @@
  * Time: 13:52
  */
 return [
+    'level_0' => 'USER FAILED: :message',
+    'level_1' => 'DATABASE FAILED: :message',
+    'level_2' => 'APPLICATION FAILED: :message',
+    'level_3' => 'UNHANDLED ERROR: :message',
+    'level_0_failed' => 'Something went wrong with user action',
+    'level_1_failed' => 'Something went wrong with database',
+    'level_2_failed' => 'Something went wrong with application',
+    'level_3_failed' => 'Something went wrong',
+
     'unknown' => 'Unknown',
     'token_mismatch' => 'Your request is not recognized by the system. Try again.',
     'database_insert' => 'Fails to insert into database',
