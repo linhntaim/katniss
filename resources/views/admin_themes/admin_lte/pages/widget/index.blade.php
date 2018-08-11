@@ -165,15 +165,15 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <?php
-        $count_placeholders = count($placeholderNames);
-        ?>
+        @php
+            $count_placeholders = count($placeholderNames);
+        @endphp
         <div class="col-md-6">
             @for($i=0;$i<$count_placeholders;$i+=2)
-                <?php
-                $placeholderName = $placeholderNames[$i];
-                $themeWidgets = $themePlaceholders[$placeholderName];
-                ?>
+                @php
+                    $placeholderName = $placeholderNames[$i];
+                    $themeWidgets = $themePlaceholders[$placeholderName];
+                @endphp
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ $placeholders[$placeholderName] }}</h3>
@@ -222,10 +222,10 @@
         </div>
         <div class="col-md-6">
             @for($i=1;$i<$count_placeholders;$i+=2)
-                <?php
-                $placeholderName = $placeholderNames[$i];
-                $themeWidgets = $themePlaceholders[$placeholderName];
-                ?>
+                @php
+                    $placeholderName = $placeholderNames[$i];
+                    $themeWidgets = $themePlaceholders[$placeholderName];
+                @endphp
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">{{ $placeholders[$placeholderName] }}</h3>

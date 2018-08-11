@@ -51,13 +51,26 @@ class CurrentDevice
     {
         if (!empty(self::$device)) {
             if (self::$device instanceof User) {
-                return self::$device->password;
+                return md5(self::$device->password);
             }
             if (self::$device instanceof Device) {
                 return self::$device->secret;
             }
         }
         return null;
+    }
+
+    public static function checkDeviceSecret($secret)
+    {
+        if (!empty(self::$device)) {
+            if (self::$device instanceof User) {
+                return md5(self::$device->password) == $secret;
+            }
+            if (self::$device instanceof Device) {
+                return self::$device->secret == $secret;
+            }
+        }
+        return false;
     }
 
     public static function getDeviceRealId()

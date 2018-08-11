@@ -75,10 +75,10 @@ class ConversationController extends WebApiController
 
         $jsQueue = new JsQueue();
         $jsQueue->add('global-vars', [
-            'ORTC_SERVER' => env('ORTC_SERVER'),
+            'ORTC_SERVER' => config('services.ortc.server'),
             'ORTC_CLIENT_ID' => session()->getId(),
-            'ORTC_CLIENT_KEY' => env('ORTC_CLIENT_KEY'),
-            'ORTC_CLIENT_SECRET' => env('ORTC_CLIENT_SECRET'),
+            'ORTC_CLIENT_KEY' => config('services.ortc.client_key'),
+            'ORTC_CLIENT_SECRET' => config('services.ortc.client_secret'),
             'CONVERSATION_ID' => $conversation->id,
             'CONVERSATION_CHANNEL' => $conversation->channel->code,
             'CURRENT_DEVICE_ID' => deviceId() . '', // force convert to string

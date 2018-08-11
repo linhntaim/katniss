@@ -17,10 +17,13 @@ class StorePhotoByCropperJs extends StorePhoto
     protected $height;
     protected $angle;
 
-    public function __construct($sourceFile, $cropperJson = null)
+    public function __construct($sourceFile)
     {
         parent::__construct($sourceFile);
+    }
 
+    public function process($cropperJson = null)
+    {
         if (!empty($cropperJson)) {
             $data = json_decode($cropperJson);
             if (!empty($data)) {

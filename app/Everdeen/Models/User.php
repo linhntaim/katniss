@@ -5,6 +5,7 @@ namespace Katniss\Everdeen\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Notifications\ResetPassword as ResetPasswordNotification;
 use Katniss\Everdeen\Vendors\Zizaco\Entrust\Traits\EntrustUserTrait as OverriddenEntrustUserTrait;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
@@ -23,6 +24,7 @@ class User extends Authenticatable
 
     const AVATAR_THUMB_WIDTH = 150; // pixels
     const AVATAR_THUMB_HEIGHT = 150; // pixels
+    const AVATAR_FOLDER = 'profile_pictures';
 
     /**
      * The database table used by the model.
@@ -109,5 +111,10 @@ class User extends Authenticatable
     public function settings()
     {
         return $this->hasOne(UserSetting::class, 'id', 'setting_id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token, $this));
     }
 }

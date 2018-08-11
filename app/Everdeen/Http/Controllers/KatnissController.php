@@ -4,8 +4,9 @@ namespace Katniss\Everdeen\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Katniss\Everdeen\Http\Request;
+use Katniss\Everdeen\ModelTransformers\ModelTransformer;
+use Katniss\Everdeen\Repositories\ModelRepository;
 use Katniss\Everdeen\Utils\AppConfig;
-use Katniss\Everdeen\Utils\AppOptionHelper;
 use Katniss\Everdeen\Utils\MultipleLocaleValidationResult;
 use Katniss\Http\Controllers\Controller;
 
@@ -25,6 +26,26 @@ class KatnissController extends Controller
     {
         $this->validationErrors = collect([]);
         $this->currentRequest = request();
+    }
+
+    protected function transactionStart($connection = null)
+    {
+        ModelRepository::transactionStart($connection);
+    }
+
+    protected function transactionComplete()
+    {
+        ModelRepository::transactionComplete();
+    }
+
+    protected function transactionStop()
+    {
+        ModelRepository::transactionStop();
+    }
+
+    protected function transform(ModelTransformer $transformer, $model, $utils = [])
+    {
+        return $transformer->setModel($model)->setUtils($utils)->toArray();
     }
 
     /**
@@ -84,6 +105,13 @@ class KatnissController extends Controller
     protected function getFirstValidationError()
     {
         return $this->validationErrors->first();
+    }
+
+    protected function pageSize()
+    {
+        $pageSize = $this->currentRequest->input('page_size', AppConfig::DEFAULT_ITEMS_PER_PAGE);
+        if (!in_array($pageSize, AppConfig::ALLOWED_ITEMS_PER_PAGE)) $pageSize = AppConfig::DEFAULT_ITEMS_PER_PAGE;
+        return $pageSize;
     }
 
     public function extra(Request $request)

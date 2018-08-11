@@ -8,7 +8,7 @@
 
 namespace Katniss\Everdeen\Listeners;
 
-use Katniss\Everdeen\Utils\MailHelper;
+use Katniss\Everdeen\Utils\Mailing\MailHelper;
 use Katniss\Everdeen\Events\PasswordChanged;
 
 class PasswordChangedEmailing

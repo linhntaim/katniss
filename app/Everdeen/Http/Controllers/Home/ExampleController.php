@@ -61,10 +61,10 @@ class ExampleController extends ViewController
         return $this->_any('my_settings', [
             'country' => $countryCode . ' - ' . $country['name'] . ' (+' . $country['calling_code'] . ')',
             'locale' => $localeCode . '_' . $locale['country_code'] . ' - ' . $locale['name'] . ' (' . $locale['native'] . ')',
-            'timezone' => $settings->getTimezone() . ' (' . $datetimeHelper->getCurrentTimeZone() . ')',
+            'timezone' => $settings->getTimezone() . ' (' . $datetimeHelper->getTimeZoneOffset() . ')',
             'price' => toFormattedNumber(22270) . ' VND = ' . toFormattedCurrency(22270, 'VND'),
             'long_datetime' => $datetimeHelper->compound(DateTimeHelper::LONG_DATE_FUNCTION, ' ', DateTimeHelper::LONG_TIME_FUNCTION),
-            'short_datetime' => $datetimeHelper->compound(),
+            'short_datetime' => $datetimeHelper->compound(DateTimeHelper::SHORT_DATE_FUNCTION, ' ', DateTimeHelper::SHORT_TIME_FUNCTION),
         ]);
     }
 

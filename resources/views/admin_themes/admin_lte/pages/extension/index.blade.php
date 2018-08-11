@@ -51,9 +51,9 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                            <?php
-                            $order = 0;
-                            ?>
+                            @php
+                                $order = 0;
+                            @endphp
                             @foreach($extensions as $extension)
                                 <tr>
                                     <td class="order-col-2">{{ ++$order }}</td>

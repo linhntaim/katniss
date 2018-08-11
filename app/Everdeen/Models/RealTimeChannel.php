@@ -10,6 +10,7 @@ namespace Katniss\Everdeen\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Katniss\Everdeen\ModelTraits\UuidTrait;
 
 class RealTimeChannel extends Model
 {
