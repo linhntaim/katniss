@@ -9,7 +9,6 @@
 namespace Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Notifications;
 
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
-use Katniss\Everdeen\Mail\BaseMailable;
 use Katniss\Everdeen\Models\User;
 use Katniss\Everdeen\Utils\Mailing\Mailable;
 
@@ -22,25 +21,23 @@ class ResetPassword extends ResetPasswordNotification
     {
         parent::__construct($token);
 
-        $request = request();
         $this->user = $user;
-        $this->route = $request->has('route') ?
-            $request->input('route') . '/{email}' : 'auth/reset-password/{token}/{email}';
+        $this->route = 'password/reset/{token}';
     }
 
     public function toMail($notifiable)
     {
-        $settings = settings();
+        $locale = $this->user->settings->locale;
         return new Mailable('forgot_password', [
-            Mailable::EMAIL_FROM => $settings->getBaseEmail(),
-            Mailable::EMAIL_FROM_NAME => $settings->getBaseName(),
+            Mailable::EMAIL_FROM => appEmail(),
+            Mailable::EMAIL_FROM_NAME => appName(),
             Mailable::EMAIL_TO => $this->user->email,
             Mailable::EMAIL_TO_NAME => $this->user->shown_name,
-            Mailable::EMAIL_SUBJECT => '[' . $settings->getBaseName() . '] ' . trans('label.reset_password'),
-            'base_url' => $settings->getBaseUrl(),
-            'base_name' => $settings->getBaseName(),
-            'shown_name' => $this->user->shown_name,
-            'reset_url' => baseUrl($this->route, ['token' => $this->token, 'email' => $this->user->email]),
-        ], currentLocaleCode());
+            Mailable::EMAIL_SUBJECT => '[' . appName() . '] ' . trans('label.reset_password'),
+            'reset_url' => homeUrl($this->route, ['token' => $this->token], $locale),
+            'site_url' => homeUrl(null, [], $locale),
+            'site_name' => appName(),
+            'site_locale' => $locale,
+        ], $locale);
     }
 }
