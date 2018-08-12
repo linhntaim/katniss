@@ -8,6 +8,7 @@
 
 namespace Katniss\Everdeen\Repositories;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Events\UserCreated;
@@ -110,7 +111,7 @@ class UserRepository extends ModelRepository
                 'display_name' => $displayName,
                 'email' => $email,
                 'name' => $name,
-                'password' => bcrypt($password),
+                'password' => Hash::make($password),
                 'url_avatar' => empty($urlAvatar) ? appDefaultUserProfilePicture() : $urlAvatar,
                 'url_avatar_thumb' => empty($urlAvatarThumb) ? appDefaultUserProfilePicture() : $urlAvatarThumb,
                 'activation_code' => str_random(32),
@@ -157,7 +158,7 @@ class UserRepository extends ModelRepository
             $user->display_name = $displayName;
             $user->email = $email;
             if (!empty($password)) {
-                $user->password = bcrypt($password);
+                $user->password = Hash::make($password);
                 $passwordChanged = true;
             }
             $user->name = $name;
@@ -196,7 +197,7 @@ class UserRepository extends ModelRepository
         $user = $this->model();
         DB::beginTransaction();
         try {
-            $user->password = bcrypt($password);
+            $user->password = Hash::make($password);
             $user->save();
             event(new PasswordChanged($user, $password,
                 array_merge(request()->getTheme()->viewParams(), [
