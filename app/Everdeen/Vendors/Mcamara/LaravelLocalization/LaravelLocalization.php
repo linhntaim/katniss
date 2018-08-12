@@ -15,7 +15,7 @@ class LaravelLocalization extends BaseLaravelLocalization
 {
     public function setLocale($locale = null)
     {
-        if (empty($locale) || !is_string($locale)) {
+        if (empty($locale) || !\is_string($locale)) {
             // If the locale has not been passed through the function
             // it tries to get it from the first segment of the url
             $locale = $this->request->segment(1);
@@ -41,11 +41,15 @@ class LaravelLocalization extends BaseLaravelLocalization
             else {
                 $this->currentLocale = $this->getCurrentLocale();
 
-                // linhnt.aim@outlook.com
+                /**
+                 * Fixed: When locale from browser is different from current path
+                 *
+                 * @author linhnt.aim@outlook.com
+                 */
                 if (!$this->matchLocaleRoute()) {
                     $this->currentLocale = $this->defaultLocale;
                     if (!$this->matchLocaleRoute()) {
-                        // don't know what to do here
+//                        abort(404);
                     }
                 }
                 // end fixed // if no fixed, delete
@@ -68,7 +72,8 @@ class LaravelLocalization extends BaseLaravelLocalization
     {
         $path = $this->request->path();
         $matchedLocale = false;
-        foreach (trans()->get('routes', [], $this->currentLocale) as $name => $trans) { // lang of default locale
+        $routes = trans()->get('routes', [], $this->currentLocale);
+        foreach ($routes as $name => $trans) { // lang of default locale
             $nameRegex = '/^' . str_replace('/', '\\/', preg_replace('/\{[^\}]+\}/', '(.*)', $trans)) . '$/';
             if (preg_match($nameRegex, $path, $matches)) {
                 $matchedLocale = true;
@@ -103,7 +108,11 @@ class LaravelLocalization extends BaseLaravelLocalization
         }
 
         if (filter_var($url, FILTER_VALIDATE_URL)) { // if no fixed, delete
-            // linhnt.aim@outlook.com
+            /**
+             * Fixed: Localizing url gets wrong result when the url contains query or hash string
+             *
+             * @author linhnt.aim@outlook.com
+             */
             $parsed_url = parse_url($url);
             if (!empty($parsed_url['query'])) {
                 if ($parsed_url['query'] == '}' && mb_strpos($parsed_url['path'], '{') !== false) {
@@ -175,7 +184,7 @@ class LaravelLocalization extends BaseLaravelLocalization
         }
 
         if (!empty($locale)) {
-            if ($locale != $this->getDefaultLocale() || !$this->hideDefaultLocaleInURL() || $forceDefaultLocation) {
+            if ($forceDefaultLocation || $locale != $this->getDefaultLocale() || !$this->hideDefaultLocaleInURL()) {
                 $parsed_url['path'] = $locale . '/' . ltrim($parsed_url['path'], '/');
             }
         }

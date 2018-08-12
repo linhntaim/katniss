@@ -2,7 +2,7 @@
 
 namespace Katniss\Everdeen\Models;
 
-use Katniss\Everdeen\Vendors\Zizaco\Entrust\EntrustRole;
+use Zizaco\Entrust\EntrustRole;
 
 class Role extends EntrustRole
 {
