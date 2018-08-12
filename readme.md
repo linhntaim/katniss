@@ -29,9 +29,9 @@ chmod -R 777 public/files
 
 ### PHP
 
-Require PHP >= `5.6.4`.
+Require PHP >= `7.1.3`.
 
-Current version: `7.0.9`.
+Current version: `7.2.8`.
 
 ### Database
 
@@ -39,7 +39,7 @@ MySQL is recommended.
 
 Require MySQL >= `5.5`.
 
-Current version: `MariaDB 10.1.16`.
+Current version: `MariaDB 10.1.34`.
 
 Current database settings (in the `.env` file) of the framework require you to make those configuration in MySQL (`my.ini` or `my.cnf` file):
 
@@ -84,7 +84,7 @@ $table->rowFormat = 'DYNAMIC';
 
 [Laravel PHP Framework](https://github.com/laravel/laravel)
 
-Current version: `5.4.21`.
+Current version: `5.6.33`.
 
 Latest version:
 
@@ -97,8 +97,11 @@ Customization:
 - Database:
     - Enable schema for MySQL database to support row format when creating tables.
 - Session:
-    - Extend database session handler for further purpose (currently session is based on this handler).
+    - Extend database session handler for further purpose.
     - Fix file session handler bugs may remove session of user when happening many concurrent AJAX requests.
+- Notification
+    - Enable notification model to work with auto increment id as primary key.
+    - Override Reset Password Notification for sending custom email.
 - Support:
     - Extend Str class for new methods to operate string.
 
@@ -106,7 +109,7 @@ Customization:
 
 [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 
-Current version: `2.3.2`.
+Current version: `3.1.5`.
 
 Latest version:
 
@@ -118,7 +121,7 @@ For debugging.
 
 [elFinder Package for Laravel 5](https://github.com/barryvdh/laravel-elfinder)
 
-Current version: `0.3.10`.
+Current version: `0.4.0`.
 
 Latest version:
 
@@ -126,15 +129,72 @@ Latest version:
 
 For file managing/uploading.
 
+#### barryvdh/laravel-snappy
+
+[Snappy PDF/Image Wrapper for Laravel 5 and Lumen 5.1](https://github.com/barryvdh/laravel-snappy)
+
+Current version: `0.4.1`.
+
+For exporting to PDF (Note: This processes more quickly than dompdf).
+
+It requires these runtime libraries
+
+- Linux:
+
+```
+h4cc/wkhtmltoimage-amd64
+h4cc/wkhtmltoimage-i386
+h4cc/wkhtmltopdf-amd64
+h4cc/wkhtmltopdf-i386
+```
+
+- Windows:
+
+```
+wemersonjanuario/wkhtmltopdf-windows
+```
+
+#### chumper/zipper
+
+[Zipper](https://github.com/Chumper/Zipper)
+
+Current version: `1.0.2`.
+
+For zipping files.
+
+#### maatwebsite/excel
+
+[Laravel Excel 3.0 ](https://github.com/Maatwebsite/Laravel-Excel)
+
+Current version: `3.0.9`.
+
+Latest version:
+
+[![Latest Stable Version](https://poser.pugx.org/maatwebsite/excel/v/stable.png)](https://travis-ci.org/Maatwebsite/Laravel-Excel)
+
+For exporting to Excel.
+
+#### intervention/image
+
+[Intervention Image](https://github.com/Intervention/image)
+
+Current version: `2.4.2`.
+
+Latest version:
+
+[![Latest Version](https://img.shields.io/packagist/v/intervention/image.svg)](https://packagist.org/packages/intervention/image)
+
+For image processing.
+
 #### jenssegers/agent
 
 [Agent](https://github.com/jenssegers/agent)
 
-Current version: `2.5.1`.
+Current version: `2.6.0`.
 
 Latest version:
 
-[![Latest Stable Version](http://img.shields.io/packagist/v/jenssegers/agent.svg)](https://packagist.org/packages/jenssegers/agent) 
+[![Latest Stable Version](http://img.shields.io/packagist/v/jenssegers/agent.svg)](https://packagist.org/packages/jenssegers/agent)
 
 For detecting client.
 
@@ -142,7 +202,7 @@ For detecting client.
 
 [Laravel Socialite](https://github.com/laravel/socialite)
 
-Current version: `3.0.6`.
+Current version: `3.0.12`.
 
 Latest version:
 
@@ -153,12 +213,13 @@ For logging in & registering from social networks.
 Customization:
 
 - Change Facebook provider to get large avatar of authenticated user.
+    - See in `Katniss\Everdeen\Vendors\Laravel\Socialite`.
 
 #### mews/purifier
 
 [HTMLPurifier for Laravel 5](https://github.com/mewebstudio/Purifier)
 
-Current version: `2.0.7`.
+Current version: `2.0.8`.
 
 For filtering HTML content.
 
@@ -166,7 +227,7 @@ For filtering HTML content.
 
 [Laravel-Translatable](https://github.com/dimsav/laravel-translatable)
 
-Current version: `7.0`.
+Current version: `9.1.0`.
 
 Latest version:
 
@@ -174,11 +235,15 @@ Latest version:
 
 For multilingual models (Database Entities & App Models).
 
+Customization:
+
+- Extend some scoping method for translatable model in `Katniss\Everdeeen\ModelTraits\ExtendTranslatableTrait`.
+
 #### zizaco/entrust
 
 [ENTRUST (Laravel 5 Package)](https://github.com/Zizaco/entrust)
 
-Current version: `1.8.0`.
+Current version: `1.9.1`.
 
 Latest version:
 
@@ -188,16 +253,13 @@ To authorize users with roles and permissions.
 
 Customization:
 
-- Middleware to authorize routes was created.
-- Force not to use the method `Cache::tags` in workflow.
-    - If you plan to use the cache drivers different from file and database, you should remove this customization.
-    - See more at [Cache Tags](https://laravel.com/docs/5.3/cache#cache-tags).
+- Middleware `entrust` to authorize routes with roles or permissions was created.
 
 #### mcamara/laravel-localization
 
 [Laravel Localization](https://github.com/mcamara/laravel-localization)
 
-Current version: `1.2.4`.
+Current version: `1.3.10`.
 
 Latest version:
 
@@ -210,6 +272,7 @@ Customization:
 - Fix some bugs:
     - Localizing url gets wrong result when the url contains query or hash string.
     - Setting wrong locale when locale from browser is not similar to locale from path.
+    - See in `Katniss\Everdeen\Vendors\Mcamara\LaravelLocalization`.
 
 #### larabros/elogram
 
