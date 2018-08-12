@@ -6,21 +6,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Katniss\Everdeen\Vendors\Laravel\Framework\Illuminate\Notifications\ResetPassword as ResetPasswordNotification;
-use Katniss\Everdeen\Vendors\Zizaco\Entrust\Traits\EntrustUserTrait as OverriddenEntrustUserTrait;
 use Katniss\Everdeen\Utils\DateTimeHelper;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use EntrustUserTrait, OverriddenEntrustUserTrait {
-        OverriddenEntrustUserTrait::cachedRoles insteadof EntrustUserTrait;
-        OverriddenEntrustUserTrait::save insteadof EntrustUserTrait;
-        OverriddenEntrustUserTrait::delete insteadof EntrustUserTrait;
-        OverriddenEntrustUserTrait::restore insteadof EntrustUserTrait;
-        OverriddenEntrustUserTrait::hasRole insteadof EntrustUserTrait;
-        OverriddenEntrustUserTrait::can insteadof EntrustUserTrait;
-    }
-    use Notifiable;
+    use EntrustUserTrait, Notifiable;
 
     const AVATAR_THUMB_WIDTH = 150; // pixels
     const AVATAR_THUMB_HEIGHT = 150; // pixels

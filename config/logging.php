@@ -76,6 +76,14 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'katniss_daily' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/' . php_sapi_name() . '/laravel.log'),
+            'level' => env('APP_LOG_LEVEL', 'debug'),
+            'days' => env('APP_LOG_MAX_FILES', 7),
+            'permission' => 0777,
+        ],
     ],
 
 ];

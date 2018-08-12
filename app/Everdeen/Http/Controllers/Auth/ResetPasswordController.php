@@ -3,6 +3,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Hash;
 use Katniss\Everdeen\Events\PasswordChanged;
 use Katniss\Everdeen\Http\Controllers\ViewController;
 use Katniss\Everdeen\Http\Request;
@@ -79,7 +80,7 @@ class ResetPasswordController extends ViewController
     protected function resetPassword($user, $password)
     {
         $user->forceFill([
-            'password' => bcrypt($password),
+            'password' => Hash::make($password),
             'remember_token' => Str::random(60),
         ])->save();
 
