@@ -10,7 +10,7 @@ namespace Katniss\Everdeen\Commands;
 
 use Illuminate\Console\Command as BaseCommand;
 
-abstract class Command extends BaseCommand
+abstract class DefaultCommand extends BaseCommand
 {
 
 }
