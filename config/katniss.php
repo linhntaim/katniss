@@ -648,7 +648,7 @@ return [
     'external_links' => [
         'html5shiv' => 'https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js',
         'respond' => 'https://oss.maxcdn.com/respond/1.4.2/respond.min.js',
-        'jquery' => 'http://code.jquery.com/jquery-2.1.4.min.js',
+        'jquery' => 'https://code.jquery.com/jquery-2.1.4.min.js',
         'jquery-ui' => 'https://code.jquery.com/ui/1.11.4/jquery-ui.min.js',
         'jquery-ui-theme-smoothness' => 'https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css',
         'jquery-ui-bootstrap' => '$.widget.bridge(\'uibutton\', $.ui.button); // Resolve conflict in jQuery UI tooltip with Bootstrap tooltip',
@@ -665,9 +665,9 @@ return [
         'select2-bootstrap-css' => 'https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.6/select2-bootstrap.min.css',
         'gmap3' => 'https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js',
         'google-maps-js-api' => 'https://maps.googleapis.com/maps/api/js',
-        'realtime-co-ortc' => 'http://messaging-public.realtime.co/js/2.1.0/ortc.js',
-        'medium-editor-css' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css',
-        'medium-editor-theme-default' => 'http://cdn.jsdelivr.net/medium-editor/latest/css/themes/default.min.css',
-        'medium-editor-js' => 'http://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js',
+        'realtime-co-ortc' => 'https://messaging-public.realtime.co/js/2.1.0/ortc.js',
+        'medium-editor-css' => 'https://cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css',
+        'medium-editor-theme-default' => 'https://cdn.jsdelivr.net/medium-editor/latest/css/themes/default.min.css',
+        'medium-editor-js' => 'https://cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js',
     ],
 ];
