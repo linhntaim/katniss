@@ -44,6 +44,18 @@ class ArticleRepository extends PostRepository
             ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
     }
 
+    public function getPagedByCategory($category)
+    {
+        $posts = Post::with(['translations', 'author'])
+            ->where('type', $this->type)
+            ->whereHas('categories', function ($query) use ($category) {
+                $query->where('id', $category->id);
+            });
+
+        return $posts->orderBy('created_at', 'desc')
+            ->paginate(AppConfig::DEFAULT_ITEMS_PER_PAGE);
+    }
+
     public function create($userId, $template = null, $featuredImage = null,
                            array $localizedData = [], array $categories = [])
     {

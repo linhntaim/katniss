@@ -9,6 +9,7 @@
 namespace Katniss\Everdeen\Http\Controllers\Home;
 
 use Katniss\Everdeen\Http\Controllers\ViewController;
+use Katniss\Everdeen\Repositories\ArticleCategoryRepository;
 use Katniss\Everdeen\Repositories\ArticleRepository;
 use Katniss\Everdeen\Repositories\PageRepository;
 use Katniss\Everdeen\Themes\ThemeFacade;
@@ -160,8 +161,9 @@ class ExampleController extends ViewController
 
     public function getCategoryArticles($id)
     {
+        $category = (new ArticleCategoryRepository($id))->model();
         $articleRepository = new ArticleRepository();
-        $articles = $articleRepository->getPagedByCategory($id, $category);
+        $articles = $articleRepository->getPagedByCategory($category);
 
         $this->ogPostList($articles);
 
