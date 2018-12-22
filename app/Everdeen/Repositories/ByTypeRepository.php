@@ -15,8 +15,8 @@ abstract class ByTypeRepository extends ModelRepository
 
     public function __construct($type, $id = null)
     {
-        parent::__construct($id);
-
         $this->type = $type;
+
+        parent::__construct($id);
     }
 }
