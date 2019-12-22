@@ -122,7 +122,7 @@ class LaravelLocalization extends BaseLaravelLocalization
                     $tmp = explode('=', $parsed_url['query'])[0];
                     $i = mb_strpos($tmp, '?');
                     while ($i !== false) {
-                        if ($tmp{$i + 1} != '}') {
+                        if ($tmp[$i + 1] != '}') {
                             $parsed_url['path'] .= '?' . mb_substr($tmp, 0, $i);
                             $parsed_url['query'] = mb_substr($parsed_url['query'], $i + 1);
                             break;
